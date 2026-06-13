@@ -6,7 +6,8 @@
  * or related systems. Please exercise caution as any changes
  * made to this file may be overwritten.
  * ------------------------------------------------------------
- */{
+ */
+{
   "sections": {
     "hero_iLBwPd": {
       "type": "hero",
@@ -14,6 +15,7 @@
         "slide_mATTUY": {
           "type": "slide",
           "settings": {
+            "background_image": "shopify://shop_images/Gemini_Generated_Image_vmrvkxvmrvkxvmrv_1.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -35,563 +37,468 @@
       ],
       "name": "t:names.hero",
       "settings": {
-        "media_type_1": "image",
-        "media_type_2": "image",
-        "open_in_new_tab": false,
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "flex-end",
-        "gap": 16,
-        "section_width": "page-width",
         "section_height": "large",
         "section_height_custom": 50,
-        "color_scheme": "scheme-5",
-        "toggle_overlay": true,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "blurred_reflection": false,
-        "reflection_opacity": 75,
-        "padding-block-start": 0,
-        "padding-block-end": 31
+        "section_height_mobile": 92,
+        "content_max_width": 700,
+        "content_top_offset": 110,
+        "content_top_offset_mobile": 24,
+        "card_width": 330,
+        "overlay_opacity": 62,
+        "glass_opacity": 24,
+        "glass_blur": 18,
+        "autoplay": true,
+        "autoplay_speed": 6,
+        "show_arrows": true,
+        "show_dots": true,
+        "color_scheme": "scheme-5"
       }
     },
-    "product_list_EDUBdR": {
-      "type": "product-list",
+    "marquee_pNWDpm": {
+      "type": "marquee",
       "blocks": {
-        "static-header": {
-          "type": "_product-list-content",
-          "static": true,
+        "text_8QTwfG": {
+          "type": "text",
           "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 12,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
+            "text": "<p>We make things that work better and last longer.</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "custom",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "tight",
+            "letter_spacing": "tight",
+            "case": "none",
+            "wrap": "nowrap",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
             "padding-block-start": 0,
             "padding-block-end": 0,
             "padding-inline-start": 0,
             "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_list_text_qK4EWG": {
-              "type": "_product-list-text",
-              "name": "t:names.collection_title",
-              "settings": {
-                "text": "<h3>Make Your Workspace Yours</h3>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h2",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "product_list_text_qK4EWG"
-          ]
-        },
-        "static-product-card": {
-          "type": "_product-card",
-          "name": "t:names.product_card",
-          "static": true,
-          "settings": {
-            "product_card_gap": 0,
-            "inherit_color_scheme": false,
-            "color_scheme": "scheme-2",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 10,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "product_card_gallery_hpki3q": {
-              "type": "_product-card-gallery",
-              "name": "t:names.product_card_media",
-              "settings": {
-                "image_ratio": "square",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "group_jHUdWN": {
-              "type": "_product-card-group",
-              "name": "t:names.group",
-              "settings": {
-                "content_direction": "column",
-                "vertical_on_mobile": true,
-                "horizontal_alignment": "flex-start",
-                "vertical_alignment": "center",
-                "align_baseline": false,
-                "horizontal_alignment_flex_direction_column": "flex-start",
-                "vertical_alignment_flex_direction_column": "center",
-                "gap": 4,
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "custom_height": 100,
-                "inherit_color_scheme": true,
-                "color_scheme": "",
-                "background_media": "none",
-                "video_position": "cover",
-                "background_image_position": "cover",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "open_in_new_tab": false,
-                "padding-block-start": 24,
-                "padding-block-end": 24,
-                "padding-inline-start": 24,
-                "padding-inline-end": 24
-              },
-              "blocks": {
-                "product_title_gH3cpy": {
-                  "type": "product-title",
-                  "name": "t:names.product_title",
-                  "settings": {
-                    "width": "fit-content",
-                    "max_width": "normal",
-                    "alignment": "left",
-                    "type_preset": "paragraph",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "wrap": "pretty",
-                    "color": "var(--color-foreground)",
-                    "background": false,
-                    "background_color": "#00000026",
-                    "corner_radius": 0,
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "price_anAima": {
-                  "type": "price",
-                  "name": "t:names.product_price",
-                  "settings": {
-                    "show_sale_price_first": true,
-                    "show_installments": false,
-                    "show_tax_info": false,
-                    "type_preset": "paragraph",
-                    "width": "100%",
-                    "alignment": "left",
-                    "font": "var(--font-body--family)",
-                    "font_size": "1rem",
-                    "line_height": "normal",
-                    "letter_spacing": "normal",
-                    "case": "none",
-                    "color": "var(--color-foreground)",
-                    "padding-block-start": 0,
-                    "padding-block-end": 0,
-                    "padding-inline-start": 0,
-                    "padding-inline-end": 0
-                  },
-                  "blocks": {}
-                },
-                "swatches_eYcKAz": {
-                  "type": "swatches",
-                  "name": "t:names.swatches",
-                  "settings": {
-                    "product_swatches_alignment": "flex-start",
-                    "product_swatches_alignment_mobile": "flex-start",
-                    "hide_padding": false,
-                    "product_swatches_padding_top": 4,
-                    "product_swatches_padding_bottom": 0,
-                    "product_swatches_padding_left": 0,
-                    "product_swatches_padding_right": 0
-                  },
-                  "blocks": {}
-                }
-              },
-              "block_order": [
-                "product_title_gH3cpy",
-                "price_anAima",
-                "swatches_eYcKAz"
-              ]
-            }
-          },
-          "block_order": [
-            "product_card_gallery_hpki3q",
-            "group_jHUdWN"
-          ]
-        }
-      },
-      "name": "Featured collection",
-      "settings": {
-        "collection": "all",
-        "layout_type": "grid",
-        "carousel_on_mobile": false,
-        "max_products": 8,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 12,
-        "rows_gap": 12,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "horizontal_alignment": "flex-start",
-        "gap": 28,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 48,
-        "padding-block-end": 64
-      }
-    },
-    "media_with_content_LfPdEJ": {
-      "type": "media-with-content",
-      "blocks": {
-        "media": {
-          "type": "_media-without-appearance",
-          "static": true,
-          "settings": {
-            "media_type": "video",
-            "video_loop": true,
-            "video_autoplay": true,
-            "image_position": "cover",
-            "video_position": "cover"
           },
           "blocks": {}
-        },
-        "content": {
-          "type": "_content-without-appearance",
-          "static": true,
-          "settings": {
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 24
-          },
-          "blocks": {
-            "image_y4ApqF": {
-              "type": "image",
-              "name": "t:names.image",
-              "settings": {
-                "image_ratio": "adapt",
-                "width": "fill",
-                "custom_width": 100,
-                "width_mobile": "fill",
-                "custom_width_mobile": 100,
-                "height": "fit",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_Hf79zK": {
-              "type": "text",
-              "name": "t:names.heading",
-              "settings": {
-                "text": "<h2>Productivity Essentials</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h3",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "text_jxGhdJ": {
-              "type": "text",
-              "settings": {
-                "text": "<p>Objects that partner with your digital tools so you can focus on your most important work.</p>",
-                "width": "fit-content",
-                "max_width": "narrow",
-                "alignment": "left",
-                "type_preset": "rte",
-                "font": "var(--font-primary--family)",
-                "font_size": "",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "button_zg4nUF": {
-              "type": "button",
-              "settings": {
-                "label": "Shop Now",
-                "link": "shopify://collections/all",
-                "open_in_new_tab": false,
-                "style_class": "button",
-                "width": "fit-content",
-                "custom_width": 100,
-                "width_mobile": "fit-content",
-                "custom_width_mobile": 100
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "image_y4ApqF",
-            "text_Hf79zK",
-            "text_jxGhdJ",
-            "button_zg4nUF"
-          ]
-        }
-      },
-      "name": "t:names.media_with_text",
-      "settings": {
-        "media_position": "left",
-        "media_width": "medium",
-        "media_height": "50svh",
-        "section_width": "page-width",
-        "extend_media": true,
-        "color_scheme": "scheme-41dbb9c3-0866-4036-9494-aa0e1c1cedda",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
-    "collection_list_xpBxCm": {
-      "type": "collection-list",
-      "blocks": {
-        "group_mfTd9p": {
-          "type": "group",
-          "name": "t:names.header",
-          "settings": {
-            "content_direction": "column",
-            "vertical_on_mobile": true,
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "center",
-            "align_baseline": false,
-            "horizontal_alignment_flex_direction_column": "center",
-            "vertical_alignment_flex_direction_column": "center",
-            "gap": 16,
-            "width": "fill",
-            "custom_width": 100,
-            "width_mobile": "fill",
-            "custom_width_mobile": 100,
-            "height": "fit",
-            "custom_height": 100,
-            "inherit_color_scheme": true,
-            "color_scheme": "",
-            "background_media": "none",
-            "video_position": "cover",
-            "background_image_position": "cover",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 0,
-            "toggle_overlay": false,
-            "overlay_color": "#00000026",
-            "overlay_style": "solid",
-            "gradient_direction": "to top",
-            "open_in_new_tab": false,
-            "placeholder": "",
-            "padding-block-start": 0,
-            "padding-block-end": 16,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
-          "blocks": {
-            "text_AYrwfM": {
-              "type": "text",
-              "name": "t:names.text",
-              "settings": {
-                "text": "<h2>Shop by Collection</h2>",
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h2",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "text_AYrwfM"
-          ]
-        },
-        "static-collection-card": {
-          "type": "_collection-card",
-          "name": "t:names.collection_card",
-          "static": true,
-          "settings": {
-            "placement": "on_image",
-            "horizontal_alignment": "flex-start",
-            "vertical_alignment": "flex-start",
-            "collection_card_gap": 8,
-            "inherit_color_scheme": true,
-            "color_scheme": "scheme-6",
-            "border": "none",
-            "border_width": 1,
-            "border_opacity": 100,
-            "border_radius": 10
-          },
-          "blocks": {
-            "collection_title_zyBdAJ": {
-              "type": "collection-title",
-              "name": "t:names.collection_title",
-              "settings": {
-                "width": "fit-content",
-                "max_width": "normal",
-                "alignment": "left",
-                "type_preset": "h5",
-                "font": "var(--font-body--family)",
-                "font_size": "1rem",
-                "line_height": "normal",
-                "letter_spacing": "normal",
-                "case": "none",
-                "wrap": "pretty",
-                "color": "var(--color-foreground)",
-                "background": false,
-                "background_color": "#00000026",
-                "corner_radius": 0,
-                "padding-block-start": 0,
-                "padding-block-end": 0,
-                "padding-inline-start": 0,
-                "padding-inline-end": 0
-              },
-              "blocks": {}
-            },
-            "collection-card-image": {
-              "type": "_collection-card-image",
-              "static": true,
-              "settings": {
-                "image_ratio": "portrait",
-                "toggle_overlay": false,
-                "overlay_color": "#00000026",
-                "overlay_style": "solid",
-                "gradient_direction": "to top",
-                "border": "none",
-                "border_width": 1,
-                "border_opacity": 100,
-                "border_radius": 0
-              },
-              "blocks": {}
-            }
-          },
-          "block_order": [
-            "collection_title_zyBdAJ"
-          ]
         }
       },
       "block_order": [
-        "group_mfTd9p"
+        "text_8QTwfG"
       ],
-      "name": "Collection list",
+      "name": "t:names.marquee_section",
       "settings": {
-        "layout_type": "bento",
-        "carousel_on_mobile": true,
-        "columns": 4,
-        "mobile_columns": "2",
-        "mobile_card_size": "60cqw",
-        "columns_gap": 16,
-        "bento_gap": 12,
-        "rows_gap": 16,
-        "max_collections": 4,
-        "icons_style": "arrow",
-        "icons_shape": "none",
-        "section_width": "page-width",
-        "gap": 12,
+        "movement_direction": "normal",
         "color_scheme": "",
-        "padding-block-start": 48,
-        "padding-block-end": 64
+        "padding-block-start": 24,
+        "padding-block-end": 24,
+        "gap_between_elements": 24
+      }
+    },
+    "category_tabs_RMWU8E": {
+      "type": "category_tabs",
+      "blocks": {
+        "tab_nmncKz": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Healthcare & Pharma",
+            "tab_key": "healthcare"
+          }
+        },
+        "tab_9maBgk": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Industrial Products",
+            "tab_key": "industrial"
+          }
+        },
+        "tab_W4B6ci": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "IT & Software Services",
+            "tab_key": "it"
+          }
+        },
+        "card_WfNa3C": {
+          "type": "card",
+          "settings": {
+            "title": "Medicines",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_gfULqL": {
+          "type": "card",
+          "settings": {
+            "title": "Surgicals",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_xX4HiP": {
+          "type": "card",
+          "settings": {
+            "title": "Diagnostics",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_QUbCQT": {
+          "type": "card",
+          "settings": {
+            "title": "Supplements",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_nmncKz",
+        "tab_9maBgk",
+        "tab_W4B6ci",
+        "card_WfNa3C",
+        "card_gfULqL",
+        "card_xX4HiP",
+        "card_QUbCQT"
+      ],
+      "name": "Category tabs",
+      "settings": {
+        "heading": "Our Business Verticals",
+        "subheading": "Multiple industries, one mutual network",
+        "color_scheme": "",
+        "accent_color": "#37181D",
+        "heading_color": "#37181D",
+        "subheading_color": "#37181D",
+        "tab_text_color": "#37181D",
+        "tab_bg_color": "#FFFFFF",
+        "tab_border_color": "#B8A6AA",
+        "card_title_color": "#FFFFFF",
+        "card_footer_bg": "#37181D",
+        "panel_border_color": "#FFFFFF66",
+        "section_background": "#F1F1F1",
+        "cards_per_view_desktop": 3,
+        "cards_per_view_tablet": 2,
+        "cards_per_view_mobile": 1,
+        "card_gap": 10,
+        "corner_radius": 8,
+        "glass_blur": 14,
+        "show_rail_buttons": true,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "feature_product_bLRpkG": {
+      "type": "feature_product",
+      "blocks": {
+        "product_McQMJX": {
+          "type": "product",
+          "settings": {
+            "product": "test",
+            "badge_text": "New"
+          }
+        },
+        "product_LDEQQ6": {
+          "type": "product",
+          "settings": {
+            "product": "test",
+            "badge_text": "New"
+          }
+        },
+        "product_4dkpUL": {
+          "type": "product",
+          "settings": {
+            "product": "test",
+            "badge_text": "New"
+          }
+        },
+        "product_bApnFY": {
+          "type": "product",
+          "settings": {
+            "product": "test",
+            "badge_text": "New"
+          }
+        }
+      },
+      "block_order": [
+        "product_McQMJX",
+        "product_LDEQQ6",
+        "product_4dkpUL",
+        "product_bApnFY"
+      ],
+      "name": "Feature product strip",
+      "settings": {
+        "heading": "Featured Products",
+        "subheading": "Premium products curated by our AI engine, tailored to global market demands and quality standards.",
+        "button_label": "Shop now",
+        "color_scheme": "",
+        "background_color": "#745862",
+        "heading_color": "#FFFFFF",
+        "text_color": "#F4EDEE",
+        "button_bg": "transparent",
+        "button_text": "#FFFFFF",
+        "expanded_ratio": 22,
+        "collapsed_ratio": 10,
+        "card_gap": 8,
+        "card_radius": 6,
+        "padding_top": 60,
+        "padding_bottom": 60
+      }
+    },
+    "category_tabs_6ffLJt": {
+      "type": "category_tabs",
+      "blocks": {
+        "tab_weezFD": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Healthcare & Pharma",
+            "tab_key": "healthcare"
+          }
+        },
+        "tab_tL7fJc": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Industrial Products",
+            "tab_key": "industrial"
+          }
+        },
+        "tab_bMbeWJ": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "IT & Software Services",
+            "tab_key": "it"
+          }
+        },
+        "card_yR9VJa": {
+          "type": "card",
+          "settings": {
+            "title": "Medicines",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_WLLfnp": {
+          "type": "card",
+          "settings": {
+            "title": "Surgicals",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_7KxF7n": {
+          "type": "card",
+          "settings": {
+            "title": "Diagnostics",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
+        "card_wgPEXF": {
+          "type": "card",
+          "settings": {
+            "title": "Supplements",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "tab_weezFD",
+        "tab_tL7fJc",
+        "tab_bMbeWJ",
+        "card_yR9VJa",
+        "card_WLLfnp",
+        "card_7KxF7n",
+        "card_wgPEXF"
+      ],
+      "name": "Category tabs",
+      "settings": {
+        "heading": "Our Services",
+        "subheading": "Multiple industries, one mutual network",
+        "color_scheme": "",
+        "accent_color": "#37181D",
+        "heading_color": "#37181D",
+        "subheading_color": "#37181D",
+        "tab_text_color": "#37181D",
+        "tab_bg_color": "#FFFFFF",
+        "tab_border_color": "#B8A6AA",
+        "card_title_color": "#FFFFFF",
+        "card_footer_bg": "#37181D",
+        "panel_border_color": "#FFFFFF66",
+        "section_background": "#F1F1F1",
+        "cards_per_view_desktop": 3,
+        "cards_per_view_tablet": 2,
+        "cards_per_view_mobile": 1,
+        "card_gap": 10,
+        "corner_radius": 8,
+        "glass_blur": 14,
+        "show_rail_buttons": true,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "whyus_XEjggw": {
+      "type": "whyus",
+      "blocks": {
+        "item_j4RLBw": {
+          "type": "item",
+          "settings": {
+            "icon": "expertise",
+            "title": "Multi-domain Expertise",
+            "text": "Diverse business verticals for all your needs."
+          }
+        },
+        "item_aVPc7X": {
+          "type": "item",
+          "settings": {
+            "icon": "global",
+            "title": "Global Sourcing Network",
+            "text": "Strong network of manufacturers & suppliers worldwide."
+          }
+        },
+        "item_EhR4zz": {
+          "type": "item",
+          "settings": {
+            "icon": "export",
+            "title": "Export Capabilities",
+            "text": "Seamless export support & global logistics."
+          }
+        },
+        "item_p8kGkH": {
+          "type": "item",
+          "settings": {
+            "icon": "quality",
+            "title": "Quality & Compliance",
+            "text": "ISO standards, certified processes & quality assurance."
+          }
+        }
+      },
+      "block_order": [
+        "item_j4RLBw",
+        "item_aVPc7X",
+        "item_EhR4zz",
+        "item_p8kGkH"
+      ],
+      "name": "Why us",
+      "settings": {
+        "heading": "Why Choose Bluekites",
+        "subheading": "Multiple Industries, One mutual Network",
+        "color_scheme": "",
+        "background_color": "#FCFBFA",
+        "heading_color": "#3A1E25",
+        "subheading_color": "#4A2A30",
+        "card_background": "#FFFFFF",
+        "card_border_color": "#DCCFD0",
+        "icon_color": "#4A242C",
+        "card_title_color": "#3A1E25",
+        "card_text_color": "#4A2A30",
+        "card_gap": 10,
+        "card_radius": 0,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "ai_smart_AMQE9r": {
+      "type": "ai_smart",
+      "blocks": {
+        "chip_8rJ8DU": {
+          "type": "chip",
+          "settings": {
+            "label": "Bluekites Recommended"
+          }
+        },
+        "chip_LMV9Ya": {
+          "type": "chip",
+          "settings": {
+            "label": "You may Like"
+          }
+        },
+        "chip_NNAemC": {
+          "type": "chip",
+          "settings": {
+            "label": "AI Picked for you"
+          }
+        },
+        "update_EaCLdP": {
+          "type": "update",
+          "settings": {
+            "title": "Free Worldwide Shipping",
+            "text": "On orders above $500 across selected regions."
+          }
+        },
+        "update_4rWmxT": {
+          "type": "update",
+          "settings": {
+            "title": "Trending Now",
+            "text": "Smart Home Devices at exclusive global prices."
+          }
+        },
+        "update_jzRkGG": {
+          "type": "update",
+          "settings": {
+            "title": "New Launch",
+            "text": "Luxury Watch Collection with premium craftsmanship"
+          }
+        },
+        "update_DVX6QC": {
+          "type": "update",
+          "settings": {
+            "title": "Limited-Time Offer",
+            "text": "Premium Health Monitors now available at 30% OFF."
+          }
+        },
+        "update_HWwrEV": {
+          "type": "update",
+          "settings": {
+            "title": "Just Arrived",
+            "text": "Designer Fashion Collection 2026 now live."
+          }
+        }
+      },
+      "block_order": [
+        "chip_8rJ8DU",
+        "chip_LMV9Ya",
+        "chip_NNAemC",
+        "update_EaCLdP",
+        "update_4rWmxT",
+        "update_jzRkGG",
+        "update_DVX6QC",
+        "update_HWwrEV"
+      ],
+      "name": "AI smart section",
+      "settings": {
+        "heading": "AI Smart Recommendations",
+        "subheading": "Personalized for you based on your preferences",
+        "main_product": "test",
+        "panel_heading": "Live Updates",
+        "color_scheme": "",
+        "background_color": "#FCFBFA",
+        "heading_color": "#3A1E25",
+        "text_color": "#4A2A30",
+        "pill_background": "#FFFFFF",
+        "pill_text_color": "#5A3B41",
+        "pill_border_color": "#B99EA3",
+        "pill_active_background": "#FFFFFF",
+        "pill_active_text_color": "#3A1E25",
+        "panel_background": "#F8F5F2",
+        "panel_heading_color": "#4A2A30",
+        "update_card_background": "#FFFFFF",
+        "update_card_text_color": "#4A2A30",
+        "update_card_shadow_color": "#D1C2B0",
+        "pill_radius": 20,
+        "card_radius": 18,
+        "content_gap": 18,
+        "padding_top": 56,
+        "padding_bottom": 56
       }
     }
   },
   "order": [
     "hero_iLBwPd",
-    "product_list_EDUBdR",
-    "media_with_content_LfPdEJ",
-    "collection_list_xpBxCm"
+    "marquee_pNWDpm",
+    "category_tabs_RMWU8E",
+    "feature_product_bLRpkG",
+    "category_tabs_6ffLJt",
+    "whyus_XEjggw",
+    "ai_smart_AMQE9r"
   ]
 }

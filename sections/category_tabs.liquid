@@ -1,0 +1,769 @@
+{% liquid
+  assign tabs_count = 0
+
+  for block in section.blocks
+    if block.type == 'tab'
+      assign tabs_count = tabs_count | plus: 1
+    endif
+  endfor
+
+  assign cards_per_view_desktop = section.settings.cards_per_view_desktop | plus: 0
+  if cards_per_view_desktop < 1
+    assign cards_per_view_desktop = 3
+  endif
+
+  assign cards_per_view_tablet = section.settings.cards_per_view_tablet | plus: 0
+  if cards_per_view_tablet < 1
+    assign cards_per_view_tablet = 2
+  endif
+
+  assign cards_per_view_mobile = section.settings.cards_per_view_mobile | plus: 0
+  if cards_per_view_mobile < 1
+    assign cards_per_view_mobile = 1
+  endif
+%}
+
+<section
+  id="CategoryTabs-{{ section.id }}"
+  class="category-tabs-section color-{{ section.settings.color_scheme }}"
+  style="
+    --ct-accent: {{ section.settings.accent_color }};
+    --ct-section-bg: {{ section.settings.section_background }};
+    --ct-heading-color: {{ section.settings.heading_color }};
+    --ct-subheading-color: {{ section.settings.subheading_color }};
+    --ct-tab-text-color: {{ section.settings.tab_text_color }};
+    --ct-tab-bg: {{ section.settings.tab_bg_color }};
+    --ct-tab-border: {{ section.settings.tab_border_color }};
+    --ct-card-title-color: {{ section.settings.card_title_color }};
+    --ct-card-footer-bg: {{ section.settings.card_footer_bg }};
+    --ct-panel-border: {{ section.settings.panel_border_color }};
+    --ct-blur: {{ section.settings.glass_blur }}px;
+    --ct-radius: {{ section.settings.corner_radius }}px;
+    --ct-gap: {{ section.settings.card_gap }}px;
+    --ct-cards-per-view-desktop: {{ cards_per_view_desktop }};
+    --ct-cards-per-view-tablet: {{ cards_per_view_tablet }};
+    --ct-cards-per-view-mobile: {{ cards_per_view_mobile }};
+    --ct-padding-top: {{ section.settings.padding_top }}px;
+    --ct-padding-bottom: {{ section.settings.padding_bottom }}px;
+  "
+>
+  <div class="page-width-normal category-tabs__inner">
+    <div class="category-tabs__header">
+      {% if section.settings.heading != blank %}
+        <h2 class="category-tabs__heading">{{ section.settings.heading }}</h2>
+      {% endif %}
+      {% if section.settings.subheading != blank %}
+        <p class="category-tabs__subheading">{{ section.settings.subheading }}</p>
+      {% endif %}
+    </div>
+
+    {% if tabs_count > 0 %}
+      <div class="category-tabs__tabs-wrap">
+        <div class="category-tabs__tabs" role="tablist" aria-label="Category tabs">
+          {% assign first_tab_rendered = false %}
+          {% for block in section.blocks %}
+            {% if block.type == 'tab' %}
+              {% assign normalized_tab_key = block.settings.tab_key | strip | downcase %}
+              <button
+                type="button"
+                class="category-tabs__tab{% unless first_tab_rendered %} is-active{% endunless %}"
+                data-tab-trigger
+                data-tab-key="{{ normalized_tab_key }}"
+                role="tab"
+                aria-selected="{% unless first_tab_rendered %}true{% else %}false{% endunless %}"
+                {{ block.shopify_attributes }}
+              >
+                {{ block.settings.tab_label | default: block.settings.tab_key }}
+              </button>
+              {% assign first_tab_rendered = true %}
+            {% endif %}
+          {% endfor %}
+        </div>
+      </div>
+
+      <div class="category-tabs__panes">
+        {% assign first_pane_rendered = false %}
+        {% for tab_block in section.blocks %}
+          {% if tab_block.type == 'tab' %}
+            {% assign pane_tab_key = tab_block.settings.tab_key | strip | downcase %}
+            {% assign pane_card_count = 0 %}
+            <div
+              class="category-tabs__pane{% unless first_pane_rendered %} is-active{% endunless %}"
+              data-tab-pane
+              data-tab-key="{{ pane_tab_key }}"
+              role="tabpanel"
+              {% if first_pane_rendered %}hidden{% endif %}
+            >
+              <div class="category-tabs__rail-controls" {% if section.settings.show_rail_buttons == false %}hidden{% endif %}>
+                <button type="button" class="category-tabs__rail-btn" data-rail-prev aria-label="Scroll previous">
+                  <span>&larr;</span>
+                </button>
+                <button type="button" class="category-tabs__rail-btn" data-rail-next aria-label="Scroll next">
+                  <span>&rarr;</span>
+                </button>
+              </div>
+
+              <div class="category-tabs__rail" data-cards-rail>
+                {% for card_block in section.blocks %}
+                  {% if card_block.type == 'card' %}
+                    {% assign card_tab_key = card_block.settings.tab_key | strip | downcase %}
+                    {% if card_tab_key == pane_tab_key %}
+                      {% assign pane_card_count = pane_card_count | plus: 1 %}
+                      <article class="category-tabs__card" {{ card_block.shopify_attributes }}>
+                        <a href="{{ card_block.settings.link | default: '#' }}" class="category-tabs__card-link">
+                          <div class="category-tabs__media-wrap">
+                            {% if card_block.settings.image != blank %}
+                              {{
+                                card_block.settings.image
+                                | image_url: width: 1400
+                                | image_tag:
+                                  widths: '360, 540, 720, 960, 1200, 1400',
+                                  sizes: '(max-width: 749px) 90vw, (max-width: 1199px) 50vw, 33vw',
+                                  loading: 'lazy',
+                                  alt: card_block.settings.title,
+                                  class: 'category-tabs__card-image'
+                              }}
+                            {% else %}
+                              {{ 'image' | placeholder_svg_tag: 'category-tabs__card-image category-tabs__card-image--placeholder' }}
+                            {% endif %}
+                          </div>
+                          <div class="category-tabs__card-footer">
+                            <p class="category-tabs__card-title">{{ card_block.settings.title }}</p>
+                            <span class="category-tabs__card-arrow" aria-hidden="true">&rarr;</span>
+                          </div>
+                        </a>
+                      </article>
+                    {% endif %}
+                  {% endif %}
+                {% endfor %}
+              </div>
+
+              {% if pane_card_count == 0 %}
+                <div class="category-tabs__empty">
+                  <p>Add card blocks and set the same tab key as this tab to show items here.</p>
+                </div>
+              {% endif %}
+            </div>
+            {% assign first_pane_rendered = true %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="category-tabs__empty">
+        <p>Add at least one Tab block and Card blocks to build this section.</p>
+      </div>
+    {% endif %}
+  </div>
+</section>
+
+<script>
+  (() => {
+    const sectionEl = document.getElementById('CategoryTabs-{{ section.id }}');
+    if (!sectionEl) return;
+
+    const tabsTrack = sectionEl.querySelector('.category-tabs__tabs');
+    const tabButtons = [...sectionEl.querySelectorAll('[data-tab-trigger]')];
+    const tabPanes = [...sectionEl.querySelectorAll('[data-tab-pane]')];
+
+    const syncTabsOverflowState = () => {
+      if (!tabsTrack) return;
+      const isOverflowing = tabsTrack.scrollWidth > tabsTrack.clientWidth + 1;
+      tabsTrack.classList.toggle('is-overflowing', isOverflowing);
+      if (isOverflowing) {
+        tabsTrack.scrollLeft = 0;
+      }
+    };
+
+    const activateTab = (tabKey) => {
+      tabButtons.forEach((button) => {
+        const isActive = button.dataset.tabKey === tabKey;
+        button.classList.toggle('is-active', isActive);
+        button.setAttribute('aria-selected', isActive ? 'true' : 'false');
+      });
+
+      tabPanes.forEach((pane) => {
+        const isActive = pane.dataset.tabKey === tabKey;
+        pane.classList.toggle('is-active', isActive);
+        pane.hidden = !isActive;
+      });
+    };
+
+    tabButtons.forEach((button) => {
+      button.addEventListener('click', () => activateTab(button.dataset.tabKey));
+    });
+
+    const initialActiveTab = tabButtons.find((button) => button.classList.contains('is-active'));
+    if (initialActiveTab) {
+      activateTab(initialActiveTab.dataset.tabKey);
+    }
+
+    syncTabsOverflowState();
+    window.addEventListener('resize', syncTabsOverflowState);
+
+    tabPanes.forEach((pane) => {
+      const rail = pane.querySelector('[data-cards-rail]');
+      const prev = pane.querySelector('[data-rail-prev]');
+      const next = pane.querySelector('[data-rail-next]');
+      if (!rail || !prev || !next) return;
+
+      const getStep = () => Math.max(280, rail.clientWidth * 0.9);
+
+      prev.addEventListener('click', () => {
+        rail.scrollBy({ left: -getStep(), behavior: 'smooth' });
+      });
+
+      next.addEventListener('click', () => {
+        rail.scrollBy({ left: getStep(), behavior: 'smooth' });
+      });
+    });
+  })();
+</script>
+
+{% stylesheet %}
+  .category-tabs-section {
+    position: relative;
+    padding-top: var(--ct-padding-top);
+    padding-bottom: var(--ct-padding-bottom);
+    background:
+      radial-gradient(circle at 8% 12%, rgb(255 255 255 / 0.6), transparent 24%),
+      radial-gradient(circle at 82% 88%, rgb(55 24 29 / 0.14), transparent 25%),
+      var(--ct-section-bg);
+  }
+
+  .category-tabs__inner {
+    --ct-page-margin: 16px;
+    width: min(var(--narrow-page-width), calc(100% - (var(--ct-page-margin) * 2)));
+    margin-inline: auto;
+  }
+
+  @media screen and (min-width: 750px) {
+    .category-tabs__inner {
+      --ct-page-margin: 40px;
+    }
+  }
+
+  .category-tabs__header {
+    display: block;
+    margin-bottom: 1.75rem;
+    margin-inline: auto;
+    border-radius: var(--ct-radius);
+    padding: 0;
+    max-width: min(100%, 52rem);
+    text-align: center;
+  }
+
+  .category-tabs__heading {
+    margin: 0;
+    color: var(--ct-heading-color);
+    font-size: clamp(2rem, 3.5vw, 3.5rem);
+    line-height: 1.08;
+    text-wrap: balance;
+  }
+
+  .category-tabs__subheading {
+    margin: 0.45rem 0 0;
+    color: var(--ct-subheading-color);
+    font-size: clamp(1rem, 1.5vw, 1.5rem);
+  }
+
+  .category-tabs__tabs-wrap {
+    border-radius: calc(var(--ct-radius) - 2px);
+    padding: 0;
+    margin-bottom: 1.15rem;
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .category-tabs__tabs {
+    display: flex;
+    flex-wrap: nowrap;
+    gap: 0.6rem;
+    justify-content: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+    max-width: 100%;
+    width: 100%;
+    padding-inline: 0.1rem;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x proximity;
+  }
+
+  .category-tabs__tabs.is-overflowing {
+    justify-content: flex-start;
+  }
+
+  .category-tabs__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  .category-tabs__tab {
+    flex: 0 0 auto;
+    min-width: 9.8rem;
+    border-radius: 0.4rem;
+    border: 1px solid var(--ct-tab-border);
+    background: var(--ct-tab-bg);
+    color: var(--ct-tab-text-color);
+    font: inherit;
+    font-size: 1rem;
+    line-height: 1.2;
+    padding: 0.75rem 1rem;
+    cursor: pointer;
+    transition: background-color 180ms ease, border-color 180ms ease, color 180ms ease;
+    scroll-snap-align: start;
+  }
+
+  .category-tabs__tab.is-active {
+    background: var(--ct-accent);
+    border-color: var(--ct-accent);
+    color: rgb(255 255 255);
+  }
+
+  .category-tabs__panes {
+    position: relative;
+  }
+
+  .category-tabs__pane {
+    display: block;
+  }
+
+  .category-tabs__pane[hidden] {
+    display: none;
+  }
+
+  .category-tabs__rail-controls {
+    display: flex;
+    justify-content: flex-end;
+    gap: 0.5rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .category-tabs__rail-btn {
+    width: 2.4rem;
+    height: 2.4rem;
+    border-radius: 999px;
+    border: 1px solid var(--ct-panel-border);
+    background: rgb(255 255 255 / 0.24);
+    color: var(--ct-accent);
+    font-size: 1.1rem;
+    cursor: pointer;
+  }
+
+  .category-tabs__rail {
+    display: grid;
+    grid-auto-flow: column;
+    gap: var(--ct-gap);
+    grid-auto-columns: calc((100% - (var(--ct-gap) * (var(--ct-cards-per-view-desktop) - 1))) / var(--ct-cards-per-view-desktop));
+    overflow-x: auto;
+    padding-bottom: 0.9rem;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: var(--ct-accent) rgb(55 24 29 / 0.15);
+  }
+
+  @media screen and (max-width: 1199px) {
+    .category-tabs__rail {
+      grid-auto-columns: calc((100% - (var(--ct-gap) * (var(--ct-cards-per-view-tablet) - 1))) / var(--ct-cards-per-view-tablet));
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .category-tabs__tabs-wrap {
+      justify-content: flex-start;
+    }
+
+    .category-tabs__tabs {
+      justify-content: flex-start;
+      gap: 0.5rem;
+      padding-inline: 0.25rem;
+    }
+
+    .category-tabs__tab {
+      min-width: auto;
+      white-space: nowrap;
+      font-size: 0.95rem;
+      padding: 0.68rem 0.9rem;
+    }
+
+    .category-tabs__rail {
+      grid-auto-columns: calc((100% - (var(--ct-gap) * (var(--ct-cards-per-view-mobile) - 1))) / var(--ct-cards-per-view-mobile));
+    }
+  }
+
+  .category-tabs__rail::-webkit-scrollbar {
+    height: 0.5rem;
+  }
+
+  .category-tabs__rail::-webkit-scrollbar-track {
+    background: rgb(55 24 29 / 0.12);
+    border-radius: 999px;
+  }
+
+  .category-tabs__rail::-webkit-scrollbar-thumb {
+    background: var(--ct-accent);
+    border-radius: 999px;
+  }
+
+  .category-tabs__card {
+    min-width: 0;
+    scroll-snap-align: start;
+  }
+
+  .category-tabs__card-link {
+    display: block;
+    text-decoration: none;
+    color: inherit;
+    overflow: hidden;
+    border-radius: var(--ct-radius);
+    border: 1px solid var(--ct-panel-border);
+    background: linear-gradient(145deg, rgb(255 255 255 / 0.34), rgb(255 255 255 / 0.12));
+    box-shadow:
+      0 12px 28px rgb(20 9 12 / 0.12),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
+    backdrop-filter: blur(var(--ct-blur));
+    -webkit-backdrop-filter: blur(var(--ct-blur));
+  }
+
+  .category-tabs__media-wrap {
+    position: relative;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+  }
+
+  .category-tabs__card-image {
+    width: 100%;
+    height: 100%;
+    display: block;
+    object-fit: cover;
+  }
+
+  .category-tabs__card-image--placeholder {
+    color: rgb(55 24 29 / 0.22);
+    background: linear-gradient(135deg, rgb(55 24 29 / 0.08), rgb(55 24 29 / 0.24));
+  }
+
+  .category-tabs__card-footer {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 0.85rem 1.1rem;
+    border-top: 1px solid var(--ct-panel-border);
+    border-radius: 0;
+    background: linear-gradient(145deg, color-mix(in srgb, var(--ct-card-footer-bg) 78%, white), color-mix(in srgb, var(--ct-card-footer-bg) 48%, white));
+    backdrop-filter: blur(calc(var(--ct-blur) * 0.9));
+    -webkit-backdrop-filter: blur(calc(var(--ct-blur) * 0.9));
+  }
+
+  .category-tabs__card-title {
+    margin: 0;
+    color: var(--ct-card-title-color);
+    font-size: clamp(1.2rem, 2vw, 2rem);
+    line-height: 1.15;
+  }
+
+  .category-tabs__card-arrow {
+    color: var(--ct-accent);
+    font-size: 1.85rem;
+    line-height: 1;
+  }
+
+  .category-tabs__empty {
+    border-radius: var(--ct-radius);
+    padding: 1rem 1.15rem;
+    border: 1px dashed rgb(55 24 29 / 0.25);
+    background: rgb(255 255 255 / 0.42);
+  }
+
+  .category-tabs__empty p {
+    margin: 0;
+  }
+{% endstylesheet %}
+
+{% schema %}
+{
+  "name": "Category tabs",
+  "tag": "section",
+  "class": "section-wrapper",
+  "max_blocks": 48,
+  "settings": [
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Our Business Verticals"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "Multiple industries, one mutual network"
+    },
+    {
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "Color scheme",
+      "default": "scheme-1"
+    },
+    {
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent and active tab color",
+      "default": "#37181D"
+    },
+    {
+      "type": "color",
+      "id": "heading_color",
+      "label": "Heading color",
+      "default": "#37181D"
+    },
+    {
+      "type": "color",
+      "id": "subheading_color",
+      "label": "Subheading color",
+      "default": "#37181D"
+    },
+    {
+      "type": "color",
+      "id": "tab_text_color",
+      "label": "Tab text color",
+      "default": "#37181D"
+    },
+    {
+      "type": "color",
+      "id": "tab_bg_color",
+      "label": "Tab background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "tab_border_color",
+      "label": "Tab border",
+      "default": "#B8A6AA"
+    },
+    {
+      "type": "color",
+      "id": "card_title_color",
+      "label": "Card title color",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "card_footer_bg",
+      "label": "Card footer base color",
+      "default": "#37181D"
+    },
+    {
+      "type": "color",
+      "id": "panel_border_color",
+      "label": "Glass panel border",
+      "default": "#FFFFFF66"
+    },
+    {
+      "type": "color",
+      "id": "section_background",
+      "label": "Section background",
+      "default": "#F1F1F1"
+    },
+    {
+      "type": "header",
+      "content": "Layout"
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_desktop",
+      "label": "Cards per view (desktop)",
+      "min": 1,
+      "max": 4,
+      "step": 1,
+      "default": 3
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_tablet",
+      "label": "Cards per view (tablet)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
+    },
+    {
+      "type": "range",
+      "id": "cards_per_view_mobile",
+      "label": "Cards per view (mobile)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 1
+    },
+    {
+      "type": "range",
+      "id": "card_gap",
+      "label": "Card gap",
+      "min": 8,
+      "max": 36,
+      "step": 2,
+      "unit": "px",
+      "default": 10
+    },
+    {
+      "type": "range",
+      "id": "corner_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 1,
+      "unit": "px",
+      "default": 8
+    },
+    {
+      "type": "range",
+      "id": "glass_blur",
+      "label": "Glass blur",
+      "min": 0,
+      "max": 28,
+      "step": 1,
+      "unit": "px",
+      "default": 14
+    },
+    {
+      "type": "checkbox",
+      "id": "show_rail_buttons",
+      "label": "Show rail arrow buttons",
+      "default": true
+    },
+    {
+      "type": "range",
+      "id": "padding_top",
+      "label": "Top padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    },
+    {
+      "type": "range",
+      "id": "padding_bottom",
+      "label": "Bottom padding",
+      "min": 0,
+      "max": 120,
+      "step": 4,
+      "unit": "px",
+      "default": 56
+    }
+  ],
+  "blocks": [
+    {
+      "type": "tab",
+      "name": "Tab",
+      "settings": [
+        {
+          "type": "text",
+          "id": "tab_label",
+          "label": "Tab label",
+          "default": "Healthcare & Pharma"
+        },
+        {
+          "type": "text",
+          "id": "tab_key",
+          "label": "Tab key",
+          "default": "healthcare"
+        }
+      ]
+    },
+    {
+      "type": "card",
+      "name": "Category card",
+      "settings": [
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Card title",
+          "default": "Medicines"
+        },
+        {
+          "type": "text",
+          "id": "tab_key",
+          "label": "Tab key",
+          "info": "Must match a Tab key exactly.",
+          "default": "healthcare"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Card image"
+        },
+        {
+          "type": "url",
+          "id": "link",
+          "label": "Card link"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category tabs",
+      "blocks": [
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Healthcare & Pharma",
+            "tab_key": "healthcare"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "Industrial Products",
+            "tab_key": "industrial"
+          }
+        },
+        {
+          "type": "tab",
+          "settings": {
+            "tab_label": "IT & Software Services",
+            "tab_key": "it"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Medicines",
+            "tab_key": "healthcare"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Surgicals",
+            "tab_key": "healthcare"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Diagnostics",
+            "tab_key": "healthcare"
+          }
+        },
+        {
+          "type": "card",
+          "settings": {
+            "title": "Supplements",
+            "tab_key": "healthcare"
+          }
+        }
+      ]
+    }
+  ]
+}
+{% endschema %}

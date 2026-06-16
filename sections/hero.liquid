@@ -63,6 +63,13 @@
         {% liquid
           assign slide_image = block.settings.background_image
           assign slide_mobile_image = block.settings.background_image_mobile
+          assign has_slide_content = false
+          if block.settings.eyebrow != blank or block.settings.heading != blank or block.settings.description != blank
+            assign has_slide_content = true
+          endif
+          if block.settings.button_label != blank and block.settings.button_link != blank
+            assign has_slide_content = true
+          endif
           assign post_url = block.settings.social_url | strip
           assign social_platform = block.settings.social_platform
           assign embed_url = ''
@@ -134,26 +141,28 @@
             <div class="hero-slide__overlay"></div>
           </div>
 
-          <div class="hero-slide__content-wrap page-width">
-            <div class="hero-slide__content glass-panel" data-testid="hero-content-panel">
-              {% if block.settings.eyebrow != blank %}
-                <p class="hero-slide__eyebrow">{{ block.settings.eyebrow }}</p>
-              {% endif %}
+          <div class="hero-slide__content-wrap page-width{% if has_slide_content == false and block.settings.show_social_card %} hero-slide__content-wrap--social-only{% endif %}">
+            {% if has_slide_content %}
+              <div class="hero-slide__content glass-panel" data-testid="hero-content-panel">
+                {% if block.settings.eyebrow != blank %}
+                  <p class="hero-slide__eyebrow">{{ block.settings.eyebrow }}</p>
+                {% endif %}
 
-              {% if block.settings.heading != blank %}
-                <h2 class="hero-slide__heading">{{ block.settings.heading }}</h2>
-              {% endif %}
+                {% if block.settings.heading != blank %}
+                  <h2 class="hero-slide__heading">{{ block.settings.heading }}</h2>
+                {% endif %}
 
-              {% if block.settings.description != blank %}
-                <div class="hero-slide__description rte">{{ block.settings.description }}</div>
-              {% endif %}
+                {% if block.settings.description != blank %}
+                  <div class="hero-slide__description rte">{{ block.settings.description }}</div>
+                {% endif %}
 
-              {% if block.settings.button_label != blank and block.settings.button_link != blank %}
-                <a href="{{ block.settings.button_link }}" class="hero-slide__button button button--primary">
-                  {{ block.settings.button_label }}
-                </a>
-              {% endif %}
-            </div>
+                {% if block.settings.button_label != blank and block.settings.button_link != blank %}
+                  <a href="{{ block.settings.button_link }}" class="hero-slide__button button button--primary">
+                    {{ block.settings.button_label }}
+                  </a>
+                {% endif %}
+              </div>
+            {% endif %}
 
             {% if block.settings.show_social_card %}
               <aside class="hero-slide__social glass-panel" data-testid="hero-social-card">
@@ -404,6 +413,13 @@
       gap: 2rem;
       padding-top: 3rem;
       padding-bottom: 3rem;
+    }
+  }
+
+  @media screen and (min-width: 750px) {
+    .hero-slide__content-wrap--social-only {
+      grid-template-columns: 1fr;
+      justify-items: end;
     }
   }
 

@@ -22,7 +22,7 @@
             "font": "heading",
             "unit": "pixel",
             "percent_width": 100,
-            "pixel_height": 48,
+            "pixel_height": 128,
             "custom_mobile_size": false,
             "unit_mobile": "percent",
             "percent_width_mobile": 100,

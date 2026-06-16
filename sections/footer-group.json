@@ -55,6 +55,32 @@
           },
           "blocks": {}
         },
+        "text_h3X8Dw": {
+          "type": "text",
+          "name": "t:names.text",
+          "settings": {
+            "text": "<h3>Contact Us</h3><p><strong>Address : </strong>123 Test Test01 20938<br/><strong>Call us at : </strong>0987654321<br/><strong>Email:</strong> contact@bluekitesglobal.com</p>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "social_links_dBFczQ": {
           "type": "social-links",
           "name": "t:names.social_media_links",
@@ -79,6 +105,7 @@
       "block_order": [
         "logo_UV3WAF",
         "menu_d8a6QB",
+        "text_h3X8Dw",
         "social_links_dBFczQ"
       ],
       "name": "t:names.footer",

@@ -55,29 +55,23 @@
           },
           "blocks": {}
         },
-        "email_signup_4EBi7e": {
-          "type": "email-signup",
-          "name": "t:names.email_signup",
+        "social_links_dBFczQ": {
+          "type": "social-links",
+          "name": "t:names.social_media_links",
           "settings": {
-            "width": "fill",
-            "custom_width": 100,
-            "inherit_color_scheme": false,
-            "color_scheme": "scheme-3",
-            "heading": "",
-            "heading_preset": "h3",
-            "border_style": "all",
-            "border_width": 1,
-            "border_radius": 100,
-            "input_type_preset": "paragraph",
-            "style_class": "button",
-            "display_type": "text",
-            "label": "Sign up",
-            "integrated_button": false,
-            "button_type_preset": "paragraph",
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
+            "facebook_url": "https://facebook.com",
+            "instagram_url": "https://instagram.com",
+            "youtube_url": "https://youtube.com",
+            "tiktok_url": "",
+            "twitter_url": "https://x.com",
+            "threads_url": "",
+            "linkedin_url": "https://linkedin.com",
+            "bluesky_url": "",
+            "snapchat_url": "",
+            "pinterest_url": "",
+            "tumblr_url": "",
+            "vimeo_url": "",
+            "custom_url": ""
           },
           "blocks": {}
         }
@@ -85,7 +79,7 @@
       "block_order": [
         "logo_UV3WAF",
         "menu_d8a6QB",
-        "email_signup_4EBi7e"
+        "social_links_dBFczQ"
       ],
       "name": "t:names.footer",
       "settings": {

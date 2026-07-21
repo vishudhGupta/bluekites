@@ -338,12 +338,116 @@
         "padding_top": 44,
         "padding_bottom": 44
       }
+    },
+    "visa_UmGbtx": {
+      "type": "visa",
+      "blocks": {
+        "country_card_tRAkwJ": {
+          "type": "country_card",
+          "settings": {
+            "code": "US",
+            "country": "USA",
+            "visa_type": "Tourist Visa",
+            "processing_time": "15-20 days",
+            "link": "https://bluekites.online/visa"
+          }
+        },
+        "country_card_MktTEA": {
+          "type": "country_card",
+          "settings": {
+            "code": "GB",
+            "country": "UK",
+            "visa_type": "Tourist Visa",
+            "processing_time": "10-15 days",
+            "link": "https://bluekites.online/visa"
+          }
+        },
+        "country_card_DgbdMA": {
+          "type": "country_card",
+          "settings": {
+            "code": "AU",
+            "country": "Australia",
+            "visa_type": "Tourist Visa",
+            "processing_time": "20-30 days",
+            "link": "https://bluekites.online/visa"
+          }
+        },
+        "country_card_y7qGXf": {
+          "type": "country_card",
+          "settings": {
+            "code": "CA",
+            "country": "Canada",
+            "visa_type": "Tourist Visa",
+            "processing_time": "15-25 days",
+            "link": "https://bluekites.online/visa"
+          }
+        },
+        "country_card_Y7Uin9": {
+          "type": "country_card",
+          "settings": {
+            "code": "SG",
+            "country": "Singapore",
+            "visa_type": "Tourist Visa",
+            "processing_time": "3-5 days",
+            "link": "https://bluekites.online/visa"
+          }
+        },
+        "country_card_3VNJJn": {
+          "type": "country_card",
+          "settings": {
+            "code": "AE",
+            "country": "UAE",
+            "visa_type": "Tourist Visa",
+            "processing_time": "2-4 days",
+            "link": "https://bluekites.online/visa"
+          }
+        }
+      },
+      "block_order": [
+        "country_card_tRAkwJ",
+        "country_card_MktTEA",
+        "country_card_DgbdMA",
+        "country_card_y7qGXf",
+        "country_card_Y7Uin9",
+        "country_card_3VNJJn"
+      ],
+      "name": "Visa assistance",
+      "settings": {
+        "kicker": "Visa services",
+        "heading_main": "Visa",
+        "heading_accent": "Assistance",
+        "description": "End-to-end documentation, expert guidance, and real-time status tracking for 80+ countries. We simplify visa applications so you can focus on the journey.",
+        "top_link_label": "All countries",
+        "top_link_url": "https://bluekites.online/visa",
+        "cta_label": "Apply for Visa on BlueKites",
+        "cta_link": "",
+        "color_scheme": "",
+        "background_color": "#FBFAF7",
+        "kicker_color": "#C39A43",
+        "heading_color": "#1D2340",
+        "heading_accent_color": "#3A1E25",
+        "description_color": "#525C72",
+        "top_link_color": "#C39A43",
+        "card_background": "#FFFFFF",
+        "card_border": "#ECE8E1",
+        "card_title_color": "#162139",
+        "card_text_color": "#5A647A",
+        "chip_background": "#F0ECDD",
+        "chip_text_color": "#B9923E",
+        "cta_background": "#6D2742",
+        "cta_text_color": "#FFFFFF",
+        "card_gap": 12,
+        "card_radius": 14,
+        "padding_top": 48,
+        "padding_bottom": 56
+      }
     }
   },
   "order": [
     "main",
     "img_section_travel_d4MH6P",
     "oneplateform_q4Jd4C",
-    "popular_destination_YwzyAF"
+    "popular_destination_YwzyAF",
+    "visa_UmGbtx"
   ]
 }

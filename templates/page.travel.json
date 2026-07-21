@@ -48,6 +48,7 @@
         "heading",
         "page-content"
       ],
+      "disabled": true,
       "settings": {
         "content_direction": "column",
         "gap": 32,
@@ -55,9 +56,42 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "img_section_travel_d4MH6P": {
+      "type": "img_section_travel",
+      "blocks": {
+        "button_R73ihg": {
+          "type": "button",
+          "settings": {
+            "label": "Start Planning",
+            "link": "https://bluekites.online/",
+            "style": "solid"
+          }
+        }
+      },
+      "block_order": [
+        "button_R73ihg"
+      ],
+      "name": "Travel hero image",
+      "settings": {
+        "desktop_image": "shopify://shop_images/photo-1758717152007-6a2eb7299409.avif",
+        "badge_text": "India's premium travel ecosystem",
+        "heading_primary": "Travel Beyond",
+        "heading_accent": "Destinations.",
+        "description": "<p>Experience journeys designed around you, crafted with precision and delivered with grace.</p>",
+        "section_height_desktop": 86,
+        "section_height_mobile": 72,
+        "overlay_opacity": 48,
+        "content_max_width": 940,
+        "accent_color": "#D8B45C",
+        "badge_background": "rgba(95, 150, 170, 0.35)",
+        "badge_text_color": "#D7E9F0",
+        "color_scheme": ""
+      }
     }
   },
   "order": [
-    "main"
+    "main",
+    "img_section_travel_d4MH6P"
   ]
 }

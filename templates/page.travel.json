@@ -88,10 +88,254 @@
         "badge_text_color": "#D7E9F0",
         "color_scheme": ""
       }
+    },
+    "oneplateform_q4Jd4C": {
+      "type": "oneplateform",
+      "blocks": {
+        "service_card_VXYtT3": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "✈",
+            "title": "Flights",
+            "description": "Domestic and international flights with flexible date options and multi-city routing.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        },
+        "service_card_VhXK6g": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "🏨",
+            "title": "Hotels",
+            "description": "Boutique guesthouses to ultra-luxury resorts, handpicked and verified.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        },
+        "service_card_FEtXbn": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "🚌",
+            "title": "Bus",
+            "description": "700+ operators, 10,000+ routes across India with live seat selection.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        },
+        "service_card_MpJkfX": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "🚕",
+            "title": "Cab",
+            "description": "Airport transfers, outstation journeys, and hourly city rentals in premium vehicles.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        },
+        "service_card_YgKCVq": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "🏖",
+            "title": "Holidays",
+            "description": "Fully packaged holiday experiences crafted around your mood and schedule.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        },
+        "service_card_8dnQmi": {
+          "type": "service_card",
+          "settings": {
+            "icon_text": "🛂",
+            "title": "Visa Assistance",
+            "description": "End-to-end guidance and documentation support for 80+ countries.",
+            "link_label": "Learn more",
+            "link": "https://bluekites.online/",
+            "link_entire_card": true
+          }
+        }
+      },
+      "block_order": [
+        "service_card_VXYtT3",
+        "service_card_VhXK6g",
+        "service_card_FEtXbn",
+        "service_card_MpJkfX",
+        "service_card_YgKCVq",
+        "service_card_8dnQmi"
+      ],
+      "name": "One platform",
+      "settings": {
+        "kicker": "What we offer",
+        "heading_line_1": "Everything you need,",
+        "heading_line_2": "one platform",
+        "cta_label": "Book on BlueKites",
+        "cta_link": "https://bluekites.online/",
+        "color_scheme": "",
+        "background_color": "#FBFAF9",
+        "heading_color": "#1F2A44",
+        "accent_color": "#3A1E25",
+        "kicker_color": "#C39A43",
+        "card_background": "#FFFFFF",
+        "card_border": "#ECE6E1",
+        "card_title_color": "#13203A",
+        "card_text_color": "#465066",
+        "card_link_color": "#C39A43",
+        "cta_background": "#6B2741",
+        "cta_text_color": "#FFFFFF",
+        "card_gap": 18,
+        "card_radius": 18,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
+    "popular_destination_YwzyAF": {
+      "type": "popular_destination",
+      "blocks": {
+        "destination_card_q6Riac": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Trending",
+            "show_favorite_icon": true,
+            "title": "Maldives",
+            "subtitle": "India Ocean",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.9"
+          }
+        },
+        "destination_card_CNxTFd": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Popular",
+            "show_favorite_icon": true,
+            "title": "Bali",
+            "subtitle": "Indonesia",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.8"
+          }
+        },
+        "destination_card_C8cGdg": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Bestseller",
+            "show_favorite_icon": true,
+            "title": "Dubai",
+            "subtitle": "UAE",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.7"
+          }
+        },
+        "destination_card_7dMcJp": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Luxury",
+            "show_favorite_icon": true,
+            "title": "Switzerland",
+            "subtitle": "Europe",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.9"
+          }
+        },
+        "destination_card_yj36ED": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Romantic",
+            "show_favorite_icon": true,
+            "title": "Santorini",
+            "subtitle": "Greece",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.8"
+          }
+        },
+        "destination_card_rUYTLK": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Quick Escape",
+            "show_favorite_icon": true,
+            "title": "Goa",
+            "subtitle": "India",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.6"
+          }
+        },
+        "destination_card_xrMpM8": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Culture",
+            "show_favorite_icon": true,
+            "title": "Japan",
+            "subtitle": "Asia",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.9"
+          }
+        },
+        "destination_card_MCGYPQ": {
+          "type": "destination_card",
+          "settings": {
+            "tag": "Classic",
+            "show_favorite_icon": true,
+            "title": "Paris",
+            "subtitle": "France",
+            "button_label": "Explore",
+            "destination_link": "",
+            "show_rating": true,
+            "rating_label": "4.8"
+          }
+        }
+      },
+      "block_order": [
+        "destination_card_q6Riac",
+        "destination_card_CNxTFd",
+        "destination_card_C8cGdg",
+        "destination_card_7dMcJp",
+        "destination_card_yj36ED",
+        "destination_card_rUYTLK",
+        "destination_card_xrMpM8",
+        "destination_card_MCGYPQ"
+      ],
+      "name": "Popular destinations",
+      "settings": {
+        "kicker": "Explore the world",
+        "heading_line_1": "Popular",
+        "heading_line_2": "Destinations",
+        "top_link_label": "All destinations",
+        "top_link_url": "https://bluekites.online/",
+        "color_scheme": "",
+        "background_color": "#FBFAF8",
+        "kicker_color": "#C39A43",
+        "heading_color": "#1D2340",
+        "heading_accent_color": "#3A1E25",
+        "top_link_color": "#C39A43",
+        "overlay_tint": "#0D1022",
+        "overlay_opacity": 35,
+        "card_radius": 16,
+        "card_gap": 12,
+        "padding_top": 44,
+        "padding_bottom": 44
+      }
     }
   },
   "order": [
     "main",
-    "img_section_travel_d4MH6P"
+    "img_section_travel_d4MH6P",
+    "oneplateform_q4Jd4C",
+    "popular_destination_YwzyAF"
   ]
 }

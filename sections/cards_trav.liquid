@@ -1,0 +1,666 @@
+<section
+	id="TravelCards-{{ section.id }}"
+	class="bk-travel-cards color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-tc-bg: {{ section.settings.section_background }};
+		--bk-tc-gap: {{ section.settings.column_gap }}px;
+		--bk-tc-radius: {{ section.settings.card_radius }}px;
+		--bk-tc-padding-top: {{ section.settings.padding_top }}px;
+		--bk-tc-padding-bottom: {{ section.settings.padding_bottom }}px;
+		--bk-left-bg-start: {{ section.settings.left_bg_start }};
+		--bk-left-bg-end: {{ section.settings.left_bg_end }};
+		--bk-right-overlay: {{ section.settings.right_overlay_opacity | divided_by: 100.0 }};
+		--bk-accent: {{ section.settings.accent_color }};
+		--bk-kicker: {{ section.settings.kicker_color }};
+	"
+>
+	<div class="bk-travel-cards__inner page-width-normal">
+		<div class="bk-travel-cards__grid">
+			<article class="bk-travel-cards__card bk-travel-cards__card--left">
+				<div class="bk-travel-cards__surface">
+					{% if section.settings.left_kicker != blank %}
+						<p class="bk-travel-cards__kicker">{{ section.settings.left_kicker }}</p>
+					{% endif %}
+
+					{% if section.settings.left_heading_line_1 != blank or section.settings.left_heading_line_2 != blank %}
+						<h2 class="bk-travel-cards__heading">
+							{% if section.settings.left_heading_line_1 != blank %}
+								<span class="bk-travel-cards__heading-main">{{ section.settings.left_heading_line_1 }}</span>
+							{% endif %}
+							{% if section.settings.left_heading_line_2 != blank %}
+								<span class="bk-travel-cards__heading-accent">{{ section.settings.left_heading_line_2 }}</span>
+							{% endif %}
+						</h2>
+					{% endif %}
+
+					{% if section.settings.left_description != blank %}
+						<p class="bk-travel-cards__description">{{ section.settings.left_description }}</p>
+					{% endif %}
+
+					<div class="bk-travel-cards__route-list" role="list">
+						{% assign has_left_routes = false %}
+						{% for block in section.blocks %}
+							{% if block.type == 'bus_route' %}
+								{% assign has_left_routes = true %}
+								{% assign route_link = block.settings.link %}
+								{% if route_link != blank %}
+									<a class="bk-travel-cards__route-item" role="listitem" href="{{ route_link }}" {{ block.shopify_attributes }}>
+										<span class="bk-travel-cards__route-icon" aria-hidden="true">⌘</span>
+										<span>{{ block.settings.route_text }}</span>
+									</a>
+								{% else %}
+									<div class="bk-travel-cards__route-item" role="listitem" {{ block.shopify_attributes }}>
+										<span class="bk-travel-cards__route-icon" aria-hidden="true">⌘</span>
+										<span>{{ block.settings.route_text }}</span>
+									</div>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+
+						{% unless has_left_routes %}
+							<div class="bk-travel-cards__route-item" role="listitem">
+								<span class="bk-travel-cards__route-icon" aria-hidden="true">⌘</span>
+								<span>Add bus route blocks</span>
+							</div>
+						{% endunless %}
+					</div>
+
+					{% if section.settings.left_button_label != blank and section.settings.left_button_link != blank %}
+						<a class="bk-travel-cards__button" href="{{ section.settings.left_button_link }}">
+							{{ section.settings.left_button_label }} <span aria-hidden="true">→</span>
+						</a>
+					{% endif %}
+				</div>
+			</article>
+
+			<article class="bk-travel-cards__card bk-travel-cards__card--right">
+				<div class="bk-travel-cards__media">
+					{% if section.settings.right_background_image != blank %}
+						{{
+							section.settings.right_background_image
+							| image_url: width: 1800
+							| image_tag:
+								widths: '600, 900, 1200, 1800',
+								sizes: '(max-width: 749px) 100vw, 50vw',
+								loading: 'lazy',
+								class: 'bk-travel-cards__image',
+								alt: section.settings.right_heading_line_1
+						}}
+					{% else %}
+						<div class="bk-travel-cards__image bk-travel-cards__image--placeholder" aria-hidden="true"></div>
+					{% endif %}
+					<div class="bk-travel-cards__overlay"></div>
+				</div>
+
+				<div class="bk-travel-cards__surface bk-travel-cards__surface--right">
+					{% if section.settings.right_kicker != blank %}
+						<p class="bk-travel-cards__kicker">{{ section.settings.right_kicker }}</p>
+					{% endif %}
+
+					{% if section.settings.right_heading_line_1 != blank or section.settings.right_heading_line_2 != blank %}
+						<h2 class="bk-travel-cards__heading">
+							{% if section.settings.right_heading_line_1 != blank %}
+								<span class="bk-travel-cards__heading-main">{{ section.settings.right_heading_line_1 }}</span>
+							{% endif %}
+							{% if section.settings.right_heading_line_2 != blank %}
+								<span class="bk-travel-cards__heading-accent">{{ section.settings.right_heading_line_2 }}</span>
+							{% endif %}
+						</h2>
+					{% endif %}
+
+					{% if section.settings.right_description != blank %}
+						<p class="bk-travel-cards__description">{{ section.settings.right_description }}</p>
+					{% endif %}
+
+					<div class="bk-travel-cards__feature-grid" role="list">
+						{% assign has_right_features = false %}
+						{% for block in section.blocks %}
+							{% if block.type == 'cab_feature' %}
+								{% assign has_right_features = true %}
+								{% assign feature_link = block.settings.link %}
+								{% if feature_link != blank %}
+									<a class="bk-travel-cards__feature" role="listitem" href="{{ feature_link }}" {{ block.shopify_attributes }}>
+										<span class="bk-travel-cards__feature-icon" aria-hidden="true">{{ block.settings.icon_text }}</span>
+										<span>{{ block.settings.title }}</span>
+									</a>
+								{% else %}
+									<div class="bk-travel-cards__feature" role="listitem" {{ block.shopify_attributes }}>
+										<span class="bk-travel-cards__feature-icon" aria-hidden="true">{{ block.settings.icon_text }}</span>
+										<span>{{ block.settings.title }}</span>
+									</div>
+								{% endif %}
+							{% endif %}
+						{% endfor %}
+
+						{% unless has_right_features %}
+							<div class="bk-travel-cards__feature" role="listitem">
+								<span class="bk-travel-cards__feature-icon" aria-hidden="true">🚕</span>
+								<span>Add cab feature blocks</span>
+							</div>
+						{% endunless %}
+					</div>
+
+					{% if section.settings.right_button_label != blank and section.settings.right_button_link != blank %}
+						<a class="bk-travel-cards__button" href="{{ section.settings.right_button_link }}">
+							{{ section.settings.right_button_label }} <span aria-hidden="true">→</span>
+						</a>
+					{% endif %}
+				</div>
+			</article>
+		</div>
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-travel-cards {
+		background: var(--bk-tc-bg);
+		padding-top: var(--bk-tc-padding-top);
+		padding-bottom: var(--bk-tc-padding-bottom);
+	}
+
+	.bk-travel-cards__inner {
+		--bk-tc-inline-space: 16px;
+		width: min(var(--narrow-page-width), calc(100% - (var(--bk-tc-inline-space) * 2)));
+		margin-inline: auto;
+	}
+
+	@media screen and (min-width: 750px) {
+		.bk-travel-cards__inner {
+			--bk-tc-inline-space: 36px;
+		}
+	}
+
+	.bk-travel-cards__grid {
+		display: grid;
+		grid-template-columns: repeat(2, minmax(0, 1fr));
+		gap: var(--bk-tc-gap);
+	}
+
+	.bk-travel-cards__card {
+		border-radius: var(--bk-tc-radius);
+		overflow: hidden;
+		min-height: 360px;
+		position: relative;
+		display: grid;
+	}
+
+	.bk-travel-cards__card--left {
+		background: radial-gradient(circle at 84% 18%, rgba(148, 93, 71, 0.18) 0%, transparent 40%),
+			linear-gradient(160deg, var(--bk-left-bg-start), var(--bk-left-bg-end));
+	}
+
+	.bk-travel-cards__media {
+		position: absolute;
+		inset: 0;
+	}
+
+	.bk-travel-cards__image {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+		object-position: center;
+	}
+
+	.bk-travel-cards__image--placeholder {
+		background: linear-gradient(145deg, #67564a 0%, #343748 58%, #2f2d34 100%);
+	}
+
+	.bk-travel-cards__overlay {
+		position: absolute;
+		inset: 0;
+		background: rgba(26, 17, 20, var(--bk-right-overlay));
+	}
+
+	.bk-travel-cards__surface {
+		position: relative;
+		z-index: 2;
+		padding: 1.65rem 1.45rem 1.4rem;
+		color: #f7efe9;
+		display: grid;
+		align-content: start;
+		gap: 0.68rem;
+	}
+
+	.bk-travel-cards__surface--right {
+		height: 100%;
+	}
+
+	.bk-travel-cards__kicker {
+		margin: 0;
+		color: var(--bk-kicker);
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		font-size: 0.67rem;
+		font-weight: 600;
+		line-height: 1;
+	}
+
+	.bk-travel-cards__kicker::before {
+		content: '';
+		display: inline-block;
+		width: 1.3rem;
+		height: 1px;
+		background: currentColor;
+		margin-right: 0.45rem;
+		vertical-align: middle;
+		opacity: 0.72;
+	}
+
+	.bk-travel-cards__heading {
+		margin: 0;
+		display: grid;
+		gap: 0.05rem;
+		line-height: 1.04;
+	}
+
+	.bk-travel-cards__heading-main {
+		font-size: clamp(1.8rem, 2.7vw, 3rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-travel-cards__heading-accent {
+		font-size: clamp(1.8rem, 2.75vw, 3.05rem);
+		font-style: italic;
+		color: var(--bk-accent);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-travel-cards__description {
+		margin: 0;
+		color: rgba(247, 240, 235, 0.88);
+		font-size: 0.88rem;
+		line-height: 1.45;
+		max-width: 56ch;
+	}
+
+	.bk-travel-cards__route-list {
+		margin-top: 0.15rem;
+		display: grid;
+		gap: 0.44rem;
+	}
+
+	.bk-travel-cards__route-item {
+		display: flex;
+		align-items: center;
+		gap: 0.45rem;
+		min-height: 2rem;
+		border-radius: 0.52rem;
+		border: 1px solid rgba(195, 154, 67, 0.28);
+		background: rgba(255, 255, 255, 0.02);
+		color: rgba(247, 240, 235, 0.95);
+		text-decoration: none;
+		font-size: 0.77rem;
+		font-weight: 500;
+		padding: 0.38rem 0.62rem;
+	}
+
+	.bk-travel-cards__route-item:hover {
+		background: rgba(255, 255, 255, 0.07);
+	}
+
+	.bk-travel-cards__route-icon {
+		color: var(--bk-kicker);
+		font-size: 0.72rem;
+		line-height: 1;
+	}
+
+	.bk-travel-cards__feature-grid {
+		margin-top: 0.4rem;
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: 0.5rem;
+	}
+
+	.bk-travel-cards__feature {
+		min-height: 2.95rem;
+		border-radius: 0.62rem;
+		border: 1px solid rgba(194, 157, 91, 0.36);
+		background: rgba(54, 40, 43, 0.58);
+		color: #fff;
+		text-decoration: none;
+		padding: 0.32rem 0.45rem;
+		display: grid;
+		align-content: center;
+		justify-items: center;
+		gap: 0.16rem;
+		text-align: center;
+		font-size: 0.62rem;
+		line-height: 1.18;
+		font-weight: 600;
+	}
+
+	.bk-travel-cards__feature:hover {
+		background: rgba(66, 50, 54, 0.72);
+	}
+
+	.bk-travel-cards__feature-icon {
+		font-size: 0.92rem;
+		line-height: 1;
+	}
+
+	.bk-travel-cards__button {
+		margin-top: 0.55rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.35rem;
+		width: fit-content;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.08);
+		background: #8a2c50;
+		color: #fff;
+		text-decoration: none;
+		font-size: 0.78rem;
+		line-height: 1;
+		font-weight: 600;
+		padding: 0.74rem 1.02rem;
+	}
+
+	.bk-travel-cards__button:hover {
+		background: #742142;
+	}
+
+	@media screen and (max-width: 1099px) {
+		.bk-travel-cards__feature-grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-travel-cards__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.bk-travel-cards__card {
+			min-height: 320px;
+		}
+
+		.bk-travel-cards__surface {
+			padding: 1.2rem 1rem 1rem;
+			gap: 0.58rem;
+		}
+
+		.bk-travel-cards__description {
+			font-size: 0.84rem;
+			line-height: 1.38;
+		}
+
+		.bk-travel-cards__feature-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+			gap: 0.42rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "Travel dual cards",
+	"tag": "section",
+	"class": "section-wrapper",
+	"settings": [
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-1"
+		},
+		{
+			"type": "color",
+			"id": "section_background",
+			"label": "Section background",
+			"default": "#FBFAF7"
+		},
+		{
+			"type": "color",
+			"id": "accent_color",
+			"label": "Accent heading color",
+			"default": "#C8A547"
+		},
+		{
+			"type": "color",
+			"id": "kicker_color",
+			"label": "Kicker color",
+			"default": "#C7A34B"
+		},
+		{
+			"type": "range",
+			"id": "column_gap",
+			"label": "Card gap",
+			"min": 8,
+			"max": 48,
+			"step": 2,
+			"unit": "px",
+			"default": 18
+		},
+		{
+			"type": "range",
+			"id": "card_radius",
+			"label": "Card radius",
+			"min": 0,
+			"max": 36,
+			"step": 1,
+			"unit": "px",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"label": "Top padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 48
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"label": "Bottom padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 48
+		},
+		{
+			"type": "header",
+			"content": "Left card"
+		},
+		{
+			"type": "text",
+			"id": "left_kicker",
+			"label": "Left kicker",
+			"default": "Bus travel"
+		},
+		{
+			"type": "text",
+			"id": "left_heading_line_1",
+			"label": "Left heading line 1",
+			"default": "Seamless Bus"
+		},
+		{
+			"type": "text",
+			"id": "left_heading_line_2",
+			"label": "Left heading line 2",
+			"default": "Across India"
+		},
+		{
+			"type": "textarea",
+			"id": "left_description",
+			"label": "Left description",
+			"default": "700+ operators, 10,000+ routes with live seat selection, real-time tracking, and flexible cancellation."
+		},
+		{
+			"type": "text",
+			"id": "left_button_label",
+			"label": "Left button label",
+			"default": "Book Bus Tickets"
+		},
+		{
+			"type": "url",
+			"id": "left_button_link",
+			"label": "Left button link"
+		},
+		{
+			"type": "color",
+			"id": "left_bg_start",
+			"label": "Left background start",
+			"default": "#4A2A33"
+		},
+		{
+			"type": "color",
+			"id": "left_bg_end",
+			"label": "Left background end",
+			"default": "#3C2130"
+		},
+		{
+			"type": "header",
+			"content": "Right card"
+		},
+		{
+			"type": "image_picker",
+			"id": "right_background_image",
+			"label": "Right background image"
+		},
+		{
+			"type": "range",
+			"id": "right_overlay_opacity",
+			"label": "Right overlay opacity",
+			"min": 0,
+			"max": 85,
+			"step": 1,
+			"unit": "%",
+			"default": 54
+		},
+		{
+			"type": "text",
+			"id": "right_kicker",
+			"label": "Right kicker",
+			"default": "Cab booking"
+		},
+		{
+			"type": "text",
+			"id": "right_heading_line_1",
+			"label": "Right heading line 1",
+			"default": "Premium Rides,"
+		},
+		{
+			"type": "text",
+			"id": "right_heading_line_2",
+			"label": "Right heading line 2",
+			"default": "Your Way"
+		},
+		{
+			"type": "textarea",
+			"id": "right_description",
+			"label": "Right description",
+			"default": "Luxury sedans, SUVs, and professional chauffeurs for airport transfers, outstation, and hourly rentals."
+		},
+		{
+			"type": "text",
+			"id": "right_button_label",
+			"label": "Right button label",
+			"default": "Book a Cab"
+		},
+		{
+			"type": "url",
+			"id": "right_button_link",
+			"label": "Right button link"
+		}
+	],
+	"blocks": [
+		{
+			"type": "bus_route",
+			"name": "Bus route",
+			"settings": [
+				{
+					"type": "text",
+					"id": "route_text",
+					"label": "Route text",
+					"default": "Delhi - Jaipur"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Route link"
+				}
+			]
+		},
+		{
+			"type": "cab_feature",
+			"name": "Cab feature",
+			"settings": [
+				{
+					"type": "text",
+					"id": "icon_text",
+					"label": "Icon text",
+					"default": "🚕"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Feature title",
+					"default": "Airport Transfers"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Feature link"
+				}
+			]
+		}
+	],
+	"max_blocks": 16,
+	"presets": [
+		{
+			"name": "Travel dual cards",
+			"blocks": [
+				{
+					"type": "bus_route",
+					"settings": {
+						"route_text": "Delhi - Jaipur"
+					}
+				},
+				{
+					"type": "bus_route",
+					"settings": {
+						"route_text": "Mumbai - Pune"
+					}
+				},
+				{
+					"type": "bus_route",
+					"settings": {
+						"route_text": "Bangalore - Goa"
+					}
+				},
+				{
+					"type": "bus_route",
+					"settings": {
+						"route_text": "Chennai - Pondicherry"
+					}
+				},
+				{
+					"type": "cab_feature",
+					"settings": {
+						"title": "Airport Transfers"
+					}
+				},
+				{
+					"type": "cab_feature",
+					"settings": {
+						"title": "Outstation"
+					}
+				},
+				{
+					"type": "cab_feature",
+					"settings": {
+						"title": "Hourly Rental"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

@@ -1,0 +1,439 @@
+{% liquid
+	assign desktop_image = section.settings.desktop_image
+	assign mobile_image = section.settings.mobile_image
+	assign heading_primary = section.settings.heading_primary
+	assign heading_accent = section.settings.heading_accent
+%}
+
+<section
+	id="TravelHero-{{ section.id }}"
+	class="bk-travel-hero force-full-width color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-hero-height-desktop: {{ section.settings.section_height_desktop }}svh;
+		--bk-hero-height-mobile: {{ section.settings.section_height_mobile }}svh;
+		--bk-overlay-opacity: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+		--bk-content-max-width: {{ section.settings.content_max_width }}px;
+		--bk-accent-color: {{ section.settings.accent_color }};
+		--bk-badge-bg: {{ section.settings.badge_background }};
+		--bk-badge-text: {{ section.settings.badge_text_color }};
+	"
+>
+	<div class="bk-travel-hero__media">
+		{% if desktop_image != blank and mobile_image != blank %}
+			<picture>
+				<source media="(max-width: 749px)" srcset="{{ mobile_image | image_url: width: 1200 }}">
+				{{
+					desktop_image
+					| image_url: width: 3200
+					| image_tag:
+						widths: '800, 1200, 1600, 2200, 3200',
+						sizes: '100vw',
+						loading: 'lazy',
+						class: 'bk-travel-hero__image',
+						alt: desktop_image.alt
+				}}
+			</picture>
+		{% elsif desktop_image != blank %}
+			{{
+				desktop_image
+				| image_url: width: 3200
+				| image_tag:
+					widths: '800, 1200, 1600, 2200, 3200',
+					sizes: '100vw',
+					loading: 'lazy',
+					class: 'bk-travel-hero__image',
+					alt: desktop_image.alt
+			}}
+		{% else %}
+			{{ 'lifestyle-1' | placeholder_svg_tag: 'bk-travel-hero__image bk-travel-hero__image--placeholder' }}
+		{% endif %}
+		<div class="bk-travel-hero__overlay"></div>
+	</div>
+
+	<div class="bk-travel-hero__content-wrap">
+		<div class="bk-travel-hero__content">
+			{% if section.settings.badge_text != blank %}
+				<p class="bk-travel-hero__badge">{{ section.settings.badge_text }}</p>
+			{% endif %}
+
+			{% if heading_primary != blank or heading_accent != blank %}
+				<h2 class="bk-travel-hero__heading">
+					{% if heading_primary != blank %}
+						<span class="bk-travel-hero__heading-main">{{ heading_primary }}</span>
+					{% endif %}
+					{% if heading_accent != blank %}
+						<span class="bk-travel-hero__heading-accent">{{ heading_accent }}</span>
+					{% endif %}
+				</h2>
+			{% endif %}
+
+			{% if section.settings.description != blank %}
+				<div class="bk-travel-hero__description rte">{{ section.settings.description }}</div>
+			{% endif %}
+
+			{% if section.blocks.size > 0 %}
+				<div class="bk-travel-hero__buttons" role="group" aria-label="Hero actions">
+					{% for block in section.blocks %}
+						{% if block.type == 'button' and block.settings.label != blank %}
+							{% assign button_url = block.settings.link | default: '#' %}
+							<a
+								href="{{ button_url }}"
+								class="bk-travel-hero__button bk-travel-hero__button--{{ block.settings.style }}"
+								{{ block.shopify_attributes }}
+							>
+								{{ block.settings.label }}
+							</a>
+						{% endif %}
+					{% endfor %}
+				</div>
+			{% endif %}
+		</div>
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-travel-hero {
+		position: relative;
+		isolation: isolate;
+		min-height: var(--bk-hero-height-desktop, 85svh);
+		display: grid;
+		align-items: center;
+		overflow: hidden;
+	}
+
+	.bk-travel-hero__media {
+		position: absolute;
+		inset: 0;
+		z-index: -2;
+	}
+
+	.bk-travel-hero__image,
+	.bk-travel-hero__image--placeholder {
+		width: 100%;
+		height: 100%;
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.bk-travel-hero__image--placeholder {
+		background: linear-gradient(130deg, #1b5163, #356e6b 46%, #62412d 100%);
+	}
+
+	.bk-travel-hero__overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(
+			180deg,
+			rgba(6, 19, 29, calc(var(--bk-overlay-opacity, 58) * 0.7)) 0%,
+			rgba(6, 19, 29, var(--bk-overlay-opacity, 0.58)) 100%
+		);
+	}
+
+	.bk-travel-hero__content-wrap {
+		width: 100%;
+	}
+
+	.bk-travel-hero__content {
+		width: min(var(--bk-content-max-width, 880px), 100%);
+		margin-inline: auto;
+		text-align: center;
+		color: #f8f6ef;
+		padding-block: clamp(3rem, 10vh, 6rem);
+	}
+
+	.bk-travel-hero__badge {
+		width: fit-content;
+		margin: 0 auto 1.4rem;
+		padding: 0.55rem 1.2rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.24);
+		background-color: var(--bk-badge-bg);
+		color: var(--bk-badge-text);
+		text-transform: uppercase;
+		letter-spacing: 0.15em;
+		font-size: 0.72rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-travel-hero__heading {
+		margin: 0;
+		display: grid;
+		gap: 0.35rem;
+		line-height: 0.98;
+	}
+
+	.bk-travel-hero__heading-main {
+		font-size: clamp(2rem, 5.2vw, 5.2rem);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+		text-wrap: balance;
+	}
+
+	.bk-travel-hero__heading-accent {
+		font-size: clamp(2.1rem, 5.5vw, 5.7rem);
+		font-style: italic;
+		font-weight: 500;
+		color: var(--bk-accent-color);
+		text-wrap: balance;
+	}
+
+	.bk-travel-hero__description {
+		max-width: 700px;
+		margin: 1.3rem auto 0;
+		color: rgba(245, 248, 251, 0.9);
+		font-size: clamp(0.98rem, 1.4vw, 1.38rem);
+		line-height: 1.55;
+		text-wrap: pretty;
+	}
+
+	.bk-travel-hero__description p {
+		margin: 0;
+	}
+
+	.bk-travel-hero__buttons {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		flex-wrap: wrap;
+		gap: 0.9rem;
+		margin-top: 2rem;
+	}
+
+	.bk-travel-hero__button {
+		min-width: 168px;
+		border-radius: 999px;
+		padding: 0.9rem 1.4rem;
+		text-decoration: none;
+		font-weight: 600;
+		font-size: 0.95rem;
+		line-height: 1;
+		transition: transform 0.24s ease, box-shadow 0.24s ease, background-color 0.24s ease, color 0.24s ease;
+	}
+
+	.bk-travel-hero__button:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 14px 26px rgba(0, 0, 0, 0.26);
+	}
+
+	.bk-travel-hero__button--solid {
+		background: #92274e;
+		color: #fff;
+		border: 1px solid transparent;
+	}
+
+	.bk-travel-hero__button--solid:hover {
+		background: #7f1f43;
+		color: #fff;
+	}
+
+	.bk-travel-hero__button--outline {
+		background: rgba(5, 29, 43, 0.48);
+		color: #eaf5ff;
+		border: 1px solid rgba(196, 219, 239, 0.7);
+		backdrop-filter: blur(2px);
+	}
+
+	.bk-travel-hero__button--outline:hover {
+		background: rgba(7, 44, 65, 0.76);
+		color: #fff;
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-travel-hero {
+			min-height: var(--bk-hero-height-mobile, 72svh);
+		}
+
+		.bk-travel-hero__content {
+			padding-block: clamp(2.7rem, 11vh, 4.3rem);
+			padding-inline: 0.35rem;
+		}
+
+		.bk-travel-hero__badge {
+			margin-bottom: 1rem;
+			font-size: 0.66rem;
+			letter-spacing: 0.12em;
+			padding: 0.5rem 1rem;
+		}
+
+		.bk-travel-hero__description {
+			margin-top: 1rem;
+			font-size: 0.98rem;
+			line-height: 1.46;
+		}
+
+		.bk-travel-hero__buttons {
+			margin-top: 1.5rem;
+			gap: 0.7rem;
+		}
+
+		.bk-travel-hero__button {
+			width: 100%;
+			max-width: 280px;
+			min-width: 0;
+			padding: 0.85rem 1rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "Travel hero image",
+	"tag": "section",
+	"class": "section",
+	"settings": [
+		{
+			"type": "image_picker",
+			"id": "desktop_image",
+			"label": "Desktop background image"
+		},
+		{
+			"type": "image_picker",
+			"id": "mobile_image",
+			"label": "Mobile background image"
+		},
+		{
+			"type": "text",
+			"id": "badge_text",
+			"label": "Top badge text",
+			"default": "India's premium travel ecosystem"
+		},
+		{
+			"type": "text",
+			"id": "heading_primary",
+			"label": "Heading first line",
+			"default": "Travel Beyond"
+		},
+		{
+			"type": "text",
+			"id": "heading_accent",
+			"label": "Heading second line",
+			"default": "Destinations."
+		},
+		{
+			"type": "richtext",
+			"id": "description",
+			"label": "Description",
+			"default": "<p>Experience journeys designed around you, crafted with precision and delivered with grace.</p>"
+		},
+		{
+			"type": "range",
+			"id": "section_height_desktop",
+			"label": "Desktop section height",
+			"min": 55,
+			"max": 100,
+			"step": 1,
+			"unit": "vh",
+			"default": 86
+		},
+		{
+			"type": "range",
+			"id": "section_height_mobile",
+			"label": "Mobile section height",
+			"min": 45,
+			"max": 95,
+			"step": 1,
+			"unit": "vh",
+			"default": 72
+		},
+		{
+			"type": "range",
+			"id": "overlay_opacity",
+			"label": "Overlay opacity",
+			"min": 0,
+			"max": 90,
+			"step": 1,
+			"unit": "%",
+			"default": 48
+		},
+		{
+			"type": "range",
+			"id": "content_max_width",
+			"label": "Content max width",
+			"min": 560,
+			"max": 1200,
+			"step": 20,
+			"unit": "px",
+			"default": 940
+		},
+		{
+			"type": "color",
+			"id": "accent_color",
+			"label": "Accent heading color",
+			"default": "#D8B45C"
+		},
+		{
+			"type": "color",
+			"id": "badge_background",
+			"label": "Badge background",
+			"default": "rgba(95, 150, 170, 0.35)"
+		},
+		{
+			"type": "color",
+			"id": "badge_text_color",
+			"label": "Badge text color",
+			"default": "#D7E9F0"
+		},
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-3"
+		}
+	],
+	"blocks": [
+		{
+			"type": "button",
+			"name": "Button",
+			"settings": [
+				{
+					"type": "text",
+					"id": "label",
+					"label": "Button label",
+					"default": "Start Planning"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Button link"
+				},
+				{
+					"type": "select",
+					"id": "style",
+					"label": "Button style",
+					"options": [
+						{
+							"value": "solid",
+							"label": "Solid"
+						},
+						{
+							"value": "outline",
+							"label": "Outline"
+						}
+					],
+					"default": "solid"
+				}
+			]
+		}
+	],
+	"max_blocks": 6,
+	"presets": [
+		{
+			"name": "Travel hero image",
+			"blocks": [
+				{
+					"type": "button"
+				},
+				{
+					"type": "button",
+					"settings": {
+						"label": "Browse Destinations",
+						"style": "outline"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

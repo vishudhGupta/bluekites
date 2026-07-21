@@ -1,0 +1,572 @@
+<section
+	id="OnePlatform-{{ section.id }}"
+	class="bk-platform color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-platform-bg: {{ section.settings.background_color }};
+		--bk-platform-heading: {{ section.settings.heading_color }};
+		--bk-platform-accent: {{ section.settings.accent_color }};
+		--bk-platform-kicker: {{ section.settings.kicker_color }};
+		--bk-platform-card-bg: {{ section.settings.card_background }};
+		--bk-platform-card-border: {{ section.settings.card_border }};
+		--bk-platform-title: {{ section.settings.card_title_color }};
+		--bk-platform-text: {{ section.settings.card_text_color }};
+		--bk-platform-link: {{ section.settings.card_link_color }};
+		--bk-platform-cta-bg: {{ section.settings.cta_background }};
+		--bk-platform-cta-text: {{ section.settings.cta_text_color }};
+		--bk-platform-padding-top: {{ section.settings.padding_top }}px;
+		--bk-platform-padding-bottom: {{ section.settings.padding_bottom }}px;
+		--bk-platform-gap: {{ section.settings.card_gap }}px;
+		--bk-platform-radius: {{ section.settings.card_radius }}px;
+	"
+>
+	<div class="bk-platform__inner page-width-normal">
+		<header class="bk-platform__header">
+			<div class="bk-platform__intro">
+				{% if section.settings.kicker != blank %}
+					<p class="bk-platform__kicker">{{ section.settings.kicker }}</p>
+				{% endif %}
+
+				{% if section.settings.heading_line_1 != blank or section.settings.heading_line_2 != blank %}
+					<h2 class="bk-platform__heading">
+						{% if section.settings.heading_line_1 != blank %}
+							<span class="bk-platform__heading-main">{{ section.settings.heading_line_1 }}</span>
+						{% endif %}
+						{% if section.settings.heading_line_2 != blank %}
+							<span class="bk-platform__heading-accent">{{ section.settings.heading_line_2 }}</span>
+						{% endif %}
+					</h2>
+				{% endif %}
+			</div>
+
+			{% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+				<a class="bk-platform__cta" href="{{ section.settings.cta_link }}">{{ section.settings.cta_label }}</a>
+			{% endif %}
+		</header>
+
+		{% if section.blocks.size > 0 %}
+			<div class="bk-platform__grid" role="list">
+				{% for block in section.blocks %}
+					{% if block.type == 'service_card' %}
+						{% assign card_link = block.settings.link %}
+						{% assign use_card_link = false %}
+						{% if card_link != blank and block.settings.link_entire_card %}
+							{% assign use_card_link = true %}
+						{% endif %}
+
+						<article class="bk-platform__card" role="listitem" {{ block.shopify_attributes }}>
+							{% if use_card_link %}
+								<a class="bk-platform__card-overlay-link" href="{{ card_link }}" aria-label="{{ block.settings.title | escape }}"></a>
+							{% endif %}
+
+							<div class="bk-platform__icon" aria-hidden="true">
+								{% if block.settings.icon_image != blank %}
+									{{
+										block.settings.icon_image
+										| image_url: width: 88
+										| image_tag:
+											widths: '44, 66, 88',
+											sizes: '44px',
+											loading: 'lazy',
+											alt: block.settings.title,
+											class: 'bk-platform__icon-image'
+									}}
+								{% elsif block.settings.icon_text != blank %}
+									<span class="bk-platform__icon-text">{{ block.settings.icon_text }}</span>
+								{% else %}
+									<span class="bk-platform__icon-text">✦</span>
+								{% endif %}
+							</div>
+
+							{% if block.settings.title != blank %}
+								<h3 class="bk-platform__card-title">{{ block.settings.title }}</h3>
+							{% endif %}
+
+							{% if block.settings.description != blank %}
+								<p class="bk-platform__card-text">{{ block.settings.description }}</p>
+							{% endif %}
+
+							{% if card_link != blank and block.settings.link_label != blank %}
+								<a class="bk-platform__card-link" href="{{ card_link }}">
+									{{ block.settings.link_label }} <span aria-hidden="true">→</span>
+								</a>
+							{% endif %}
+						</article>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="bk-platform__empty">Add service card blocks in the editor.</p>
+		{% endif %}
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-platform {
+		background: var(--bk-platform-bg);
+		padding-top: var(--bk-platform-padding-top);
+		padding-bottom: var(--bk-platform-padding-bottom);
+	}
+
+	.bk-platform__inner {
+		--bk-platform-inline-space: 16px;
+		width: min(var(--narrow-page-width), calc(100% - (var(--bk-platform-inline-space) * 2)));
+		margin-inline: auto;
+	}
+
+	@media screen and (min-width: 750px) {
+		.bk-platform__inner {
+			--bk-platform-inline-space: 36px;
+		}
+	}
+
+	.bk-platform__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 2rem;
+	}
+
+	.bk-platform__kicker {
+		margin: 0;
+		color: var(--bk-platform-kicker);
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.76rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-platform__kicker::before {
+		content: '';
+		display: inline-block;
+		width: 1.9rem;
+		height: 1px;
+		margin-right: 0.55rem;
+		vertical-align: middle;
+		background: currentColor;
+		opacity: 0.75;
+	}
+
+	.bk-platform__heading {
+		margin: 0.7rem 0 0;
+		display: grid;
+		gap: 0.1rem;
+		line-height: 1.05;
+	}
+
+	.bk-platform__heading-main {
+		color: var(--bk-platform-heading);
+		font-size: clamp(1.95rem, 3vw, 3.35rem);
+		font-weight: 500;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-platform__heading-accent {
+		color: var(--bk-platform-accent);
+		font-size: clamp(2rem, 3.1vw, 3.45rem);
+		font-style: italic;
+		font-weight: 600;
+		letter-spacing: -0.01em;
+	}
+
+	.bk-platform__cta {
+		flex: 0 0 auto;
+		margin-top: 0.55rem;
+		padding: 0.95rem 1.4rem;
+		border-radius: 999px;
+		text-decoration: none;
+		background: var(--bk-platform-cta-bg);
+		color: var(--bk-platform-cta-text);
+		font-weight: 600;
+		font-size: 0.95rem;
+		line-height: 1;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	.bk-platform__cta:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 14px 24px rgba(49, 11, 25, 0.2);
+	}
+
+	.bk-platform__grid {
+		display: grid;
+		grid-template-columns: repeat(3, minmax(0, 1fr));
+		gap: var(--bk-platform-gap);
+	}
+
+	.bk-platform__card {
+		position: relative;
+		display: grid;
+		align-content: start;
+		gap: 0.55rem;
+		min-height: 12.4rem;
+		padding: 1.35rem 1.45rem 1.2rem;
+		border-radius: var(--bk-platform-radius);
+		border: 1px solid var(--bk-platform-card-border);
+		background: var(--bk-platform-card-bg);
+		box-shadow: 0 10px 22px rgba(16, 18, 31, 0.04);
+	}
+
+	.bk-platform__card-overlay-link {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		border-radius: inherit;
+	}
+
+	.bk-platform__icon {
+		width: 2.6rem;
+		height: 2.6rem;
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.bk-platform__icon-image {
+		width: 2.35rem;
+		height: 2.35rem;
+		object-fit: contain;
+	}
+
+	.bk-platform__icon-text {
+		font-size: 1.8rem;
+		line-height: 1;
+	}
+
+	.bk-platform__card-title {
+		margin: 0.05rem 0 0;
+		color: var(--bk-platform-title);
+		font-size: clamp(1.35rem, 1.55vw, 2rem);
+		line-height: 1.2;
+		font-weight: 600;
+	}
+
+	.bk-platform__card-text {
+		margin: 0;
+		color: var(--bk-platform-text);
+		font-size: clamp(0.98rem, 1.1vw, 1.14rem);
+		line-height: 1.5;
+		max-width: 34ch;
+	}
+
+	.bk-platform__card-link {
+		margin-top: 0.6rem;
+		width: fit-content;
+		color: var(--bk-platform-link);
+		font-size: 0.9rem;
+		font-weight: 600;
+		text-decoration: none;
+		position: relative;
+		z-index: 2;
+	}
+
+	.bk-platform__card-link:hover {
+		text-decoration: underline;
+	}
+
+	.bk-platform__empty {
+		margin: 0;
+		color: var(--bk-platform-text);
+		font-size: 1rem;
+	}
+
+	@media screen and (max-width: 989px) {
+		.bk-platform__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-platform__header {
+			flex-direction: column;
+			margin-bottom: 1.4rem;
+		}
+
+		.bk-platform__cta {
+			margin-top: 0.1rem;
+		}
+
+		.bk-platform__grid {
+			grid-template-columns: 1fr;
+		}
+
+		.bk-platform__card {
+			min-height: auto;
+			padding: 1.15rem 1.1rem 1.05rem;
+			gap: 0.5rem;
+		}
+
+		.bk-platform__icon {
+			width: 2.25rem;
+			height: 2.25rem;
+		}
+
+		.bk-platform__icon-image {
+			width: 2rem;
+			height: 2rem;
+		}
+
+		.bk-platform__icon-text {
+			font-size: 1.45rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "One platform",
+	"tag": "section",
+	"class": "section-wrapper",
+	"settings": [
+		{
+			"type": "text",
+			"id": "kicker",
+			"label": "Top label",
+			"default": "What we offer"
+		},
+		{
+			"type": "text",
+			"id": "heading_line_1",
+			"label": "Heading line 1",
+			"default": "Everything you need,"
+		},
+		{
+			"type": "text",
+			"id": "heading_line_2",
+			"label": "Heading line 2",
+			"default": "one platform"
+		},
+		{
+			"type": "text",
+			"id": "cta_label",
+			"label": "Top button label",
+			"default": "Book on BlueKites"
+		},
+		{
+			"type": "url",
+			"id": "cta_link",
+			"label": "Top button link"
+		},
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-1"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "background_color",
+			"label": "Section background",
+			"default": "#FBFAF9"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading color",
+			"default": "#1F2A44"
+		},
+		{
+			"type": "color",
+			"id": "accent_color",
+			"label": "Heading accent color",
+			"default": "#3A1E25"
+		},
+		{
+			"type": "color",
+			"id": "kicker_color",
+			"label": "Top label color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "card_background",
+			"label": "Card background",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "card_border",
+			"label": "Card border",
+			"default": "#ECE6E1"
+		},
+		{
+			"type": "color",
+			"id": "card_title_color",
+			"label": "Card title color",
+			"default": "#13203A"
+		},
+		{
+			"type": "color",
+			"id": "card_text_color",
+			"label": "Card text color",
+			"default": "#465066"
+		},
+		{
+			"type": "color",
+			"id": "card_link_color",
+			"label": "Card link color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "cta_background",
+			"label": "Top button background",
+			"default": "#6B2741"
+		},
+		{
+			"type": "color",
+			"id": "cta_text_color",
+			"label": "Top button text color",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "range",
+			"id": "card_gap",
+			"label": "Card gap",
+			"min": 8,
+			"max": 40,
+			"step": 2,
+			"unit": "px",
+			"default": 18
+		},
+		{
+			"type": "range",
+			"id": "card_radius",
+			"label": "Card corner radius",
+			"min": 0,
+			"max": 28,
+			"step": 1,
+			"unit": "px",
+			"default": 18
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"label": "Top padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 56
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"label": "Bottom padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 56
+		}
+	],
+	"blocks": [
+		{
+			"type": "service_card",
+			"name": "Service card",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "icon_image",
+					"label": "Icon image"
+				},
+				{
+					"type": "text",
+					"id": "icon_text",
+					"label": "Icon fallback text",
+					"default": "✈"
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Flights"
+				},
+				{
+					"type": "textarea",
+					"id": "description",
+					"label": "Description",
+					"default": "Domestic and international flights with flexible date options and multi-city routing."
+				},
+				{
+					"type": "text",
+					"id": "link_label",
+					"label": "Link label",
+					"default": "Learn more"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Card link"
+				},
+				{
+					"type": "checkbox",
+					"id": "link_entire_card",
+					"label": "Make whole card clickable",
+					"default": false
+				}
+			]
+		}
+	],
+	"max_blocks": 12,
+	"presets": [
+		{
+			"name": "One platform",
+			"blocks": [
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "✈",
+						"title": "Flights"
+					}
+				},
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "🏨",
+						"title": "Hotels",
+						"description": "Boutique guesthouses to ultra-luxury resorts, handpicked and verified."
+					}
+				},
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "🚌",
+						"title": "Bus",
+						"description": "700+ operators, 10,000+ routes across India with live seat selection."
+					}
+				},
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "🚕",
+						"title": "Cab",
+						"description": "Airport transfers, outstation journeys, and hourly city rentals in premium vehicles."
+					}
+				},
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "🏖",
+						"title": "Holidays",
+						"description": "Fully packaged holiday experiences crafted around your mood and schedule."
+					}
+				},
+				{
+					"type": "service_card",
+					"settings": {
+						"icon_text": "🛂",
+						"title": "Visa Assistance",
+						"description": "End-to-end guidance and documentation support for 80+ countries."
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

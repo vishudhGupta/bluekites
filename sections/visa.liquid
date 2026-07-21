@@ -1,0 +1,600 @@
+<section
+	id="VisaAssist-{{ section.id }}"
+	class="bk-visa color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-v-bg: {{ section.settings.background_color }};
+		--bk-v-kicker: {{ section.settings.kicker_color }};
+		--bk-v-heading: {{ section.settings.heading_color }};
+		--bk-v-accent: {{ section.settings.heading_accent_color }};
+		--bk-v-body: {{ section.settings.description_color }};
+		--bk-v-top-link: {{ section.settings.top_link_color }};
+		--bk-v-card-bg: {{ section.settings.card_background }};
+		--bk-v-card-border: {{ section.settings.card_border }};
+		--bk-v-card-title: {{ section.settings.card_title_color }};
+		--bk-v-card-text: {{ section.settings.card_text_color }};
+		--bk-v-chip-bg: {{ section.settings.chip_background }};
+		--bk-v-chip-text: {{ section.settings.chip_text_color }};
+		--bk-v-cta-bg: {{ section.settings.cta_background }};
+		--bk-v-cta-text: {{ section.settings.cta_text_color }};
+		--bk-v-padding-top: {{ section.settings.padding_top }}px;
+		--bk-v-padding-bottom: {{ section.settings.padding_bottom }}px;
+		--bk-v-card-gap: {{ section.settings.card_gap }}px;
+		--bk-v-card-radius: {{ section.settings.card_radius }}px;
+	"
+>
+	<div class="bk-visa__inner page-width-normal">
+		<header class="bk-visa__header">
+			<div class="bk-visa__header-text">
+				{% if section.settings.kicker != blank %}
+					<p class="bk-visa__kicker">{{ section.settings.kicker }}</p>
+				{% endif %}
+
+				{% if section.settings.heading_main != blank or section.settings.heading_accent != blank %}
+					<h2 class="bk-visa__heading">
+						{% if section.settings.heading_main != blank %}
+							<span class="bk-visa__heading-main">{{ section.settings.heading_main }}</span>
+						{% endif %}
+						{% if section.settings.heading_accent != blank %}
+							<span class="bk-visa__heading-accent">{{ section.settings.heading_accent }}</span>
+						{% endif %}
+					</h2>
+				{% endif %}
+
+				{% if section.settings.description != blank %}
+					<p class="bk-visa__description">{{ section.settings.description }}</p>
+				{% endif %}
+			</div>
+
+			{% if section.settings.top_link_label != blank and section.settings.top_link_url != blank %}
+				<a class="bk-visa__top-link" href="{{ section.settings.top_link_url }}">
+					{{ section.settings.top_link_label }} <span aria-hidden="true">→</span>
+				</a>
+			{% endif %}
+		</header>
+
+		{% if section.blocks.size > 0 %}
+			<div class="bk-visa__grid" role="list">
+				{% for block in section.blocks %}
+					{% if block.type == 'country_card' %}
+						{% assign country_link = block.settings.link %}
+						{% if country_link != blank %}
+							<a class="bk-visa__card" role="listitem" href="{{ country_link }}" {{ block.shopify_attributes }}>
+								<span class="bk-visa__code">{{ block.settings.code }}</span>
+								<span class="bk-visa__country">{{ block.settings.country }}</span>
+								<span class="bk-visa__visa-type">{{ block.settings.visa_type }}</span>
+								<span class="bk-visa__days-chip">{{ block.settings.processing_time }}</span>
+							</a>
+						{% else %}
+							<article class="bk-visa__card" role="listitem" {{ block.shopify_attributes }}>
+								<span class="bk-visa__code">{{ block.settings.code }}</span>
+								<span class="bk-visa__country">{{ block.settings.country }}</span>
+								<span class="bk-visa__visa-type">{{ block.settings.visa_type }}</span>
+								<span class="bk-visa__days-chip">{{ block.settings.processing_time }}</span>
+							</article>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="bk-visa__empty">Add country cards in the editor.</p>
+		{% endif %}
+
+		{% if section.settings.cta_label != blank and section.settings.cta_link != blank %}
+			<div class="bk-visa__cta-wrap">
+				<a class="bk-visa__cta" href="{{ section.settings.cta_link }}">
+					{{ section.settings.cta_label }} <span aria-hidden="true">→</span>
+				</a>
+			</div>
+		{% endif %}
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-visa {
+		background: var(--bk-v-bg);
+		padding-top: var(--bk-v-padding-top);
+		padding-bottom: var(--bk-v-padding-bottom);
+	}
+
+	.bk-visa__inner {
+		--bk-v-inline-space: 16px;
+		width: min(var(--narrow-page-width), calc(100% - (var(--bk-v-inline-space) * 2)));
+		margin-inline: auto;
+	}
+
+	@media screen and (min-width: 750px) {
+		.bk-visa__inner {
+			--bk-v-inline-space: 36px;
+		}
+	}
+
+	.bk-visa__header {
+		display: flex;
+		align-items: flex-start;
+		justify-content: space-between;
+		gap: 1rem;
+		margin-bottom: 1.6rem;
+	}
+
+	.bk-visa__kicker {
+		margin: 0;
+		color: var(--bk-v-kicker);
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.72rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-visa__kicker::before {
+		content: '';
+		width: 1.7rem;
+		height: 1px;
+		display: inline-block;
+		background: currentColor;
+		opacity: 0.76;
+		margin-right: 0.48rem;
+		vertical-align: middle;
+	}
+
+	.bk-visa__heading {
+		margin: 0.55rem 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.35rem;
+		line-height: 1.04;
+	}
+
+	.bk-visa__heading-main {
+		color: var(--bk-v-heading);
+		font-size: clamp(1.95rem, 3vw, 3rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-visa__heading-accent {
+		color: var(--bk-v-accent);
+		font-size: clamp(1.95rem, 3vw, 3rem);
+		font-weight: 600;
+		font-style: italic;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-visa__description {
+		margin: 0.85rem 0 0;
+		color: var(--bk-v-body);
+		font-size: 0.96rem;
+		line-height: 1.5;
+		max-width: 62ch;
+	}
+
+	.bk-visa__top-link {
+		margin-top: 0.45rem;
+		color: var(--bk-v-top-link);
+		text-decoration: none;
+		white-space: nowrap;
+		font-size: 0.9rem;
+		line-height: 1;
+		font-weight: 500;
+	}
+
+	.bk-visa__top-link:hover {
+		text-decoration: underline;
+	}
+
+	.bk-visa__grid {
+		display: grid;
+		grid-template-columns: repeat(6, minmax(0, 1fr));
+		gap: var(--bk-v-card-gap);
+	}
+
+	.bk-visa__card {
+		background: var(--bk-v-card-bg);
+		border: 1px solid var(--bk-v-card-border);
+		border-radius: var(--bk-v-card-radius);
+		box-shadow: 0 9px 18px rgba(26, 19, 30, 0.03);
+		min-height: 102px;
+		padding: 0.9rem 0.7rem 0.72rem;
+		display: grid;
+		align-content: center;
+		justify-items: center;
+		text-align: center;
+		gap: 0.14rem;
+		text-decoration: none;
+		transition: transform 0.2s ease, box-shadow 0.2s ease;
+	}
+
+	a.bk-visa__card:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 14px 22px rgba(26, 19, 30, 0.08);
+	}
+
+	.bk-visa__code {
+		color: var(--bk-v-card-title);
+		font-size: clamp(1.15rem, 1.7vw, 1.7rem);
+		line-height: 1.05;
+		font-weight: 700;
+		letter-spacing: 0.01em;
+	}
+
+	.bk-visa__country {
+		color: var(--bk-v-card-title);
+		font-size: 0.92rem;
+		line-height: 1.2;
+		font-weight: 600;
+	}
+
+	.bk-visa__visa-type {
+		color: var(--bk-v-card-text);
+		font-size: 0.7rem;
+		line-height: 1.15;
+		font-weight: 500;
+	}
+
+	.bk-visa__days-chip {
+		min-width: 86px;
+		border-radius: 999px;
+		background: var(--bk-v-chip-bg);
+		color: var(--bk-v-chip-text);
+		font-size: 0.63rem;
+		line-height: 1;
+		font-weight: 600;
+		padding: 0.28rem 0.55rem;
+		margin-top: 0.18rem;
+	}
+
+	.bk-visa__cta-wrap {
+		margin-top: 1.55rem;
+		text-align: center;
+	}
+
+	.bk-visa__cta {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.34rem;
+		border-radius: 999px;
+		background: var(--bk-v-cta-bg);
+		color: var(--bk-v-cta-text);
+		text-decoration: none;
+		font-size: 0.84rem;
+		line-height: 1;
+		font-weight: 600;
+		padding: 0.82rem 1.18rem;
+	}
+
+	.bk-visa__cta:hover {
+		filter: brightness(0.95);
+	}
+
+	.bk-visa__empty {
+		margin: 0;
+		color: var(--bk-v-body);
+		font-size: 1rem;
+	}
+
+	@media screen and (max-width: 1099px) {
+		.bk-visa__grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-visa__header {
+			flex-direction: column;
+			margin-bottom: 1.15rem;
+		}
+
+		.bk-visa__description {
+			margin-top: 0.7rem;
+			font-size: 0.9rem;
+			line-height: 1.42;
+		}
+
+		.bk-visa__top-link {
+			margin-top: 0.2rem;
+			font-size: 0.84rem;
+		}
+
+		.bk-visa__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.65rem;
+		}
+
+		.bk-visa__card {
+			min-height: 98px;
+			padding: 0.75rem 0.52rem 0.65rem;
+		}
+
+		.bk-visa__days-chip {
+			min-width: 76px;
+			font-size: 0.59rem;
+		}
+
+		.bk-visa__cta-wrap {
+			margin-top: 1.2rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "Visa assistance",
+	"tag": "section",
+	"class": "section-wrapper",
+	"settings": [
+		{
+			"type": "text",
+			"id": "kicker",
+			"label": "Top label",
+			"default": "Visa services"
+		},
+		{
+			"type": "text",
+			"id": "heading_main",
+			"label": "Heading main text",
+			"default": "Visa"
+		},
+		{
+			"type": "text",
+			"id": "heading_accent",
+			"label": "Heading accent text",
+			"default": "Assistance"
+		},
+		{
+			"type": "textarea",
+			"id": "description",
+			"label": "Description",
+			"default": "End-to-end documentation, expert guidance, and real-time status tracking for 80+ countries. We simplify visa applications so you can focus on the journey."
+		},
+		{
+			"type": "text",
+			"id": "top_link_label",
+			"label": "Top right link label",
+			"default": "All countries"
+		},
+		{
+			"type": "url",
+			"id": "top_link_url",
+			"label": "Top right link URL"
+		},
+		{
+			"type": "text",
+			"id": "cta_label",
+			"label": "Bottom button label",
+			"default": "Apply for Visa on BlueKites"
+		},
+		{
+			"type": "url",
+			"id": "cta_link",
+			"label": "Bottom button link"
+		},
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-1"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "background_color",
+			"label": "Section background",
+			"default": "#FBFAF7"
+		},
+		{
+			"type": "color",
+			"id": "kicker_color",
+			"label": "Top label color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading color",
+			"default": "#1D2340"
+		},
+		{
+			"type": "color",
+			"id": "heading_accent_color",
+			"label": "Heading accent color",
+			"default": "#3A1E25"
+		},
+		{
+			"type": "color",
+			"id": "description_color",
+			"label": "Description color",
+			"default": "#525C72"
+		},
+		{
+			"type": "color",
+			"id": "top_link_color",
+			"label": "Top right link color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "card_background",
+			"label": "Card background",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "card_border",
+			"label": "Card border",
+			"default": "#ECE8E1"
+		},
+		{
+			"type": "color",
+			"id": "card_title_color",
+			"label": "Card title color",
+			"default": "#162139"
+		},
+		{
+			"type": "color",
+			"id": "card_text_color",
+			"label": "Card text color",
+			"default": "#5A647A"
+		},
+		{
+			"type": "color",
+			"id": "chip_background",
+			"label": "Chip background",
+			"default": "#F0ECDD"
+		},
+		{
+			"type": "color",
+			"id": "chip_text_color",
+			"label": "Chip text color",
+			"default": "#B9923E"
+		},
+		{
+			"type": "color",
+			"id": "cta_background",
+			"label": "Bottom button background",
+			"default": "#6D2742"
+		},
+		{
+			"type": "color",
+			"id": "cta_text_color",
+			"label": "Bottom button text color",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "range",
+			"id": "card_gap",
+			"label": "Card gap",
+			"min": 8,
+			"max": 32,
+			"step": 2,
+			"unit": "px",
+			"default": 12
+		},
+		{
+			"type": "range",
+			"id": "card_radius",
+			"label": "Card corner radius",
+			"min": 0,
+			"max": 24,
+			"step": 1,
+			"unit": "px",
+			"default": 14
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"label": "Top padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 48
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"label": "Bottom padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 56
+		}
+	],
+	"blocks": [
+		{
+			"type": "country_card",
+			"name": "Country card",
+			"settings": [
+				{
+					"type": "text",
+					"id": "code",
+					"label": "Country code",
+					"default": "US"
+				},
+				{
+					"type": "text",
+					"id": "country",
+					"label": "Country name",
+					"default": "USA"
+				},
+				{
+					"type": "text",
+					"id": "visa_type",
+					"label": "Visa type",
+					"default": "Tourist Visa"
+				},
+				{
+					"type": "text",
+					"id": "processing_time",
+					"label": "Processing time",
+					"default": "15-20 days"
+				},
+				{
+					"type": "url",
+					"id": "link",
+					"label": "Card link"
+				}
+			]
+		}
+	],
+	"max_blocks": 24,
+	"presets": [
+		{
+			"name": "Visa assistance",
+			"blocks": [
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "US",
+						"country": "USA",
+						"processing_time": "15-20 days"
+					}
+				},
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "GB",
+						"country": "UK",
+						"processing_time": "10-15 days"
+					}
+				},
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "AU",
+						"country": "Australia",
+						"processing_time": "20-30 days"
+					}
+				},
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "CA",
+						"country": "Canada",
+						"processing_time": "15-25 days"
+					}
+				},
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "SG",
+						"country": "Singapore",
+						"processing_time": "3-5 days"
+					}
+				},
+				{
+					"type": "country_card",
+					"settings": {
+						"code": "AE",
+						"country": "UAE",
+						"processing_time": "2-4 days"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

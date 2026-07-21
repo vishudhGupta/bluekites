@@ -1,0 +1,684 @@
+<section
+	id="PopularDestination-{{ section.id }}"
+	class="bk-destination color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-d-bg: {{ section.settings.background_color }};
+		--bk-d-kicker: {{ section.settings.kicker_color }};
+		--bk-d-heading: {{ section.settings.heading_color }};
+		--bk-d-accent: {{ section.settings.heading_accent_color }};
+		--bk-d-top-link: {{ section.settings.top_link_color }};
+		--bk-d-card-radius: {{ section.settings.card_radius }}px;
+		--bk-d-card-gap: {{ section.settings.card_gap }}px;
+		--bk-d-overlay: {{ section.settings.overlay_opacity | divided_by: 100.0 }};
+		--bk-d-overlay-tint: {{ section.settings.overlay_tint.red }}, {{ section.settings.overlay_tint.green }}, {{ section.settings.overlay_tint.blue }};
+		--bk-d-padding-top: {{ section.settings.padding_top }}px;
+		--bk-d-padding-bottom: {{ section.settings.padding_bottom }}px;
+	"
+>
+	<div class="bk-destination__inner page-width-normal">
+		<header class="bk-destination__header">
+			<div class="bk-destination__title-wrap">
+				{% if section.settings.kicker != blank %}
+					<p class="bk-destination__kicker">{{ section.settings.kicker }}</p>
+				{% endif %}
+
+				{% if section.settings.heading_line_1 != blank or section.settings.heading_line_2 != blank %}
+					<h2 class="bk-destination__heading">
+						{% if section.settings.heading_line_1 != blank %}
+							<span class="bk-destination__heading-main">{{ section.settings.heading_line_1 }}</span>
+						{% endif %}
+						{% if section.settings.heading_line_2 != blank %}
+							<span class="bk-destination__heading-accent">{{ section.settings.heading_line_2 }}</span>
+						{% endif %}
+					</h2>
+				{% endif %}
+			</div>
+
+			{% if section.settings.top_link_label != blank and section.settings.top_link_url != blank %}
+				<a class="bk-destination__top-link" href="{{ section.settings.top_link_url }}">
+					{{ section.settings.top_link_label }} <span aria-hidden="true">→</span>
+				</a>
+			{% endif %}
+		</header>
+
+		{% if section.blocks.size > 0 %}
+			<div class="bk-destination__grid" role="list">
+				{% for block in section.blocks %}
+					{% if block.type == 'destination_card' %}
+						<article class="bk-destination__card" role="listitem" {{ block.shopify_attributes }}>
+							{% if block.settings.destination_link != blank %}
+								<a
+									class="bk-destination__card-overlay-link"
+									href="{{ block.settings.destination_link }}"
+									aria-label="{{ block.settings.title | escape }}"
+								></a>
+							{% endif %}
+
+							<div class="bk-destination__media">
+								{% if block.settings.image != blank %}
+									{{
+										block.settings.image
+										| image_url: width: 900
+										| image_tag:
+											widths: '300, 450, 600, 900',
+											sizes: '(max-width: 749px) 92vw, (max-width: 1099px) 45vw, 23vw',
+											loading: 'lazy',
+											class: 'bk-destination__image',
+											alt: block.settings.title
+									}}
+								{% else %}
+									<div class="bk-destination__image bk-destination__image--placeholder" aria-hidden="true"></div>
+								{% endif %}
+								<div class="bk-destination__overlay"></div>
+							</div>
+
+							<div class="bk-destination__content">
+								<div class="bk-destination__top-row">
+									{% if block.settings.tag != blank %}
+										<span class="bk-destination__tag">{{ block.settings.tag }}</span>
+									{% endif %}
+
+									{% if block.settings.show_favorite_icon %}
+										<span class="bk-destination__fav" aria-hidden="true">
+											<svg width="14" height="14" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+												<path d="M10 16.4s-5.9-3.8-5.9-8a3.4 3.4 0 0 1 6-2.2 3.4 3.4 0 0 1 6 2.2c0 4.2-6.1 8-6.1 8Z"></path>
+											</svg>
+										</span>
+									{% endif %}
+								</div>
+
+								<div class="bk-destination__bottom-row">
+									<div class="bk-destination__text-block">
+										{% if block.settings.title != blank %}
+											<h3 class="bk-destination__card-title">{{ block.settings.title }}</h3>
+										{% endif %}
+
+										{% if block.settings.subtitle != blank %}
+											<p class="bk-destination__card-subtitle">{{ block.settings.subtitle }}</p>
+										{% endif %}
+
+										{% if block.settings.button_label != blank and block.settings.destination_link != blank %}
+											<a class="bk-destination__card-button" href="{{ block.settings.destination_link }}">
+												{{ block.settings.button_label }} <span aria-hidden="true">→</span>
+											</a>
+										{% endif %}
+									</div>
+
+									{% if block.settings.show_rating and block.settings.rating_label != blank %}
+										<span class="bk-destination__rating">★ {{ block.settings.rating_label }}</span>
+									{% endif %}
+								</div>
+							</div>
+						</article>
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="bk-destination__empty">Add destination cards in the editor.</p>
+		{% endif %}
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-destination {
+		background: var(--bk-d-bg);
+		padding-top: var(--bk-d-padding-top);
+		padding-bottom: var(--bk-d-padding-bottom);
+	}
+
+	.bk-destination__inner {
+		--bk-d-inline-space: 16px;
+		width: min(var(--narrow-page-width), calc(100% - (var(--bk-d-inline-space) * 2)));
+		margin-inline: auto;
+	}
+
+	@media screen and (min-width: 750px) {
+		.bk-destination__inner {
+			--bk-d-inline-space: 36px;
+		}
+	}
+
+	.bk-destination__header {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 1.2rem;
+		margin-bottom: 1.6rem;
+	}
+
+	.bk-destination__kicker {
+		margin: 0;
+		color: var(--bk-d-kicker);
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.74rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-destination__kicker::before {
+		content: '';
+		width: 1.9rem;
+		height: 1px;
+		display: inline-block;
+		background: currentColor;
+		opacity: 0.8;
+		margin-right: 0.5rem;
+		vertical-align: middle;
+	}
+
+	.bk-destination__heading {
+		margin: 0.6rem 0 0;
+		display: grid;
+		gap: 0.05rem;
+		line-height: 1;
+	}
+
+	.bk-destination__heading-main {
+		color: var(--bk-d-heading);
+		font-size: clamp(1.9rem, 3vw, 3.3rem);
+		font-weight: 600;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-destination__heading-accent {
+		color: var(--bk-d-accent);
+		font-size: clamp(1.95rem, 3.1vw, 3.35rem);
+		font-style: italic;
+		font-weight: 600;
+		letter-spacing: -0.015em;
+	}
+
+	.bk-destination__top-link {
+		text-decoration: none;
+		color: var(--bk-d-top-link);
+		font-size: 0.92rem;
+		font-weight: 500;
+		white-space: nowrap;
+	}
+
+	.bk-destination__top-link:hover {
+		text-decoration: underline;
+	}
+
+	.bk-destination__grid {
+		display: grid;
+		grid-template-columns: repeat(4, minmax(0, 1fr));
+		gap: var(--bk-d-card-gap);
+	}
+
+	.bk-destination__card {
+		position: relative;
+		border-radius: var(--bk-d-card-radius);
+		overflow: hidden;
+		min-height: 15rem;
+		aspect-ratio: 0.72;
+		box-shadow: 0 12px 28px rgba(20, 17, 27, 0.08);
+	}
+
+	.bk-destination__card-overlay-link {
+		position: absolute;
+		inset: 0;
+		z-index: 2;
+		border-radius: inherit;
+	}
+
+	.bk-destination__media,
+	.bk-destination__image,
+	.bk-destination__image--placeholder {
+		width: 100%;
+		height: 100%;
+	}
+
+	.bk-destination__media {
+		position: absolute;
+		inset: 0;
+	}
+
+	.bk-destination__image,
+	.bk-destination__image--placeholder {
+		object-fit: cover;
+		object-position: center;
+		display: block;
+	}
+
+	.bk-destination__image--placeholder {
+		background: linear-gradient(160deg, #6ea4c6 0%, #5a7d9f 48%, #2a2a3b 100%);
+	}
+
+	.bk-destination__overlay {
+		position: absolute;
+		inset: 0;
+		background:
+			linear-gradient(180deg, rgba(var(--bk-d-overlay-tint), calc(var(--bk-d-overlay) * 0.32)) 0%, rgba(var(--bk-d-overlay-tint), calc(var(--bk-d-overlay) + 0.14)) 100%),
+			linear-gradient(180deg, rgba(11, 10, 14, 0.08) 0%, rgba(11, 10, 14, 0.46) 100%);
+	}
+
+	.bk-destination__content {
+		position: relative;
+		z-index: 3;
+		height: 100%;
+		display: flex;
+		flex-direction: column;
+		justify-content: space-between;
+		padding: 0.8rem 0.78rem 0.72rem;
+		color: #f9f7f2;
+	}
+
+	.bk-destination__top-row {
+		display: flex;
+		justify-content: space-between;
+		align-items: center;
+		gap: 0.4rem;
+	}
+
+	.bk-destination__tag {
+		display: inline-flex;
+		align-items: center;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.25);
+		background: rgba(255, 255, 255, 0.14);
+		color: #fcf9f4;
+		padding: 0.22rem 0.42rem;
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		font-size: 0.52rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-destination__fav {
+		width: 1.28rem;
+		height: 1.28rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		background: rgba(255, 255, 255, 0.14);
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		color: rgba(255, 255, 255, 0.95);
+		flex: 0 0 auto;
+	}
+
+	.bk-destination__fav svg {
+		width: 0.78rem;
+		height: 0.78rem;
+	}
+
+	.bk-destination__bottom-row {
+		display: flex;
+		align-items: flex-end;
+		justify-content: space-between;
+		gap: 0.35rem;
+	}
+
+	.bk-destination__card-title {
+		margin: 0;
+		font-size: clamp(1.3rem, 1.7vw, 1.88rem);
+		line-height: 1.06;
+		color: #fff;
+		text-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
+	}
+
+	.bk-destination__card-subtitle {
+		margin: 0.15rem 0 0;
+		font-size: 0.68rem;
+		color: rgba(248, 244, 236, 0.92);
+		line-height: 1.2;
+	}
+
+	.bk-destination__card-button {
+		position: relative;
+		z-index: 4;
+		margin-top: 0.55rem;
+		display: inline-flex;
+		align-items: center;
+		gap: 0.3rem;
+		text-decoration: none;
+		color: #fff;
+		font-size: 0.66rem;
+		line-height: 1;
+		border: 1px solid rgba(255, 255, 255, 0.45);
+		background: rgba(106, 36, 61, 0.82);
+		border-radius: 999px;
+		padding: 0.33rem 0.58rem;
+		font-weight: 600;
+	}
+
+	.bk-destination__card-button:hover {
+		background: rgba(87, 20, 45, 0.92);
+	}
+
+	.bk-destination__rating {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.24rem;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.38);
+		background: rgba(255, 255, 255, 0.19);
+		color: #fff;
+		font-size: 0.64rem;
+		line-height: 1;
+		font-weight: 700;
+		padding: 0.26rem 0.52rem;
+		white-space: nowrap;
+		margin-bottom: 0.06rem;
+	}
+
+	.bk-destination__empty {
+		margin: 0;
+		color: var(--bk-d-heading);
+		font-size: 1rem;
+	}
+
+	@media screen and (max-width: 1099px) {
+		.bk-destination__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.bk-destination__card {
+			aspect-ratio: 0.78;
+		}
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-destination__header {
+			align-items: flex-start;
+			flex-direction: column;
+			margin-bottom: 1rem;
+		}
+
+		.bk-destination__top-link {
+			font-size: 0.86rem;
+		}
+
+		.bk-destination__grid {
+			grid-template-columns: 1fr;
+			gap: 0.8rem;
+		}
+
+		.bk-destination__card {
+			aspect-ratio: 1.03;
+			min-height: 18rem;
+		}
+
+		.bk-destination__content {
+			padding: 0.82rem 0.75rem 0.72rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "Popular destinations",
+	"tag": "section",
+	"class": "section-wrapper",
+	"settings": [
+		{
+			"type": "text",
+			"id": "kicker",
+			"label": "Top label",
+			"default": "Explore the world"
+		},
+		{
+			"type": "text",
+			"id": "heading_line_1",
+			"label": "Heading line 1",
+			"default": "Popular"
+		},
+		{
+			"type": "text",
+			"id": "heading_line_2",
+			"label": "Heading line 2",
+			"default": "Destinations"
+		},
+		{
+			"type": "text",
+			"id": "top_link_label",
+			"label": "Top right link label",
+			"default": "All destinations"
+		},
+		{
+			"type": "url",
+			"id": "top_link_url",
+			"label": "Top right link URL"
+		},
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-1"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "background_color",
+			"label": "Section background",
+			"default": "#FBFAF8"
+		},
+		{
+			"type": "color",
+			"id": "kicker_color",
+			"label": "Top label color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading color",
+			"default": "#1D2340"
+		},
+		{
+			"type": "color",
+			"id": "heading_accent_color",
+			"label": "Heading accent color",
+			"default": "#3A1E25"
+		},
+		{
+			"type": "color",
+			"id": "top_link_color",
+			"label": "Top right link color",
+			"default": "#C39A43"
+		},
+		{
+			"type": "color",
+			"id": "overlay_tint",
+			"label": "Card overlay tint",
+			"default": "#0D1022"
+		},
+		{
+			"type": "range",
+			"id": "overlay_opacity",
+			"label": "Card overlay strength",
+			"min": 0,
+			"max": 80,
+			"step": 1,
+			"unit": "%",
+			"default": 35
+		},
+		{
+			"type": "range",
+			"id": "card_radius",
+			"label": "Card corner radius",
+			"min": 0,
+			"max": 28,
+			"step": 1,
+			"unit": "px",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "card_gap",
+			"label": "Card gap",
+			"min": 8,
+			"max": 32,
+			"step": 2,
+			"unit": "px",
+			"default": 12
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"label": "Top padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 44
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"label": "Bottom padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 44
+		}
+	],
+	"blocks": [
+		{
+			"type": "destination_card",
+			"name": "Destination card",
+			"settings": [
+				{
+					"type": "image_picker",
+					"id": "image",
+					"label": "Card image"
+				},
+				{
+					"type": "text",
+					"id": "tag",
+					"label": "Top tag",
+					"default": "Trending"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_favorite_icon",
+					"label": "Show favorite icon",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "title",
+					"label": "Title",
+					"default": "Maldives"
+				},
+				{
+					"type": "text",
+					"id": "subtitle",
+					"label": "Subtitle",
+					"default": "India Ocean"
+				},
+				{
+					"type": "text",
+					"id": "button_label",
+					"label": "Button label",
+					"default": "Explore"
+				},
+				{
+					"type": "url",
+					"id": "destination_link",
+					"label": "Destination link"
+				},
+				{
+					"type": "checkbox",
+					"id": "show_rating",
+					"label": "Show rating",
+					"default": true
+				},
+				{
+					"type": "text",
+					"id": "rating_label",
+					"label": "Rating label",
+					"default": "4.9"
+				}
+			]
+		}
+	],
+	"max_blocks": 20,
+	"presets": [
+		{
+			"name": "Popular destinations",
+			"blocks": [
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Trending",
+						"title": "Maldives",
+						"subtitle": "India Ocean",
+						"rating_label": "4.9"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Popular",
+						"title": "Bali",
+						"subtitle": "Indonesia",
+						"rating_label": "4.8"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Bestseller",
+						"title": "Dubai",
+						"subtitle": "UAE",
+						"rating_label": "4.7"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Luxury",
+						"title": "Switzerland",
+						"subtitle": "Europe",
+						"rating_label": "4.9"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Romantic",
+						"title": "Santorini",
+						"subtitle": "Greece",
+						"rating_label": "4.8"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Quick Escape",
+						"title": "Goa",
+						"subtitle": "India",
+						"rating_label": "4.6"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Culture",
+						"title": "Japan",
+						"subtitle": "Asia",
+						"rating_label": "4.9"
+					}
+				},
+				{
+					"type": "destination_card",
+					"settings": {
+						"tag": "Classic",
+						"title": "Paris",
+						"subtitle": "France",
+						"rating_label": "4.8"
+					}
+				}
+			]
+		}
+	]
+}
+{% endschema %}

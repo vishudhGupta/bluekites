@@ -110,7 +110,7 @@
             "title": "Hotels",
             "description": "Boutique guesthouses to ultra-luxury resorts, handpicked and verified.",
             "link_label": "Learn more",
-            "link": "https://bluekites.online/",
+            "link": "https://bluekites.online/hotel/",
             "link_entire_card": true
           }
         },
@@ -121,7 +121,7 @@
             "title": "Bus",
             "description": "700+ operators, 10,000+ routes across India with live seat selection.",
             "link_label": "Learn more",
-            "link": "https://bluekites.online/",
+            "link": "https://bluekites.online/bus/",
             "link_entire_card": true
           }
         },
@@ -132,7 +132,7 @@
             "title": "Cab",
             "description": "Airport transfers, outstation journeys, and hourly city rentals in premium vehicles.",
             "link_label": "Learn more",
-            "link": "https://bluekites.online/",
+            "link": "https://bluekites.online/car/",
             "link_entire_card": true
           }
         },
@@ -143,7 +143,7 @@
             "title": "Holidays",
             "description": "Fully packaged holiday experiences crafted around your mood and schedule.",
             "link_label": "Learn more",
-            "link": "https://bluekites.online/",
+            "link": "https://bluekites.online/holiday/",
             "link_entire_card": true
           }
         },
@@ -154,7 +154,7 @@
             "title": "Visa Assistance",
             "description": "End-to-end guidance and documentation support for 80+ countries.",
             "link_label": "Learn more",
-            "link": "https://bluekites.online/",
+            "link": "https://bluekites.online/visa",
             "link_entire_card": true
           }
         }
@@ -441,6 +441,98 @@
         "padding_top": 48,
         "padding_bottom": 56
       }
+    },
+    "cards_trav_RQXBac": {
+      "type": "cards_trav",
+      "blocks": {
+        "bus_route_nxHBEg": {
+          "type": "bus_route",
+          "settings": {
+            "route_text": "Delhi - Jaipur",
+            "link": ""
+          }
+        },
+        "bus_route_WyxxXM": {
+          "type": "bus_route",
+          "settings": {
+            "route_text": "Mumbai - Pune",
+            "link": ""
+          }
+        },
+        "bus_route_PgtWRP": {
+          "type": "bus_route",
+          "settings": {
+            "route_text": "Bangalore - Goa",
+            "link": ""
+          }
+        },
+        "bus_route_ftK68M": {
+          "type": "bus_route",
+          "settings": {
+            "route_text": "Chennai - Pondicherry",
+            "link": ""
+          }
+        },
+        "cab_feature_c3JBDe": {
+          "type": "cab_feature",
+          "settings": {
+            "icon_text": "🚕",
+            "title": "Airport Transfers",
+            "link": ""
+          }
+        },
+        "cab_feature_3FfWWm": {
+          "type": "cab_feature",
+          "settings": {
+            "icon_text": "🚕",
+            "title": "Outstation",
+            "link": ""
+          }
+        },
+        "cab_feature_meaGFh": {
+          "type": "cab_feature",
+          "settings": {
+            "icon_text": "🚕",
+            "title": "Hourly Rental",
+            "link": ""
+          }
+        }
+      },
+      "block_order": [
+        "bus_route_nxHBEg",
+        "bus_route_WyxxXM",
+        "bus_route_PgtWRP",
+        "bus_route_ftK68M",
+        "cab_feature_c3JBDe",
+        "cab_feature_3FfWWm",
+        "cab_feature_meaGFh"
+      ],
+      "name": "Travel dual cards",
+      "settings": {
+        "color_scheme": "",
+        "section_background": "#FBFAF7",
+        "accent_color": "#C8A547",
+        "kicker_color": "#C7A34B",
+        "column_gap": 18,
+        "card_radius": 16,
+        "padding_top": 48,
+        "padding_bottom": 48,
+        "left_kicker": "Bus travel",
+        "left_heading_line_1": "Seamless Bus",
+        "left_heading_line_2": "Across India",
+        "left_description": "700+ operators, 10,000+ routes with live seat selection, real-time tracking, and flexible cancellation.",
+        "left_button_label": "Book Bus Tickets",
+        "left_button_link": "https://bluekites.online/bus/",
+        "left_bg_start": "#4A2A33",
+        "left_bg_end": "#3C2130",
+        "right_overlay_opacity": 54,
+        "right_kicker": "Cab booking",
+        "right_heading_line_1": "Premium Rides,",
+        "right_heading_line_2": "Your Way",
+        "right_description": "Luxury sedans, SUVs, and professional chauffeurs for airport transfers, outstation, and hourly rentals.",
+        "right_button_label": "Book a Cab",
+        "right_button_link": "https://bluekites.online/car/"
+      }
     }
   },
   "order": [
@@ -448,6 +540,7 @@
     "img_section_travel_d4MH6P",
     "oneplateform_q4Jd4C",
     "popular_destination_YwzyAF",
-    "visa_UmGbtx"
+    "visa_UmGbtx",
+    "cards_trav_RQXBac"
   ]
 }

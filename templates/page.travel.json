@@ -198,12 +198,13 @@
         "destination_card_q6Riac": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1758717152007-6a2eb7299409_1.avif",
             "tag": "Trending",
             "show_favorite_icon": true,
             "title": "Maldives",
             "subtitle": "India Ocean",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.9"
           }
@@ -211,12 +212,13 @@
         "destination_card_CNxTFd": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1634671651144-adbeca8623cb.avif",
             "tag": "Popular",
             "show_favorite_icon": true,
             "title": "Bali",
             "subtitle": "Indonesia",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.8"
           }
@@ -224,12 +226,13 @@
         "destination_card_C8cGdg": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1512453979798-5ea266f8880c.avif",
             "tag": "Bestseller",
             "show_favorite_icon": true,
             "title": "Dubai",
             "subtitle": "UAE",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.7"
           }
@@ -237,12 +240,13 @@
         "destination_card_7dMcJp": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1550503736-c1a2c9033c03.avif",
             "tag": "Luxury",
             "show_favorite_icon": true,
             "title": "Switzerland",
             "subtitle": "Europe",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.9"
           }
@@ -250,12 +254,13 @@
         "destination_card_yj36ED": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1613395877344-13d4a8e0d49e.avif",
             "tag": "Romantic",
             "show_favorite_icon": true,
             "title": "Santorini",
             "subtitle": "Greece",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.8"
           }
@@ -263,12 +268,13 @@
         "destination_card_rUYTLK": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1652820330085-82a0c2b88d78.avif",
             "tag": "Quick Escape",
             "show_favorite_icon": true,
             "title": "Goa",
             "subtitle": "India",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.6"
           }
@@ -276,12 +282,13 @@
         "destination_card_xrMpM8": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1557409518-691ebcd96038.avif",
             "tag": "Culture",
             "show_favorite_icon": true,
             "title": "Japan",
             "subtitle": "Asia",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.9"
           }
@@ -289,12 +296,13 @@
         "destination_card_MCGYPQ": {
           "type": "destination_card",
           "settings": {
+            "image": "shopify://shop_images/photo-1570097703229-b195d6dd291f.avif",
             "tag": "Classic",
             "show_favorite_icon": true,
             "title": "Paris",
             "subtitle": "France",
             "button_label": "Explore",
-            "destination_link": "",
+            "destination_link": "https://bluekites.online/",
             "show_rating": true,
             "rating_label": "4.8"
           }

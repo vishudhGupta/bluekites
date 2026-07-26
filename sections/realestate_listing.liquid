@@ -1,0 +1,493 @@
+<section
+	id="RealEstateListing-{{ section.id }}"
+	class="bk-re-listing color-{{ section.settings.color_scheme }}"
+	style="
+		--bk-rel-bg: {{ section.settings.section_background }};
+		--bk-rel-heading: {{ section.settings.heading_color }};
+		--bk-rel-subheading: {{ section.settings.subheading_color }};
+		--bk-rel-card-bg: {{ section.settings.card_background }};
+		--bk-rel-card-border: {{ section.settings.card_border }};
+		--bk-rel-card-title: {{ section.settings.card_title_color }};
+		--bk-rel-btn-bg: {{ section.settings.button_background }};
+		--bk-rel-btn-text: {{ section.settings.button_text_color }};
+		--bk-rel-overlay: {{ section.settings.image_overlay_opacity | divided_by: 100.0 }};
+		--bk-rel-gap: {{ section.settings.grid_gap }}px;
+		--bk-rel-radius: {{ section.settings.card_radius }}px;
+		--bk-rel-padding-top: {{ section.settings.padding_top }}px;
+		--bk-rel-padding-bottom: {{ section.settings.padding_bottom }}px;
+	"
+>
+	<div class="bk-re-listing__inner page-width-normal">
+		{% if section.settings.heading != blank or section.settings.description != blank %}
+			<header class="bk-re-listing__header">
+				{% if section.settings.subheading != blank %}
+					<p class="bk-re-listing__subheading">{{ section.settings.subheading }}</p>
+				{% endif %}
+
+				{% if section.settings.heading != blank %}
+					<h2 class="bk-re-listing__heading">{{ section.settings.heading }}</h2>
+				{% endif %}
+
+				{% if section.settings.description != blank %}
+					<p class="bk-re-listing__description">{{ section.settings.description }}</p>
+				{% endif %}
+			</header>
+		{% endif %}
+
+		{% if section.blocks.size > 0 %}
+			<div
+				class="bk-re-listing__grid"
+				role="list"
+				style="--bk-rel-columns: {{ section.settings.columns_desktop }};"
+			>
+				{% for block in section.blocks %}
+					{% if block.type == 'property' and block.settings.product != blank %}
+						{% assign product = all_products[block.settings.product] %}
+						{% if product != blank %}
+							{% assign card_title = block.settings.custom_title | default: product.title %}
+							{% assign enquiry_label = block.settings.button_label | default: section.settings.default_button_label %}
+							{% assign enquiry_link = block.settings.enquiry_link | default: section.settings.default_enquiry_link %}
+							{% assign final_enquiry_link = enquiry_link %}
+
+							{% if final_enquiry_link == blank %}
+								{% assign final_enquiry_link = product.url %}
+							{% endif %}
+
+							{% if section.settings.append_product_in_query and enquiry_link != blank %}
+								{% assign property_query_value = product.title | url_encode %}
+								{% if final_enquiry_link contains '?' %}
+									{% assign final_enquiry_link = final_enquiry_link | append: '&property=' | append: property_query_value %}
+								{% else %}
+									{% assign final_enquiry_link = final_enquiry_link | append: '?property=' | append: property_query_value %}
+								{% endif %}
+							{% endif %}
+
+							<article class="bk-re-listing__card" role="listitem" {{ block.shopify_attributes }}>
+								<a class="bk-re-listing__image-link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+									<div class="bk-re-listing__image-wrap">
+										{% if product.featured_image != blank %}
+											{{
+												product.featured_image
+												| image_url: width: 1200
+												| image_tag:
+													widths: '360, 520, 760, 980, 1200',
+													sizes: '(max-width: 749px) 92vw, (max-width: 1099px) 46vw, 30vw',
+													loading: 'lazy',
+													class: 'bk-re-listing__image',
+													alt: product.title
+											}}
+										{% else %}
+											<div class="bk-re-listing__image bk-re-listing__image--placeholder" aria-hidden="true"></div>
+										{% endif %}
+										<div class="bk-re-listing__image-overlay"></div>
+									</div>
+								</a>
+
+								<div class="bk-re-listing__content">
+									<h3 class="bk-re-listing__title">
+										<a href="{{ product.url }}">{{ card_title }}</a>
+									</h3>
+
+									<a class="bk-re-listing__button" href="{{ final_enquiry_link }}">
+										{{ enquiry_label }} <span aria-hidden="true">→</span>
+									</a>
+								</div>
+							</article>
+						{% endif %}
+					{% endif %}
+				{% endfor %}
+			</div>
+		{% else %}
+			<p class="bk-re-listing__empty">Add Property blocks and select products to build this listing section.</p>
+		{% endif %}
+	</div>
+</section>
+
+{% stylesheet %}
+	.bk-re-listing {
+		background: var(--bk-rel-bg);
+		padding-top: var(--bk-rel-padding-top);
+		padding-bottom: var(--bk-rel-padding-bottom);
+	}
+
+	.bk-re-listing__inner {
+		--bk-rel-inline-space: 16px;
+		width: min(var(--narrow-page-width), calc(100% - (var(--bk-rel-inline-space) * 2)));
+		margin-inline: auto;
+	}
+
+	@media screen and (min-width: 750px) {
+		.bk-re-listing__inner {
+			--bk-rel-inline-space: 36px;
+		}
+	}
+
+	.bk-re-listing__header {
+		margin-bottom: 1.45rem;
+	}
+
+	.bk-re-listing__subheading {
+		margin: 0;
+		color: var(--bk-rel-subheading);
+		text-transform: uppercase;
+		letter-spacing: 0.16em;
+		font-size: 0.74rem;
+		line-height: 1;
+		font-weight: 600;
+	}
+
+	.bk-re-listing__heading {
+		margin: 0.7rem 0 0;
+		color: var(--bk-rel-heading);
+		font-size: clamp(1.85rem, 3.1vw, 3.1rem);
+		line-height: 1.08;
+		letter-spacing: -0.02em;
+	}
+
+	.bk-re-listing__description {
+		margin: 0.72rem 0 0;
+		color: var(--bk-rel-subheading);
+		font-size: 0.98rem;
+		line-height: 1.5;
+		max-width: 64ch;
+	}
+
+	.bk-re-listing__grid {
+		display: grid;
+		grid-template-columns: repeat(var(--bk-rel-columns, 3), minmax(0, 1fr));
+		gap: var(--bk-rel-gap);
+	}
+
+	.bk-re-listing__card {
+		background: color-mix(in srgb, var(--bk-rel-card-bg) 72%, transparent);
+		border: 1px solid color-mix(in srgb, var(--bk-rel-card-border) 72%, #ffffff 28%);
+		border-radius: var(--bk-rel-radius);
+		overflow: hidden;
+		box-shadow: 0 14px 30px rgba(22, 18, 28, 0.14);
+		backdrop-filter: blur(10px) saturate(145%);
+		-webkit-backdrop-filter: blur(10px) saturate(145%);
+		display: grid;
+		grid-template-rows: auto 1fr;
+	}
+
+	.bk-re-listing__image-link {
+		display: block;
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.bk-re-listing__image-wrap {
+		position: relative;
+		aspect-ratio: 1.34;
+		overflow: hidden;
+	}
+
+	.bk-re-listing__image {
+		width: 100%;
+		height: 100%;
+		display: block;
+		object-fit: cover;
+		transition: transform 0.26s ease;
+	}
+
+	.bk-re-listing__card:hover .bk-re-listing__image {
+		transform: scale(1.03);
+	}
+
+	.bk-re-listing__image--placeholder {
+		background: linear-gradient(145deg, #95afbe 0%, #5e7b8f 50%, #2d3f53 100%);
+	}
+
+	.bk-re-listing__image-overlay {
+		position: absolute;
+		inset: 0;
+		background: linear-gradient(180deg, rgba(8, 10, 16, 0.05) 0%, rgba(8, 10, 16, var(--bk-rel-overlay)) 100%);
+		pointer-events: none;
+	}
+
+	.bk-re-listing__content {
+		padding: 1rem 1rem 1.1rem;
+		display: grid;
+		align-content: space-between;
+		gap: 0.9rem;
+		background: linear-gradient(180deg, rgba(255, 255, 255, 0.38) 0%, rgba(255, 255, 255, 0.2) 100%);
+	}
+
+	.bk-re-listing__title {
+		margin: 0;
+		color: color-mix(in srgb, var(--bk-rel-card-title) 88%, #ffffff 12%);
+		font-size: clamp(1.05rem, 1.5vw, 1.45rem);
+		line-height: 1.3;
+		font-weight: 600;
+	}
+
+	.bk-re-listing__title a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.bk-re-listing__title a:hover {
+		text-decoration: underline;
+	}
+
+	.bk-re-listing__button {
+		display: inline-flex;
+		align-items: center;
+		gap: 0.34rem;
+		width: fit-content;
+		border-radius: 999px;
+		border: 1px solid rgba(255, 255, 255, 0.35);
+		background: color-mix(in srgb, var(--bk-rel-btn-bg) 82%, #ffffff 18%);
+		color: var(--bk-rel-btn-text);
+		text-decoration: none;
+		font-size: 0.84rem;
+		line-height: 1;
+		font-weight: 600;
+		padding: 0.72rem 1rem;
+		box-shadow: 0 8px 18px rgba(24, 21, 34, 0.2);
+		backdrop-filter: blur(6px);
+		-webkit-backdrop-filter: blur(6px);
+	}
+
+	.bk-re-listing__button:hover {
+		filter: brightness(0.95);
+	}
+
+	.bk-re-listing__empty {
+		margin: 0;
+		color: var(--bk-rel-subheading);
+		font-size: 1rem;
+	}
+
+	@media screen and (max-width: 1099px) {
+		.bk-re-listing__grid {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+	}
+
+	@media screen and (max-width: 749px) {
+		.bk-re-listing__grid {
+			grid-template-columns: 1fr;
+			gap: 0.85rem;
+		}
+
+		.bk-re-listing__description {
+			font-size: 0.91rem;
+			line-height: 1.45;
+		}
+
+		.bk-re-listing__content {
+			padding: 0.88rem 0.88rem 0.95rem;
+			gap: 0.72rem;
+		}
+	}
+{% endstylesheet %}
+
+{% schema %}
+{
+	"name": "Real estate listing",
+	"tag": "section",
+	"class": "section-wrapper",
+	"settings": [
+		{
+			"type": "text",
+			"id": "subheading",
+			"label": "Subheading",
+			"default": "Featured Properties"
+		},
+		{
+			"type": "text",
+			"id": "heading",
+			"label": "Heading",
+			"default": "Find Your Next Property"
+		},
+		{
+			"type": "textarea",
+			"id": "description",
+			"label": "Description",
+			"default": "Curated listings from our product catalog. Select products in blocks to display them as properties."
+		},
+		{
+			"type": "text",
+			"id": "default_button_label",
+			"label": "Default enquiry button label",
+			"default": "Send Enquiry"
+		},
+		{
+			"type": "url",
+			"id": "default_enquiry_link",
+			"label": "Default enquiry link"
+		},
+		{
+			"type": "checkbox",
+			"id": "append_product_in_query",
+			"label": "Append product title to enquiry URL",
+			"default": true,
+			"info": "Adds ?property=Product%20Title or &property=Product%20Title when a default or block enquiry URL is set."
+		},
+		{
+			"type": "range",
+			"id": "columns_desktop",
+			"label": "Desktop columns",
+			"min": 2,
+			"max": 4,
+			"step": 1,
+			"default": 3
+		},
+		{
+			"type": "range",
+			"id": "grid_gap",
+			"label": "Grid gap",
+			"min": 8,
+			"max": 32,
+			"step": 2,
+			"unit": "px",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "card_radius",
+			"label": "Card radius",
+			"min": 0,
+			"max": 28,
+			"step": 1,
+			"unit": "px",
+			"default": 14
+		},
+		{
+			"type": "range",
+			"id": "image_overlay_opacity",
+			"label": "Image overlay opacity",
+			"min": 0,
+			"max": 65,
+			"step": 1,
+			"unit": "%",
+			"default": 16
+		},
+		{
+			"type": "range",
+			"id": "padding_top",
+			"label": "Top padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 44
+		},
+		{
+			"type": "range",
+			"id": "padding_bottom",
+			"label": "Bottom padding",
+			"min": 0,
+			"max": 120,
+			"step": 4,
+			"unit": "px",
+			"default": 44
+		},
+		{
+			"type": "color_scheme",
+			"id": "color_scheme",
+			"label": "Color scheme",
+			"default": "scheme-1"
+		},
+		{
+			"type": "header",
+			"content": "Colors"
+		},
+		{
+			"type": "color",
+			"id": "section_background",
+			"label": "Section background",
+			"default": "#FBFAF7"
+		},
+		{
+			"type": "color",
+			"id": "heading_color",
+			"label": "Heading color",
+			"default": "#172239"
+		},
+		{
+			"type": "color",
+			"id": "subheading_color",
+			"label": "Subheading/description color",
+			"default": "#5C6478"
+		},
+		{
+			"type": "color",
+			"id": "card_background",
+			"label": "Card background",
+			"default": "#FFFFFF"
+		},
+		{
+			"type": "color",
+			"id": "card_border",
+			"label": "Card border",
+			"default": "#E9E4DD"
+		},
+		{
+			"type": "color",
+			"id": "card_title_color",
+			"label": "Card title color",
+			"default": "#1C2740"
+		},
+		{
+			"type": "color",
+			"id": "button_background",
+			"label": "Button background",
+			"default": "#6D2742"
+		},
+		{
+			"type": "color",
+			"id": "button_text_color",
+			"label": "Button text color",
+			"default": "#FFFFFF"
+		}
+	],
+	"blocks": [
+		{
+			"type": "property",
+			"name": "Property",
+			"settings": [
+				{
+					"type": "product",
+					"id": "product",
+					"label": "Product"
+				},
+				{
+					"type": "text",
+					"id": "custom_title",
+					"label": "Custom title (optional)"
+				},
+				{
+					"type": "text",
+					"id": "button_label",
+					"label": "Button label (optional)",
+					"default": "Send Enquiry"
+				},
+				{
+					"type": "url",
+					"id": "enquiry_link",
+					"label": "Enquiry link (optional)"
+				}
+			]
+		}
+	],
+	"max_blocks": 24,
+	"presets": [
+		{
+			"name": "Real estate listing",
+			"blocks": [
+				{
+					"type": "property"
+				},
+				{
+					"type": "property"
+				},
+				{
+					"type": "property"
+				}
+			]
+		}
+	]
+}
+{% endschema %}

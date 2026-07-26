@@ -61,6 +61,7 @@
       "type": "img_section_travel",
       "name": "Travel hero image",
       "settings": {
+        "desktop_image": "shopify://shop_images/parth-savani-Db4VBBjI5_A-unsplash_2.jpg",
         "badge_text": "INDIA'S PREMIUM PROPERTIES",
         "heading_primary": "Find Your Dream",
         "heading_accent": "House.",

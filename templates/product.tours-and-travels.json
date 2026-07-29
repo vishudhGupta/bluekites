@@ -108,6 +108,7 @@
             },
             "price_a7krng": {
               "type": "price",
+              "disabled": true,
               "settings": {
                 "show_sale_price_first": true,
                 "show_installments": true,
@@ -143,6 +144,7 @@
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
+              "disabled": true,
               "settings": {
                 "stacking": false,
                 "show_pickup_availability": false,
@@ -175,6 +177,21 @@
                 }
               },
               "block_order": []
+            },
+            "button_gJpeU7": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Enquiry Now",
+                "link": "#",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
             },
             "product_description_LfDYCg": {
               "type": "product-description",
@@ -782,6 +799,7 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "button_gJpeU7",
             "product_description_LfDYCg",
             "group_X39hBc",
             "accordion_g8EVVp"
@@ -1077,7 +1095,7 @@
       },
       "name": "Featured collection",
       "settings": {
-        "collection": "all",
+        "collection": "tours-and-travels",
         "layout_type": "grid",
         "carousel_on_mobile": false,
         "max_products": 4,

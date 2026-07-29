@@ -94,8 +94,24 @@
               },
               "blocks": {}
             },
+            "button_yGTNFB": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Send Enquiry",
+                "link": "#",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
+            },
             "reviews": {
               "type": "review",
+              "disabled": true,
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
@@ -108,6 +124,7 @@
             },
             "price_a7krng": {
               "type": "price",
+              "disabled": true,
               "settings": {
                 "show_sale_price_first": true,
                 "show_installments": true,
@@ -130,6 +147,7 @@
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
+              "disabled": true,
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
@@ -143,6 +161,7 @@
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
+              "disabled": true,
               "settings": {
                 "stacking": false,
                 "show_pickup_availability": false,
@@ -778,6 +797,7 @@
           },
           "block_order": [
             "text_GnyQiN",
+            "button_yGTNFB",
             "reviews",
             "price_a7krng",
             "variant_picker_R3rGDr",

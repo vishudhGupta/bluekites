@@ -1096,7 +1096,7 @@
       "name": "Featured collection",
       "settings": {
         "collection": "tours-and-travels",
-        "layout_type": "grid",
+        "layout_type": "carousel",
         "carousel_on_mobile": false,
         "max_products": 4,
         "columns": 4,

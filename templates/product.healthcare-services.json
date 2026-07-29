@@ -16,7 +16,7 @@
           "type": "_product-media-gallery",
           "static": true,
           "settings": {
-            "media_presentation": "grid",
+            "media_presentation": "carousel",
             "media_columns": "two",
             "image_gap": 12,
             "large_first_image": true,
@@ -96,6 +96,7 @@
             },
             "reviews": {
               "type": "review",
+              "disabled": true,
               "settings": {
                 "stars_style": "shaded",
                 "show_number": true,
@@ -108,6 +109,7 @@
             },
             "price_a7krng": {
               "type": "price",
+              "disabled": true,
               "settings": {
                 "show_sale_price_first": true,
                 "show_installments": true,
@@ -130,6 +132,7 @@
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
+              "disabled": true,
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
@@ -143,6 +146,7 @@
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
+              "disabled": true,
               "settings": {
                 "stacking": false,
                 "show_pickup_availability": false,
@@ -175,6 +179,21 @@
                 }
               },
               "block_order": []
+            },
+            "button_8PwLCM": {
+              "type": "button",
+              "name": "t:names.button",
+              "settings": {
+                "label": "Send Enquiry",
+                "link": "shopify://collections/all",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
             },
             "product_description_LfDYCg": {
               "type": "product-description",
@@ -782,6 +801,7 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "button_8PwLCM",
             "product_description_LfDYCg",
             "group_X39hBc",
             "accordion_g8EVVp"
@@ -899,7 +919,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<p>Shop The Full Collection</p>",
+                "text": "<p>Healthcare Services</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",

@@ -917,7 +917,7 @@
               "type": "_product-list-text",
               "name": "t:names.collection_title",
               "settings": {
-                "text": "<p>Shop The Full Collection</p>",
+                "text": "<p>Tours and Travels</p>",
                 "width": "100%",
                 "max_width": "normal",
                 "alignment": "center",

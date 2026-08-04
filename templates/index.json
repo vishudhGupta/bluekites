@@ -504,36 +504,36 @@
         "update_EaCLdP": {
           "type": "update",
           "settings": {
-            "title": "Free Worldwide Shipping",
-            "text": "On orders above $500 across selected regions."
+            "title": "100% Herbal Formula",
+            "text": "Enriched with carefully selected natural herbs for safe daily hair care."
           }
         },
         "update_4rWmxT": {
           "type": "update",
           "settings": {
-            "title": "Trending Now",
-            "text": "Smart Home Devices at exclusive global prices."
+            "title": "Reduces Hair Fall",
+            "text": "Helps strengthen hair from the roots and minimizes breakage."
           }
         },
         "update_jzRkGG": {
           "type": "update",
           "settings": {
-            "title": "New Launch",
-            "text": "Luxury Watch Collection with premium craftsmanship"
+            "title": "Promotes Healthy Hair Growth",
+            "text": "Supports thicker, fuller, and healthier-looking hair over time."
           }
         },
         "update_DVX6QC": {
           "type": "update",
           "settings": {
-            "title": "Limited-Time Offer",
-            "text": "Premium Health Monitors now available at 30% OFF."
+            "title": "Deep Scalp Cleansing",
+            "text": "Removes dirt, excess oil, and impurities without stripping natural moisture."
           }
         },
         "update_HWwrEV": {
           "type": "update",
           "settings": {
-            "title": "Just Arrived",
-            "text": "Designer Fashion Collection 2026 now live."
+            "title": "Soft & Silky Finish",
+            "text": "Leaves your hair smooth, manageable, and naturally shiny."
           }
         }
       },
@@ -551,7 +551,7 @@
       "settings": {
         "heading": "AI Smart Recommendations",
         "subheading": "Personalized for you based on your preferences",
-        "main_product": "test",
+        "main_product": "bluekites-dr-lom-shampoo-200ml-200ml-pack-of-3",
         "panel_heading": "Live Updates",
         "color_scheme": "",
         "background_color": "#fcfbfa",

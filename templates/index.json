@@ -227,6 +227,7 @@
           "settings": {
             "title": "Bakery",
             "tab_key": "more",
+            "image": "shopify://shop_images/Untitled_design_16.png",
             "link": ""
           }
         },
@@ -235,6 +236,7 @@
           "settings": {
             "title": "Apparels",
             "tab_key": "more",
+            "image": "shopify://shop_images/Untitled_design_14.png",
             "link": ""
           }
         },
@@ -243,6 +245,7 @@
           "settings": {
             "title": "Choclates",
             "tab_key": "more",
+            "image": "shopify://shop_images/Untitled_design_13.png",
             "link": ""
           }
         },
@@ -251,6 +254,7 @@
           "settings": {
             "title": "Beverages",
             "tab_key": "more",
+            "image": "shopify://shop_images/Untitled_design_15.png",
             "link": ""
           }
         }

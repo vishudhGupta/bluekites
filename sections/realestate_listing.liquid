@@ -34,7 +34,70 @@
 			</header>
 		{% endif %}
 
-		{% if section.blocks.size > 0 %}
+		{% assign listing_collection = blank %}
+		{% if section.settings.source_collection != blank %}
+			{% assign listing_collection = collections[section.settings.source_collection] %}
+		{% endif %}
+
+		{% if listing_collection != blank and listing_collection.products_count > 0 %}
+			<div
+				class="bk-re-listing__grid"
+				role="list"
+				style="--bk-rel-columns: {{ section.settings.columns_desktop }};"
+			>
+				{% for product in listing_collection.products limit: section.settings.collection_products_limit %}
+					{% assign card_title = product.title %}
+					{% assign enquiry_label = section.settings.default_button_label %}
+					{% assign enquiry_link = section.settings.default_enquiry_link %}
+					{% assign final_enquiry_link = enquiry_link %}
+
+					{% if final_enquiry_link == blank %}
+						{% assign final_enquiry_link = product.url %}
+					{% endif %}
+
+					{% if section.settings.append_product_in_query and enquiry_link != blank %}
+						{% assign property_query_value = product.title | url_encode %}
+						{% if final_enquiry_link contains '?' %}
+							{% assign final_enquiry_link = final_enquiry_link | append: '&property=' | append: property_query_value %}
+						{% else %}
+							{% assign final_enquiry_link = final_enquiry_link | append: '?property=' | append: property_query_value %}
+						{% endif %}
+					{% endif %}
+
+					<article class="bk-re-listing__card" role="listitem">
+						<a class="bk-re-listing__image-link" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
+							<div class="bk-re-listing__image-wrap">
+								{% if product.featured_image != blank %}
+									{{
+										product.featured_image
+										| image_url: width: 1200
+										| image_tag:
+											widths: '360, 520, 760, 980, 1200',
+											sizes: '(max-width: 749px) 92vw, (max-width: 1099px) 46vw, 30vw',
+											loading: 'lazy',
+											class: 'bk-re-listing__image',
+											alt: product.title
+									}}
+								{% else %}
+									<div class="bk-re-listing__image bk-re-listing__image--placeholder" aria-hidden="true"></div>
+								{% endif %}
+								<div class="bk-re-listing__image-overlay"></div>
+							</div>
+						</a>
+
+						<div class="bk-re-listing__content">
+							<h3 class="bk-re-listing__title">
+								<a href="{{ product.url }}">{{ card_title }}</a>
+							</h3>
+
+							<a class="bk-re-listing__button" href="{{ final_enquiry_link }}">
+								{{ enquiry_label }} <span aria-hidden="true">→</span>
+							</a>
+						</div>
+					</article>
+				{% endfor %}
+			</div>
+		{% elsif section.blocks.size > 0 %}
 			<div
 				class="bk-re-listing__grid"
 				role="list"
@@ -98,7 +161,7 @@
 				{% endfor %}
 			</div>
 		{% else %}
-			<p class="bk-re-listing__empty">Add Property blocks and select products to build this listing section.</p>
+			<p class="bk-re-listing__empty">Select a collection to auto-load products, or add Property blocks and select products manually.</p>
 		{% endif %}
 	</div>
 </section>
@@ -306,6 +369,25 @@
 			"id": "description",
 			"label": "Description",
 			"default": "Curated listings from our product catalog. Select products in blocks to display them as properties."
+		},
+		{
+			"type": "header",
+			"content": "Data source"
+		},
+		{
+			"type": "collection",
+			"id": "source_collection",
+			"label": "Collection",
+			"info": "If selected, products from this collection are shown automatically. If empty, Property blocks are used."
+		},
+		{
+			"type": "range",
+			"id": "collection_products_limit",
+			"label": "Collection products limit",
+			"min": 2,
+			"max": 50,
+			"step": 1,
+			"default": 12
 		},
 		{
 			"type": "text",

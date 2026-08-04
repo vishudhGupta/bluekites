@@ -135,8 +135,8 @@
         "tab_W4B6ci": {
           "type": "tab",
           "settings": {
-            "tab_label": "IT & Software Services",
-            "tab_key": "it"
+            "tab_label": "More Products",
+            "tab_key": "more"
           }
         },
         "card_WfNa3C": {
@@ -194,6 +194,38 @@
             "tab_key": "furnniture",
             "link": "shopify://collections/boltless-furniture-turn-n-tube"
           }
+        },
+        "card_iXchD7": {
+          "type": "card",
+          "settings": {
+            "title": "Bakery",
+            "tab_key": "more",
+            "link": ""
+          }
+        },
+        "card_BdzA4W": {
+          "type": "card",
+          "settings": {
+            "title": "Apparels",
+            "tab_key": "more",
+            "link": ""
+          }
+        },
+        "card_jMTDTz": {
+          "type": "card",
+          "settings": {
+            "title": "Choclates",
+            "tab_key": "more",
+            "link": ""
+          }
+        },
+        "card_QzPj93": {
+          "type": "card",
+          "settings": {
+            "title": "Beverages",
+            "tab_key": "more",
+            "link": ""
+          }
         }
       },
       "block_order": [
@@ -206,7 +238,11 @@
         "card_xX4HiP",
         "card_mYPTpp",
         "card_9Gmp9B",
-        "card_YFEC8t"
+        "card_YFEC8t",
+        "card_iXchD7",
+        "card_BdzA4W",
+        "card_jMTDTz",
+        "card_QzPj93"
       ],
       "name": "Category tabs",
       "settings": {

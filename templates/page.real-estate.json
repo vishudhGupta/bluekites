@@ -78,50 +78,6 @@
     },
     "realestate_listing_hzfCrh": {
       "type": "realestate_listing",
-      "blocks": {
-        "property_T9YnXX": {
-          "type": "property",
-          "settings": {
-            "product": "bluekites-real-estate-residential-1",
-            "custom_title": "",
-            "button_label": "Send Enquiry",
-            "enquiry_link": ""
-          }
-        },
-        "property_7tcUd7": {
-          "type": "property",
-          "settings": {
-            "product": "bluekites-real-estate-residential-2",
-            "custom_title": "",
-            "button_label": "Send Enquiry",
-            "enquiry_link": ""
-          }
-        },
-        "property_qgMXVU": {
-          "type": "property",
-          "settings": {
-            "product": "bluekites-real-estate-residential-3",
-            "custom_title": "",
-            "button_label": "Send Enquiry",
-            "enquiry_link": ""
-          }
-        },
-        "property_NED3xP": {
-          "type": "property",
-          "settings": {
-            "product": "bluekites-real-estate-residential-4",
-            "custom_title": "",
-            "button_label": "Send Enquiry",
-            "enquiry_link": ""
-          }
-        }
-      },
-      "block_order": [
-        "property_T9YnXX",
-        "property_7tcUd7",
-        "property_qgMXVU",
-        "property_NED3xP"
-      ],
       "name": "Real estate listing",
       "settings": {
         "subheading": "Featured Properties",

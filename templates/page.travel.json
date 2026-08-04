@@ -106,7 +106,8 @@
         "service_card_VhXK6g": {
           "type": "service_card",
           "settings": {
-            "icon_text": "🏨",
+            "icon_image": "shopify://shop_images/hotel.png",
+            "icon_text": "",
             "title": "Hotels",
             "description": "Boutique guesthouses to ultra-luxury resorts, handpicked and verified.",
             "link_label": "Learn more",
@@ -117,7 +118,8 @@
         "service_card_FEtXbn": {
           "type": "service_card",
           "settings": {
-            "icon_text": "🚌",
+            "icon_image": "shopify://shop_images/bus.png",
+            "icon_text": "",
             "title": "Bus",
             "description": "700+ operators, 10,000+ routes across India with live seat selection.",
             "link_label": "Learn more",
@@ -128,7 +130,8 @@
         "service_card_MpJkfX": {
           "type": "service_card",
           "settings": {
-            "icon_text": "🚕",
+            "icon_image": "shopify://shop_images/cab.png",
+            "icon_text": "",
             "title": "Cab",
             "description": "Airport transfers, outstation journeys, and hourly city rentals in premium vehicles.",
             "link_label": "Learn more",
@@ -150,7 +153,8 @@
         "service_card_8dnQmi": {
           "type": "service_card",
           "settings": {
-            "icon_text": "🛂",
+            "icon_image": "shopify://shop_images/passport.png",
+            "icon_text": "",
             "title": "Visa Assistance",
             "description": "End-to-end guidance and documentation support for 80+ countries.",
             "link_label": "Learn more",
@@ -476,7 +480,7 @@
         "cab_feature_c3JBDe": {
           "type": "cab_feature",
           "settings": {
-            "icon_text": "🚕",
+            "icon_text": "",
             "title": "Airport Transfers",
             "link": ""
           }
@@ -484,7 +488,7 @@
         "cab_feature_3FfWWm": {
           "type": "cab_feature",
           "settings": {
-            "icon_text": "🚕",
+            "icon_text": "",
             "title": "Outstation",
             "link": ""
           }
@@ -492,7 +496,7 @@
         "cab_feature_meaGFh": {
           "type": "cab_feature",
           "settings": {
-            "icon_text": "🚕",
+            "icon_text": "",
             "title": "Hourly Rental",
             "link": ""
           }

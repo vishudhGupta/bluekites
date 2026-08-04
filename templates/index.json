@@ -15,7 +15,7 @@
         "slide_FL9cPD": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/Banner_jpg.jpg",
+            "background_image": "shopify://shop_images/banners_3.png",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -34,7 +34,26 @@
         "slide_mATTUY": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/Gemini_Generated_Image_vmrvkxvmrvkxvmrv_1.png",
+            "background_image": "shopify://shop_images/banners_4.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "",
+            "button_link": "",
+            "show_social_card": true,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_YzRb6k": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banners_5.png",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -53,7 +72,8 @@
       },
       "block_order": [
         "slide_FL9cPD",
-        "slide_mATTUY"
+        "slide_mATTUY",
+        "slide_YzRb6k"
       ],
       "name": "t:names.hero",
       "settings": {
@@ -128,29 +148,37 @@
         "tab_9maBgk": {
           "type": "tab",
           "settings": {
-            "tab_label": "Industrial Products",
-            "tab_key": "industrial"
+            "tab_label": "Furniture",
+            "tab_key": "furnniture"
           }
         },
         "tab_W4B6ci": {
           "type": "tab",
           "settings": {
-            "tab_label": "IT & Software Services",
-            "tab_key": "it"
+            "tab_label": "More Products",
+            "tab_key": "more"
           }
         },
         "card_WfNa3C": {
           "type": "card",
           "settings": {
-            "title": "Medicines",
+            "title": "Ayurvedic",
             "tab_key": "healthcare",
-            "link": ""
+            "link": "shopify://collections/ayurvedic"
           }
         },
         "card_gfULqL": {
           "type": "card",
           "settings": {
-            "title": "Surgicals",
+            "title": "Allopathy",
+            "tab_key": "healthcare",
+            "link": "shopify://collections/allopathy"
+          }
+        },
+        "card_WexYcL": {
+          "type": "card",
+          "settings": {
+            "title": "Handrub & Disinfectants",
             "tab_key": "healthcare",
             "link": ""
           }
@@ -158,16 +186,64 @@
         "card_xX4HiP": {
           "type": "card",
           "settings": {
-            "title": "Diagnostics",
+            "title": "Proprietary Med",
             "tab_key": "healthcare",
+            "link": "shopify://collections/proprietary-med-powder"
+          }
+        },
+        "card_mYPTpp": {
+          "type": "card",
+          "settings": {
+            "title": "Boltless Rack",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-boltless-rack"
+          }
+        },
+        "card_9Gmp9B": {
+          "type": "card",
+          "settings": {
+            "title": "Household",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-household"
+          }
+        },
+        "card_YFEC8t": {
+          "type": "card",
+          "settings": {
+            "title": "Turn N Tube",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-turn-n-tube"
+          }
+        },
+        "card_iXchD7": {
+          "type": "card",
+          "settings": {
+            "title": "Bakery",
+            "tab_key": "more",
             "link": ""
           }
         },
-        "card_QUbCQT": {
+        "card_BdzA4W": {
           "type": "card",
           "settings": {
-            "title": "Supplements",
-            "tab_key": "healthcare",
+            "title": "Apparels",
+            "tab_key": "more",
+            "link": ""
+          }
+        },
+        "card_jMTDTz": {
+          "type": "card",
+          "settings": {
+            "title": "Choclates",
+            "tab_key": "more",
+            "link": ""
+          }
+        },
+        "card_QzPj93": {
+          "type": "card",
+          "settings": {
+            "title": "Beverages",
+            "tab_key": "more",
             "link": ""
           }
         }
@@ -178,8 +254,15 @@
         "tab_W4B6ci",
         "card_WfNa3C",
         "card_gfULqL",
+        "card_WexYcL",
         "card_xX4HiP",
-        "card_QUbCQT"
+        "card_mYPTpp",
+        "card_9Gmp9B",
+        "card_YFEC8t",
+        "card_iXchD7",
+        "card_BdzA4W",
+        "card_jMTDTz",
+        "card_QzPj93"
       ],
       "name": "Category tabs",
       "settings": {
@@ -213,28 +296,28 @@
         "product_McQMJX": {
           "type": "product",
           "settings": {
-            "product": "test",
+            "product": "bluekites-prodex-powder-choco-pack-of-3",
             "badge_text": "New"
           }
         },
         "product_LDEQQ6": {
           "type": "product",
           "settings": {
-            "product": "test",
+            "product": "bluekites-dr-lom-hair-oil-100ml-pack-of-3",
             "badge_text": "New"
           }
         },
         "product_4dkpUL": {
           "type": "product",
           "settings": {
-            "product": "test",
+            "product": "bluekites-glimcee-z-tablet-30-nos-pack-of-3",
             "badge_text": "New"
           }
         },
         "product_bApnFY": {
           "type": "product",
           "settings": {
-            "product": "test",
+            "product": "bluekites-madhusudha-powder-100gm-pack-of-3",
             "badge_text": "New"
           }
         }
@@ -441,36 +524,36 @@
         "update_EaCLdP": {
           "type": "update",
           "settings": {
-            "title": "Free Worldwide Shipping",
-            "text": "On orders above $500 across selected regions."
+            "title": "100% Herbal Formula",
+            "text": "Enriched with carefully selected natural herbs for safe daily hair care."
           }
         },
         "update_4rWmxT": {
           "type": "update",
           "settings": {
-            "title": "Trending Now",
-            "text": "Smart Home Devices at exclusive global prices."
+            "title": "Reduces Hair Fall",
+            "text": "Helps strengthen hair from the roots and minimizes breakage."
           }
         },
         "update_jzRkGG": {
           "type": "update",
           "settings": {
-            "title": "New Launch",
-            "text": "Luxury Watch Collection with premium craftsmanship"
+            "title": "Promotes Healthy Hair Growth",
+            "text": "Supports thicker, fuller, and healthier-looking hair over time."
           }
         },
         "update_DVX6QC": {
           "type": "update",
           "settings": {
-            "title": "Limited-Time Offer",
-            "text": "Premium Health Monitors now available at 30% OFF."
+            "title": "Deep Scalp Cleansing",
+            "text": "Removes dirt, excess oil, and impurities without stripping natural moisture."
           }
         },
         "update_HWwrEV": {
           "type": "update",
           "settings": {
-            "title": "Just Arrived",
-            "text": "Designer Fashion Collection 2026 now live."
+            "title": "Soft & Silky Finish",
+            "text": "Leaves your hair smooth, manageable, and naturally shiny."
           }
         }
       },
@@ -488,7 +571,7 @@
       "settings": {
         "heading": "AI Smart Recommendations",
         "subheading": "Personalized for you based on your preferences",
-        "main_product": "test",
+        "main_product": "bluekites-dr-lom-shampoo-200ml-200ml-pack-of-3",
         "panel_heading": "Live Updates",
         "color_scheme": "",
         "background_color": "#fcfbfa",

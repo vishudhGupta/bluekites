@@ -358,6 +358,64 @@
         "padding_bottom": 60
       }
     },
+    "service_cards_9R7Aax": {
+      "type": "service_cards",
+      "blocks": {
+        "service_card_gqyben": {
+          "type": "service_card",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_23.png",
+            "title": "Service title",
+            "description": "Short service description goes here.",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        },
+        "service_card_UDPHNM": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service title",
+            "description": "Short service description goes here.",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        },
+        "service_card_TCtPtC": {
+          "type": "service_card",
+          "settings": {
+            "title": "Service title",
+            "description": "Short service description goes here.",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        }
+      },
+      "block_order": [
+        "service_card_gqyben",
+        "service_card_UDPHNM",
+        "service_card_TCtPtC"
+      ],
+      "name": "Service cards",
+      "settings": {
+        "subheading": "Our Services",
+        "heading": "What We Can Help You With",
+        "description": "Create cards with an image and link each service to a specific page.",
+        "columns_desktop": 4,
+        "grid_gap": 16,
+        "card_radius": 14,
+        "padding_top": 44,
+        "padding_bottom": 44,
+        "color_scheme": "",
+        "section_background": "#F8F7F4",
+        "heading_color": "#1C2740",
+        "text_color": "#5C6478",
+        "card_background": "#FFFFFF",
+        "card_border": "#E5E8EE"
+      }
+    },
     "whyus_XEjggw": {
       "type": "whyus",
       "blocks": {
@@ -519,6 +577,7 @@
     "marquee_pNWDpm",
     "category_tabs_RMWU8E",
     "feature_product_bLRpkG",
+    "service_cards_9R7Aax",
     "whyus_XEjggw",
     "ai_smart_AMQE9r"
   ]

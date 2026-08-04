@@ -128,8 +128,8 @@
         "tab_9maBgk": {
           "type": "tab",
           "settings": {
-            "tab_label": "Industrial Products",
-            "tab_key": "industrial"
+            "tab_label": "Furniture",
+            "tab_key": "furnniture"
           }
         },
         "tab_W4B6ci": {
@@ -162,6 +162,30 @@
             "tab_key": "healthcare",
             "link": "shopify://collections/proprietary-med-powder"
           }
+        },
+        "card_mYPTpp": {
+          "type": "card",
+          "settings": {
+            "title": "Boltless Rack",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-boltless-rack"
+          }
+        },
+        "card_9Gmp9B": {
+          "type": "card",
+          "settings": {
+            "title": "Medicines",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-household"
+          }
+        },
+        "card_YFEC8t": {
+          "type": "card",
+          "settings": {
+            "title": "Turn N Tube",
+            "tab_key": "furnniture",
+            "link": "shopify://collections/boltless-furniture-turn-n-tube"
+          }
         }
       },
       "block_order": [
@@ -170,7 +194,10 @@
         "tab_W4B6ci",
         "card_WfNa3C",
         "card_gfULqL",
-        "card_xX4HiP"
+        "card_xX4HiP",
+        "card_mYPTpp",
+        "card_9Gmp9B",
+        "card_YFEC8t"
       ],
       "name": "Category tabs",
       "settings": {

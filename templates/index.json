@@ -155,6 +155,14 @@
             "link": "shopify://collections/allopathy"
           }
         },
+        "card_WexYcL": {
+          "type": "card",
+          "settings": {
+            "title": "Handrub & Disinfectants",
+            "tab_key": "healthcare",
+            "link": ""
+          }
+        },
         "card_xX4HiP": {
           "type": "card",
           "settings": {
@@ -194,6 +202,7 @@
         "tab_W4B6ci",
         "card_WfNa3C",
         "card_gfULqL",
+        "card_WexYcL",
         "card_xX4HiP",
         "card_mYPTpp",
         "card_9Gmp9B",

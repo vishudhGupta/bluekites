@@ -150,25 +150,17 @@
         "card_gfULqL": {
           "type": "card",
           "settings": {
-            "title": "Surgicals",
+            "title": "Allopathy",
             "tab_key": "healthcare",
-            "link": ""
+            "link": "shopify://collections/allopathy"
           }
         },
         "card_xX4HiP": {
           "type": "card",
           "settings": {
-            "title": "Diagnostics",
+            "title": "Proprietary Med",
             "tab_key": "healthcare",
-            "link": ""
-          }
-        },
-        "card_QUbCQT": {
-          "type": "card",
-          "settings": {
-            "title": "Supplements",
-            "tab_key": "healthcare",
-            "link": ""
+            "link": "shopify://collections/proprietary-med-powder"
           }
         }
       },
@@ -178,8 +170,7 @@
         "tab_W4B6ci",
         "card_WfNa3C",
         "card_gfULqL",
-        "card_xX4HiP",
-        "card_QUbCQT"
+        "card_xX4HiP"
       ],
       "name": "Category tabs",
       "settings": {

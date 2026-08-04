@@ -200,6 +200,7 @@
           "settings": {
             "title": "Boltless Rack",
             "tab_key": "furnniture",
+            "image": "shopify://shop_images/Untitled_design_11.png",
             "link": "shopify://collections/boltless-furniture-boltless-rack"
           }
         },
@@ -208,6 +209,7 @@
           "settings": {
             "title": "Household",
             "tab_key": "furnniture",
+            "image": "shopify://shop_images/Untitled_design_12.png",
             "link": "shopify://collections/boltless-furniture-household"
           }
         },
@@ -216,6 +218,7 @@
           "settings": {
             "title": "Turn N Tube",
             "tab_key": "furnniture",
+            "image": "shopify://shop_images/Untitled_design_10.png",
             "link": "shopify://collections/boltless-furniture-turn-n-tube"
           }
         },

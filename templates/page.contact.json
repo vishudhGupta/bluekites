@@ -140,6 +140,32 @@
           },
           "blocks": {}
         },
+        "text_yFXQCe": {
+          "type": "text",
+          "name": "t:names.heading",
+          "settings": {
+            "text": "<h3>Contact Form</h3>",
+            "width": "fit-content",
+            "max_width": "normal",
+            "alignment": "left",
+            "type_preset": "rte",
+            "font": "var(--font-body--family)",
+            "font_size": "1rem",
+            "line_height": "normal",
+            "letter_spacing": "normal",
+            "case": "none",
+            "wrap": "pretty",
+            "color": "var(--color-foreground)",
+            "background": false,
+            "background_color": "#00000026",
+            "corner_radius": 0,
+            "padding-block-start": 0,
+            "padding-block-end": 0,
+            "padding-inline-start": 0,
+            "padding-inline-end": 0
+          },
+          "blocks": {}
+        },
         "contact_form_jWxXkm": {
           "type": "contact-form",
           "settings": {
@@ -178,6 +204,7 @@
         "text_WV9gBR",
         "text_YPazmt",
         "text_grGymD",
+        "text_yFXQCe",
         "contact_form_jWxXkm"
       ],
       "settings": {

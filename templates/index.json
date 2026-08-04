@@ -15,7 +15,7 @@
         "slide_FL9cPD": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/Banner_jpg.jpg",
+            "background_image": "shopify://shop_images/banners_3.png",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -34,7 +34,26 @@
         "slide_mATTUY": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/Gemini_Generated_Image_vmrvkxvmrvkxvmrv_1.png",
+            "background_image": "shopify://shop_images/banners_4.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "",
+            "button_link": "",
+            "show_social_card": true,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_YzRb6k": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banners_5.png",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -53,7 +72,8 @@
       },
       "block_order": [
         "slide_FL9cPD",
-        "slide_mATTUY"
+        "slide_mATTUY",
+        "slide_YzRb6k"
       ],
       "name": "t:names.hero",
       "settings": {

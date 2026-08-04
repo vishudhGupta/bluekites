@@ -358,98 +358,6 @@
         "padding_bottom": 60
       }
     },
-    "category_tabs_6ffLJt": {
-      "type": "category_tabs",
-      "blocks": {
-        "tab_weezFD": {
-          "type": "tab",
-          "settings": {
-            "tab_label": "Healthcare & Pharma",
-            "tab_key": "healthcare"
-          }
-        },
-        "tab_tL7fJc": {
-          "type": "tab",
-          "settings": {
-            "tab_label": "Industrial Products",
-            "tab_key": "industrial"
-          }
-        },
-        "tab_bMbeWJ": {
-          "type": "tab",
-          "settings": {
-            "tab_label": "IT & Software Services",
-            "tab_key": "it"
-          }
-        },
-        "card_yR9VJa": {
-          "type": "card",
-          "settings": {
-            "title": "Medicines",
-            "tab_key": "healthcare",
-            "link": ""
-          }
-        },
-        "card_WLLfnp": {
-          "type": "card",
-          "settings": {
-            "title": "Surgicals",
-            "tab_key": "healthcare",
-            "link": ""
-          }
-        },
-        "card_7KxF7n": {
-          "type": "card",
-          "settings": {
-            "title": "Diagnostics",
-            "tab_key": "healthcare",
-            "link": ""
-          }
-        },
-        "card_wgPEXF": {
-          "type": "card",
-          "settings": {
-            "title": "Supplements",
-            "tab_key": "healthcare",
-            "link": ""
-          }
-        }
-      },
-      "block_order": [
-        "tab_weezFD",
-        "tab_tL7fJc",
-        "tab_bMbeWJ",
-        "card_yR9VJa",
-        "card_WLLfnp",
-        "card_7KxF7n",
-        "card_wgPEXF"
-      ],
-      "name": "Category tabs",
-      "settings": {
-        "heading": "Our Services",
-        "subheading": "Multiple industries, one mutual network",
-        "color_scheme": "",
-        "accent_color": "#37181d",
-        "heading_color": "#37181d",
-        "subheading_color": "#37181d",
-        "tab_text_color": "#37181d",
-        "tab_bg_color": "#ffffff",
-        "tab_border_color": "#b8a6aa",
-        "card_title_color": "#ffffff",
-        "card_footer_bg": "#37181d",
-        "panel_border_color": "#ffffff66",
-        "section_background": "#f1f1f1",
-        "cards_per_view_desktop": 3,
-        "cards_per_view_tablet": 2,
-        "cards_per_view_mobile": 1,
-        "card_gap": 10,
-        "corner_radius": 8,
-        "glass_blur": 14,
-        "show_rail_buttons": true,
-        "padding_top": 56,
-        "padding_bottom": 56
-      }
-    },
     "whyus_XEjggw": {
       "type": "whyus",
       "blocks": {
@@ -611,7 +519,6 @@
     "marquee_pNWDpm",
     "category_tabs_RMWU8E",
     "feature_product_bLRpkG",
-    "category_tabs_6ffLJt",
     "whyus_XEjggw",
     "ai_smart_AMQE9r"
   ]

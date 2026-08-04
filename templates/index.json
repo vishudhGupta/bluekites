@@ -440,7 +440,7 @@
       "settings": {
         "subheading": "Our Services",
         "heading": "What We Can Help You With",
-        "description": "Create cards with an image and link each service to a specific page.",
+        "description": "",
         "columns_desktop": 3,
         "grid_gap": 16,
         "card_radius": 14,

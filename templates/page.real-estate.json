@@ -83,6 +83,8 @@
         "subheading": "Featured Properties",
         "heading": "Find Your Next Property",
         "description": "Curated listings from our product catalog. Select products in blocks to display them as properties.",
+        "source_collection": "real-estate",
+        "collection_products_limit": 12,
         "default_button_label": "Send Enquiry",
         "default_enquiry_link": "",
         "append_product_in_query": true,

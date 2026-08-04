@@ -80,7 +80,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<h3>Contact Us</h3><p><strong>Address : </strong>123 Test Test01 20938<br/><strong>Call us at : </strong>0987654321<br/><strong>Email:</strong> contact@bluekitesglobal.com</p>",
+            "text": "<h3>Contact Us</h3><p><strong>Address : </strong>AHMEDABAD GUJARAT, Ahmedabad, Gujarat, India. 380009<br/><strong>Call us at : </strong>+91 7490013057<br/><strong>Email:</strong> <a href=\"mailto:info@bluekites.co.in\" target=\"_blank\">info@bluekites.co.in</a></p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

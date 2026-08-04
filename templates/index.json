@@ -164,6 +164,7 @@
           "settings": {
             "title": "Ayurvedic",
             "tab_key": "healthcare",
+            "image": "shopify://shop_images/Untitled_design_6.png",
             "link": "shopify://collections/ayurvedic"
           }
         },
@@ -172,6 +173,7 @@
           "settings": {
             "title": "Allopathy",
             "tab_key": "healthcare",
+            "image": "shopify://shop_images/Untitled_design_7.png",
             "link": "shopify://collections/allopathy"
           }
         },
@@ -180,6 +182,7 @@
           "settings": {
             "title": "Handrub & Disinfectants",
             "tab_key": "healthcare",
+            "image": "shopify://shop_images/Untitled_design_8.png",
             "link": ""
           }
         },
@@ -188,6 +191,7 @@
           "settings": {
             "title": "Proprietary Med",
             "tab_key": "healthcare",
+            "image": "shopify://shop_images/Untitled_design_9.png",
             "link": "shopify://collections/proprietary-med-powder"
           }
         },

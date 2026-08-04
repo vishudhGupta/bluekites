@@ -142,9 +142,9 @@
         "card_WfNa3C": {
           "type": "card",
           "settings": {
-            "title": "Medicines",
+            "title": "Ayurvedic",
             "tab_key": "healthcare",
-            "link": ""
+            "link": "shopify://collections/ayurvedic"
           }
         },
         "card_gfULqL": {

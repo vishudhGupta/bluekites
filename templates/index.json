@@ -365,8 +365,8 @@
           "type": "service_card",
           "settings": {
             "image": "shopify://shop_images/Untitled_design_23.png",
-            "title": "Service title",
-            "description": "Short service description goes here.",
+            "title": "Paint Services",
+            "description": "",
             "link_page": "",
             "custom_url": "",
             "button_label": "Explore service"
@@ -375,8 +375,9 @@
         "service_card_UDPHNM": {
           "type": "service_card",
           "settings": {
-            "title": "Service title",
-            "description": "Short service description goes here.",
+            "image": "shopify://shop_images/Untitled_design_22.png",
+            "title": "Healthcare Services",
+            "description": "",
             "link_page": "",
             "custom_url": "",
             "button_label": "Explore service"
@@ -385,8 +386,42 @@
         "service_card_TCtPtC": {
           "type": "service_card",
           "settings": {
-            "title": "Service title",
-            "description": "Short service description goes here.",
+            "image": "shopify://shop_images/Untitled_design_18.png",
+            "title": "Tours & Travels",
+            "description": "",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        },
+        "service_card_4Jb4PG": {
+          "type": "service_card",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_19.png",
+            "title": "Software Development",
+            "description": "",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        },
+        "service_card_z8XqVA": {
+          "type": "service_card",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_20.png",
+            "title": "Insurance",
+            "description": "",
+            "link_page": "",
+            "custom_url": "",
+            "button_label": "Explore service"
+          }
+        },
+        "service_card_y8cAwm": {
+          "type": "service_card",
+          "settings": {
+            "image": "shopify://shop_images/Untitled_design_17.png",
+            "title": "Real Estate",
+            "description": "",
             "link_page": "",
             "custom_url": "",
             "button_label": "Explore service"
@@ -396,14 +431,17 @@
       "block_order": [
         "service_card_gqyben",
         "service_card_UDPHNM",
-        "service_card_TCtPtC"
+        "service_card_TCtPtC",
+        "service_card_4Jb4PG",
+        "service_card_z8XqVA",
+        "service_card_y8cAwm"
       ],
       "name": "Service cards",
       "settings": {
         "subheading": "Our Services",
         "heading": "What We Can Help You With",
         "description": "Create cards with an image and link each service to a specific page.",
-        "columns_desktop": 4,
+        "columns_desktop": 3,
         "grid_gap": 16,
         "card_radius": 14,
         "padding_top": 44,

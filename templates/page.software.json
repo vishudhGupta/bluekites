@@ -80,7 +80,7 @@
       "type": "realestate_listing",
       "name": "Real estate listing",
       "settings": {
-        "subheading": "Featured Properties",
+        "subheading": "Featured Services",
         "heading": "Innovative Software Solutions",
         "description": "Discover our end-to-end software development services designed to help businesses innovate, automate, and scale. From custom applications to enterprise platforms, we build secure, high-performance solutions tailored to your goals.",
         "source_collection": "software-development",

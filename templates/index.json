@@ -378,7 +378,7 @@
             "image": "shopify://shop_images/Untitled_design_22.png",
             "title": "Healthcare Services",
             "description": "",
-            "link_page": "",
+            "link_page": "healthcare-services",
             "custom_url": "",
             "button_label": "Explore service"
           }
@@ -389,7 +389,7 @@
             "image": "shopify://shop_images/Untitled_design_18.png",
             "title": "Tours & Travels",
             "description": "",
-            "link_page": "",
+            "link_page": "tours-travels",
             "custom_url": "",
             "button_label": "Explore service"
           }
@@ -400,7 +400,7 @@
             "image": "shopify://shop_images/Untitled_design_19.png",
             "title": "Software Development",
             "description": "",
-            "link_page": "",
+            "link_page": "software-development-services",
             "custom_url": "",
             "button_label": "Explore service"
           }
@@ -411,7 +411,7 @@
             "image": "shopify://shop_images/Untitled_design_20.png",
             "title": "Insurance",
             "description": "",
-            "link_page": "",
+            "link_page": "insurance-service",
             "custom_url": "",
             "button_label": "Explore service"
           }
@@ -422,7 +422,7 @@
             "image": "shopify://shop_images/Untitled_design_17.png",
             "title": "Real Estate",
             "description": "",
-            "link_page": "",
+            "link_page": "real-estate",
             "custom_url": "",
             "button_label": "Explore service"
           }
@@ -447,11 +447,11 @@
         "padding_top": 44,
         "padding_bottom": 44,
         "color_scheme": "",
-        "section_background": "#F8F7F4",
-        "heading_color": "#1C2740",
-        "text_color": "#5C6478",
-        "card_background": "#FFFFFF",
-        "card_border": "#E5E8EE"
+        "section_background": "#f8f7f4",
+        "heading_color": "#1c2740",
+        "text_color": "#5c6478",
+        "card_background": "#ffffff",
+        "card_border": "#e5e8ee"
       }
     },
     "whyus_XEjggw": {

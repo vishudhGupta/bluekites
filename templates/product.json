@@ -68,6 +68,19 @@
             "padding-inline-end": 12
           },
           "blocks": {
+            "review_Rnc7wV": {
+              "type": "review",
+              "name": "t:names.product_review_stars",
+              "settings": {
+                "stars_style": "shaded",
+                "show_number": true,
+                "rating_color": "primary",
+                "type_preset": "paragraph",
+                "width": "100%",
+                "alignment": "left"
+              },
+              "blocks": {}
+            },
             "text_GnyQiN": {
               "type": "text",
               "name": "t:names.title",
@@ -777,6 +790,7 @@
             }
           },
           "block_order": [
+            "review_Rnc7wV",
             "text_GnyQiN",
             "reviews",
             "price_a7krng",

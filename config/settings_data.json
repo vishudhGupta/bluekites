@@ -40,6 +40,11 @@
         "type": "shopify://apps/judge-me-reviews/blocks/judgeme_core/61ccd3b1-a9f2-4160-9fe9-4fec8413e5d8",
         "disabled": false,
         "settings": {}
+      },
+      "11469127169306096870": {
+        "type": "shopify://apps/storeify-request-a-quote/blocks/embed-app/dac9aba2-251e-4c25-abc3-9fc57dbf7885",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {
@@ -123,11 +128,11 @@
       },
       "scheme-3": {
         "settings": {
-          "background": "#37181D",
-          "foreground_heading": "#FFFFFF",
-          "foreground": "#FFFFFF",
-          "primary": "#FFFFFF",
-          "primary_hover": "#FFFFFF",
+          "background": "#37181d",
+          "foreground_heading": "#ffffff",
+          "foreground": "#ffffff",
+          "primary": "#ffffff",
+          "primary_hover": "#ffffff",
           "border": "#000000",
           "shadow": "#000000",
           "primary_button_background": "#000000",

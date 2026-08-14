@@ -108,6 +108,7 @@
             },
             "price_a7krng": {
               "type": "price",
+              "disabled": true,
               "settings": {
                 "show_sale_price_first": true,
                 "show_installments": true,
@@ -130,6 +131,7 @@
             },
             "variant_picker_R3rGDr": {
               "type": "variant-picker",
+              "disabled": true,
               "settings": {
                 "variant_style": "buttons",
                 "show_swatches": true,
@@ -143,6 +145,7 @@
             },
             "buy_buttons_eYQEYi": {
               "type": "buy-buttons",
+              "disabled": true,
               "settings": {
                 "stacking": false,
                 "show_pickup_availability": false,
@@ -175,6 +178,18 @@
                 }
               },
               "block_order": []
+            },
+            "storeify_request_a_quote_button_block_JYmzny": {
+              "type": "shopify://apps/storeify-request-a-quote/blocks/button_block/dac9aba2-251e-4c25-abc3-9fc57dbf7885",
+              "settings": {
+                "font_size": 16,
+                "color_text": "#FFFFFF",
+                "bg_button": "#000000",
+                "label_btn": "Add to Quote",
+                "multi_lang": false,
+                "class_button": "storeify-btn-custom",
+                "form_id": ""
+              }
             },
             "product_description_LfDYCg": {
               "type": "product-description",
@@ -782,6 +797,7 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "storeify_request_a_quote_button_block_JYmzny",
             "product_description_LfDYCg",
             "group_X39hBc",
             "accordion_g8EVVp"

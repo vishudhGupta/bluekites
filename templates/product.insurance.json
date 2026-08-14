@@ -94,17 +94,20 @@
               },
               "blocks": {}
             },
-            "storeify_request_a_quote_button_block_MaxAm7": {
-              "type": "shopify://apps/storeify-request-a-quote/blocks/button_block/dac9aba2-251e-4c25-abc3-9fc57dbf7885",
+            "button_yGTNFB": {
+              "type": "button",
+              "name": "t:names.button",
               "settings": {
-                "font_size": 16,
-                "color_text": "#FFFFFF",
-                "bg_button": "#000000",
-                "label_btn": "Add to Quote",
-                "multi_lang": false,
-                "class_button": "storeify-btn-custom",
-                "form_id": ""
-              }
+                "label": "Send Enquiry",
+                "link": "#",
+                "open_in_new_tab": false,
+                "style_class": "button",
+                "width": "fit-content",
+                "custom_width": 100,
+                "width_mobile": "fit-content",
+                "custom_width_mobile": 100
+              },
+              "blocks": {}
             },
             "reviews": {
               "type": "review",
@@ -191,6 +194,32 @@
                 }
               },
               "block_order": []
+            },
+            "product_description_LfDYCg": {
+              "type": "product-description",
+              "name": "t:names.product_description",
+              "settings": {
+                "text": "{{ closest.product.description }}",
+                "width": "fit-content",
+                "max_width": "normal",
+                "alignment": "left",
+                "type_preset": "rte",
+                "font": "var(--font-primary--family)",
+                "font_size": "",
+                "line_height": "normal",
+                "letter_spacing": "normal",
+                "case": "none",
+                "wrap": "pretty",
+                "color": "",
+                "background": false,
+                "background_color": "#00000026",
+                "corner_radius": 0,
+                "padding-block-start": 0,
+                "padding-block-end": 0,
+                "padding-inline-start": 0,
+                "padding-inline-end": 0
+              },
+              "blocks": {}
             },
             "group_X39hBc": {
               "type": "group",
@@ -693,7 +722,7 @@
                     "text_McjMWz": {
                       "type": "text",
                       "settings": {
-                        "text": "{{ closest.product.description }}",
+                        "text": "<p>This product is crafted with quality materials to ensure durability and performance. Designed with your convenience in mind, it seamlessly fits into your everyday life.</p>",
                         "width": "100%",
                         "max_width": "normal",
                         "alignment": "left",
@@ -768,11 +797,12 @@
           },
           "block_order": [
             "text_GnyQiN",
-            "storeify_request_a_quote_button_block_MaxAm7",
+            "button_yGTNFB",
             "reviews",
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "product_description_LfDYCg",
             "group_X39hBc",
             "accordion_g8EVVp"
           ]

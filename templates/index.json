@@ -16,6 +16,7 @@
           "type": "slide",
           "settings": {
             "background_image": "shopify://shop_images/banners_3.png",
+            "background_image_mobile": "shopify://shop_images/Support_Your_Natural_Vigor_and_Balance_1__jpg.jpg",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -35,6 +36,7 @@
           "type": "slide",
           "settings": {
             "background_image": "shopify://shop_images/banners_4.png",
+            "background_image_mobile": "shopify://shop_images/Support_Your_Natural_Vigor_and_Balance_3__jpg.jpg",
             "eyebrow": "",
             "heading": "",
             "description": "",
@@ -54,6 +56,7 @@
           "type": "slide",
           "settings": {
             "background_image": "shopify://shop_images/banners_5.png",
+            "background_image_mobile": "shopify://shop_images/Support_Your_Natural_Vigor_and_Balance_3__jpg_35585d50-68a1-4670-8a7e-736a7b4a722a.jpg",
             "eyebrow": "",
             "heading": "",
             "description": "",

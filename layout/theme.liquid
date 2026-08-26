@@ -134,5 +134,66 @@
     {% if settings.quick_add or settings.mobile_quick_add %}
       {% render 'quick-add-modal' %}
     {% endif %}
+
+    <div class="custom-cursor custom-cursor--hidden" aria-hidden="true">
+      <span class="custom-cursor__core"></span>
+    </div>
+
+    <script>
+      (() => {
+        const reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        const pointerFine = window.matchMedia('(any-pointer: fine)').matches;
+        const cursor = document.querySelector('.custom-cursor');
+
+        if (!cursor || !pointerFine || reduceMotion) {
+          if (cursor) cursor.remove();
+          return;
+        }
+
+        const trailNodes = Array.from({ length: 8 }, () => {
+          const trail = document.createElement('span');
+          trail.className = 'custom-cursor__trail';
+          cursor.appendChild(trail);
+          return trail;
+        });
+
+        let mouseX = window.innerWidth / 2;
+        let mouseY = window.innerHeight / 2;
+        let currentX = mouseX;
+        let currentY = mouseY;
+
+        const updatePointer = (event) => {
+          mouseX = event.clientX;
+          mouseY = event.clientY;
+          cursor.classList.remove('custom-cursor--hidden');
+        };
+
+        document.addEventListener('pointermove', updatePointer, { passive: true });
+        document.addEventListener('pointerenter', () => cursor.classList.remove('custom-cursor--hidden'));
+        document.addEventListener('pointerleave', () => cursor.classList.add('custom-cursor--hidden'));
+
+        const animateCursor = () => {
+          currentX += (mouseX - currentX) * 0.18;
+          currentY += (mouseY - currentY) * 0.18;
+
+          cursor.style.transform = `translate3d(${currentX}px, ${currentY}px, 0)`;
+
+          trailNodes.forEach((node, index) => {
+            const offset = (index + 1) * 10;
+            const driftX = (mouseX - currentX) * (index + 1) * 0.2;
+            const driftY = (mouseY - currentY) * (index + 1) * 0.2;
+
+            node.style.transform = `translate3d(${driftX}px, ${driftY}px, 0) scale(${1 - index * 0.08})`;
+            node.style.opacity = String(Math.max(0.06, 1 - index * 0.12));
+            node.style.width = `${Math.max(14, 34 - offset * 0.5)}px`;
+            node.style.height = `${Math.max(14, 34 - offset * 0.5)}px`;
+          });
+
+          requestAnimationFrame(animateCursor);
+        };
+
+        requestAnimationFrame(animateCursor);
+      })();
+    </script>
   </body>
 </html>

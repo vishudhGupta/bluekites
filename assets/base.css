@@ -13,6 +13,77 @@ body {
 }
 
 :root {
+  --custom-cursor-image: url('https://cdn.shopify.com/s/files/1/0761/7167/3822/files/detailed_color_chili_pepper_cursor_aec3b149d5.png?v=1787759805');
+  --custom-cursor-size: 34px;
+}
+
+@media (any-pointer: fine) and (prefers-reduced-motion: no-preference) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role='button'] {
+    cursor: none;
+  }
+
+  .custom-cursor {
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: var(--custom-cursor-size);
+    height: var(--custom-cursor-size);
+    margin-left: calc(var(--custom-cursor-size) / -2);
+    margin-top: calc(var(--custom-cursor-size) / -2);
+    pointer-events: none;
+    z-index: 2147483647;
+    opacity: 1;
+    transition: opacity 0.15s ease;
+  }
+
+  .custom-cursor--hidden {
+    opacity: 0;
+  }
+
+  .custom-cursor__core,
+  .custom-cursor__trail {
+    position: absolute;
+    inset: 0;
+    background-image: var(--custom-cursor-image);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    pointer-events: none;
+  }
+
+  .custom-cursor__core {
+    filter: drop-shadow(0 0 8px rgba(0, 0, 0, 0.15));
+  }
+
+  .custom-cursor__trail {
+    filter: drop-shadow(0 0 6px rgba(0, 0, 0, 0.12));
+    opacity: 0;
+  }
+}
+
+@media (pointer: coarse) {
+  body,
+  a,
+  button,
+  input,
+  textarea,
+  select,
+  [role='button'] {
+    cursor: auto;
+  }
+
+  .custom-cursor {
+    display: none !important;
+  }
+}
+
+:root {
   --hover-lift-amount: 4px;
   --hover-scale-amount: 1.03;
   --hover-subtle-zoom-amount: 1.015;

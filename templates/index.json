@@ -91,7 +91,7 @@
         "glass_opacity": 24,
         "glass_blur": 18,
         "autoplay": true,
-        "autoplay_speed": 6,
+        "autoplay_speed": 3,
         "show_arrows": true,
         "show_dots": true,
         "color_scheme": "scheme-5"

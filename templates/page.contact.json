@@ -118,7 +118,7 @@
           "type": "text",
           "name": "t:names.text",
           "settings": {
-            "text": "<p><a href=\"mailto:info@bluekites.co.in\" target=\"_blank\">info@bluekites.co.in</a></p><p><a href=\"tel:+91 7490012057\">+91 7490012057</a></p><p><strong>Corporate Office</strong><br/>AHMEDABAD GUJARAT, Ahmedabad - 380009, Gujarat, India</p><p><a href=\"https://www.google.com/maps/search/?api=1&query=AHMEDABAD%20GUJARAT%20%20Ahmedabad%20Gujarat%20India\" target=\"_blank\">Get Directions</a></p>",
+            "text": "<p>Bluekitesglobal@gmail.com</p><p><a href=\"tel:+91 7490012057\">+91 7490012057</a></p><p><strong>Corporate Office</strong><br/>AHMEDABAD GUJARAT, Ahmedabad - 380009, Gujarat, India</p><p><a href=\"https://www.google.com/maps/search/?api=1&query=AHMEDABAD%20GUJARAT%20%20Ahmedabad%20Gujarat%20India\" target=\"_blank\">Get Directions</a></p>",
             "width": "fit-content",
             "max_width": "normal",
             "alignment": "left",

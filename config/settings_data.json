@@ -79,6 +79,11 @@
         "type": "shopify://apps/wa-chat-button/blocks/whatsapp/f4d01795-3d1a-4ac7-bca7-9d0d178df50e",
         "disabled": false,
         "settings": {}
+      },
+      "6052823664294247695": {
+        "type": "shopify://apps/qikify-form-builder/blocks/app-embed/753fa0d7-50d4-480a-b094-cff26e632c36",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {

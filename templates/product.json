@@ -189,6 +189,10 @@
               },
               "block_order": []
             },
+            "ezy_social_media_icons_share_share_bar_zBxqCN": {
+              "type": "shopify://apps/ezy-social-media-icons-share/blocks/share-bar/019fa9a4-9b55-794f-aea2-6ede35748ecd",
+              "settings": {}
+            },
             "product_description_LfDYCg": {
               "type": "product-description",
               "name": "t:names.product_description",
@@ -796,6 +800,7 @@
             "price_a7krng",
             "variant_picker_R3rGDr",
             "buy_buttons_eYQEYi",
+            "ezy_social_media_icons_share_share_bar_zBxqCN",
             "product_description_LfDYCg",
             "group_X39hBc",
             "accordion_g8EVVp"

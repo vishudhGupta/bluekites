@@ -45,6 +45,45 @@
         "type": "shopify://apps/storeify-request-a-quote/blocks/embed-app/dac9aba2-251e-4c25-abc3-9fc57dbf7885",
         "disabled": false,
         "settings": {}
+      },
+      "14762722617750869079": {
+        "type": "shopify://apps/ezy-social-media-icons-share/blocks/follow-bar/019fa9a4-9b55-794f-aea2-6ede35748ecd",
+        "disabled": false,
+        "settings": {}
+      },
+      "15683396631634586217": {
+        "type": "shopify://apps/inbox/blocks/chat/841fc607-4181-4ad1-842d-e24d7f8bad6b",
+        "disabled": false,
+        "settings": {
+          "greeting_message": "",
+          "show_featured_products": true,
+          "featured_products": [
+            "bluekites-cricket-bat-medium-season-or-matches-ball-single-blade-english-willow"
+          ],
+          "background_color": "#ffffff",
+          "font_color": "#000000",
+          "agent_invert_activator_colors": false,
+          "button_color": "#000000",
+          "button_icon": "chat_bubble",
+          "button_text": "need_help",
+          "button_horizontal_position": "bottom_right",
+          "button_vertical_position": "lowest",
+          "agent_inherit_fonts": true,
+          "agent_font": "system_ui_n4",
+          "agent_font_size": 14,
+          "agent_activator_font_size": 14,
+          "agent_border_radius": 16
+        }
+      },
+      "13017476918150166000": {
+        "type": "shopify://apps/wa-chat-button/blocks/whatsapp/f4d01795-3d1a-4ac7-bca7-9d0d178df50e",
+        "disabled": false,
+        "settings": {}
+      },
+      "6052823664294247695": {
+        "type": "shopify://apps/qikify-form-builder/blocks/app-embed/753fa0d7-50d4-480a-b094-cff26e632c36",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {

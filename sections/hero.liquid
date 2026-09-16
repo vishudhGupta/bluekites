@@ -109,8 +109,13 @@
         >
           <div class="hero-slide__media" data-testid="hero-slide-media">
             {% if slide_image != blank and slide_mobile_image != blank %}
-              <picture>
-                <source media="(max-width: 749px)" srcset="{{ slide_mobile_image | image_url: width: 1200 }}">
+              <picture data-mobile-src="{{ slide_mobile_image | image_url: width: 800 }}">
+                <source
+                  media="(max-width: 749px)"
+                  srcset="{{ slide_mobile_image | image_url: width: 480 }} 480w, {{ slide_mobile_image | image_url: width: 800 }} 800w, {{ slide_mobile_image | image_url: width: 1200 }} 1200w"
+                  src="{{ slide_mobile_image | image_url: width: 800 }}"
+                  sizes="100vw"
+                >
                 {{
                   slide_image
                   | image_url: width: 3200
@@ -379,6 +384,7 @@
     width: 100%;
     height: 100%;
     object-fit: cover;
+    object-position: center center;
     z-index: -2;
   }
 
@@ -616,6 +622,85 @@
   .hero-slider__dot.is-active {
     background: rgb(255 255 255);
     transform: scale(1.12);
+  }
+
+  @media screen and (max-width: 749px) {
+    /* Ensure mobile banner images are fully visible (no side-cropping)
+       and let the hero section adapt to the image's natural height. */
+    .hero-slider {
+      min-height: auto;
+      overflow: visible;
+    }
+
+    .hero-slider__viewport {
+      min-height: auto;
+    }
+
+    /* Flow slides vertically on mobile and only show the active slide */
+    .hero-slide {
+      position: static;
+      inset: auto;
+      min-height: auto;
+      opacity: 1 !important;
+      visibility: visible !important;
+      pointer-events: auto;
+      display: none;
+      transition: none;
+    }
+
+    .hero-slide.is-active {
+      display: block;
+    }
+
+    .hero-slide__media,
+    .hero-slide__image {
+      position: relative;
+      inset: auto;
+      width: 100%;
+      height: auto;
+      object-fit: contain;
+      object-position: center center;
+      z-index: -2;
+      background-color: transparent;
+      display: block;
+    }
+
+    .hero-slide__image--placeholder {
+      object-fit: contain;
+    }
+
+    /* Move navigation into the flow so arrows/dots sit over the image area */
+    .hero-slider__arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+    }
+
+    .hero-slider__dots {
+      position: absolute;
+      bottom: 1rem;
+    }
+    /* Remove unexpected dark/black background and bottom gap on mobile */
+    .hero-slider,
+    .hero-slider__viewport,
+    .hero-slide {
+      background: transparent !important;
+      margin-bottom: 0 !important;
+      padding-bottom: 0 !important;
+    }
+
+    /* Dots background can appear as a bar; make it transparent on mobile */
+    .hero-slider__dots {
+      background: transparent !important;
+      border: none !important;
+      padding: 0 !important;
+    }
+
+    /* Ensure following content sits directly below the slide */
+    .hero-slide + * {
+      margin-top: 0 !important;
+      padding-top: 0 !important;
+    }
   }
 {% endstylesheet %}
 

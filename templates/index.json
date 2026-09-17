@@ -170,6 +170,164 @@
             "social_link_label": "View post",
             "social_link": ""
           }
+        },
+        "slide_3pjwDe": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banners_6.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_mVUz6E": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banners_7.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_7PxqCX": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_9.png",
+            "background_image_mobile": "shopify://shop_images/banner_9_mobile.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_cjMAan": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_10.png",
+            "background_image_mobile": "shopify://shop_images/banner_10_mobile.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_rnLzfP": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_11.png",
+            "background_image_mobile": "shopify://shop_images/banner_11_mobile.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_x8hTqx": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_12.png",
+            "background_image_mobile": "shopify://shop_images/banner_12_mobile.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_J6aeDC": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_13_mobile.png",
+            "background_image_mobile": "shopify://shop_images/banner_13.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
+        "slide_eq68Wk": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/banner_14.png",
+            "background_image_mobile": "shopify://shop_images/banner_14_mobile.png",
+            "eyebrow": "",
+            "heading": "",
+            "description": "",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": false,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
         }
       },
       "block_order": [
@@ -180,7 +338,15 @@
         "slide_HKXeww",
         "slide_MUChMK",
         "slide_NyNhHc",
-        "slide_AiB6tx"
+        "slide_AiB6tx",
+        "slide_3pjwDe",
+        "slide_mVUz6E",
+        "slide_7PxqCX",
+        "slide_cjMAan",
+        "slide_rnLzfP",
+        "slide_x8hTqx",
+        "slide_J6aeDC",
+        "slide_eq68Wk"
       ],
       "name": "t:names.hero",
       "settings": {

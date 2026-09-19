@@ -761,76 +761,23 @@
     "ai_smart_AMQE9r": {
       "type": "ai_smart",
       "blocks": {
-        "chip_8rJ8DU": {
-          "type": "chip",
-          "settings": {
-            "label": "Bluekites Recommended"
-          }
-        },
-        "chip_LMV9Ya": {
-          "type": "chip",
-          "settings": {
-            "label": "You may Like"
-          }
-        },
-        "chip_NNAemC": {
-          "type": "chip",
-          "settings": {
-            "label": "AI Picked for you"
-          }
-        },
-        "update_EaCLdP": {
+        "update_Mqqzik": {
           "type": "update",
           "settings": {
-            "title": "100% Herbal Formula",
-            "text": "Enriched with carefully selected natural herbs for safe daily hair care."
-          }
-        },
-        "update_4rWmxT": {
-          "type": "update",
-          "settings": {
-            "title": "Reduces Hair Fall",
-            "text": "Helps strengthen hair from the roots and minimizes breakage."
-          }
-        },
-        "update_jzRkGG": {
-          "type": "update",
-          "settings": {
-            "title": "Promotes Healthy Hair Growth",
-            "text": "Supports thicker, fuller, and healthier-looking hair over time."
-          }
-        },
-        "update_DVX6QC": {
-          "type": "update",
-          "settings": {
-            "title": "Deep Scalp Cleansing",
-            "text": "Removes dirt, excess oil, and impurities without stripping natural moisture."
-          }
-        },
-        "update_HWwrEV": {
-          "type": "update",
-          "settings": {
-            "title": "Soft & Silky Finish",
-            "text": "Leaves your hair smooth, manageable, and naturally shiny."
+            "title": "People Frequently looking for Disinfectants",
+            "text": ""
           }
         }
       },
       "block_order": [
-        "chip_8rJ8DU",
-        "chip_LMV9Ya",
-        "chip_NNAemC",
-        "update_EaCLdP",
-        "update_4rWmxT",
-        "update_jzRkGG",
-        "update_DVX6QC",
-        "update_HWwrEV"
+        "update_Mqqzik"
       ],
       "name": "AI smart section",
       "settings": {
-        "heading": "AI Smart Recommendations",
-        "subheading": "Personalized for you based on your preferences",
-        "main_product": "bluekites-dr-lom-shampoo-200ml-200ml-pack-of-3",
-        "panel_heading": "Live Updates",
+        "heading": "Last Searched Product",
+        "subheading": "",
+        "main_product": "sterillium",
+        "panel_heading": "",
         "color_scheme": "",
         "background_color": "#fcfbfa",
         "heading_color": "#3a1e25",

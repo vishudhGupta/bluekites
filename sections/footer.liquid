@@ -44,6 +44,10 @@
   >
     {% content_for 'blocks' %}
   </div>
+
+  <div class="footer-copyright">
+    <p>Copyright 2026 Bluekites | All rights Reserved</p>
+  </div>
 </div>
 
 {% stylesheet %}
@@ -58,6 +62,22 @@
 
   .footer-content .menu__heading__default {
     font-weight: var(--font-heading--weight);
+  }
+
+  .footer-copyright {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    margin-top: 16px;
+    padding-top: 12px;
+  }
+
+  .footer-copyright p {
+    margin: 0;
+    font-size: 0.875rem;
+    line-height: 1.4;
+    color: currentColor;
   }
 
   @media screen and (min-width: 750px) and (max-width: 989px) {

@@ -421,33 +421,24 @@
         "tab_9maBgk": {
           "type": "tab",
           "settings": {
-            "tab_label": "Furniture",
+            "tab_label": "Food and Gourmet",
             "tab_key": "furnniture"
           }
         },
         "tab_W4B6ci": {
           "type": "tab",
           "settings": {
-            "tab_label": "More Products",
+            "tab_label": "Services",
             "tab_key": "more"
           }
         },
         "card_WfNa3C": {
           "type": "card",
           "settings": {
-            "title": "Ayurvedic",
+            "title": "Surgicals",
             "tab_key": "healthcare",
-            "image": "shopify://shop_images/Untitled_design_6.png",
-            "link": "shopify://collections/ayurvedic"
-          }
-        },
-        "card_gfULqL": {
-          "type": "card",
-          "settings": {
-            "title": "Allopathy",
-            "tab_key": "healthcare",
-            "image": "shopify://shop_images/Untitled_design_7.png",
-            "link": "shopify://collections/allopathy"
+            "image": "shopify://shop_images/LE.jpg",
+            "link": "shopify://collections/surgical-products"
           }
         },
         "card_WexYcL": {
@@ -459,76 +450,58 @@
             "link": ""
           }
         },
-        "card_xX4HiP": {
+        "card_gfULqL": {
           "type": "card",
           "settings": {
-            "title": "Proprietary Med",
+            "title": "Cosmetics",
             "tab_key": "healthcare",
-            "image": "shopify://shop_images/Untitled_design_9.png",
-            "link": "shopify://collections/proprietary-med-powder"
+            "image": "shopify://shop_images/images_2.jpg",
+            "link": "shopify://collections/handmade-cosmetics"
           }
         },
         "card_mYPTpp": {
           "type": "card",
           "settings": {
-            "title": "Boltless Rack",
+            "title": "Tea and Coffe",
             "tab_key": "furnniture",
-            "image": "shopify://shop_images/Untitled_design_11.png",
-            "link": "shopify://collections/boltless-furniture-boltless-rack"
+            "image": "shopify://shop_images/images_4.jpg",
+            "link": "shopify://collections/tea-coffee"
           }
         },
         "card_9Gmp9B": {
           "type": "card",
           "settings": {
-            "title": "Household",
+            "title": "​Edible Oils & Honey",
             "tab_key": "furnniture",
-            "image": "shopify://shop_images/Untitled_design_12.png",
-            "link": "shopify://collections/boltless-furniture-household"
-          }
-        },
-        "card_YFEC8t": {
-          "type": "card",
-          "settings": {
-            "title": "Turn N Tube",
-            "tab_key": "furnniture",
-            "image": "shopify://shop_images/Untitled_design_10.png",
-            "link": "shopify://collections/boltless-furniture-turn-n-tube"
+            "image": "shopify://shop_images/herbal-honey--203.jpg",
+            "link": "shopify://collections/honey"
           }
         },
         "card_iXchD7": {
           "type": "card",
           "settings": {
-            "title": "Bakery",
+            "title": "​Tour & Travels",
             "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_16.png",
-            "link": ""
+            "image": "shopify://shop_images/Untitled_design_18.png",
+            "link": "shopify://collections/tours-and-travels"
           }
         },
         "card_BdzA4W": {
           "type": "card",
           "settings": {
-            "title": "Apparels",
+            "title": "IT",
             "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_14.png",
-            "link": ""
+            "image": "shopify://shop_images/Untitled_design_19.png",
+            "link": "https://bluekitesglobal.com/pages/software-development-services"
           }
         },
         "card_jMTDTz": {
           "type": "card",
           "settings": {
-            "title": "Choclates",
+            "title": "Real Estate",
             "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_13.png",
-            "link": ""
-          }
-        },
-        "card_QzPj93": {
-          "type": "card",
-          "settings": {
-            "title": "Beverages",
-            "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_15.png",
-            "link": ""
+            "image": "shopify://shop_images/Untitled_design_17.png",
+            "link": "shopify://collections/real-estate"
           }
         }
       },
@@ -537,20 +510,17 @@
         "tab_9maBgk",
         "tab_W4B6ci",
         "card_WfNa3C",
-        "card_gfULqL",
         "card_WexYcL",
-        "card_xX4HiP",
+        "card_gfULqL",
         "card_mYPTpp",
         "card_9Gmp9B",
-        "card_YFEC8t",
         "card_iXchD7",
         "card_BdzA4W",
-        "card_jMTDTz",
-        "card_QzPj93"
+        "card_jMTDTz"
       ],
       "name": "Category tabs",
       "settings": {
-        "heading": "Our Business Verticals",
+        "heading": "Business Verticals",
         "subheading": "Multiple industries, one mutual network",
         "color_scheme": "",
         "accent_color": "#37181d",

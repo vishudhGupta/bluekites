@@ -314,7 +314,11 @@
       "settings": {
         "collection_list": [
           "tapes-and-bandages",
-          "dialyzers"
+          "dialyzers",
+          "syringes-and-needles",
+          "woven-and-non-woven",
+          "lab-products",
+          "sutures"
         ],
         "layout_type": "carousel",
         "carousel_on_mobile": false,

@@ -432,6 +432,13 @@
             "tab_key": "more"
           }
         },
+        "tab_Nqf3h3": {
+          "type": "tab",
+          "settings": {
+            "tab_label": "More Categories",
+            "tab_key": "healthcare"
+          }
+        },
         "card_WfNa3C": {
           "type": "card",
           "settings": {
@@ -509,6 +516,7 @@
         "tab_nmncKz",
         "tab_9maBgk",
         "tab_W4B6ci",
+        "tab_Nqf3h3",
         "card_WfNa3C",
         "card_WexYcL",
         "card_gfULqL",

@@ -313,12 +313,8 @@
       "name": "t:names.collections_carousel",
       "settings": {
         "collection_list": [
-          "tapes-and-bandages",
-          "dialyzers",
-          "syringes-and-needles",
-          "woven-and-non-woven",
-          "lab-products",
-          "sutures"
+          "personal-hygiene",
+          "sanitizers-and-handrub"
         ],
         "layout_type": "carousel",
         "carousel_on_mobile": false,

@@ -312,7 +312,14 @@
       ],
       "name": "t:names.collections_carousel",
       "settings": {
-        "collection_list": [],
+        "collection_list": [
+          "handmade-cosmetics",
+          "hospital-furniture",
+          "ayurvedic-1",
+          "generics",
+          "parentrals-and-injectbles",
+          "nutraceuticals"
+        ],
         "layout_type": "carousel",
         "carousel_on_mobile": false,
         "columns": 3,

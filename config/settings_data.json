@@ -84,6 +84,11 @@
         "type": "shopify://apps/qikify-form-builder/blocks/app-embed/753fa0d7-50d4-480a-b094-cff26e632c36",
         "disabled": false,
         "settings": {}
+      },
+      "14618170044882482601": {
+        "type": "shopify://apps/linkmate-floating-buttons/blocks/link_mate_embed/019aa851-fef7-7ad1-9b3a-ae6c1d7c431e",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {

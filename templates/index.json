@@ -12,6 +12,26 @@
     "hero_iLBwPd": {
       "type": "hero",
       "blocks": {
+        "slide_FVdNFX": {
+          "type": "slide",
+          "settings": {
+            "background_image": "shopify://shop_images/b2.png",
+            "background_image_mobile": "shopify://shop_images/b2_m.png",
+            "eyebrow": "New Collection",
+            "heading": "Shop More. Experience More.",
+            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": true,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
         "slide_YCifrW": {
           "type": "slide",
           "settings": {
@@ -34,6 +54,7 @@
         }
       },
       "block_order": [
+        "slide_FVdNFX",
         "slide_YCifrW"
       ],
       "name": "t:names.hero",
@@ -45,9 +66,9 @@
         "content_top_offset": 110,
         "content_top_offset_mobile": 24,
         "card_width": 330,
-        "overlay_opacity": 62,
-        "glass_opacity": 24,
-        "glass_blur": 18,
+        "overlay_opacity": 64,
+        "glass_opacity": 37,
+        "glass_blur": 17,
         "autoplay": true,
         "autoplay_speed": 3,
         "show_arrows": true,

@@ -83,7 +83,20 @@
     %}
 
     {% capture children %}
+      {% assign menu_icon_map = 'Surgical Products|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/0dfbe4ab-ae02-4f64-b0d2-b082b7fb6469.png?v=1790271258;Handrub & Disinfectants|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/Sep_21_2026_05_11_13_PM.png?v=1790271258;Healthcare|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/e91ec7f3-08de-4cba-acde-f00163e15efe.png?v=1790271256;Cosmetics|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/6a2bf868-6c63-4567-a139-81639e2817a5.png?v=1790271257;Food and Gourmet|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/48019ec6-ae16-49e6-bf14-b73b3fd4274e.png?v=1790271257;Tours and Travels|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/57b47abc-5b0e-4600-8157-7ab370023fc8.png?v=1790271258;IT Services|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/fbdf8ff5-76de-429b-9bf6-6325ee4d80e8.png?v=1790271258;View More|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/05fd7d78-ad37-4bba-ba40-3817d1e284a7.png?v=1790271257' | split: ';' %}
       {% for link in block_settings.menu.links %}
+        {% assign menu_icon_url = blank %}
+        {% assign current_link_title = link.title | downcase | strip %}
+        {% for menu_item in menu_icon_map %}
+          {% assign menu_item_parts = menu_item | split: '|' %}
+          {% assign menu_item_title = menu_item_parts[0] | strip | downcase %}
+          {% assign menu_item_icon_url = menu_item_parts[1] | strip %}
+          {% if current_link_title == menu_item_title and menu_item_icon_url != blank %}
+            {% assign menu_icon_url = menu_item_icon_url %}
+            {% break %}
+          {% endif %}
+        {% endfor %}
+
         <li
           role="presentation"
           class="menu-list__list-item"
@@ -95,7 +108,7 @@
           <a
             href="{{ link.url }}"
             data-skip-node-update="true"
-            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}"
+            class="menu-list__link{% if link.active %} menu-list__link--active{% endif %}{% if menu_icon_url != blank %} menu-list__link--with-icon{% endif %}"
             {%- if link.links != blank -%}
               aria-controls="submenu-{{ forloop.index }}"
               aria-haspopup="true"
@@ -106,6 +119,18 @@
             {% endif %}
             ref="menuitem"
           >
+            {% if menu_icon_url != blank %}
+              <span class="menu-list__link-icon-wrap" aria-hidden="true">
+                <img
+                  src="{{ menu_icon_url }}"
+                  alt=""
+                  class="menu-list__link-icon"
+                  loading="lazy"
+                  width="30"
+                  height="30"
+                >
+              </span>
+            {% endif %}
             <span class="menu-list__link-title">{{- link.title -}}</span>
           </a>
           {%- if link.links != blank -%}
@@ -316,9 +341,56 @@
     }
   }
 
+  .menu-list__link--with-icon {
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    gap: 6px;
+    padding-inline: 4px;
+    min-width: 0;
+  }
+
+  .menu-list__link-icon-wrap {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    line-height: 0;
+    flex-shrink: 0;
+    width: 40px;
+    height: 40px;
+    margin-inline: auto;
+  }
+
+  .menu-list__link-icon {
+    display: block;
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    flex-shrink: 0;
+    border-radius: 12px;
+  }
+
   .menu-list__link-title {
     padding-inline: calc(var(--gap-xl) / 2);
   }
+
+  .menu-list__link--with-icon .menu-list__link-title {
+    display: block;
+    padding-inline: 0;
+    line-height: 1.1;
+    max-width: none;
+    min-height: auto;
+    white-space: nowrap;
+    text-align: center;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon {
+    width: max-content;
+    min-width: 80px;
+  }
+
   [slot='overflow'] .menu-list__link-title {
     padding-inline: 0;
   }

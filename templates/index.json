@@ -12,11 +12,11 @@
     "hero_iLBwPd": {
       "type": "hero",
       "blocks": {
-        "slide_c39JRz": {
+        "slide_bjCA94": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b13.png",
-            "background_image_mobile": "shopify://shop_images/b14_m.png",
+            "background_image": "shopify://shop_images/N8.png",
+            "background_image_mobile": "shopify://shop_images/N8_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -32,11 +32,11 @@
             "social_link": ""
           }
         },
-        "slide_kWPgTp": {
+        "slide_wCh9D8": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b12.png",
-            "background_image_mobile": "shopify://shop_images/b12_m.png",
+            "background_image": "shopify://shop_images/N7.png",
+            "background_image_mobile": "shopify://shop_images/N7_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -52,11 +52,11 @@
             "social_link": ""
           }
         },
-        "slide_AMyjCq": {
+        "slide_TEJwWb": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b11.png",
-            "background_image_mobile": "shopify://shop_images/b11_m.png",
+            "background_image": "shopify://shop_images/N6.png",
+            "background_image_mobile": "shopify://shop_images/N6_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -72,11 +72,11 @@
             "social_link": ""
           }
         },
-        "slide_4Y6J4c": {
+        "slide_9MKUeU": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b10m.png",
-            "background_image_mobile": "shopify://shop_images/b10m.png",
+            "background_image": "shopify://shop_images/N5.png",
+            "background_image_mobile": "shopify://shop_images/N5_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -92,11 +92,11 @@
             "social_link": ""
           }
         },
-        "slide_LUBALc": {
+        "slide_Ak3NRg": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b9.png",
-            "background_image_mobile": "shopify://shop_images/b9_m.png",
+            "background_image": "shopify://shop_images/N4.png",
+            "background_image_mobile": "shopify://shop_images/N4_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -112,11 +112,11 @@
             "social_link": ""
           }
         },
-        "slide_z3VkVe": {
+        "slide_BTXB36": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b8.png",
-            "background_image_mobile": "shopify://shop_images/b8_m.png",
+            "background_image": "shopify://shop_images/N3.png",
+            "background_image_mobile": "shopify://shop_images/N3_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -132,11 +132,11 @@
             "social_link": ""
           }
         },
-        "slide_9qwNeH": {
+        "slide_HnjUjB": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b7.png",
-            "background_image_mobile": "shopify://shop_images/b7_m.png",
+            "background_image": "shopify://shop_images/N2.png",
+            "background_image_mobile": "shopify://shop_images/N2_M.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -152,11 +152,11 @@
             "social_link": ""
           }
         },
-        "slide_PtGrbm": {
+        "slide_WLj6VR": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/b6.png",
-            "background_image_mobile": "shopify://shop_images/b6m.png",
+            "background_image": "shopify://shop_images/N1.png",
+            "background_image_mobile": "shopify://shop_images/N1_m.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
@@ -166,126 +166,6 @@
             "social_card_title": "Post of the day",
             "social_card_tag": "Social",
             "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_dimA6G": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b6.png",
-            "background_image_mobile": "shopify://shop_images/b6m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_3wK4bx": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b5.png",
-            "background_image_mobile": "shopify://shop_images/b5_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_WitFgf": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b4.png",
-            "background_image_mobile": "shopify://shop_images/b4_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_rHiLKw": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b3.png",
-            "background_image_mobile": "shopify://shop_images/b3_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_FVdNFX": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b2.png",
-            "background_image_mobile": "shopify://shop_images/b2_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "",
-            "social_platform": "auto",
-            "social_enable_embed": true,
-            "social_link_label": "View post",
-            "social_link": ""
-          }
-        },
-        "slide_YCifrW": {
-          "type": "slide",
-          "settings": {
-            "background_image": "shopify://shop_images/b1.png",
-            "background_image_mobile": "shopify://shop_images/b1_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
-            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
-            "button_label": "Shop now",
-            "button_link": "",
-            "show_social_card": true,
-            "social_card_title": "Post of the day",
-            "social_card_tag": "Social",
-            "social_url": "https://www.instagram.com/bluekites.global?stkn=MWw3azY3cTZlcGJmdw==",
             "social_platform": "auto",
             "social_enable_embed": true,
             "social_link_label": "View post",
@@ -294,20 +174,14 @@
         }
       },
       "block_order": [
-        "slide_c39JRz",
-        "slide_kWPgTp",
-        "slide_AMyjCq",
-        "slide_4Y6J4c",
-        "slide_LUBALc",
-        "slide_z3VkVe",
-        "slide_9qwNeH",
-        "slide_PtGrbm",
-        "slide_dimA6G",
-        "slide_3wK4bx",
-        "slide_WitFgf",
-        "slide_rHiLKw",
-        "slide_FVdNFX",
-        "slide_YCifrW"
+        "slide_bjCA94",
+        "slide_wCh9D8",
+        "slide_TEJwWb",
+        "slide_9MKUeU",
+        "slide_Ak3NRg",
+        "slide_BTXB36",
+        "slide_HnjUjB",
+        "slide_WLj6VR"
       ],
       "name": "t:names.hero",
       "settings": {

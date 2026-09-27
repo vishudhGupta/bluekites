@@ -221,7 +221,7 @@
             "description": "",
             "button_label": "Shop now",
             "button_link": "",
-            "show_social_card": true,
+            "show_social_card": false,
             "social_card_title": "Post of the day",
             "social_card_tag": "Social",
             "social_url": "",

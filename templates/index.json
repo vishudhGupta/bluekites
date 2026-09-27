@@ -17,8 +17,8 @@
           "settings": {
             "background_image": "shopify://shop_images/c13.png",
             "background_image_mobile": "shopify://shop_images/c13_m.png",
-            "eyebrow": "New Collection",
-            "heading": "Shop More. Experience More.",
+            "eyebrow": "",
+            "heading": "",
             "description": "",
             "button_label": "",
             "button_link": "",
@@ -56,7 +56,6 @@
           "type": "slide",
           "settings": {
             "background_image": "shopify://shop_images/ChatGPT_Image_Sep_27_2026_06_54_20_PM.png",
-            "background_image_mobile": "shopify://shop_images/c14.png",
             "eyebrow": "New Collection",
             "heading": "Shop More. Experience More.",
             "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",

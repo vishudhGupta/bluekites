@@ -76,7 +76,7 @@
           "settings": {
             "background_image": "shopify://shop_images/c11..png",
             "background_image_mobile": "shopify://shop_images/c11_M.png",
-            "eyebrow": "New Collection",
+            "eyebrow": "",
             "heading": "",
             "description": "",
             "button_label": "",

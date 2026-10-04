@@ -639,6 +639,47 @@
         "padding_bottom": 56
       }
     },
+    "ai_smart_AMQE9r": {
+      "type": "ai_smart",
+      "blocks": {
+        "update_Mqqzik": {
+          "type": "update",
+          "settings": {
+            "title": "People Frequently looking for Disinfectants",
+            "text": ""
+          }
+        }
+      },
+      "block_order": [
+        "update_Mqqzik"
+      ],
+      "name": "AI smart section",
+      "settings": {
+        "heading": "Last Searched Product",
+        "subheading": "",
+        "main_product": "sterillium",
+        "panel_heading": "",
+        "color_scheme": "",
+        "background_color": "#fcfbfa",
+        "heading_color": "#3a1e25",
+        "text_color": "#4a2a30",
+        "pill_background": "#ffffff",
+        "pill_text_color": "#5a3b41",
+        "pill_border_color": "#b99ea3",
+        "pill_active_background": "#ffffff",
+        "pill_active_text_color": "#3a1e25",
+        "panel_background": "#f8f5f2",
+        "panel_heading_color": "#4a2a30",
+        "update_card_background": "#ffffff",
+        "update_card_text_color": "#4a2a30",
+        "update_card_shadow_color": "#d1c2b0",
+        "pill_radius": 20,
+        "card_radius": 18,
+        "content_gap": 18,
+        "padding_top": 56,
+        "padding_bottom": 56
+      }
+    },
     "section_UeE3JB": {
       "type": "section",
       "blocks": {
@@ -731,47 +772,6 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
-    },
-    "ai_smart_AMQE9r": {
-      "type": "ai_smart",
-      "blocks": {
-        "update_Mqqzik": {
-          "type": "update",
-          "settings": {
-            "title": "People Frequently looking for Disinfectants",
-            "text": ""
-          }
-        }
-      },
-      "block_order": [
-        "update_Mqqzik"
-      ],
-      "name": "AI smart section",
-      "settings": {
-        "heading": "Last Searched Product",
-        "subheading": "",
-        "main_product": "sterillium",
-        "panel_heading": "",
-        "color_scheme": "",
-        "background_color": "#fcfbfa",
-        "heading_color": "#3a1e25",
-        "text_color": "#4a2a30",
-        "pill_background": "#ffffff",
-        "pill_text_color": "#5a3b41",
-        "pill_border_color": "#b99ea3",
-        "pill_active_background": "#ffffff",
-        "pill_active_text_color": "#3a1e25",
-        "panel_background": "#f8f5f2",
-        "panel_heading_color": "#4a2a30",
-        "update_card_background": "#ffffff",
-        "update_card_text_color": "#4a2a30",
-        "update_card_shadow_color": "#d1c2b0",
-        "pill_radius": 20,
-        "card_radius": 18,
-        "content_gap": 18,
-        "padding_top": 56,
-        "padding_bottom": 56
-      }
     }
   },
   "order": [
@@ -781,7 +781,7 @@
     "feature_product_bLRpkG",
     "service_cards_9R7Aax",
     "whyus_XEjggw",
-    "section_UeE3JB",
-    "ai_smart_AMQE9r"
+    "ai_smart_AMQE9r",
+    "section_UeE3JB"
   ]
 }

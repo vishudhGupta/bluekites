@@ -782,23 +782,15 @@
     },
     "ai_smart_AMQE9r": {
       "type": "ai_smart",
-      "blocks": {
-        "update_Mqqzik": {
-          "type": "update",
-          "settings": {
-            "title": "People Frequently looking for Disinfectants",
-            "text": ""
-          }
-        }
-      },
-      "block_order": [
-        "update_Mqqzik"
-      ],
       "name": "AI smart section",
       "settings": {
+        "eyebrow": "",
         "heading": "Last Searched Product",
         "subheading": "",
         "main_product": "sterillium",
+        "second_product": "aceptik-hc-plus",
+        "show_product_caption": true,
+        "button_label": "Shop now",
         "panel_heading": "",
         "color_scheme": "",
         "background_color": "#fcfbfa",

@@ -1,0 +1,492 @@
+  {%- doc -%}
+    Renders the "Add location" storefront preference control inside the header menu.
+    This only saves a location preference in the browser. It does not check delivery
+    availability and does not change checkout shipping addresses.
+
+    @param {object} block - The header menu block (settings are read from it)
+    @param {object} section - The parent section
+    @param {string} [variant] - 'desktop' (default) or 'mobile'
+  {%- enddoc -%}
+
+  {%- liquid
+    assign bs = block.settings
+    assign loc_variant = variant | default: 'desktop'
+    assign uid = section.id | append: '-' | append: loc_variant
+    assign loc_heading = bs.location_heading | default: 'Choose your location'
+    assign loc_helper = bs.location_helper_text | default: 'Save a location preference for your storefront experience. This does not check delivery availability or change your checkout shipping address.'
+    assign loc_field_label = bs.location_field_label | default: 'City or area'
+    assign loc_placeholder = bs.location_placeholder | default: 'Enter a city or area'
+    assign loc_confirm = bs.location_confirm_label | default: 'Confirm location'
+    assign loc_empty = bs.location_empty_label | default: 'Add location'
+    assign loc_suggestions = bs.location_suggestions | split: ','
+  -%}
+
+  <location-preference
+    class="loc-pref loc-pref--{{ loc_variant }}"
+    data-storage-key="ai-location-preference"
+    data-empty-label="{{ loc_empty | escape }}"
+    data-saved-prefix="{{ 'Location preference saved: ' | escape }}"
+  >
+    <button
+      class="loc-pref__trigger"
+      type="button"
+      aria-haspopup="dialog"
+      aria-expanded="false"
+      aria-controls="loc-pref-panel-{{ uid }}"
+    >
+      <svg class="loc-pref__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+      <span class="loc-pref__text">
+        <span class="loc-pref__eyebrow">Deliver to</span>
+        <span class="loc-pref__value">{{ loc_empty | escape }}</span>
+      </span>
+      <svg class="loc-pref__chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 4 4 4 4-4"/></svg>
+    </button>
+
+    <div class="loc-pref__scrim" hidden></div>
+
+    <div
+      id="loc-pref-panel-{{ uid }}"
+      class="loc-pref__panel"
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="loc-pref-heading-{{ uid }}"
+      hidden
+    >
+      <button class="loc-pref__close" type="button" aria-label="Close location dialog">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg>
+      </button>
+      <h2 id="loc-pref-heading-{{ uid }}" class="loc-pref__heading">{{ loc_heading | escape }}</h2>
+      <p class="loc-pref__note">{{ loc_helper | escape }}</p>
+
+      <form class="loc-pref__form">
+        <label class="loc-pref__label" for="loc-pref-input-{{ uid }}">{{ loc_field_label | escape }}</label>
+        <input
+          id="loc-pref-input-{{ uid }}"
+          class="loc-pref__input"
+          type="text"
+          name="location"
+          maxlength="100"
+          autocomplete="address-level2"
+          placeholder="{{ loc_placeholder | escape }}"
+          required
+        >
+
+        {%- if loc_suggestions.size > 0 and bs.location_suggestions != blank -%}
+          <ul class="loc-pref__chips" role="list" aria-label="Suggested locations">
+            {%- for item in loc_suggestions -%}
+              {%- assign chip = item | strip -%}
+              {%- if chip != blank -%}
+                <li><button class="loc-pref__chip" type="button" data-location="{{ chip | escape }}">{{ chip | escape }}</button></li>
+              {%- endif -%}
+            {%- endfor -%}
+          </ul>
+        {%- endif -%}
+
+        <button class="loc-pref__submit" type="submit">{{ loc_confirm | escape }}</button>
+      </form>
+    </div>
+
+    <span class="visually-hidden loc-pref__live" aria-live="polite" aria-atomic="true"></span>
+  </location-preference>
+
+  {% stylesheet %}
+    location-preference {
+      --loc-fg: var(--color-foreground, #000000);
+      --loc-bg: var(--color-background, #ffffff);
+      --loc-border: rgb(var(--color-foreground-rgb, 0 0 0) / 0.2);
+      --loc-accent: #c3cca6;
+      --loc-accent-hover: #b5c095;
+      --loc-z: calc(var(--layer-header-menu, 10) + 5);
+
+      display: block;
+      position: relative;
+      flex: 0 0 auto;
+      color: var(--loc-fg);
+      font-family: inherit;
+      z-index: var(--loc-z);
+    }
+
+    .loc-pref__trigger {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      min-height: 44px;
+      max-width: 100%;
+      padding: 6px 14px 6px 12px;
+      border: 1px solid var(--loc-border);
+      border-radius: 100px;
+      background: var(--loc-bg);
+      color: var(--loc-fg);
+      font: inherit;
+      font-size: 14px;
+      text-align: start;
+      cursor: pointer;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease;
+    }
+
+    .loc-pref__trigger:hover {
+      border-color: var(--loc-fg);
+      box-shadow: 0 4px 14px rgb(0 0 0 / 0.1);
+    }
+
+    .loc-pref__trigger[aria-expanded='true'] .loc-pref__chevron {
+      transform: rotate(180deg);
+    }
+
+    .loc-pref__trigger:focus-visible,
+    .loc-pref__panel button:focus-visible,
+    .loc-pref__panel input:focus-visible {
+      outline: 2px solid var(--loc-fg);
+      outline-offset: 3px;
+    }
+
+    .loc-pref__pin {
+      width: 20px;
+      height: 20px;
+      flex: 0 0 auto;
+    }
+
+    .loc-pref__text {
+      display: grid;
+      min-width: 0;
+      line-height: 1.15;
+    }
+
+    .loc-pref__eyebrow {
+      font-size: 11px;
+      opacity: 0.65;
+    }
+
+    .loc-pref__value {
+      max-width: 150px;
+      overflow: hidden;
+      font-weight: 600;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .loc-pref__chevron {
+      width: 12px;
+      height: 12px;
+      flex: 0 0 auto;
+      transition: transform 0.2s ease;
+    }
+
+    /* Panel */
+    .loc-pref__panel {
+      position: absolute;
+      top: calc(100% + 12px);
+      right: 0;
+      width: min(380px, calc(100vw - 32px));
+      padding: 24px;
+      border: 1px solid #e6e6e6;
+      border-radius: 12px;
+      background: var(--loc-bg);
+      color: var(--loc-fg);
+      box-shadow: 0 12px 36px rgb(0 0 0 / 0.18);
+      animation: loc-pref-pop 0.18s ease-out;
+    }
+
+    .loc-pref__panel[hidden],
+    .loc-pref__scrim[hidden] {
+      display: none;
+    }
+
+    .loc-pref--mobile .loc-pref__panel {
+      right: auto;
+      left: 0;
+    }
+
+    .loc-pref__scrim {
+      display: none;
+    }
+
+    .loc-pref__heading {
+      margin: 0 36px 6px 0;
+      font-size: 20px;
+      line-height: 1.3;
+    }
+
+    .loc-pref__note {
+      margin: 0 0 18px;
+      font-size: 14px;
+      line-height: 1.5;
+      opacity: 0.8;
+    }
+
+    .loc-pref__close {
+      position: absolute;
+      top: 14px;
+      right: 14px;
+      display: grid;
+      place-items: center;
+      width: 36px;
+      height: 36px;
+      border: 0;
+      border-radius: 50%;
+      background: transparent;
+      color: var(--loc-fg);
+      cursor: pointer;
+    }
+
+    .loc-pref__close:hover {
+      background: rgb(0 0 0 / 0.06);
+    }
+
+    .loc-pref__close svg {
+      width: 18px;
+      height: 18px;
+    }
+
+    .loc-pref__label {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .loc-pref__input {
+      box-sizing: border-box;
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #767676;
+      border-radius: 8px;
+      background: var(--loc-bg);
+      color: var(--loc-fg);
+      font: inherit;
+      font-size: 16px; /* prevents iOS zoom on focus */
+    }
+
+    .loc-pref__chips {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 12px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .loc-pref__chip {
+      min-height: 36px;
+      padding: 6px 14px;
+      border: 1px solid var(--loc-border);
+      border-radius: 100px;
+      background: transparent;
+      color: var(--loc-fg);
+      font: inherit;
+      font-size: 13px;
+      cursor: pointer;
+      transition: background 0.15s ease, border-color 0.15s ease;
+    }
+
+    .loc-pref__chip:hover {
+      border-color: var(--loc-fg);
+      background: rgb(195 204 166 / 0.35);
+    }
+
+    .loc-pref__submit {
+      width: 100%;
+      min-height: 46px;
+      margin-top: 16px;
+      padding: 10px 16px;
+      border: 1px solid var(--loc-fg);
+      border-radius: 100px;
+      background: var(--loc-accent);
+      color: #000000;
+      font: inherit;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.15s ease;
+    }
+
+    .loc-pref__submit:hover {
+      background: var(--loc-accent-hover);
+    }
+
+    /* Compact version that sits beside the mobile menu button */
+    .loc-pref--mobile {
+      margin-inline-start: 8px;
+      min-width: 0;
+    }
+
+    .loc-pref--mobile .loc-pref__trigger {
+      gap: 6px;
+      padding: 6px 10px;
+    }
+
+    .loc-pref--mobile .loc-pref__eyebrow,
+    .loc-pref--mobile .loc-pref__chevron {
+      display: none;
+    }
+
+    .loc-pref--mobile .loc-pref__value {
+      max-width: 96px;
+      font-size: 13px;
+    }
+
+    @media screen and (max-width: 749px) {
+      .loc-pref__scrim:not([hidden]) {
+        display: block;
+        position: fixed;
+        inset: 0;
+        z-index: calc(var(--loc-z) + 1);
+        background: rgb(0 0 0 / 0.4);
+      }
+
+      .loc-pref__panel,
+      .loc-pref--mobile .loc-pref__panel {
+        position: fixed;
+        top: auto;
+        right: 12px;
+        bottom: 12px;
+        left: 12px;
+        z-index: calc(var(--loc-z) + 2);
+        width: auto;
+        max-width: none;
+        max-height: calc(100dvh - 24px);
+        overflow-y: auto;
+        animation: loc-pref-sheet 0.22s ease-out;
+      }
+    }
+
+    @keyframes loc-pref-pop {
+      from { opacity: 0; transform: translateY(-6px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes loc-pref-sheet {
+      from { opacity: 0; transform: translateY(24px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .loc-pref__panel,
+      .loc-pref__chevron,
+      .loc-pref__trigger {
+        animation: none;
+        transition: none;
+      }
+    }
+  {% endstylesheet %}
+
+  <script>
+    (function () {
+      if (customElements.get('location-preference')) return;
+
+      class LocationPreference extends HTMLElement {
+        connectedCallback() {
+          if (this._ready) return;
+          this._ready = true;
+
+          this.trigger = this.querySelector('.loc-pref__trigger');
+          this.panel = this.querySelector('.loc-pref__panel');
+          this.scrim = this.querySelector('.loc-pref__scrim');
+          this.input = this.querySelector('.loc-pref__input');
+          this.valueEl = this.querySelector('.loc-pref__value');
+          this.live = this.querySelector('.loc-pref__live');
+          this.form = this.querySelector('.loc-pref__form');
+          this.closeButton = this.querySelector('.loc-pref__close');
+          this.emptyLabel = this.dataset.emptyLabel || 'Add location';
+          this.savedPrefix = this.dataset.savedPrefix || 'Location preference saved: ';
+          this.current = '';
+
+          try {
+            const saved = localStorage.getItem(this.dataset.storageKey);
+            if (saved) this.render(saved);
+          } catch (error) {}
+
+          this.trigger.addEventListener('click', () => (this.panel.hidden ? this.open() : this.close(true)));
+          this.closeButton.addEventListener('click', () => this.close(true));
+          this.scrim.addEventListener('click', () => this.close(true));
+
+          this.form.addEventListener('submit', (event) => {
+            event.preventDefault();
+            this.confirm(this.input.value);
+          });
+
+          this.querySelectorAll('.loc-pref__chip').forEach((chip) => {
+            chip.addEventListener('click', () => this.confirm(chip.dataset.location));
+          });
+
+          this.panel.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+              event.stopPropagation();
+              this.close(true);
+              return;
+            }
+            if (event.key !== 'Tab') return;
+            const focusable = Array.from(this.panel.querySelectorAll('button, input')).filter((el) => !el.disabled);
+            if (!focusable.length) return;
+            const first = focusable[0];
+            const last = focusable[focusable.length - 1];
+            if (event.shiftKey && document.activeElement === first) {
+              event.preventDefault();
+              last.focus();
+            } else if (!event.shiftKey && document.activeElement === last) {
+              event.preventDefault();
+              first.focus();
+            }
+          });
+
+          this.outsideHandler = (event) => {
+            if (!this.contains(event.target)) this.close(false);
+          };
+          this.syncHandler = (event) => {
+            if (event.detail && event.detail.source !== this) this.render(event.detail.location);
+          };
+          document.addEventListener('click', this.outsideHandler);
+          document.addEventListener('location-preference:change', this.syncHandler);
+        }
+
+        disconnectedCallback() {
+          document.removeEventListener('click', this.outsideHandler);
+          document.removeEventListener('location-preference:change', this.syncHandler);
+          this._ready = false;
+        }
+
+        open() {
+          this.panel.hidden = false;
+          this.scrim.hidden = false;
+          this.trigger.setAttribute('aria-expanded', 'true');
+          this.input.value = this.current;
+          this.input.focus();
+          this.input.select();
+        }
+
+        close(restoreFocus) {
+          if (this.panel.hidden) return;
+          this.panel.hidden = true;
+          this.scrim.hidden = true;
+          this.trigger.setAttribute('aria-expanded', 'false');
+          if (restoreFocus) this.trigger.focus();
+        }
+
+        confirm(raw) {
+          const location = (raw || '').trim();
+          if (!location) {
+            this.input.focus();
+            return;
+          }
+          this.render(location);
+          try {
+            localStorage.setItem(this.dataset.storageKey, location);
+          } catch (error) {}
+          this.live.textContent = this.savedPrefix + location;
+          document.dispatchEvent(
+            new CustomEvent('location-preference:change', { detail: { location, source: this } })
+          );
+          this.close(true);
+        }
+
+        render(location) {
+          this.current = location;
+          this.valueEl.textContent = location || this.emptyLabel;
+          this.valueEl.title = location || '';
+          this.input.value = location;
+        }
+      }
+
+      customElements.define('location-preference', LocationPreference);
+    })();
+  </script>

@@ -201,6 +201,843 @@
             attributes: 'data-skip-node-update'
           %}
         </nav>
+        {%- comment -%}
+  Blue Kites — Main Menu Location Selector
+  ----------------------------------------
+  Storefront location preference only.
+  Does not verify delivery availability or modify checkout shipping address.
+{%- endcomment -%}
+
+<style>
+  .bk-location {
+    --bk-red: #8f1025;
+    --bk-red-dark: #720b1d;
+    --bk-blue: #172bd4;
+    --bk-border: rgba(0, 0, 0, 0.10);
+    --bk-text: #202020;
+    --bk-muted: #707070;
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    z-index: 100;
+    font-family: inherit;
+  }
+
+  /* ================================
+     Trigger
+  ================================= */
+
+  .bk-location__trigger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    min-height: 40px;
+    max-width: 220px;
+    padding: 7px 12px;
+
+    border: 1px solid var(--bk-border);
+    border-radius: 999px;
+
+    background: #fff;
+    color: var(--bk-text);
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 1;
+
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease,
+      transform 180ms ease,
+      background 180ms ease;
+  }
+
+  .bk-location__trigger:hover {
+    border-color: rgba(143, 16, 37, 0.28);
+    background: #fffafa;
+    box-shadow: 0 5px 18px rgba(0, 0, 0, 0.07);
+  }
+
+  .bk-location__trigger:active {
+    transform: scale(0.98);
+  }
+
+  .bk-location__trigger:focus-visible {
+    outline: 2px solid var(--bk-red);
+    outline-offset: 3px;
+  }
+
+  /* ================================
+     Pin
+  ================================= */
+
+  .bk-location__pin {
+    width: 18px;
+    height: 18px;
+    flex: 0 0 18px;
+    color: var(--bk-red);
+  }
+
+  .bk-location__content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    min-width: 0;
+    text-align: left;
+  }
+
+  .bk-location__label {
+    margin-bottom: 2px;
+    color: var(--bk-muted);
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.05em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .bk-location__value {
+    display: block;
+    max-width: 145px;
+    overflow: hidden;
+
+    color: var(--bk-text);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.2;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .bk-location__chevron {
+    width: 12px;
+    height: 12px;
+    margin-left: 2px;
+    flex: 0 0 12px;
+    color: #777;
+    transition: transform 180ms ease;
+  }
+
+  .bk-location__trigger[aria-expanded="true"] .bk-location__chevron {
+    transform: rotate(180deg);
+  }
+
+  /* ================================
+     Panel
+  ================================= */
+
+  .bk-location__panel {
+    position: absolute;
+    top: calc(100% + 12px);
+    right: 0;
+
+    width: min(380px, calc(100vw - 32px));
+
+    padding: 22px;
+
+    border: 1px solid rgba(0, 0, 0, 0.08);
+    border-radius: 18px;
+
+    background: rgba(255, 255, 255, 0.98);
+    box-shadow:
+      0 20px 55px rgba(0, 0, 0, 0.13),
+      0 4px 14px rgba(0, 0, 0, 0.06);
+
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+
+    animation: bkLocationOpen 180ms ease-out;
+  }
+
+  .bk-location__panel[hidden] {
+    display: none;
+  }
+
+  @keyframes bkLocationOpen {
+    from {
+      opacity: 0;
+      transform: translateY(-6px) scale(0.98);
+    }
+
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  /* ================================
+     Panel header
+  ================================= */
+
+  .bk-location__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    margin-bottom: 18px;
+  }
+
+  .bk-location__heading-wrap {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  .bk-location__heading-icon {
+    display: grid;
+    width: 40px;
+    height: 40px;
+    flex: 0 0 40px;
+    place-items: center;
+
+    border-radius: 12px;
+    background: linear-gradient(
+      135deg,
+      #fff1f3,
+      #ffe5e9
+    );
+
+    color: var(--bk-red);
+  }
+
+  .bk-location__heading-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .bk-location__heading {
+    margin: 0;
+    color: var(--bk-text);
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 1.25;
+  }
+
+  .bk-location__description {
+    margin: 4px 0 0;
+    color: var(--bk-muted);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+
+  .bk-location__close {
+    display: grid;
+    width: 32px;
+    height: 32px;
+    flex: 0 0 32px;
+    place-items: center;
+
+    border: 0;
+    border-radius: 50%;
+    background: #f6f6f6;
+    color: #555;
+
+    cursor: pointer;
+    transition:
+      background 160ms ease,
+      color 160ms ease;
+  }
+
+  .bk-location__close:hover {
+    background: #f0e8ea;
+    color: var(--bk-red);
+  }
+
+  .bk-location__close svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  /* ================================
+     Form
+  ================================= */
+
+  .bk-location__form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .bk-location__label {
+    color: #444;
+    font-size: 12px;
+    font-weight: 600;
+  }
+
+  .bk-location__input-wrap {
+    position: relative;
+  }
+
+  .bk-location__input-icon {
+    position: absolute;
+    top: 50%;
+    left: 13px;
+
+    width: 18px;
+    height: 18px;
+
+    color: var(--bk-red);
+
+    transform: translateY(-50%);
+    pointer-events: none;
+  }
+
+  .bk-location__input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 48px;
+
+    padding: 11px 14px 11px 42px;
+
+    border: 1px solid #dedede;
+    border-radius: 11px;
+
+    background: #fff;
+    color: var(--bk-text);
+
+    font: inherit;
+    font-size: 14px;
+
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .bk-location__input::placeholder {
+    color: #999;
+  }
+
+  .bk-location__input:hover {
+    border-color: #c8c8c8;
+  }
+
+  .bk-location__input:focus {
+    border-color: var(--bk-red);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(143, 16, 37, 0.09);
+  }
+
+  .bk-location__submit {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+
+    width: 100%;
+    min-height: 48px;
+    margin-top: 4px;
+
+    padding: 11px 18px;
+
+    border: 0;
+    border-radius: 11px;
+
+    background: linear-gradient(
+      135deg,
+      var(--bk-red),
+      var(--bk-red-dark)
+    );
+
+    color: #fff;
+
+    font: inherit;
+    font-size: 13px;
+    font-weight: 700;
+
+    cursor: pointer;
+
+    box-shadow: 0 8px 18px rgba(143, 16, 37, 0.18);
+
+    transition:
+      transform 160ms ease,
+      box-shadow 160ms ease,
+      opacity 160ms ease;
+  }
+
+  .bk-location__submit:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 11px 22px rgba(143, 16, 37, 0.23);
+  }
+
+  .bk-location__submit:active {
+    transform: translateY(0);
+  }
+
+  .bk-location__submit svg {
+    width: 16px;
+    height: 16px;
+  }
+
+  .bk-location__hint {
+    margin: 2px 0 0;
+
+    color: #888;
+    font-size: 10px;
+    line-height: 1.45;
+  }
+
+  /* ================================
+     Mobile
+  ================================= */
+
+  @media screen and (max-width: 749px) {
+    .bk-location {
+      width: 100%;
+    }
+
+    .bk-location__trigger {
+      width: 100%;
+      max-width: none;
+      justify-content: flex-start;
+      min-height: 44px;
+    }
+
+    .bk-location__value {
+      max-width: calc(100vw - 110px);
+    }
+
+    .bk-location__panel {
+      position: fixed;
+
+      top: auto;
+      right: 12px;
+      bottom: 12px;
+      left: 12px;
+
+      width: auto;
+      max-width: none;
+
+      padding: 20px;
+
+      border-radius: 20px;
+
+      z-index: 9999;
+    }
+
+    .bk-location__heading {
+      font-size: 17px;
+    }
+  }
+
+  /* ================================
+     Reduced motion
+  ================================= */
+
+  @media (prefers-reduced-motion: reduce) {
+    .bk-location__panel,
+    .bk-location__trigger,
+    .bk-location__submit,
+    .bk-location__chevron {
+      animation: none;
+      transition: none;
+    }
+  }
+</style>
+
+
+<location-preference class="bk-location">
+
+  <!-- Main Menu Trigger -->
+  <button
+    class="bk-location__trigger"
+    type="button"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="bk-location-panel"
+  >
+
+    <svg
+      class="bk-location__pin"
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.8"
+      aria-hidden="true"
+    >
+      <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
+      <circle cx="12" cy="10" r="2.5"/>
+    </svg>
+
+    <span class="bk-location__content">
+
+      <span class="bk-location__label">
+        Your location
+      </span>
+
+      <span class="bk-location__value">
+        Add location
+      </span>
+
+    </span>
+
+    <svg
+      class="bk-location__chevron"
+      viewBox="0 0 12 12"
+      fill="none"
+      stroke="currentColor"
+      stroke-width="1.6"
+      aria-hidden="true"
+    >
+      <path d="m2 4 4 4 4-4"/>
+    </svg>
+
+  </button>
+
+
+  <!-- Location Popup -->
+  <div
+    id="bk-location-panel"
+    class="bk-location__panel"
+    role="dialog"
+    aria-modal="false"
+    aria-labelledby="bk-location-heading"
+    hidden
+  >
+
+    <div class="bk-location__header">
+
+      <div class="bk-location__heading-wrap">
+
+        <div class="bk-location__heading-icon">
+
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="1.8"
+            aria-hidden="true"
+          >
+            <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
+            <circle cx="12" cy="10" r="2.5"/>
+          </svg>
+
+        </div>
+
+        <div>
+
+          <h2
+            id="bk-location-heading"
+            class="bk-location__heading"
+          >
+            Choose your location
+          </h2>
+
+          <p class="bk-location__description">
+            Select your city or area for a more relevant shopping experience.
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <button
+        class="bk-location__close"
+        type="button"
+        aria-label="Close location dialog"
+      >
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="m18 6-12 12M6 6l12 12"/>
+        </svg>
+
+      </button>
+
+    </div>
+
+
+    <form class="bk-location__form">
+
+      <label
+        class="bk-location__label"
+        for="bk-location-input"
+      >
+        City or area
+      </label>
+
+
+      <div class="bk-location__input-wrap">
+
+        <svg
+          class="bk-location__input-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          aria-hidden="true"
+        >
+          <path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/>
+          <circle cx="12" cy="10" r="2.5"/>
+        </svg>
+
+        <input
+          id="bk-location-input"
+          class="bk-location__input"
+          type="text"
+          name="location"
+          maxlength="100"
+          autocomplete="address-level2"
+          placeholder="Enter your city or area"
+          required
+        >
+
+      </div>
+
+
+      <button
+        class="bk-location__submit"
+        type="submit"
+      >
+
+        <span>
+          Confirm location
+        </span>
+
+        <svg
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="2"
+          aria-hidden="true"
+        >
+          <path d="m5 12 5 5L20 7"/>
+        </svg>
+
+      </button>
+
+
+      <p class="bk-location__hint">
+        This saves your location preference for the storefront. It does not verify delivery availability or change your checkout shipping address.
+      </p>
+
+    </form>
+
+  </div>
+
+
+  <span
+    class="visually-hidden"
+    aria-live="polite"
+    aria-atomic="true"
+  ></span>
+
+</location-preference>
+
+
+<script>
+  (() => {
+    const tagName = 'location-preference';
+
+    if (customElements.get(tagName)) {
+      return;
+    }
+
+    class LocationPreference extends HTMLElement {
+      constructor() {
+        super();
+
+        this.storageKey = 'blue-kites-location';
+
+        this.trigger = null;
+        this.panel = null;
+        this.input = null;
+        this.value = null;
+        this.form = null;
+        this.closeButton = null;
+        this.liveRegion = null;
+        this.outsideHandler = null;
+      }
+
+      connectedCallback() {
+        this.trigger = this.querySelector('.bk-location__trigger');
+        this.panel = this.querySelector('.bk-location__panel');
+        this.input = this.querySelector('.bk-location__input');
+        this.value = this.querySelector('.bk-location__value');
+        this.form = this.querySelector('.bk-location__form');
+        this.closeButton = this.querySelector('.bk-location__close');
+        this.liveRegion = this.querySelector('[aria-live]');
+
+        if (
+          !this.trigger ||
+          !this.panel ||
+          !this.input ||
+          !this.value ||
+          !this.form ||
+          !this.closeButton
+        ) {
+          return;
+        }
+
+        this.loadSavedLocation();
+        this.bindEvents();
+      }
+
+      disconnectedCallback() {
+        if (this.outsideHandler) {
+          document.removeEventListener('click', this.outsideHandler);
+        }
+      }
+
+      bindEvents() {
+        this.trigger.addEventListener('click', () => {
+          this.toggle();
+        });
+
+        this.closeButton.addEventListener('click', () => {
+          this.close(true);
+        });
+
+        this.form.addEventListener('submit', (event) => {
+          event.preventDefault();
+
+          const location = this.input.value.trim();
+
+          if (!location) {
+            this.input.focus();
+            return;
+          }
+
+          this.setLocation(location, true);
+          this.close(true);
+        });
+
+        this.panel.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            event.preventDefault();
+            this.close(true);
+            return;
+          }
+
+          if (event.key !== 'Tab') {
+            return;
+          }
+
+          this.trapFocus(event);
+        });
+
+        this.outsideHandler = (event) => {
+          if (!this.contains(event.target)) {
+            this.close(false);
+          }
+        };
+
+        document.addEventListener('click', this.outsideHandler);
+      }
+
+      loadSavedLocation() {
+        try {
+          const savedLocation = localStorage.getItem(this.storageKey);
+
+          if (savedLocation) {
+            this.setLocation(savedLocation, false);
+          }
+        } catch (error) {
+          // Local storage may be unavailable in private/restricted browsers.
+        }
+      }
+
+      toggle() {
+        if (this.panel.hidden) {
+          this.open();
+        } else {
+          this.close(true);
+        }
+      }
+
+      open() {
+        this.panel.hidden = false;
+
+        this.trigger.setAttribute('aria-expanded', 'true');
+
+        const currentLocation =
+          this.value.textContent.trim() === 'Add location'
+            ? ''
+            : this.value.textContent.trim();
+
+        this.input.value = currentLocation;
+
+        requestAnimationFrame(() => {
+          this.input.focus();
+        });
+      }
+
+      close(restoreFocus = false) {
+        if (this.panel.hidden) {
+          return;
+        }
+
+        this.panel.hidden = true;
+
+        this.trigger.setAttribute('aria-expanded', 'false');
+
+        if (restoreFocus) {
+          this.trigger.focus();
+        }
+      }
+
+      setLocation(location, announce = false) {
+        this.value.textContent = location;
+        this.input.value = location;
+
+        try {
+          localStorage.setItem(this.storageKey, location);
+        } catch (error) {
+          // Ignore storage failures without breaking the location selector.
+        }
+
+        if (announce && this.liveRegion) {
+          this.liveRegion.textContent =
+            `Location preference saved: ${location}`;
+        }
+      }
+
+      trapFocus(event) {
+        const focusableElements = Array.from(
+          this.panel.querySelectorAll(
+            'button:not([disabled]), input:not([disabled])'
+          )
+        );
+
+        if (!focusableElements.length) {
+          return;
+        }
+
+        const firstElement = focusableElements[0];
+        const lastElement =
+          focusableElements[focusableElements.length - 1];
+
+        if (
+          event.shiftKey &&
+          document.activeElement === firstElement
+        ) {
+          event.preventDefault();
+          lastElement.focus();
+          return;
+        }
+
+        if (
+          !event.shiftKey &&
+          document.activeElement === lastElement
+        ) {
+          event.preventDefault();
+          firstElement.focus();
+        }
+      }
+    }
+
+    customElements.define(tagName, LocationPreference);
+  })();
+</script>
       </div>
 
       <script

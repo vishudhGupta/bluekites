@@ -201,6 +201,220 @@
             attributes: 'data-skip-node-update'
           %}
         </nav>
+        {%- doc -%}
+  Renders the "Add location" storefront preference control inside the header menu.
+  This only saves a location preference in the browser. It does not check delivery
+  availability and does not change checkout shipping addresses.
+
+  @param {object} block - The header menu block (settings are read from it)
+  @param {object} section - The parent section
+  @param {string} [variant] - 'desktop' (default) or 'mobile'
+{%- enddoc -%}
+
+{%- liquid
+  assign bs = block.settings
+  assign loc_variant = variant | default: 'desktop'
+  assign uid = section.id | append: '-' | append: loc_variant
+  assign loc_heading = bs.location_heading | default: 'Choose your location'
+  assign loc_helper = bs.location_helper_text | default: 'Save a location preference for your storefront experience. This does not check delivery availability or change your checkout shipping address.'
+  assign loc_field_label = bs.location_field_label | default: 'City or area'
+  assign loc_placeholder = bs.location_placeholder | default: 'Enter a city or area'
+  assign loc_confirm = bs.location_confirm_label | default: 'Confirm location'
+  assign loc_empty = bs.location_empty_label | default: 'Add location'
+  assign loc_suggestions = bs.location_suggestions | split: ','
+-%}
+
+<location-preference
+  class="loc-pref loc-pref--{{ loc_variant }}"
+  data-storage-key="ai-location-preference"
+  data-empty-label="{{ loc_empty | escape }}"
+  data-saved-prefix="{{ 'Location preference saved: ' | escape }}"
+>
+  <button
+    class="loc-pref__trigger"
+    type="button"
+    aria-haspopup="dialog"
+    aria-expanded="false"
+    aria-controls="loc-pref-panel-{{ uid }}"
+  >
+    <svg class="loc-pref__pin" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M20 10c0 5-8 12-8 12S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/></svg>
+    <span class="loc-pref__text">
+      <span class="loc-pref__eyebrow">Deliver to</span>
+      <span class="loc-pref__value">{{ loc_empty | escape }}</span>
+    </span>
+    <svg class="loc-pref__chevron" viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m2 4 4 4 4-4"/></svg>
+  </button>
+
+  <div class="loc-pref__scrim" hidden></div>
+
+  <div
+    id="loc-pref-panel-{{ uid }}"
+    class="loc-pref__panel"
+    role="dialog"
+    aria-modal="true"
+    aria-labelledby="loc-pref-heading-{{ uid }}"
+    hidden
+  >
+    <button class="loc-pref__close" type="button" aria-label="Close location dialog">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"/></svg>
+    </button>
+    <h2 id="loc-pref-heading-{{ uid }}" class="loc-pref__heading">{{ loc_heading | escape }}</h2>
+    <p class="loc-pref__note">{{ loc_helper | escape }}</p>
+
+    <form class="loc-pref__form">
+      <label class="loc-pref__label" for="loc-pref-input-{{ uid }}">{{ loc_field_label | escape }}</label>
+      <input
+        id="loc-pref-input-{{ uid }}"
+        class="loc-pref__input"
+        type="text"
+        name="location"
+        maxlength="100"
+        autocomplete="address-level2"
+        placeholder="{{ loc_placeholder | escape }}"
+        required
+      >
+
+      {%- if loc_suggestions.size > 0 and bs.location_suggestions != blank -%}
+        <ul class="loc-pref__chips" role="list" aria-label="Suggested locations">
+          {%- for item in loc_suggestions -%}
+            {%- assign chip = item | strip -%}
+            {%- if chip != blank -%}
+              <li><button class="loc-pref__chip" type="button" data-location="{{ chip | escape }}">{{ chip | escape }}</button></li>
+            {%- endif -%}
+          {%- endfor -%}
+        </ul>
+      {%- endif -%}
+
+      <button class="loc-pref__submit" type="submit">{{ loc_confirm | escape }}</button>
+    </form>
+  </div>
+
+  <span class="visually-hidden loc-pref__live" aria-live="polite" aria-atomic="true"></span>
+</location-preference>
+
+
+
+<script>
+  (function () {
+    if (customElements.get('location-preference')) return;
+
+    class LocationPreference extends HTMLElement {
+      connectedCallback() {
+        if (this._ready) return;
+        this._ready = true;
+
+        this.trigger = this.querySelector('.loc-pref__trigger');
+        this.panel = this.querySelector('.loc-pref__panel');
+        this.scrim = this.querySelector('.loc-pref__scrim');
+        this.input = this.querySelector('.loc-pref__input');
+        this.valueEl = this.querySelector('.loc-pref__value');
+        this.live = this.querySelector('.loc-pref__live');
+        this.form = this.querySelector('.loc-pref__form');
+        this.closeButton = this.querySelector('.loc-pref__close');
+        this.emptyLabel = this.dataset.emptyLabel || 'Add location';
+        this.savedPrefix = this.dataset.savedPrefix || 'Location preference saved: ';
+        this.current = '';
+
+        try {
+          const saved = localStorage.getItem(this.dataset.storageKey);
+          if (saved) this.render(saved);
+        } catch (error) {}
+
+        this.trigger.addEventListener('click', () => (this.panel.hidden ? this.open() : this.close(true)));
+        this.closeButton.addEventListener('click', () => this.close(true));
+        this.scrim.addEventListener('click', () => this.close(true));
+
+        this.form.addEventListener('submit', (event) => {
+          event.preventDefault();
+          this.confirm(this.input.value);
+        });
+
+        this.querySelectorAll('.loc-pref__chip').forEach((chip) => {
+          chip.addEventListener('click', () => this.confirm(chip.dataset.location));
+        });
+
+        this.panel.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape') {
+            event.stopPropagation();
+            this.close(true);
+            return;
+          }
+          if (event.key !== 'Tab') return;
+          const focusable = Array.from(this.panel.querySelectorAll('button, input')).filter((el) => !el.disabled);
+          if (!focusable.length) return;
+          const first = focusable[0];
+          const last = focusable[focusable.length - 1];
+          if (event.shiftKey && document.activeElement === first) {
+            event.preventDefault();
+            last.focus();
+          } else if (!event.shiftKey && document.activeElement === last) {
+            event.preventDefault();
+            first.focus();
+          }
+        });
+
+        this.outsideHandler = (event) => {
+          if (!this.contains(event.target)) this.close(false);
+        };
+        this.syncHandler = (event) => {
+          if (event.detail && event.detail.source !== this) this.render(event.detail.location);
+        };
+        document.addEventListener('click', this.outsideHandler);
+        document.addEventListener('location-preference:change', this.syncHandler);
+      }
+
+      disconnectedCallback() {
+        document.removeEventListener('click', this.outsideHandler);
+        document.removeEventListener('location-preference:change', this.syncHandler);
+        this._ready = false;
+      }
+
+      open() {
+        this.panel.hidden = false;
+        this.scrim.hidden = false;
+        this.trigger.setAttribute('aria-expanded', 'true');
+        this.input.value = this.current;
+        this.input.focus();
+        this.input.select();
+      }
+
+      close(restoreFocus) {
+        if (this.panel.hidden) return;
+        this.panel.hidden = true;
+        this.scrim.hidden = true;
+        this.trigger.setAttribute('aria-expanded', 'false');
+        if (restoreFocus) this.trigger.focus();
+      }
+
+      confirm(raw) {
+        const location = (raw || '').trim();
+        if (!location) {
+          this.input.focus();
+          return;
+        }
+        this.render(location);
+        try {
+          localStorage.setItem(this.dataset.storageKey, location);
+        } catch (error) {}
+        this.live.textContent = this.savedPrefix + location;
+        document.dispatchEvent(
+          new CustomEvent('location-preference:change', { detail: { location, source: this } })
+        );
+        this.close(true);
+      }
+
+      render(location) {
+        this.current = location;
+        this.valueEl.textContent = location || this.emptyLabel;
+        this.valueEl.title = location || '';
+        this.input.value = location;
+      }
+    }
+
+    customElements.define('location-preference', LocationPreference);
+  })();
+</script>
+
         
       </div>
 

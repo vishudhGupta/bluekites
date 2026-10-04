@@ -1,4 +1,3 @@
-
 {%- doc -%}
   Renders a header menu block.
 
@@ -24,6 +23,9 @@
         block: block,
         section: section
       %}
+      {% if block_settings.show_location %}
+        {% render 'header-location', block: block, section: section, variant: 'mobile' %}
+      {% endif %}
     </div>
 
   {% when 'navigation_bar' %}
@@ -201,6 +203,10 @@
             attributes: 'data-skip-node-update'
           %}
         </nav>
+
+        {% if block_settings.show_location %}
+          {% render 'header-location', block: block, section: section, variant: 'desktop' %}
+        {% endif %}
       </div>
 
       <script
@@ -757,6 +763,62 @@
     /* preserves the inherited grid layout when this submenu wrapper is used */
     display: contents;
   }
+
+  /* ------------------------------------------------------------------
+     Location picker (desktop): sits in the gap right after "View More",
+     vertically centered with the search / account / cart icons.
+     The menu itself stays exactly where it was.
+  ------------------------------------------------------------------ */
+  .header-menu__inner {
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .header-menu__inner > .menu-list {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .header-menu__inner > location-preference {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: calc(100% + 24px);
+    transform: translateY(-50%);
+  }
+
+  /* Match the dark header: transparent pill, text and border follow the menu colour */
+  .loc-pref--desktop .loc-pref__trigger {
+    min-height: 42px;
+    background: transparent;
+    color: var(--menu-top-level-font-color, currentColor);
+    border-color: color-mix(in srgb, currentColor 40%, transparent);
+    white-space: nowrap;
+  }
+
+  .loc-pref--desktop .loc-pref__trigger:hover {
+    background: color-mix(in srgb, currentColor 12%, transparent);
+    border-color: currentColor;
+    box-shadow: none;
+  }
+
+  /* One clean line so it lines up with the icon row */
+  .loc-pref--desktop .loc-pref__eyebrow {
+    display: none;
+  }
+
+  .loc-pref--desktop .loc-pref__value {
+    max-width: 120px;
+    font-weight: 500;
+  }
+
+  /* Mobile pill on dark headers */
+  .loc-pref--mobile .loc-pref__trigger {
+    background: transparent;
+    color: var(--color-foreground, currentColor);
+    border-color: color-mix(in srgb, currentColor 40%, transparent);
+  }
 {% endstylesheet %}
 
 {% schema %}
@@ -984,6 +1046,58 @@
       "id": "drawer_dividers",
       "label": "t:settings.dividers",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Location picker"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_location",
+      "label": "Show location picker",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "location_empty_label",
+      "label": "Empty state label",
+      "default": "Add location"
+    },
+    {
+      "type": "text",
+      "id": "location_heading",
+      "label": "Heading",
+      "default": "Choose your location"
+    },
+    {
+      "type": "text",
+      "id": "location_helper_text",
+      "label": "Helper text",
+      "default": "Save a location preference for your storefront experience. This does not check delivery availability or change your checkout shipping address."
+    },
+    {
+      "type": "text",
+      "id": "location_field_label",
+      "label": "Field label",
+      "default": "City or area"
+    },
+    {
+      "type": "text",
+      "id": "location_placeholder",
+      "label": "Placeholder",
+      "default": "Enter a city or area"
+    },
+    {
+      "type": "text",
+      "id": "location_suggestions",
+      "label": "Suggested locations (comma separated)",
+      "default": "Kolkata, Delhi, Mumbai, Bengaluru, Chennai"
+    },
+    {
+      "type": "text",
+      "id": "location_confirm_label",
+      "label": "Confirm button",
+      "default": "Confirm location"
     }
   ]
 }

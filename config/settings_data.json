@@ -89,6 +89,11 @@
           "agent_activator_font_size": 14,
           "agent_border_radius": 16
         }
+      },
+      "9564280491099518736": {
+        "type": "shopify://apps/shipmate-delivery-date-eta/blocks/ship_mate_embed/01a04a3d-62d9-795b-bb7b-fb3ddaee1dd5",
+        "disabled": false,
+        "settings": {}
       }
     },
     "color_schemes": {

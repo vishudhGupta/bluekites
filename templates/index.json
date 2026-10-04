@@ -71,10 +71,28 @@
             "social_link": ""
           }
         },
+        "slide_8FBb3E": {
+          "type": "slide",
+          "settings": {
+            "eyebrow": "New Collection",
+            "heading": "Shop More. Experience More.",
+            "description": "<p>Your one-stop destination for premium products, everyday essentials, and modern living.</p>",
+            "button_label": "Shop now",
+            "button_link": "",
+            "show_social_card": true,
+            "social_card_title": "Post of the day",
+            "social_card_tag": "Social",
+            "social_url": "",
+            "social_platform": "auto",
+            "social_enable_embed": true,
+            "social_link_label": "View post",
+            "social_link": ""
+          }
+        },
         "slide_gPzMtp": {
           "type": "slide",
           "settings": {
-            "background_image": "shopify://shop_images/c11..png",
+            "background_image": "shopify://shop_images/RW_Hygiene_Solutions_Banner.png",
             "background_image_mobile": "shopify://shop_images/c11_M.png",
             "eyebrow": "",
             "heading": "",
@@ -296,6 +314,7 @@
         "slide_whqEN6",
         "slide_6ipCY9",
         "slide_766XV6",
+        "slide_8FBb3E",
         "slide_gPzMtp",
         "slide_yLeqhq",
         "slide_hjQpz9",

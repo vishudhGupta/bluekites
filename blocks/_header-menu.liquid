@@ -781,43 +781,15 @@
     min-width: 0;
   }
 
-  .header-menu__inner > location-preference {
+  .header-menu__inner > .loc-pref {
     position: absolute;
-    top: 50%;
+    top: 0;
+    bottom: 0;
+    margin-block: auto;
+    height: fit-content;
+    width: max-content;
     inset-inline-start: calc(100% + 24px);
-    transform: translateY(-50%);
-  }
-
-  /* Match the dark header: transparent pill, text and border follow the menu colour */
-  .loc-pref--desktop .loc-pref__trigger {
-    min-height: 42px;
-    background: transparent;
-    color: var(--menu-top-level-font-color, currentColor);
-    border-color: color-mix(in srgb, currentColor 40%, transparent);
-    white-space: nowrap;
-  }
-
-  .loc-pref--desktop .loc-pref__trigger:hover {
-    background: color-mix(in srgb, currentColor 12%, transparent);
-    border-color: currentColor;
-    box-shadow: none;
-  }
-
-  /* One clean line so it lines up with the icon row */
-  .loc-pref--desktop .loc-pref__eyebrow {
-    display: none;
-  }
-
-  .loc-pref--desktop .loc-pref__value {
-    max-width: 120px;
-    font-weight: 500;
-  }
-
-  /* Mobile pill on dark headers */
-  .loc-pref--mobile .loc-pref__trigger {
-    background: transparent;
-    color: var(--color-foreground, currentColor);
-    border-color: color-mix(in srgb, currentColor 40%, transparent);
+    z-index: 2;
   }
 {% endstylesheet %}
 

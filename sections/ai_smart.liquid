@@ -152,7 +152,7 @@
           </h3>
         {% endif %}
 
-        <div class="ai-smart__updates">
+        {% comment %} <div class="ai-smart__updates">
           {% assign update_count = 0 %}
           {% for block in section.blocks %}
             {% if block.type == 'update' %}
@@ -169,7 +169,7 @@
               </article>
             {% endif %}
           {% endfor %}
-        </div>
+        </div> {% endcomment %}
       </aside>
     </div>
   </div>

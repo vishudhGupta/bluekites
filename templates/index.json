@@ -368,148 +368,61 @@
         "gap_between_elements": 24
       }
     },
-    "category_tabs_RMWU8E": {
-      "type": "category_tabs",
+    "feature_product_JKpij4": {
+      "type": "feature_product",
       "blocks": {
-        "tab_nmncKz": {
-          "type": "tab",
+        "product_DaMyUn": {
+          "type": "product",
           "settings": {
-            "tab_label": "Healthcare & Pharma",
-            "tab_key": "healthcare"
+            "product": "2-shelf-boltless-rack-2-shelf",
+            "badge_text": "New"
           }
         },
-        "tab_9maBgk": {
-          "type": "tab",
+        "product_d8ea7e": {
+          "type": "product",
           "settings": {
-            "tab_label": "Food and Gourmet",
-            "tab_key": "furnniture"
+            "product": "2-x-2-tier-end-table",
+            "badge_text": "New"
           }
         },
-        "tab_W4B6ci": {
-          "type": "tab",
+        "product_nXByWQ": {
+          "type": "product",
           "settings": {
-            "tab_label": "Services",
-            "tab_key": "more"
+            "product": "3-shelf-boltless-rack-3-shelf",
+            "badge_text": "New"
           }
         },
-        "tab_Nqf3h3": {
-          "type": "tab",
+        "product_tHcpJa": {
+          "type": "product",
           "settings": {
-            "tab_label": "More Categories",
-            "tab_key": "cat"
-          }
-        },
-        "card_WfNa3C": {
-          "type": "card",
-          "settings": {
-            "title": "Surgicals",
-            "tab_key": "healthcare",
-            "image": "shopify://shop_images/LE.jpg",
-            "link": "shopify://collections/surgical-products"
-          }
-        },
-        "card_WexYcL": {
-          "type": "card",
-          "settings": {
-            "title": "Handrub & Disinfectants",
-            "tab_key": "healthcare",
-            "image": "shopify://shop_images/Untitled_design_8.png",
-            "link": ""
-          }
-        },
-        "card_gfULqL": {
-          "type": "card",
-          "settings": {
-            "title": "Cosmetics",
-            "tab_key": "healthcare",
-            "image": "shopify://shop_images/images_2.jpg",
-            "link": "shopify://collections/handmade-cosmetics"
-          }
-        },
-        "card_mYPTpp": {
-          "type": "card",
-          "settings": {
-            "title": "Tea and Coffe",
-            "tab_key": "furnniture",
-            "image": "shopify://shop_images/images_4.jpg",
-            "link": "shopify://collections/tea-coffee"
-          }
-        },
-        "card_9Gmp9B": {
-          "type": "card",
-          "settings": {
-            "title": "​Edible Oils & Honey",
-            "tab_key": "furnniture",
-            "image": "shopify://shop_images/herbal-honey--203.jpg",
-            "link": "shopify://collections/honey"
-          }
-        },
-        "card_iXchD7": {
-          "type": "card",
-          "settings": {
-            "title": "​Tour & Travels",
-            "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_18.png",
-            "link": "shopify://collections/tours-and-travels"
-          }
-        },
-        "card_BdzA4W": {
-          "type": "card",
-          "settings": {
-            "title": "IT",
-            "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_19.png",
-            "link": "https://bluekitesglobal.com/pages/software-development-services"
-          }
-        },
-        "card_jMTDTz": {
-          "type": "card",
-          "settings": {
-            "title": "Real Estate",
-            "tab_key": "more",
-            "image": "shopify://shop_images/Untitled_design_17.png",
-            "link": "shopify://collections/real-estate"
+            "product": "3-shelf-movable-rack",
+            "badge_text": "New"
           }
         }
       },
       "block_order": [
-        "tab_nmncKz",
-        "tab_9maBgk",
-        "tab_W4B6ci",
-        "tab_Nqf3h3",
-        "card_WfNa3C",
-        "card_WexYcL",
-        "card_gfULqL",
-        "card_mYPTpp",
-        "card_9Gmp9B",
-        "card_iXchD7",
-        "card_BdzA4W",
-        "card_jMTDTz"
+        "product_DaMyUn",
+        "product_d8ea7e",
+        "product_nXByWQ",
+        "product_tHcpJa"
       ],
-      "name": "Category tabs",
+      "name": "Feature product strip",
       "settings": {
-        "heading": "Business Verticals",
-        "subheading": "Multiple industries, one mutual network",
-        "color_scheme": "",
-        "accent_color": "#37181d",
-        "heading_color": "#37181d",
-        "subheading_color": "#37181d",
-        "tab_text_color": "#37181d",
-        "tab_bg_color": "#ffffff",
-        "tab_border_color": "#b8a6aa",
-        "card_title_color": "#ffffff",
-        "card_footer_bg": "#37181d",
-        "panel_border_color": "#ffffff66",
-        "section_background": "#f1f1f1",
-        "cards_per_view_desktop": 3,
-        "cards_per_view_tablet": 2,
-        "cards_per_view_mobile": 1,
-        "card_gap": 10,
-        "corner_radius": 8,
-        "glass_blur": 14,
-        "show_rail_buttons": true,
-        "padding_top": 56,
-        "padding_bottom": 56
+        "heading": "Deals of the Day",
+        "subheading": "Handpicked top deals and exclusive daily offers available for a limited time.",
+        "button_label": "Shop now",
+        "color_scheme": "scheme-1",
+        "background_color": "#587470",
+        "heading_color": "#FFFFFF",
+        "text_color": "#F4EDEE",
+        "button_bg": "transparent",
+        "button_text": "#FFFFFF",
+        "expanded_ratio": 22,
+        "collapsed_ratio": 10,
+        "card_gap": 8,
+        "card_radius": 6,
+        "padding_top": 60,
+        "padding_bottom": 60
       }
     },
     "feature_product_bLRpkG": {
@@ -771,7 +684,7 @@
   "order": [
     "hero_iLBwPd",
     "marquee_pNWDpm",
-    "category_tabs_RMWU8E",
+    "feature_product_JKpij4",
     "feature_product_bLRpkG",
     "service_cards_9R7Aax",
     "whyus_XEjggw",

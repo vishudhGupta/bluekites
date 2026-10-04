@@ -92,7 +92,7 @@
               endif
             %}
 
-            {% if slot == 1 or p != blank %}
+            {% if p != blank %}
               <div class="ai-smart__media">
                 {% if p != blank %}
                   <a class="ai-smart__product-link" href="{{ p.url }}" aria-label="View {{ p.title | escape }}">
@@ -135,8 +135,6 @@
                       </div>
                     {% endif %}
                   </a>
-                {% else %}
-                  {{ 'image' | placeholder_svg_tag: 'ai-smart__image ai-smart__image--placeholder' }}
                 {% endif %}
               </div>
             {% endif %}
@@ -152,7 +150,7 @@
           </h3>
         {% endif %}
 
-        {% comment %} <div class="ai-smart__updates">
+        <div class="ai-smart__updates">
           {% assign update_count = 0 %}
           {% for block in section.blocks %}
             {% if block.type == 'update' %}
@@ -169,7 +167,7 @@
               </article>
             {% endif %}
           {% endfor %}
-        </div> {% endcomment %}
+        </div>
       </aside>
     </div>
   </div>

@@ -782,6 +782,18 @@
     },
     "ai_smart_AMQE9r": {
       "type": "ai_smart",
+      "blocks": {
+        "update_abwmBi": {
+          "type": "update",
+          "settings": {
+            "title": "Free Worldwide Shipping",
+            "text": "On orders above $500 across selected regions."
+          }
+        }
+      },
+      "block_order": [
+        "update_abwmBi"
+      ],
       "name": "AI smart section",
       "settings": {
         "eyebrow": "",

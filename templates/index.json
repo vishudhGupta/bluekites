@@ -368,54 +368,6 @@
         "gap_between_elements": 24
       }
     },
-    "17911400095772a37d": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_4aef750_rKpY7L": {
-          "type": "ai_gen_block_4aef750",
-          "settings": {
-            "heading": "Choose your location",
-            "helper_text": "Save a location preference for your storefront experience. This does not check delivery availability or change your checkout shipping address.",
-            "field_label": "City or area",
-            "placeholder": "Enter a city or area",
-            "confirm_label": "Confirm location",
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_4aef750_rKpY7L"
-      ],
-      "name": "Add Location",
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
-    },
     "feature_product_JKpij4": {
       "type": "feature_product",
       "blocks": {
@@ -829,7 +781,6 @@
   "order": [
     "hero_iLBwPd",
     "marquee_pNWDpm",
-    "17911400095772a37d",
     "feature_product_JKpij4",
     "feature_product_bLRpkG",
     "service_cards_9R7Aax",

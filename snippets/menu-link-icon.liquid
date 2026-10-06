@@ -1,0 +1,29 @@
+{%- doc -%}
+  Renders the icon for a top-level menu link, matched by title.
+  @param {string} title - The menu link title
+{%- enddoc -%}
+
+{% liquid
+  assign icon_map = 'Surgical Products|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/0dfbe4ab-ae02-4f64-b0d2-b082b7fb6469.png?v=1790271258;Handrub & Disinfectants|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/Sep_21_2026_05_11_13_PM.png?v=1790271258;Healthcare|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/e91ec7f3-08de-4cba-acde-f00163e15efe.png?v=1790271256;Cosmetics|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/6a2bf868-6c63-4567-a139-81639e2817a5.png?v=1790271257;Food and Gourmet|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/48019ec6-ae16-49e6-bf14-b73b3fd4274e.png?v=1790271257;Tours and Travels|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/57b47abc-5b0e-4600-8157-7ab370023fc8.png?v=1790271258;IT Services|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/fbdf8ff5-76de-429b-9bf6-6325ee4d80e8.png?v=1790271258;View More|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/05fd7d78-ad37-4bba-ba40-3817d1e284a7.png?v=1790271257' | split: ';'
+  assign current_title = title | downcase | strip
+  assign icon_url = blank
+  for entry in icon_map
+    assign parts = entry | split: '|'
+    assign item_title = parts[0] | strip | downcase
+    if item_title == current_title
+      assign icon_url = parts[1] | strip
+      break
+    endif
+  endfor
+%}
+
+{% if icon_url != blank %}
+  <img
+    src="{{ icon_url }}"
+    alt=""
+    class="menu-drawer__link-icon"
+    loading="lazy"
+    width="28"
+    height="28"
+  >
+{% endif %}

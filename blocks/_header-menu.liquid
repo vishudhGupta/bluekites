@@ -747,75 +747,94 @@
   }
 
   /* ---------- Pill-style top-level menu items ---------- */
-.menu-list__link--with-icon {
-  --pill-bg: rgb(var(--color-foreground-rgb) / 0.08);
-  --pill-bg-hover: rgb(var(--color-foreground-rgb) / 0.14);
+.menu-list__list-item:not([slot='overflow']) {
+  justify-content: center; /* keeps pills vertically centred */
+}
 
+.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
+.menu-list__list-item[slot='more'] .menu-list__link {
   flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 10px;
+  gap: 8px;
   height: auto;
   min-width: 0;
-  margin-inline: 4px;
-  padding: 8px 16px 8px 10px;
-  border-radius: 14px;
-  background-color: var(--pill-bg);
-  transition: background-color var(--animation-speed) var(--animation-easing),
-    color var(--animation-speed) var(--animation-easing);
+  margin-inline: 3px;
+  padding: 6px 14px 6px 8px;
+  border-radius: 12px;
+  background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  transition: background-color var(--animation-speed) var(--animation-easing);
 }
 
+.menu-list__list-item[slot='more'] .menu-list__link {
+  padding-inline: 14px;
+}
+
+.menu-list__list-item:not([slot='overflow']):hover > .menu-list__link--with-icon,
+.menu-list__list-item:not([slot='overflow']):focus-within > .menu-list__link--with-icon {
+  background-color: rgb(var(--color-foreground-rgb) / 0.14);
+}
+
+/* Icons */
 .menu-list__link-icon-wrap {
   display: flex;
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   margin: 0;
   line-height: 0;
 }
 
 .menu-list__link-icon {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
-  border-radius: 8px;
+  border-radius: 6px;
 }
 
+/* Labels */
 .menu-list__link--with-icon .menu-list__link-title {
   display: block;
   padding-inline: 0;
   line-height: 1.2;
   white-space: nowrap;
-  text-align: start;
 }
 
-/* Hover / open state */
-.menu-list__list-item:hover > .menu-list__link--with-icon,
-.menu-list__list-item:focus-within > .menu-list__link--with-icon {
-  background-color: var(--pill-bg-hover);
-}
-
-/* Keep pill text color constant (disables the "subdued siblings" dimming) */
-#header-component .menu-list__link--with-icon {
+/* No sibling dimming on pills; active page = filled pill */
+.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon {
   color: var(--menu-top-level-font-color);
 }
 
-/* Active page = filled pill, like "Bazaar" in DigiHaat */
-#header-component .menu-list__link--with-icon.menu-list__link--active {
+.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon.menu-list__link--active {
   background-color: var(--color-primary-button-background);
   color: var(--color-primary-button-text);
 }
 
-/* "More" overflow button gets the same pill treatment */
-.menu-list__list-item[slot='more'] .menu-list__link {
+/* Overflow dropdown: keep the theme's own look, just icon beside text */
+.menu-list__list-item[slot='overflow'] > .menu-list__link--with-icon {
+  flex-direction: row;
+  align-items: center;
+  gap: 12px;
+  background: none;
+  padding: 0;
+}
+
+/* Location picker: back in normal flow, no more overlap with the icons */
+.header-menu__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.header-menu__inner > .loc-pref {
+  position: static;
+  inset: auto;
+  margin: 0;
   height: auto;
-  margin-inline: 4px;
-  padding: 8px 16px;
-  border-radius: 14px;
-  background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  flex-shrink: 0;
 }
 {% endstylesheet %}
 

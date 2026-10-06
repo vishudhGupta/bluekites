@@ -860,28 +860,28 @@
   margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
 
-/* --- Mobile Styles (under 990px) --- */
+/* Mobile Styles (under 990px) */
 @media screen and (max-width: 989px) {
-  /* Hide desktop horizontal menu elements on mobile */
   .header-menu__inner {
     display: none !important;
   }
 
-  /* Prevent location picker from overlapping header controls */
+  /* Prevent location picker from overlapping mobile header buttons */
   .loc-pref,
-  .location-picker {
-    position: static !important;
-    top: auto !important;
-    left: auto !important;
-    transform: none !important;
-    margin: 0 !important;
+  .location-picker,
+  header .loc-pref {
+    display: none !important; /* Set to 'none' to remove header overlap on mobile */
   }
 }
 
-/* --- Desktop Styles (990px and up) --- */
+/* Desktop Styles (990px and up) */
 @media screen and (min-width: 990px) {
   .header-menu__inner {
-    display: none !important;
+    display: flex !important;
+    align-items: center;
+    position: relative;
+    gap: 16px;
+    width: 100%;
   }
 
   .header-menu__inner > .menu-list {
@@ -895,17 +895,12 @@
   .location-picker,
   header .loc-pref {
     display: inline-flex !important;
-    position: static !important;
-    transform: none !important;
+    position: relative !important;
     top: auto !important;
     left: auto !important;
-    margin: 0 0 0 10px !important;
+    margin-right: 12px;
   }
-
-  .header__icons,
-  .header__heading-link {
-    z-index: 2;
-  }
+}
 }
 {% endstylesheet %}
 

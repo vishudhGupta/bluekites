@@ -1113,6 +1113,163 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  /* =========================================================
+   Digi Haat Header Theme
+   ========================================================= */
+
+#header-component {
+  /* Core theme colors */
+  --color-background: 255 255 255;
+  --color-background-rgb: 255 255 255;
+
+  --color-foreground: 17 24 39;
+  --color-foreground-rgb: 17 24 39;
+
+  --color-border: 229 231 235;
+  --color-border-rgb: 229 231 235;
+
+  /* Primary Digi Haat blue */
+  --color-primary-button-background: 8 102 201;
+  --color-primary-button-text: 255 255 255;
+}
+
+/* ---------------------------------------------------------
+   Header background
+   --------------------------------------------------------- */
+
+#header-component .header__row {
+  background: #ffffff !important;
+  color: #111827;
+}
+
+#header-component .header__columns {
+  background: #ffffff;
+}
+
+/* Remove the old dark underlay */
+#header-component .header__underlay-closed,
+#header-component .header__underlay-open {
+  background: #ffffff !important;
+}
+
+/* ---------------------------------------------------------
+   Menu text
+   --------------------------------------------------------- */
+
+#header-component .menu-list__link {
+  color: #111827;
+}
+
+#header-component .menu-list__link:hover,
+#header-component .menu-list__link:focus {
+  color: #111827;
+}
+
+/* ---------------------------------------------------------
+   Category pills
+   --------------------------------------------------------- */
+
+#header-component
+.menu-list__list-item:not([slot='overflow'])
+> .menu-list__link--with-icon {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-radius: 12px;
+  transition:
+    background-color 180ms ease,
+    color 180ms ease;
+}
+
+/* Hover */
+#header-component
+.menu-list__list-item:not([slot='overflow']):hover
+> .menu-list__link--with-icon,
+#header-component
+.menu-list__list-item:not([slot='overflow']):focus-within
+> .menu-list__link--with-icon {
+  background-color: #e8f1ff;
+  color: #0866c9;
+}
+
+/* Active category */
+#header-component
+.menu-list__list-item:not([slot='overflow'])
+> .menu-list__link--with-icon.menu-list__link--active {
+  background-color: #0866c9;
+  color: #ffffff;
+}
+
+/* Keep active icon/text white */
+#header-component
+.menu-list__list-item:not([slot='overflow'])
+> .menu-list__link--with-icon.menu-list__link--active
+.menu-list__link-title {
+  color: #ffffff;
+}
+
+/* ---------------------------------------------------------
+   More button
+   --------------------------------------------------------- */
+
+#header-component
+.menu-list__list-item[slot='more']
+.menu-list__link {
+  background-color: #f3f4f6;
+  color: #111827;
+  border-radius: 12px;
+}
+
+#header-component
+.menu-list__list-item[slot='more']
+.menu-list__link:hover {
+  background-color: #e8f1ff;
+  color: #0866c9;
+}
+
+/* ---------------------------------------------------------
+   Header action icons
+   Search / account / cart
+   --------------------------------------------------------- */
+
+#header-component .header-actions__action {
+  color: #111827;
+}
+
+#header-component .header-actions__action:hover {
+  color: #0866c9;
+}
+
+/* ---------------------------------------------------------
+   Location button
+   --------------------------------------------------------- */
+
+#header-component
+.header-actions__action,
+#header-component
+.localization-selector {
+  border-color: #d1d5db;
+}
+
+/* ---------------------------------------------------------
+   Primary buttons / Login
+   --------------------------------------------------------- */
+
+#header-component .button--primary,
+#header-component .button-primary,
+#header-component .header-actions__action--primary {
+  background-color: #0866c9;
+  color: #ffffff;
+  border-color: #0866c9;
+}
+
+#header-component .button--primary:hover,
+#header-component .button-primary:hover,
+#header-component .header-actions__action--primary:hover {
+  background-color: #0757ad;
+  border-color: #0757ad;
+  color: #ffffff;
+}
 {% endstylesheet %}
 
 {% unless request.design_mode %}

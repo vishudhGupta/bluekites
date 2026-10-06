@@ -747,21 +747,22 @@
 
 .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
 .menu-list__list-item[slot='more'] .menu-list__link {
-  flex-direction: row;
+flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 8px;
+  gap: 6px; /* Tighter gap between icon and label */
   height: auto;
   min-width: 0;
-  margin-inline: 3px;
-  padding: 6px 14px 6px 8px;
+  margin-inline: 2px;
+  padding: 5px 10px 5px 6px; /* Compact padding */
   border-radius: 12px;
   background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  font-size: 13px; /* Slightly tighter font size to fit all items */
   transition: background-color var(--animation-speed) var(--animation-easing);
 }
 
 .menu-list__list-item[slot='more'] .menu-list__link {
-  padding-inline: 14px;
+  padding-inline: 10px;
 }
 
 .menu-list__list-item:not([slot='overflow']):hover > .menu-list__link--with-icon,
@@ -771,30 +772,23 @@
 
 /* Icons */
 .menu-list__link-icon-wrap {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-shrink: 0;
-  width: 24px;
-  height: 24px;
-  margin: 0;
-  line-height: 0;
+  width: 20px;
+  height: 20px;
 }
 
 .menu-list__link-icon {
-  display: block;
-  width: 24px;
-  height: 24px;
+  width: 20px;
+  height: 20px;
   object-fit: contain;
-  border-radius: 6px;
 }
 
 /* Labels */
 .menu-list__link--with-icon .menu-list__link-title {
-  display: block;
+display: block;
   padding-inline: 0;
   line-height: 1.2;
   white-space: nowrap;
+  font-size: clamp(11px, 0.9vw, 13px);
 }
 
 /* No sibling dimming on pills; active page = filled pill */
@@ -876,10 +870,10 @@
 /* Desktop Styles (990px and up) */
 @media screen and (min-width: 990px) {
   .header-menu__inner {
-    display: flex !important;
+   display: flex !important;
     align-items: center;
-    position: relative;
-    gap: 16px;
+    justify-content: space-between;
+    gap: 8px;
     width: 100%;
   }
 
@@ -897,7 +891,8 @@
     position: relative !important;
     top: auto !important;
     left: auto !important;
-    margin-right: 12px;
+    flex-shrink: 0;
+    margin-left: auto;
   }
 }
 {% endstylesheet %}

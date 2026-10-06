@@ -86,6 +86,37 @@
 
     {% capture children %}
       {% assign menu_icon_map = 'Surgical Products|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/0dfbe4ab-ae02-4f64-b0d2-b082b7fb6469.png?v=1790271258;Handrub & Disinfectants|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/Sep_21_2026_05_11_13_PM.png?v=1790271258;Healthcare|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/e91ec7f3-08de-4cba-acde-f00163e15efe.png?v=1790271256;Cosmetics|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/6a2bf868-6c63-4567-a139-81639e2817a5.png?v=1790271257;Food and Gourmet|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/48019ec6-ae16-49e6-bf14-b73b3fd4274e.png?v=1790271257;Tours and Travels|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/57b47abc-5b0e-4600-8157-7ab370023fc8.png?v=1790271258;IT Services|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/fbdf8ff5-76de-429b-9bf6-6325ee4d80e8.png?v=1790271258;View More|https://cdn.shopify.com/s/files/1/0761/7167/3822/files/05fd7d78-ad37-4bba-ba40-3817d1e284a7.png?v=1790271257' | split: ';' %}
+      <!-- Home -->
+  <li
+    role="presentation"
+    class="menu-list__list-item"
+  >
+    <a
+      href="{{ routes.root_url }}"
+      class="menu-list__link menu-list__link--with-icon{% if request.path == routes.root_url %} menu-list__link--active{% endif %}"
+      aria-current="{% if request.path == routes.root_url %}page{% endif %}"
+    >
+      <span class="menu-list__link-icon-wrap" aria-hidden="true">
+        <svg
+          class="menu-list__link-icon"
+          viewBox="0 0 24 24"
+          fill="none"
+          stroke="currentColor"
+          stroke-width="1.8"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <path d="M3 10.5 12 3l9 7.5" />
+          <path d="M5.5 9.5V21h13V9.5" />
+          <path d="M9.5 21v-6h5v6" />
+        </svg>
+      </span>
+
+      <span class="menu-list__link-title">
+        Home
+      </span>
+    </a>
+  </li>
       {% for link in block_settings.menu.links %}
         {% assign menu_icon_url = blank %}
         {% assign current_link_title = link.title | downcase | strip %}

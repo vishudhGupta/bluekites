@@ -32,6 +32,7 @@ class HeaderMenu extends Component {
 
   disconnectedCallback() {
     super.disconnectedCallback();
+    clearTimeout(this.#closeTimer);
     window.removeEventListener('resize', this.#resizeListener);
     document.body.removeEventListener('pointermove', this.#onPointerMove);
     if (this.#state.activeItem) {
@@ -58,6 +59,12 @@ class HeaderMenu extends Component {
   #state = {
     activeItem: null,
   };
+
+  /**
+   * Delay before closing, so the pointer can travel from the menu item to the dropdown.
+   * @type {ReturnType<typeof setTimeout> | undefined}
+   */
+  #closeTimer;
 
   /**
    * @type {ReturnType<typeof setTimeout> | undefined}
@@ -166,6 +173,7 @@ class HeaderMenu extends Component {
    * @param {PointerEvent | FocusEvent} event
    */
   activate = (event) => {
+    clearTimeout(this.#closeTimer);
     this.dispatchEvent(new MegaMenuHoverEvent());
 
     if (!(event.target instanceof Element) || !this.headerComponent) return;
@@ -263,15 +271,18 @@ class HeaderMenu extends Component {
       event.relatedTarget instanceof Node && event.relatedTarget.parentElement?.matches('[slot="overflow"]');
 
     if (isMovingWithinMenu || isMovingToOverflowMenu || isMovingToSubmenu) {
+      clearTimeout(this.#closeTimer);
       if (this.#state.activeItem) {
         this.#stopPointerTracking(this.#state.activeItem);
       }
       return;
     }
 
-    this.#deactivate();
+    // Give the pointer time to reach the dropdown. #deactivate still bails out
+    // if the overflow list or panel is hovered when the timer fires.
+    clearTimeout(this.#closeTimer);
+    this.#closeTimer = setTimeout(() => this.#deactivate(), 250);
   }
-
   /**
    * Deactivate the active item immediately
    * @param {HTMLElement | null} [item]

@@ -860,33 +860,39 @@
   margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
 
-/* Hide navigation menu links in mobile header if they belong inside header drawer */
+/* --- Mobile Styles (under 990px) --- */
 @media screen and (max-width: 989px) {
-  .header-menu__inner > .menu-list {
-    display: none;
+  /* Hide desktop horizontal menu elements on mobile */
+  .header-menu__inner {
+    display: none !important;
   }
 
+  /* Prevent location picker from overlapping header controls */
   .loc-pref,
   .location-picker {
     position: static !important;
-    margin: 0;
-    flex-shrink: 0;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 !important;
   }
 }
 
-/* Desktop screens (990px and up) */
+/* --- Desktop Styles (990px and up) --- */
 @media screen and (min-width: 990px) {
   .header-menu__inner {
     display: flex;
     align-items: center;
     position: relative;
     gap: 16px;
+    width: 100%;
   }
 
   .header-menu__inner > .menu-list {
     display: flex;
     align-items: center;
     flex: 1;
+    min-width: 0;
   }
 
   .loc-pref,

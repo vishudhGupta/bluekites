@@ -389,9 +389,11 @@
   }
 
   .overflow-menu::part(list) {
-    gap: 4px; /* Reduced gap between pills from default gap-xl */
-  margin-inline: 0;
-  flex-wrap: nowrap;
+    /* Make sure focus outline is not cut off by overflow hidden */
+    --focus-outline-size: calc(var(--focus-outline-offset) + var(--focus-outline-width));
+
+    gap: 0;
+    margin-inline: calc(-1 * var(--menu-horizontal-gap) / 2);
   }
 
   .overflow-menu {
@@ -729,9 +731,8 @@
   }
 
   .header-menu__inner > .menu-list {
-    flex: 1 1 auto;
-  min-width: 0;
-  width: auto;
+    flex: 0 1 auto;
+    min-width: 0;
   }
 
   .header-menu__inner > .loc-pref {
@@ -747,22 +748,21 @@
 
 .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
 .menu-list__list-item[slot='more'] .menu-list__link {
-flex-direction: row;
+  flex-direction: row;
   align-items: center;
   justify-content: center;
-  gap: 6px; /* Tighter gap between icon and label */
+  gap: 8px;
   height: auto;
   min-width: 0;
-  margin-inline: 2px;
-  padding: 5px 10px 5px 6px; /* Compact padding */
+  margin-inline: 3px;
+  padding: 6px 14px 6px 8px;
   border-radius: 12px;
   background-color: rgb(var(--color-foreground-rgb) / 0.08);
-  font-size: 13px; /* Slightly tighter font size to fit all items */
   transition: background-color var(--animation-speed) var(--animation-easing);
 }
 
 .menu-list__list-item[slot='more'] .menu-list__link {
-  padding-inline: 10px;
+  padding-inline: 14px;
 }
 
 .menu-list__list-item:not([slot='overflow']):hover > .menu-list__link--with-icon,
@@ -772,23 +772,30 @@ flex-direction: row;
 
 /* Icons */
 .menu-list__link-icon-wrap {
-  width: 20px;
-  height: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  margin: 0;
+  line-height: 0;
 }
 
 .menu-list__link-icon {
-  width: 20px;
-  height: 20px;
+  display: block;
+  width: 24px;
+  height: 24px;
   object-fit: contain;
+  border-radius: 6px;
 }
 
 /* Labels */
 .menu-list__link--with-icon .menu-list__link-title {
-display: block;
+  display: block;
   padding-inline: 0;
   line-height: 1.2;
   white-space: nowrap;
-  font-size: clamp(11px, 0.9vw, 13px);
 }
 
 /* No sibling dimming on pills; active page = filled pill */
@@ -853,80 +860,48 @@ display: block;
   margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
 
-/* 1. Header inner container layout */
+/* --- Mobile Styles (under 990px) --- */
+@media screen and (max-width: 989px) {
+  /* Hide desktop horizontal menu elements on mobile */
+  .header-menu__inner {
+    display: none !important;
+  }
+
+  /* Prevent location picker from overlapping header controls */
+  .loc-pref,
+  .location-picker {
+    position: static !important;
+    top: auto !important;
+    left: auto !important;
+    transform: none !important;
+    margin: 0 !important;
+  }
+}
+
+/* --- Desktop Styles (990px and up) --- */
 @media screen and (min-width: 990px) {
   .header-menu__inner {
-    display: flex !important;
+    display: flex;
     align-items: center;
-    justify-content: space-between;
-    gap: 12px;
+    position: relative;
+    gap: 16px;
     width: 100%;
   }
 
-  /* Ensure right-side icons stay pinned to the right */
+  .header-menu__inner > .menu-list {
+    display: flex;
+    align-items: center;
+    flex: 1;
+    min-width: 0;
+  }
+
   .loc-pref,
-  .location-picker,
-  header .loc-pref,
-  .header__icons {
-    display: inline-flex !important;
+  .location-picker {
     position: relative !important;
     top: auto !important;
     left: auto !important;
-    align-items: center;
-    flex-shrink: 0; /* Prevents icons from shrinking or getting pushed out */
-    margin-left: auto;
-    gap: 8px;
+    margin-right: 12px;
   }
-}
-
-/* 2. Menu list takes remaining space cleanly */
-.header-menu__inner > .menu-list {
-  display: flex;
-  align-items: center;
-  flex: 1 1 auto;
-  min-width: 0;
-}
-
-.overflow-menu::part(list) {
-  gap: 4px; /* Tight gap to help all items fit */
-  margin-inline: 0;
-  flex-wrap: nowrap;
-}
-
-/* 3. Keep pill icons & label styling intact */
-.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
-.menu-list__list-item[slot='more'] .menu-list__link {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  gap: 6px;
-  height: auto;
-  min-width: 0;
-  margin-inline: 2px;
-  padding: 5px 10px 5px 6px;
-  border-radius: 12px;
-  background-color: rgb(var(--color-foreground-rgb) / 0.08);
-  font-size: 13px;
-  transition: background-color var(--animation-speed) var(--animation-easing);
-}
-
-/* Preserve icon dimensions inside menu items */
-.menu-list__link-icon-wrap,
-.menu-list__link-icon {
-  display: inline-block;
-  width: 20px;
-  height: 20px;
-  object-fit: contain;
-  flex-shrink: 0;
-}
-
-.menu-list__link--with-icon .menu-list__link-title {
-  display: block;
-  padding-inline: 0;
-  line-height: 1.2;
-  white-space: nowrap;
-  font-size: clamp(11px, 0.85vw, 13px);
 }
 {% endstylesheet %}
 

@@ -853,47 +853,80 @@ display: block;
   margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
 
-/* Mobile Styles (under 990px) */
-@media screen and (max-width: 989px) {
-  .header-menu__inner {
-    display: none !important;
-  }
-
-  /* Prevent location picker from overlapping mobile header buttons */
-  .loc-pref,
-  .location-picker,
-  header .loc-pref {
-    display: none !important; /* Set to 'none' to remove header overlap on mobile */
-  }
-}
-
-/* Desktop Styles (990px and up) */
+/* 1. Header inner container layout */
 @media screen and (min-width: 990px) {
   .header-menu__inner {
-   display: flex !important;
+    display: flex !important;
     align-items: center;
     justify-content: space-between;
-    gap: 8px;
+    gap: 12px;
     width: 100%;
   }
 
-  .header-menu__inner > .menu-list {
-    display: flex;
-    align-items: center;
-    flex: 1;
-    min-width: 0;
-  }
-
+  /* Ensure right-side icons stay pinned to the right */
   .loc-pref,
   .location-picker,
-  header .loc-pref {
+  header .loc-pref,
+  .header__icons {
     display: inline-flex !important;
     position: relative !important;
     top: auto !important;
     left: auto !important;
-    flex-shrink: 0;
+    align-items: center;
+    flex-shrink: 0; /* Prevents icons from shrinking or getting pushed out */
     margin-left: auto;
+    gap: 8px;
   }
+}
+
+/* 2. Menu list takes remaining space cleanly */
+.header-menu__inner > .menu-list {
+  display: flex;
+  align-items: center;
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.overflow-menu::part(list) {
+  gap: 4px; /* Tight gap to help all items fit */
+  margin-inline: 0;
+  flex-wrap: nowrap;
+}
+
+/* 3. Keep pill icons & label styling intact */
+.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
+.menu-list__list-item[slot='more'] .menu-list__link {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  height: auto;
+  min-width: 0;
+  margin-inline: 2px;
+  padding: 5px 10px 5px 6px;
+  border-radius: 12px;
+  background-color: rgb(var(--color-foreground-rgb) / 0.08);
+  font-size: 13px;
+  transition: background-color var(--animation-speed) var(--animation-easing);
+}
+
+/* Preserve icon dimensions inside menu items */
+.menu-list__link-icon-wrap,
+.menu-list__link-icon {
+  display: inline-block;
+  width: 20px;
+  height: 20px;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.menu-list__link--with-icon .menu-list__link-title {
+  display: block;
+  padding-inline: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  font-size: clamp(11px, 0.85vw, 13px);
 }
 {% endstylesheet %}
 

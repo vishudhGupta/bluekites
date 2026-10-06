@@ -347,54 +347,8 @@
     }
   }
 
-  .menu-list__link--with-icon {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
-    padding-inline: 4px;
-    min-width: 0;
-  }
-
-  .menu-list__link-icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    margin-inline: auto;
-  }
-
-  .menu-list__link-icon {
-    display: block;
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    flex-shrink: 0;
-    border-radius: 12px;
-  }
-
   .menu-list__link-title {
     padding-inline: calc(var(--gap-xl) / 2);
-  }
-
-  .menu-list__link--with-icon .menu-list__link-title {
-    display: block;
-    padding-inline: 0;
-    line-height: 1.1;
-    max-width: none;
-    min-height: auto;
-    white-space: nowrap;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon {
-    width: max-content;
-    min-width: 80px;
   }
 
   [slot='overflow'] .menu-list__link-title {
@@ -791,6 +745,78 @@
     inset-inline-start: calc(100% + 24px);
     z-index: 2;
   }
+
+  /* ---------- Pill-style top-level menu items ---------- */
+.menu-list__link--with-icon {
+  --pill-bg: rgb(var(--color-foreground-rgb) / 0.08);
+  --pill-bg-hover: rgb(var(--color-foreground-rgb) / 0.14);
+
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  height: auto;
+  min-width: 0;
+  margin-inline: 4px;
+  padding: 8px 16px 8px 10px;
+  border-radius: 14px;
+  background-color: var(--pill-bg);
+  transition: background-color var(--animation-speed) var(--animation-easing),
+    color var(--animation-speed) var(--animation-easing);
+}
+
+.menu-list__link-icon-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 28px;
+  height: 28px;
+  margin: 0;
+  line-height: 0;
+}
+
+.menu-list__link-icon {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
+  border-radius: 8px;
+}
+
+.menu-list__link--with-icon .menu-list__link-title {
+  display: block;
+  padding-inline: 0;
+  line-height: 1.2;
+  white-space: nowrap;
+  text-align: start;
+}
+
+/* Hover / open state */
+.menu-list__list-item:hover > .menu-list__link--with-icon,
+.menu-list__list-item:focus-within > .menu-list__link--with-icon {
+  background-color: var(--pill-bg-hover);
+}
+
+/* Keep pill text color constant (disables the "subdued siblings" dimming) */
+#header-component .menu-list__link--with-icon {
+  color: var(--menu-top-level-font-color);
+}
+
+/* Active page = filled pill, like "Bazaar" in DigiHaat */
+#header-component .menu-list__link--with-icon.menu-list__link--active {
+  background-color: var(--color-primary-button-background);
+  color: var(--color-primary-button-text);
+}
+
+/* "More" overflow button gets the same pill treatment */
+.menu-list__list-item[slot='more'] .menu-list__link {
+  height: auto;
+  margin-inline: 4px;
+  padding: 8px 16px;
+  border-radius: 14px;
+  background-color: rgb(var(--color-foreground-rgb) / 0.08);
+}
 {% endstylesheet %}
 
 {% schema %}

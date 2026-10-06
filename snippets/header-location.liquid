@@ -164,18 +164,19 @@
     transition: transform 0.2s ease;
   }
 
-  /* Dark header: transparent pill that follows the menu text colour */
-  .loc-pref--desktop .loc-pref__trigger {
-    background: transparent;
-    color: var(--menu-top-level-font-color, #ffffff);
-    border-color: color-mix(in srgb, currentColor 40%, transparent);
-  }
+.loc-pref--desktop .loc-pref__trigger {
+  background: #ffffff;
+  color: #111827;
+  border: 1px solid #d1d5db;
+  border-radius: 10px;
+}
 
-  .loc-pref--desktop .loc-pref__trigger:hover,
-  .loc-pref--desktop .loc-pref__trigger[aria-expanded='true'] {
-    background: color-mix(in srgb, currentColor 12%, transparent);
-    border-color: currentColor;
-  }
+.loc-pref--desktop .loc-pref__trigger:hover,
+.loc-pref--desktop .loc-pref__trigger[aria-expanded='true'] {
+  background: #ffffff;
+  color: #111827;
+  border-color: #111827;
+}
 
   .loc-pref--desktop .loc-pref__trigger:focus-visible {
     outline-color: currentColor;

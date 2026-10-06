@@ -389,11 +389,9 @@
   }
 
   .overflow-menu::part(list) {
-    /* Make sure focus outline is not cut off by overflow hidden */
-    --focus-outline-size: calc(var(--focus-outline-offset) + var(--focus-outline-width));
-
-    gap: 0;
-    margin-inline: calc(-1 * var(--menu-horizontal-gap) / 2);
+    gap: 4px; /* Reduced gap between pills from default gap-xl */
+  margin-inline: 0;
+  flex-wrap: nowrap;
   }
 
   .overflow-menu {
@@ -731,8 +729,9 @@
   }
 
   .header-menu__inner > .menu-list {
-    flex: 0 1 auto;
-    min-width: 0;
+    flex: 1 1 auto;
+  min-width: 0;
+  width: auto;
   }
 
   .header-menu__inner > .loc-pref {

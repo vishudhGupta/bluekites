@@ -347,68 +347,12 @@
     }
   }
 
-  .menu-list__link--with-icon {
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    gap: 6px;
-    padding-inline: 4px;
-    min-width: 0;
-  }
-
-  .menu-list__link-icon-wrap {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    line-height: 0;
-    flex-shrink: 0;
-    width: 40px;
-    height: 40px;
-    margin-inline: auto;
-  }
-
-  .menu-list__link-icon {
-    display: block;
-    width: 40px;
-    height: 40px;
-    object-fit: contain;
-    flex-shrink: 0;
-    border-radius: 12px;
-  }
-
   .menu-list__link-title {
     padding-inline: calc(var(--gap-xl) / 2);
   }
 
-  .menu-list__link--with-icon .menu-list__link-title {
-    display: block;
-    padding-inline: 0;
-    line-height: 1.1;
-    max-width: none;
-    min-height: auto;
-    white-space: nowrap;
-    text-align: center;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-
-  .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon {
-    width: max-content;
-    min-width: 80px;
-  }
-
   [slot='overflow'] .menu-list__link-title {
     padding-inline: 0;
-  }
-
-  .menu-list__list-item:not([slot='overflow']) {
-    flex-direction: column;
-  }
-  .menu-list__list-item:not([slot='overflow'])::after {
-    content: '';
-    width: 100%;
-    height: var(--header-padding);
-    margin-bottom: calc(-1 * var(--header-padding));
   }
 
   [slot='overflow'] > .menu-list__link::after {
@@ -781,16 +725,100 @@
     min-width: 0;
   }
 
-  .header-menu__inner > .loc-pref {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    margin-block: auto;
-    height: fit-content;
-    width: max-content;
-    inset-inline-start: calc(100% + 24px);
-    z-index: 2;
+  /* ============ DigiHaat-style pill nav (desktop) ============ */
+@media screen and (min-width: 750px) {
+  .header-menu__inner {
+    display: flex;
+    align-items: center;
+    height: 100%;
+    gap: 20px;
   }
+
+  /* Location goes BEFORE the pills, not after */
+  .header-menu__inner > .loc-pref {
+    position: static;
+    order: -1;
+    width: max-content;
+    height: fit-content;
+    margin: 0;
+    inset: auto;
+    padding-inline-end: 8px;
+  }
+
+  .menu-list__list-item:not([slot='overflow']) {
+    flex-direction: row;
+    padding-inline: 6px;
+  }
+
+  .menu-list__list-item:not([slot='overflow'])::after {
+    content: none;
+  }
+
+  /* The pill */
+  .menu-list__link--with-icon {
+    --pill-bg: #f0f0f0;
+    --pill-text: #1a1a1a;
+
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    height: auto;
+    min-width: 0;
+    padding: 10px 22px;
+    border-radius: 14px;
+    background: var(--pill-bg);
+    color: var(--pill-text);
+    transition: background-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .menu-list__link--with-icon::after {
+    display: none;
+  }
+
+  .menu-list__link-icon-wrap {
+    width: 28px;
+    height: 28px;
+    margin: 0;
+  }
+
+  .menu-list__link-icon {
+    width: 28px;
+    height: 28px;
+    border-radius: 0;
+    object-fit: contain;
+  }
+
+  .menu-list__link--with-icon .menu-list__link-title {
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.2;
+    color: inherit;
+    overflow: visible;
+    text-overflow: clip;
+  }
+
+  /* Cancel the old "dim everything except hovered" behaviour for pills */
+  .menu-list .menu-list__link--with-icon,
+  .menu-list:where(:has(.menu-list__list-item:hover)) .menu-list__link--with-icon,
+  .menu-list:where(:has(.menu-list__list-item:focus-within)) .menu-list__link--with-icon {
+    color: var(--pill-text);
+  }
+
+  .menu-list .menu-list__list-item:hover > .menu-list__link--with-icon {
+    --pill-bg: #e4e4e4;
+  }
+
+  /* Active pill = blue */
+  .menu-list .menu-list__link--with-icon.menu-list__link--active,
+  .menu-list .menu-list__link--with-icon[aria-current='page'],
+  .menu-list:where(:has(.menu-list__list-item:hover)) .menu-list__link--with-icon.menu-list__link--active {
+    --pill-bg: #0b4fb3;
+    --pill-text: #ffffff;
+  }
+}
+
 {% endstylesheet %}
 
 {% schema %}

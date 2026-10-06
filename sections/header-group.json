@@ -73,14 +73,22 @@
             "color_scheme_navigation_bar": "",
             "drawer_accordion": true,
             "drawer_accordion_expand_first": false,
-            "drawer_dividers": true
+            "drawer_dividers": true,
+            "show_location": true,
+            "location_empty_label": "Add location",
+            "location_heading": "Choose your location",
+            "location_helper_text": "Save a location preference for your storefront experience. This does not check delivery availability or change your checkout shipping address.",
+            "location_field_label": "City or area",
+            "location_placeholder": "Enter a city or area",
+            "location_suggestions": "Kolkata, Delhi, Mumbai, Bengaluru, Chennai",
+            "location_confirm_label": "Confirm location"
           },
           "blocks": {}
         }
       },
       "settings": {
         "logo_position": "left",
-        "menu_position": "center",
+        "menu_position": "left",
         "menu_row": "top",
         "customer_account_menu": "customer-account-main-menu",
         "show_search": true,

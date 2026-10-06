@@ -857,6 +857,45 @@
   height: calc(var(--header-padding) + 16px);
   margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
+
+/* Apply desktop-specific header menu layout only on large screens */
+@media screen and (min-width: 990px) {
+  .header-menu__inner {
+    position: static;
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .header-menu__inner > .menu-list {
+    flex: 0 1 auto;
+    min-width: 0;
+  }
+
+  .header-menu__inner > .loc-pref {
+    position: absolute;
+    top: 0;
+  }
+
+  .mega-menu__more-list {
+    --menu-child-font-size: var(--font-size--xl);
+    width: 200px;
+  }
+
+  .mega-menu__submenu {
+    display: contents;
+  }
+}
+
+/* Mobile adjustments (screen widths under 989px) */
+@media screen and (max-width: 989px) {
+  .header-menu__inner > .loc-pref {
+    position: relative;
+    top: auto;
+    margin-left: 8px;
+    margin-right: 8px;
+  }
+}
 {% endstylesheet %}
 
 {% schema %}

@@ -1113,6 +1113,37 @@
     font-family: var(--menu-localization-font);
     font-size: var(--menu-localization-font-size);
   }
+
+  /* ============ DigiHaat-style header ============ */
+@media screen and (min-width: 750px) {
+  .header__row--top .header__columns {
+    --padding-block-start: 10px;
+    --padding-block-end: 10px;
+    align-items: center;
+  }
+
+  /* Vertical divider after logo */
+  .header__row--top .header-logo {
+    align-self: stretch;
+    display: flex;
+    align-items: center;
+    padding-inline-end: 24px;
+    border-inline-end: 1px solid #e6e6e6;
+  }
+
+  /* Search + cart icons: round, bordered buttons */
+  .header-actions__action {
+    --button-size: 44px;
+  }
+  .header-actions__action:not(.account-button) {
+    align-items: center;
+    border-radius: 50%;
+    border: 1px solid transparent;
+  }
+  .header-actions__action:not(.account-button):hover {
+    border-color: #e6e6e6;
+  }
+}
 {% endstylesheet %}
 
 {% unless request.design_mode %}

@@ -836,6 +836,20 @@
   height: auto;
   flex-shrink: 0;
 }
+
+/* Overflow dropdown: compact rows instead of huge text */
+.overflow-menu::part(overflow) {
+  --menu-top-level-font-size: var(--font-size--md);
+}
+
+.menu-list__list-item[slot='overflow'] > .menu-list__link--with-icon {
+  font-size: var(--font-size--md);
+  padding-block: 8px;
+}
+
+.menu-list__list-item[slot='overflow'] .menu-list__link-title {
+  font-size: inherit;
+}
 {% endstylesheet %}
 
 {% schema %}

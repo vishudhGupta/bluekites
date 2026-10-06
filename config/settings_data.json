@@ -179,7 +179,7 @@
         "settings": {
           "background": "#EEEEEE",
           "foreground_heading": "#000000",
-          "foreground": "#ffffff",
+          "foreground": "#000000",
           "primary": "#ffffff",
           "primary_hover": "#ffffff",
           "border": "#000000",

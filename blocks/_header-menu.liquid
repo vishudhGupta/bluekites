@@ -746,11 +746,6 @@
     z-index: 2;
   }
 
-  /* ---------- Pill-style top-level menu items ---------- */
-.menu-list__list-item:not([slot='overflow']) {
-  justify-content: center; /* keeps pills vertically centred */
-}
-
 .menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
 .menu-list__list-item[slot='more'] .menu-list__link {
   flex-direction: row;
@@ -849,6 +844,18 @@
 
 .menu-list__list-item[slot='overflow'] .menu-list__link-title {
   font-size: inherit;
+}
+
+/* Centre pills with auto margins so the hover bridge stays at the bottom of the item */
+.menu-list__list-item:not([slot='overflow']) > .menu-list__link--with-icon,
+.menu-list__list-item[slot='more'] .menu-list__link {
+  margin-block: auto;
+}
+
+/* Taller invisible bridge between the menu item and the dropdown panel */
+.menu-list__list-item:not([slot='overflow'])::after {
+  height: calc(var(--header-padding) + 16px);
+  margin-bottom: calc(-1 * (var(--header-padding) + 16px));
 }
 {% endstylesheet %}
 

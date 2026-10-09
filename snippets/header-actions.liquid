@@ -708,38 +708,46 @@
     }
   }
 
-  /* Cart: icon + orange count above it + bold "Cart" label */
+ /* Cart: cart icon, orange count above basket, bold label tight on the right */
 .header-actions__cart-icon {
   --cart-count-color: #f08804;
 
-  display: flex;
-  align-items: center;
-  gap: var(--gap-2xs);
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 8px;
   position: relative;
 }
 
-.header-actions__cart-icon .svg-wrapper {
-  flex-shrink: 0;
+/* Override the theme's fixed 44px icon box */
+.header-actions__action:not(.account-button) .cart-icon-svg {
+  width: 36px;
+  height: 34px;
 }
 
-/* No donut cut-out, since the count no longer overlaps the icon edge */
+.header-actions__action:not(.account-button) .cart-icon-svg svg {
+  width: 36px;
+  height: 34px;
+}
+
+/* Remove the donut cut-out meant for the old bag icon */
 .header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
   mask: none;
 }
 
 .header-actions__cart-label {
-  font-size: 1rem;
+  font-size: 1.125rem;
   font-weight: 700;
   line-height: 1;
+  margin-bottom: 2px;
   white-space: nowrap;
 }
 
-/* Count: plain orange number centered above the cart basket */
+/* Count: orange number centered above the basket (half of the 36px icon = 18px) */
 .header-actions__cart-icon .cart-bubble {
   position: absolute;
-  top: 2px;
+  top: 0;
+  left: 18px;
   right: auto;
-  left: calc(var(--button-size, 44px) / 2);
   transform: translateX(-50%);
   width: auto;
   height: auto;
@@ -760,12 +768,11 @@
   line-height: 1;
 }
 
-/* Show "0" when the cart is empty (the count element is empty then) */
+/* Show "0" for an empty cart */
 .header-actions__cart-icon .cart-bubble__text-count:empty::before {
   content: '0';
 }
 
-/* Mobile: keep icon + count only, so the header doesn't get crowded */
 @media screen and (max-width: 749px) {
   .header-actions__cart-label {
     display: none;

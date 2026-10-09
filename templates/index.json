@@ -310,7 +310,7 @@
       ],
       "name": "t:names.hero",
       "settings": {
-        "section_height": "custom",
+        "section_height": "small",
         "section_height_custom": 40,
         "section_height_mobile": 92,
         "content_max_width": 500,

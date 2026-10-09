@@ -220,4 +220,148 @@
   .main-collection-grid__empty-title {
     margin: 0;
   }
+
+
+/* =========================================================
+   BLUE KITES — RESPONSIVE PRODUCT GRID
+   Clean ecommerce layout for desktop and mobile
+   ========================================================= */
+
+/* Grid layout */
+.product-grid {
+  min-width: 0;
+  align-items: stretch;
+  row-gap: var(--product-grid-gap);
+  column-gap: var(--product-grid-gap);
+}
+
+.product-grid > .product-grid__item {
+  min-width: 0;
+  max-width: 100%;
+  align-self: stretch;
+}
+
+/* Product card container */
+.product-grid .product-grid__card {
+  min-width: 0;
+  height: 100%;
+  overflow: hidden;
+  border-radius: 12px;
+  background: #ffffff;
+}
+
+/* Product image consistency */
+.product-grid .product-media,
+.product-grid .product-media-container {
+  overflow: hidden;
+  background: #f7f8fa;
+  border-radius: 10px;
+}
+
+/* Smooth, subtle image interaction */
+.product-grid .product-media img,
+.product-grid .product-media-container img {
+  transition: transform 220ms ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .product-grid .product-grid__item:hover
+  .product-media img,
+  .product-grid .product-grid__item:hover
+  .product-media-container img {
+    transform: scale(1.025);
+  }
+}
+
+/* =========================================================
+   MOBILE PRODUCT GRID
+   ========================================================= */
+
+@media screen and (max-width: 749px) {
+  .main-collection-grid {
+    min-width: 0;
+    padding-inline: 12px;
+  }
+
+  .product-grid {
+    display: grid;
+    grid-template-columns:
+      repeat(var(--mobile-columns, 2), minmax(0, 1fr));
+    gap: 16px 10px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+
+  .product-grid > .product-grid__item {
+    width: 100%;
+    min-width: 0;
+    margin: 0;
+  }
+
+  .product-grid .product-grid__card {
+    border-radius: 10px;
+    box-shadow: 0 1px 4px rgb(17 24 39 / 5%);
+  }
+
+  .product-grid .product-media,
+  .product-grid .product-media-container {
+    border-radius: 8px;
+  }
+
+  /* Keep product images within their own card */
+  .product-grid .product-media img,
+  .product-grid .product-media-container img {
+    max-width: 100%;
+  }
+
+  /* Prevent long product names from overflowing */
+  .product-grid .product-grid__card h3,
+  .product-grid .product-grid__card h4 {
+    overflow-wrap: anywhere;
+  }
+}
+
+/* =========================================================
+   SMALL MOBILE SCREENS
+   ========================================================= */
+
+@media screen and (max-width: 380px) {
+  .main-collection-grid {
+    padding-inline: 8px;
+  }
+
+  .product-grid {
+    column-gap: 8px;
+    row-gap: 12px;
+  }
+}
+
+/* =========================================================
+   DESKTOP
+   Preserve the theme's existing column configuration
+   ========================================================= */
+
+@media screen and (min-width: 750px) {
+  .main-collection-grid {
+    min-width: 0;
+  }
+
+  .product-grid > .product-grid__item {
+    min-width: 0;
+  }
+
+  .product-grid .product-grid__card {
+    border-radius: 12px;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .product-grid .product-media img,
+  .product-grid .product-media-container img {
+    transition: none;
+  }
+}
+
 {% endstylesheet %}

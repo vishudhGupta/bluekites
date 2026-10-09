@@ -1,6 +1,6 @@
 {% doc %}
-  @prompt
-    Create a header search block inspired by two reference states: initially a compact horizontal navigation row with a search icon; when the search icon is clicked, replace the central navigation area with a wide inline search bar while preserving the store's own branding and surrounding header controls. The search bar should have a very light gray background, subtly rounded corners, compact height, a small 'All' category selector at the left, and placeholder 'Search anything'. Provide a way to close search and restore navigation. Search should use the store's actual products and categories, not hard-coded reference-store content. Keep the design responsive on mobile. Do not copy the reference's DigiHaat logo or postal code. Match the clean white header and restrained spacing. This block should be usable in the header where the theme supports blocks; do not imply it automatically modifies the existing header.
+  Header search bar. Always-visible, clean pill-style search field.
+  Add it where the theme supports blocks; it does not modify the existing header by itself.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
@@ -9,92 +9,43 @@
     display: block;
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
+    margin-inline: auto;
+    padding-block: 10px;
     color: #171717;
     font-family: inherit;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__row {
+  .ai-header-search-{{ ai_gen_id }}__form {
     display: flex;
     align-items: center;
-    min-height: 42px;
-    width: 100%;
+    gap: 10px;
+    height: 48px;
+    padding: 0 6px 0 18px;
+    border: 1px solid transparent;
+    border-radius: 14px;
+    background: #f5f5f5;
+    transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: clamp(14px, 2.2vw, 32px);
-    flex: 1;
-    min-width: 0;
+  .ai-header-search-{{ ai_gen_id }}__form:hover {
+    background: #f0f0f0;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__link {
-    color: inherit;
-    text-decoration: none;
-    font-size: 14px;
-    white-space: nowrap;
+  .ai-header-search-{{ ai_gen_id }}__form:focus-within {
+    background: #ffffff;
+    border-color: #d4d4d4;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
 
-  .ai-header-search-{{ ai_gen_id }}__link:hover,
-  .ai-header-search-{{ ai_gen_id }}__link:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 3px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__trigger,
-  .ai-header-search-{{ ai_gen_id }}__close,
-  .ai-header-search-{{ ai_gen_id }}__submit {
+  .ai-header-search-{{ ai_gen_id }}__icon {
     display: inline-flex;
-    align-items: center;
-    justify-content: center;
     flex: 0 0 auto;
-    width: 40px;
-    height: 40px;
-    padding: 0;
-    border: 0;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
+    color: #7a7a7a;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__trigger svg,
-  .ai-header-search-{{ ai_gen_id }}__close svg,
-  .ai-header-search-{{ ai_gen_id }}__submit svg {
+  .ai-header-search-{{ ai_gen_id }}__icon svg {
     width: 20px;
     height: 20px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__form {
-    display: none;
-    align-items: center;
-    gap: 8px;
-    flex: 1;
-    min-width: 0;
-    height: 42px;
-    padding: 0 5px 0 14px;
-    border-radius: 6px;
-    background: #f3f3f3;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}[data-search-open="true"] .ai-header-search-{{ ai_gen_id }}__nav,
-  .ai-header-search-{{ ai_gen_id }}[data-search-open="true"] .ai-header-search-{{ ai_gen_id }}__trigger {
-    display: none;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}[data-search-open="true"] .ai-header-search-{{ ai_gen_id }}__form {
-    display: flex;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__category {
-    max-width: 88px;
-    border: 0;
-    border-right: 1px solid #d5d5d5;
-    padding: 4px 10px 4px 0;
-    background: transparent;
-    color: #222;
-    font: inherit;
-    font-size: 13px;
   }
 
   .ai-header-search-{{ ai_gen_id }}__input {
@@ -103,152 +54,143 @@
     height: 100%;
     border: 0;
     outline: 0;
-    padding: 0 4px;
+    padding: 0;
     background: transparent;
     color: #171717;
     font: inherit;
-    font-size: 14px;
+    font-size: 16px;
+    letter-spacing: 0.01em;
+    box-shadow: none;
   }
 
   .ai-header-search-{{ ai_gen_id }}__input::placeholder {
-    color: #626262;
+    color: #8a8a8a;
     opacity: 1;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__form:focus-within {
-    outline: 2px solid #333;
+  .ai-header-search-{{ ai_gen_id }}__input::-webkit-search-cancel-button {
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    height: 36px;
+    padding: 0 18px;
+    border: 0;
+    border-radius: 10px;
+    background: #171717;
+    color: #ffffff;
+    font: inherit;
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit:hover {
+    background: #333333;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit:active {
+    transform: scale(0.97);
+  }
+
+  .ai-header-search-{{ ai_gen_id }} button:focus-visible {
+    outline: 2px solid #171717;
     outline-offset: 2px;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__close {
-    width: 34px;
-    height: 34px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }} button:focus-visible,
-  .ai-header-search-{{ ai_gen_id }} select:focus-visible,
-  .ai-header-search-{{ ai_gen_id }} a:focus-visible {
-    outline: 2px solid #222;
-    outline-offset: 3px;
+  .ai-header-search-{{ ai_gen_id }} .ai-visually-hidden {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    margin: -1px;
+    padding: 0;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
 
   @media screen and (max-width: 749px) {
     .ai-header-search-{{ ai_gen_id }} {
       width: 100%;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__row {
-      min-height: 40px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__nav {
-      justify-content: flex-start;
-      gap: 14px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__nav::-webkit-scrollbar {
-      display: none;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__link {
-      font-size: 13px;
+      padding-block: 8px;
     }
 
     .ai-header-search-{{ ai_gen_id }}__form {
-      height: 40px;
-      padding-left: 10px;
+      height: 44px;
+      padding-left: 14px;
     }
 
-    .ai-header-search-{{ ai_gen_id }}__category {
-      max-width: 72px;
-      font-size: 12px;
+    .ai-header-search-{{ ai_gen_id }}__input {
+      font-size: 16px; /* keeps iOS from zooming on focus */
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__submit {
+      height: 32px;
+      padding: 0 14px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .ai-header-search-{{ ai_gen_id }}__form,
+    .ai-header-search-{{ ai_gen_id }}__submit {
+      transition: none;
     }
   }
 {% endstyle %}
 
-<header-search-{{ ai_gen_id }} class="ai-header-search-{{ ai_gen_id }}" data-search-open="false" {{ block.shopify_attributes }}>
-  <div class="ai-header-search-{{ ai_gen_id }}__row">
-    <nav class="ai-header-search-{{ ai_gen_id }}__nav" aria-label="Main navigation">
-      {% if block.settings.menu != blank %}
-        {% for link in block.settings.menu.links %}
-          <a class="ai-header-search-{{ ai_gen_id }}__link" href="{{ link.url }}">{{ link.title | escape }}</a>
-        {% endfor %}
-      {% else %}
-        <a class="ai-header-search-{{ ai_gen_id }}__link" href="{{ routes.root_url }}">{{ shop.name | escape }}</a>
-      {% endif %}
-    </nav>
-    <button class="ai-header-search-{{ ai_gen_id }}__trigger" type="button" aria-label="Open search" aria-expanded="false">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
-    </button>
-    <form class="ai-header-search-{{ ai_gen_id }}__form" action="{{ routes.search_url }}" method="get" role="search">
-      <label class="visually-hidden" for="ai-header-search-input-{{ ai_gen_id }}">Search products</label>
-      <select class="ai-header-search-{{ ai_gen_id }}__category" aria-label="Search category" name="filter.p.product_type">
-        <option value="">All</option>
-        {% for product_type in shop.types %}
-          {% if product_type != blank %}<option value="{{ product_type | escape }}">{{ product_type | escape }}</option>{% endif %}
-        {% endfor %}
-      </select>
-      <input id="ai-header-search-input-{{ ai_gen_id }}" class="ai-header-search-{{ ai_gen_id }}__input" type="search" name="q" value="{{ search.terms | escape }}" placeholder="Search anything" autocomplete="off">
-      <input type="hidden" name="options[prefix]" value="last">
-      <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit" aria-label="Submit search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
-      </button>
-      <button class="ai-header-search-{{ ai_gen_id }}__close" type="button" aria-label="Close search">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
-      </button>
-    </form>
-  </div>
-</header-search-{{ ai_gen_id }}>
+<div class="ai-header-search-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <form
+    class="ai-header-search-{{ ai_gen_id }}__form"
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+  >
+    <span class="ai-header-search-{{ ai_gen_id }}__icon" aria-hidden="true">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round">
+        <circle cx="10.8" cy="10.8" r="6.8"></circle>
+        <path d="m16 16 4.2 4.2"></path>
+      </svg>
+    </span>
 
-<script>
-  (function() {
-    const tagName = 'header-search-{{ ai_gen_id }}';
-    if (customElements.get(tagName)) return;
-    class HeaderSearch extends HTMLElement {
-      connectedCallback() {
-        this.trigger = this.querySelector('.ai-header-search-{{ ai_gen_id }}__trigger');
-        this.closeButton = this.querySelector('.ai-header-search-{{ ai_gen_id }}__close');
-        this.input = this.querySelector('.ai-header-search-{{ ai_gen_id }}__input');
-        this.form = this.querySelector('.ai-header-search-{{ ai_gen_id }}__form');
-        this.onOpen = () => this.setOpen(true);
-        this.onClose = () => this.setOpen(false);
-        this.onKeydown = (event) => { if (event.key === 'Escape') this.setOpen(false); };
-        this.trigger.addEventListener('click', this.onOpen);
-        this.closeButton.addEventListener('click', this.onClose);
-        this.addEventListener('keydown', this.onKeydown);
-      }
-      disconnectedCallback() {
-        this.trigger.removeEventListener('click', this.onOpen);
-        this.closeButton.removeEventListener('click', this.onClose);
-        this.removeEventListener('keydown', this.onKeydown);
-      }
-      setOpen(open) {
-        this.dataset.searchOpen = open ? 'true' : 'false';
-        this.trigger.setAttribute('aria-expanded', String(open));
-        if (open) this.input.focus();
-        else this.trigger.focus();
-      }
-    }
-    customElements.define(tagName, HeaderSearch);
-  })();
-</script>
+    <label class="ai-visually-hidden" for="ai-header-search-input-{{ ai_gen_id }}">Search products</label>
+    <input
+      id="ai-header-search-input-{{ ai_gen_id }}"
+      class="ai-header-search-{{ ai_gen_id }}__input"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ block.settings.placeholder | escape }}"
+      autocomplete="off"
+    >
+    <input type="hidden" name="type" value="product">
+    <input type="hidden" name="options[prefix]" value="last">
+
+    <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit">Search</button>
+  </form>
+</div>
 
 {% schema %}
 {
-  "name": "Header search row",
+  "name": "Header search bar",
   "settings": [
     {
-      "type": "link_list",
-      "id": "menu",
-      "label": "Navigation menu"
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder text",
+      "default": "Search..."
     },
     {
       "type": "range",
       "id": "desktop_width_percent",
       "label": "Desktop width",
-      "min": 50,
+      "min": 40,
       "max": 100,
       "step": 5,
       "unit": "%",
@@ -257,7 +199,7 @@
   ],
   "presets": [
     {
-      "name": "Header search row"
+      "name": "Header search bar"
     }
   ],
   "tag": null,

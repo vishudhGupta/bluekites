@@ -23,8 +23,18 @@
     class="header-actions__cart-icon{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
     data-testid="cart-icon"
   >
-    <span class="svg-wrapper" aria-hidden="true">
-      {{ 'icon-cart.svg' | inline_asset_content }}
+    <span class="svg-wrapper cart-icon-svg" aria-hidden="true">
+      <svg viewBox="0 0 36 34" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path
+          d="M1.5 10h5l3.5 15h17.5l3.5-11.5H8"
+          stroke="currentColor"
+          stroke-width="2.4"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        />
+        <circle cx="13" cy="30" r="2.4" fill="currentColor"/>
+        <circle cx="25.5" cy="30" r="2.4" fill="currentColor"/>
+      </svg>
     </span>
 
     <span class="header-actions__cart-label">

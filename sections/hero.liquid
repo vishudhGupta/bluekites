@@ -569,70 +569,149 @@
    MOBILE
    ========================================================= */
 
+
+/* =========================================================
+   BLUE KITES — MOBILE HERO FIX
+   Mobile artwork: 1080 × 1350 (4:5)
+   ========================================================= */
+
 @media screen and (max-width: 749px) {
-  .hero-slider {
-    width: 100%;
-    height: auto !important;
-    min-height: 0 !important;
-    aspect-ratio: 4 / 5;
+  /* Remove unwanted space around the section */
+  .shopify-section:has(.hero-slider),
+  .hero-slider-wrapper.section-wrapper {
+    width: 100% !important;
+    max-width: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
     overflow: hidden;
+    background: #ffffff;
   }
 
-  .hero-slider__viewport {
-    position: absolute;
-    inset: 0;
-    height: 100%;
+  /* Force the correct portrait height */
+  .hero-slider {
+    position: relative !important;
+    display: block !important;
+    width: 100% !important;
+    height: 125vw !important;
     min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    background: #eaf6ff;
+    isolation: isolate;
+  }
+
+  /* Keep all slide elements inside the banner */
+  .hero-slider__viewport {
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   .hero-slider .hero-slide {
-    position: absolute;
-    inset: 0;
-    height: 100%;
+    position: absolute !important;
+    inset: 0 !important;
+    width: 100% !important;
+    height: 100% !important;
     min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
+  .hero-slider .hero-slide.is-active {
+    z-index: 1;
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+  }
+
+  /* Fill the portrait image container without distortion */
   .hero-slider .hero-slide__media,
   .hero-slider .hero-slide__media picture {
-    position: absolute;
-    inset: 0;
-    height: 100%;
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
+    width: 100% !important;
+    height: 100% !important;
+    min-height: 0 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    overflow: hidden !important;
   }
 
   .hero-slider .hero-slide__image {
+    position: absolute !important;
+    inset: 0 !important;
+    display: block !important;
     width: 100% !important;
     height: 100% !important;
+    max-width: none !important;
+    max-height: none !important;
+    margin: 0 !important;
+    padding: 0 !important;
     object-fit: contain !important;
-    object-position: center;
+    object-position: center center !important;
   }
 
+  /* Artwork already contains its own text and CTA */
+  .hero-slider .hero-slide__overlay,
+  .hero-slider .hero-slide__content-wrap,
+  .hero-slider .hero-slide__content,
+  .hero-slider .hero-slide__social {
+    display: none !important;
+  }
+
+  /* Keep arrows over the image */
   .hero-slider .hero-slider__arrow {
-    width: 28px;
-    height: 28px;
+    position: absolute !important;
+    top: 50% !important;
+    z-index: 10 !important;
+    width: 30px !important;
+    height: 30px !important;
+    transform: translateY(-50%);
   }
 
   .hero-slider .hero-slider__arrow--prev {
-    left: 5px;
+    left: 6px !important;
   }
 
   .hero-slider .hero-slider__arrow--next {
-    right: 5px;
+    right: 6px !important;
   }
 
-  .hero-slider .hero-slider__arrow span {
-    font-size: 15px;
-  }
-
+  /* Put pagination inside the bottom of the banner */
   .hero-slider .hero-slider__dots {
-    bottom: 5px;
-    gap: 4px;
-    padding: 4px 6px;
+    position: absolute !important;
+    left: 50% !important;
+    bottom: 10px !important;
+    top: auto !important;
+    z-index: 10 !important;
+    display: flex !important;
+    width: max-content;
+    max-width: calc(100% - 24px);
+    gap: 4px !important;
+    padding: 5px 8px !important;
+    margin: 0 !important;
+    border-radius: 999px;
+    background: rgb(17 24 39 / 40%);
+    transform: translateX(-50%);
   }
 
   .hero-slider .hero-slider__dot {
-    flex-basis: 5px;
-    width: 5px;
-    height: 5px;
+    flex: 0 0 6px !important;
+    width: 6px !important;
+    height: 6px !important;
   }
 }
 

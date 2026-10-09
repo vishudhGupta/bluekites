@@ -441,6 +441,44 @@
   type="module"
 ></script>
 
+<script>
+  (() => {
+    if (window.__inlineSearchBound) return;
+    window.__inlineSearchBound = true;
+
+    const getBar = () => document.getElementById('HeaderInlineSearch');
+
+    const open = () => {
+      const bar = getBar();
+      if (!bar) return;
+      const row = document.querySelector('#header-component .header__row--top');
+      if (row) bar.style.height = row.offsetHeight + 'px';
+      bar.hidden = false;
+      bar.querySelector('input[type="search"]').focus();
+    };
+
+    const close = () => {
+      const bar = getBar();
+      if (!bar || bar.hidden) return;
+      bar.hidden = true;
+      bar.querySelector('input[type="search"]').value = '';
+    };
+
+    document.addEventListener('click', (e) => {
+      if (e.target.closest('[data-inline-search-open]')) {
+        e.preventDefault();
+        open();
+      } else if (e.target.closest('.header-inline-search__close')) {
+        close();
+      }
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
+
 {% stylesheet %}
   body {
     --header-height: 60px;

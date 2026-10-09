@@ -20,18 +20,15 @@
 
 {% capture cart_icon %}
   <cart-icon
-    class="header-actions__cart-icon{% if display_style == 'text' %} header-actions__cart-icon--text{% endif %}{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
+    class="header-actions__cart-icon{% unless cart == empty %} header-actions__cart-icon--has-cart{% endunless %}"
     data-testid="cart-icon"
   >
-    <span class="{% if display_style == 'icon' %}hidden{% else %}mobile:hidden{% endif %}">
-      {{ 'content.cart_title' | t }}
+    <span class="svg-wrapper" aria-hidden="true">
+      {{ 'icon-cart.svg' | inline_asset_content }}
     </span>
 
-    <span
-      class="svg-wrapper {% if display_style != 'icon' %}desktop:hidden{% endif %}"
-      aria-hidden="true"
-    >
-      {{ 'icon-cart.svg' | inline_asset_content }}
+    <span class="header-actions__cart-label">
+      {{ 'content.cart_title' | t }}
     </span>
 
     {% render 'cart-bubble', limit: 100 %}
@@ -605,16 +602,6 @@
     font-weight: var(--font-paragraph--weight);
   }
 
-  .header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
-    /* Create donut mask where the cart bubble sits */
-    mask: radial-gradient(
-      calc(var(--cart-bubble-size) + 2px) at calc(100% - var(--cart-bubble-right)) var(--cart-bubble-top),
-      transparent 45.45%,
-      #fff 45.45%,
-      #fff 100%
-    );
-  }
-
   .cart-drawer__heading .cart-bubble .cart-bubble__background {
     background-color: rgb(var(--color-foreground-rgb) / var(--opacity-10-25));
   }
@@ -710,4 +697,68 @@
       margin-inline-start: 0;
     }
   }
+
+  /* Cart: icon + orange count above it + bold "Cart" label */
+.header-actions__cart-icon {
+  --cart-count-color: #f08804;
+
+  display: flex;
+  align-items: center;
+  gap: var(--gap-2xs);
+  position: relative;
+}
+
+.header-actions__cart-icon .svg-wrapper {
+  flex-shrink: 0;
+}
+
+/* No donut cut-out, since the count no longer overlaps the icon edge */
+.header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
+  mask: none;
+}
+
+.header-actions__cart-label {
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1;
+  white-space: nowrap;
+}
+
+/* Count: plain orange number centered above the cart basket */
+.header-actions__cart-icon .cart-bubble {
+  position: absolute;
+  top: 2px;
+  right: auto;
+  left: calc(var(--button-size, 44px) / 2);
+  transform: translateX(-50%);
+  width: auto;
+  height: auto;
+  aspect-ratio: auto;
+  padding: 0;
+  pointer-events: none;
+}
+
+.header-actions__cart-icon .cart-bubble__background {
+  display: none;
+}
+
+.header-actions__cart-icon .cart-bubble__text,
+.header-actions__cart-icon .cart-bubble__text-count {
+  color: var(--cart-count-color);
+  font-size: 1rem;
+  font-weight: 800;
+  line-height: 1;
+}
+
+/* Show "0" when the cart is empty (the count element is empty then) */
+.header-actions__cart-icon .cart-bubble__text-count:empty::before {
+  content: '0';
+}
+
+/* Mobile: keep icon + count only, so the header doesn't get crowded */
+@media screen and (max-width: 749px) {
+  .header-actions__cart-label {
+    display: none;
+  }
+}
 {% endstylesheet %}

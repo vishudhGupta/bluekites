@@ -71,6 +71,88 @@
   %}
 </div>
 
+{% stylesheet %}
+  /* ---------- Collection list: clean catalogue grid ---------- */
+  .section-resource-list[data-testid='collection-list'] {
+    --cl-radius: 6px;
+    --cl-ratio: 4 / 5;
+    --cl-bg: #f4f6f8;
+  }
+
+  /* Equal, aligned cards (removes the offset first card) */
+  .section-resource-list[data-testid='collection-list'] .resource-list__item {
+    min-width: 0;
+    margin: 0;
+    padding: 0;
+  }
+
+  /* Uniform image frames */
+  .section-resource-list[data-testid='collection-list'] .resource-list__item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: var(--cl-ratio);
+    object-fit: cover;
+    object-position: center;
+    background: var(--cl-bg);
+    border-radius: var(--cl-radius);
+    transition: transform 500ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+
+  /* Clip the hover zoom to the card */
+  .section-resource-list[data-testid='collection-list'] .resource-list__item a {
+    display: block;
+    overflow: hidden;
+    border-radius: var(--cl-radius);
+    text-decoration: none;
+  }
+
+  @media (hover: hover) {
+    .section-resource-list[data-testid='collection-list'] .resource-list__item a:hover img {
+      transform: scale(1.04);
+    }
+  }
+
+  /* Titles: small, spaced, confident */
+  .section-resource-list[data-testid='collection-list']
+    .resource-list__item
+    :is(h1, h2, h3, h4, h5, h6, [class*='title']) {
+    margin: 14px 0 0;
+    font-family: var(--font-body--family);
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    line-height: 1.3;
+    color: var(--color-foreground);
+  }
+
+  /* Thin underline that draws in on hover */
+  .section-resource-list[data-testid='collection-list']
+    .resource-list__item
+    :is(h1, h2, h3, h4, h5, h6, [class*='title'])::after {
+    content: '';
+    display: block;
+    width: 24px;
+    height: 1px;
+    margin-top: 10px;
+    background: currentColor;
+    opacity: 0.4;
+    transition: width 300ms ease, opacity 300ms ease;
+  }
+
+  .section-resource-list[data-testid='collection-list'] .resource-list__item a:hover :is(h1, h2, h3, h4, h5, h6, [class*='title'])::after {
+    width: 48px;
+    opacity: 1;
+  }
+
+  @media screen and (max-width: 749px) {
+    .section-resource-list[data-testid='collection-list'] .resource-list__item :is(h1, h2, h3, h4, h5, h6, [class*='title']) {
+      font-size: 0.75rem;
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.collection_list",

@@ -76,6 +76,109 @@
   </div>
 </results-list>
 
+{% stylesheet %}
+  /* ---------- Collection grid: clean product cards ---------- */
+  .product-grid-container {
+    --pc-radius: 10px;
+    --pc-border: rgb(var(--color-foreground-rgb) / 0.1);
+    --pc-image-bg: #f5f6f8;
+  }
+
+  /* Card shell */
+  .product-grid-container .product-grid__item {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 12px;
+    background: var(--color-background);
+    border: 1px solid var(--pc-border);
+    border-radius: var(--pc-radius);
+    transition:
+      border-color 250ms ease,
+      box-shadow 250ms ease,
+      transform 250ms ease;
+  }
+
+  @media (hover: hover) {
+    .product-grid-container .product-grid__item:hover {
+      border-color: rgb(var(--color-foreground-rgb) / 0.25);
+      box-shadow: 0 10px 28px rgb(0 0 0 / 0.08);
+      transform: translateY(-2px);
+    }
+  }
+
+  /* Uniform image frame: every product sits in the same square */
+  .product-grid-container .product-grid__item img {
+    display: block;
+    width: 100%;
+    height: auto;
+    aspect-ratio: 1 / 1;
+    padding: 14px;
+    object-fit: contain;
+    object-position: center;
+    background: var(--pc-image-bg);
+    border-radius: calc(var(--pc-radius) - 4px);
+    mix-blend-mode: multiply; /* blends white photo backgrounds into the grey frame */
+    transition: transform 400ms cubic-bezier(0.2, 0.6, 0.2, 1);
+  }
+
+  @media (hover: hover) {
+    .product-grid-container .product-grid__item:hover img {
+      transform: scale(1.03);
+    }
+  }
+
+  /* Title: max two lines, consistent height */
+  .product-grid-container .product-grid__item :is([class*='product-title'], [class*='card__title'], h3, h4) {
+    margin: 14px 0 0;
+    font-size: 0.9375rem;
+    font-weight: 500;
+    line-height: 1.35;
+    letter-spacing: 0.005em;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    min-height: calc(1.35em * 2);
+  }
+
+  /* Price: stronger, pushed to the bottom of the card */
+  .product-grid-container .product-grid__item :is([class*='price']) {
+    margin-top: 8px;
+    font-size: 1rem;
+    font-weight: 700;
+    letter-spacing: 0.01em;
+    color: var(--color-foreground);
+  }
+
+  .product-grid-container .product-grid__item :is(s, [class*='compare']) {
+    font-weight: 400;
+    opacity: 0.55;
+  }
+
+  /* Toolbar: filters, count, sort */
+  .product-grid-container :is([class*='facets'], [class*='filters']) {
+    border-bottom: 1px solid var(--pc-border);
+    padding-bottom: 14px;
+    margin-bottom: 8px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-grid-container .product-grid__item {
+      padding: 8px;
+    }
+
+    .product-grid-container .product-grid__item img {
+      padding: 8px;
+    }
+
+    .product-grid-container .product-grid__item :is([class*='product-title'], [class*='card__title'], h3, h4) {
+      font-size: 0.8125rem;
+    }
+  }
+{% endstylesheet %}
+
 {% schema %}
 {
   "name": "t:names.collection_container",

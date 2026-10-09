@@ -702,6 +702,226 @@
       padding-top: 0 !important;
     }
   }
+
+
+/* =========================================================
+   Blue Kites — Compact Shopify Hero Banner
+   Designed for 2048 × 408 px banners
+   ========================================================= */
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: auto;
+  min-height: 0;
+  aspect-ratio: 5 / 1;
+  overflow: hidden;
+  background: #ffffff;
+  isolation: isolate;
+}
+
+.hero-slider__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  aspect-ratio: inherit;
+}
+
+.hero-slider .hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 350ms ease;
+}
+
+.hero-slider .hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.hero-slider .hero-slide__media {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: #ffffff;
+}
+
+.hero-slider .hero-slide__media picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.hero-slider .hero-slide__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: center;
+  z-index: 0;
+}
+
+/* The banner artwork already contains its own design. */
+.hero-slider .hero-slide__overlay {
+  display: none !important;
+}
+
+/* Hide separate text panels to avoid duplicating banner text. */
+.hero-slider .hero-slide__content-wrap {
+  display: none !important;
+}
+
+/* Keep the navigation controls subtle. */
+.hero-slider .hero-slider__arrow {
+  z-index: 3;
+  width: 36px;
+  height: 36px;
+  border: 1px solid rgb(17 24 39 / 15%);
+  background: rgb(255 255 255 / 80%);
+  color: #111827;
+  box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
+  backdrop-filter: blur(6px);
+}
+
+.hero-slider .hero-slider__arrow:hover {
+  background: #ffffff;
+}
+
+.hero-slider .hero-slider__arrow--prev {
+  left: 12px;
+}
+
+.hero-slider .hero-slider__arrow--next {
+  right: 12px;
+}
+
+.hero-slider .hero-slider__dots {
+  z-index: 3;
+  bottom: 10px;
+  gap: 6px;
+  padding: 6px 9px;
+  background: rgb(17 24 39 / 35%);
+  border: 1px solid rgb(255 255 255 / 30%);
+}
+
+.hero-slider .hero-slider__dot {
+  width: 7px;
+  height: 7px;
+  background: rgb(255 255 255 / 55%);
+}
+
+.hero-slider .hero-slider__dot.is-active {
+  background: #ffffff;
+  transform: scale(1.15);
+}
+
+/* Desktop and tablet */
+@media screen and (min-width: 750px) {
+  .hero-slider {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: 5 / 1;
+  }
+
+  .hero-slider__viewport {
+    height: 100%;
+    min-height: 0;
+  }
+
+  .hero-slider .hero-slide {
+    height: 100%;
+    min-height: 0;
+  }
+}
+
+/* Mobile: preserve the full banner without horizontal cropping. */
+@media screen and (max-width: 749px) {
+  .hero-slider {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+    overflow: hidden;
+  }
+
+  .hero-slider__viewport {
+    height: auto;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+
+  .hero-slider .hero-slide {
+    position: absolute;
+    inset: 0;
+    display: block;
+    height: 100%;
+    min-height: 0;
+    opacity: 0;
+    visibility: hidden;
+  }
+
+  .hero-slider .hero-slide.is-active {
+    position: relative;
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .hero-slider .hero-slide__media {
+    position: relative;
+    inset: auto;
+    height: auto;
+    aspect-ratio: 5 / 1;
+  }
+
+  .hero-slider .hero-slide__media picture {
+    position: absolute;
+    inset: 0;
+  }
+
+  .hero-slider .hero-slide__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+  }
+
+  .hero-slider .hero-slider__arrow {
+    width: 30px;
+    height: 30px;
+  }
+
+  .hero-slider .hero-slider__arrow--prev {
+    left: 6px;
+  }
+
+  .hero-slider .hero-slider__arrow--next {
+    right: 6px;
+  }
+
+  .hero-slider .hero-slider__dots {
+    bottom: 6px;
+  }
+}
+
+/* Respect reduced-motion preferences. */
+@media (prefers-reduced-motion: reduce) {
+  .hero-slider .hero-slide {
+    transition: none;
+  }
+}
+
 {% endstylesheet %}
 
 {% schema %}

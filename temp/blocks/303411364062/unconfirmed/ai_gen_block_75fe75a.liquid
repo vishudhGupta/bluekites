@@ -1,6 +1,292 @@
+{% doc %}
+  @prompt
+    Create a header search block inspired by two reference states: initially a compact horizontal navigation row with a search icon; when the search icon is clicked, replace the central navigation area with a wide inline search bar while preserving the store's own branding and surrounding header controls. The search bar should have a very light gray background, subtly rounded corners, compact height, a small 'All' category selector at the left, and placeholder 'Search anything'. Provide a way to close search and restore navigation. Search should use the store's actual products and categories, not hard-coded reference-store content. Keep the design responsive on mobile. Do not copy the reference's DigiHaat logo or postal code. Match the clean white header and restrained spacing. This block should be usable in the header where the theme supports blocks; do not imply it automatically modifies the existing header.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-header-search-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: #111111;
+    font-family: inherit;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__row {
+    min-height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 24px;
+    width: 100%;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__nav {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: {{ block.settings.nav_gap }}px;
+    flex: 1;
+    min-width: 0;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__nav a {
+    color: inherit;
+    font-size: 14px;
+    text-decoration: none;
+    white-space: nowrap;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__nav a:hover,
+  .ai-header-search-{{ ai_gen_id }}__nav a:focus-visible {
+    text-decoration: underline;
+    text-underline-offset: 4px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__toggle,
+  .ai-header-search-{{ ai_gen_id }}__close,
+  .ai-header-search-{{ ai_gen_id }}__submit {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    padding: 0;
+    color: inherit;
+    background: transparent;
+    border: 0;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__toggle:hover,
+  .ai-header-search-{{ ai_gen_id }}__close:hover,
+  .ai-header-search-{{ ai_gen_id }}__submit:hover {
+    background: #f3f3f3;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__toggle svg,
+  .ai-header-search-{{ ai_gen_id }}__close svg,
+  .ai-header-search-{{ ai_gen_id }}__submit svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form-wrap {
+    display: none;
+    flex: 1;
+    min-width: 0;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__nav,
+  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__toggle {
+    display: none;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__form-wrap {
+    display: flex;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    height: 42px;
+    min-width: 0;
+    overflow: hidden;
+    background: #f3f3f3;
+    border-radius: 6px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__category {
+    height: 100%;
+    max-width: 110px;
+    padding: 0 12px;
+    color: #111111;
+    background: transparent;
+    border: 0;
+    border-right: 1px solid #dddddd;
+    font: inherit;
+    font-size: 13px;
+    cursor: pointer;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__input {
+    flex: 1;
+    min-width: 0;
+    height: 100%;
+    padding: 0 14px;
+    color: #111111;
+    background: transparent;
+    border: 0;
+    outline: none;
+    font: inherit;
+    font-size: 14px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__input::placeholder {
+    color: #555555;
+    opacity: 1;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form:focus-within {
+    outline: 2px solid #111111;
+    outline-offset: 2px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit {
+    height: 100%;
+    border-radius: 0;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__close {
+    width: 36px;
+    height: 36px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }} button:focus-visible,
+  .ai-header-search-{{ ai_gen_id }} a:focus-visible,
+  .ai-header-search-{{ ai_gen_id }} select:focus-visible {
+    outline: 2px solid #111111;
+    outline-offset: 2px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-header-search-{{ ai_gen_id }}__row {
+      gap: 8px;
+      min-height: 42px;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__nav {
+      justify-content: flex-start;
+      gap: 14px;
+      overflow-x: auto;
+      scrollbar-width: none;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__nav a {
+      font-size: 13px;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__form-wrap {
+      gap: 4px;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__category {
+      max-width: 74px;
+      padding: 0 8px;
+      font-size: 12px;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__input {
+      padding: 0 9px;
+      font-size: 13px;
+    }
+  }
+{% endstyle %}
+
+<header-search-{{ ai_gen_id }} class="ai-header-search-{{ ai_gen_id }}" data-open="false" {{ block.shopify_attributes }}>
+  <div class="ai-header-search-{{ ai_gen_id }}__row">
+    <nav class="ai-header-search-{{ ai_gen_id }}__nav" aria-label="Main navigation">
+      {% if block.settings.navigation_menu != blank %}
+        {% for link in block.settings.navigation_menu.links %}
+          <a href="{{ link.url }}">{{ link.title | escape }}</a>
+        {% endfor %}
+      {% endif %}
+    </nav>
+    <button class="ai-header-search-{{ ai_gen_id }}__toggle" type="button" aria-label="Open search" aria-expanded="false">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+    </button>
+    <div class="ai-header-search-{{ ai_gen_id }}__form-wrap">
+      <form class="ai-header-search-{{ ai_gen_id }}__form" action="{{ routes.search_url }}" method="get" role="search">
+        <select class="ai-header-search-{{ ai_gen_id }}__category" aria-label="Search category" name="type">
+          <option value="product,page,article">All</option>
+          <option value="product">Products</option>
+          <option value="article">Articles</option>
+          <option value="page">Pages</option>
+        </select>
+        <input class="ai-header-search-{{ ai_gen_id }}__input" type="search" name="q" placeholder="Search anything" autocomplete="off" aria-label="Search anything">
+        <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit" aria-label="Submit search">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+        </button>
+      </form>
+      <button class="ai-header-search-{{ ai_gen_id }}__close" type="button" aria-label="Close search">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg>
+      </button>
+    </div>
+  </div>
+</header-search-{{ ai_gen_id }}>
+
+<script>
+  (function() {
+    const tagName = 'header-search-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+    class HeaderSearch{{ ai_gen_id }} extends HTMLElement {
+      connectedCallback() {
+        this.openButton = this.querySelector('.ai-header-search-{{ ai_gen_id }}__toggle');
+        this.closeButton = this.querySelector('.ai-header-search-{{ ai_gen_id }}__close');
+        this.input = this.querySelector('.ai-header-search-{{ ai_gen_id }}__input');
+        this.openButton.addEventListener('click', () => this.openSearch());
+        this.closeButton.addEventListener('click', () => this.closeSearch());
+        this.addEventListener('keydown', (event) => {
+          if (event.key === 'Escape' && this.dataset.open === 'true') this.closeSearch();
+        });
+      }
+      openSearch() {
+        this.dataset.open = 'true';
+        this.openButton.setAttribute('aria-expanded', 'true');
+        this.input.focus();
+      }
+      closeSearch() {
+        this.dataset.open = 'false';
+        this.openButton.setAttribute('aria-expanded', 'false');
+        this.openButton.focus();
+      }
+    }
+    customElements.define(tagName, HeaderSearch{{ ai_gen_id }});
+  })();
+</script>
+
 {% schema %}
- {
-   "name": "AI_Block",
-   "tag": "shopify-ai-generated-block"
- }
+{
+  "name": "Header search row",
+  "settings": [
+    {
+      "type": "link_list",
+      "id": "navigation_menu",
+      "label": "Navigation menu"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "range",
+      "id": "nav_gap",
+      "label": "Navigation spacing",
+      "min": 8,
+      "max": 48,
+      "step": 4,
+      "unit": "px",
+      "default": 24
+    }
+  ],
+  "presets": [
+    {
+      "name": "Header search row"
+    }
+  ],
+  "tag": null,
+  "class": "header-search-row"
+}
 {% endschema %}

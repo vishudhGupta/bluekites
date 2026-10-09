@@ -1,11 +1,12 @@
 {% doc %}
-  Header search bar. Always-visible, clean pill-style search field.
+  Header search bar with live predictive results dropdown.
   Add it where the theme supports blocks; it does not modify the existing header by itself.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
   .ai-header-search-{{ ai_gen_id }} {
+    position: relative;
     display: block;
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
@@ -27,26 +28,16 @@
     transition: background-color 0.2s ease, border-color 0.2s ease, box-shadow 0.2s ease;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__form:hover {
-    background: #f0f0f0;
-  }
+  .ai-header-search-{{ ai_gen_id }}__form:hover { background: #f0f0f0; }
 
   .ai-header-search-{{ ai_gen_id }}__form:focus-within {
-    background: #ffffff;
+    background: #fff;
     border-color: #d4d4d4;
     box-shadow: 0 4px 16px rgba(0, 0, 0, 0.08);
   }
 
-  .ai-header-search-{{ ai_gen_id }}__icon {
-    display: inline-flex;
-    flex: 0 0 auto;
-    color: #7a7a7a;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__icon svg {
-    width: 20px;
-    height: 20px;
-  }
+  .ai-header-search-{{ ai_gen_id }}__icon { display: inline-flex; flex: 0 0 auto; color: #7a7a7a; }
+  .ai-header-search-{{ ai_gen_id }}__icon svg { width: 20px; height: 20px; }
 
   .ai-header-search-{{ ai_gen_id }}__input {
     flex: 1;
@@ -59,19 +50,11 @@
     color: #171717;
     font: inherit;
     font-size: 16px;
-    letter-spacing: 0.01em;
     box-shadow: none;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__input::placeholder {
-    color: #8a8a8a;
-    opacity: 1;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__input::-webkit-search-cancel-button {
-    -webkit-appearance: none;
-    appearance: none;
-  }
+  .ai-header-search-{{ ai_gen_id }}__input::placeholder { color: #8a8a8a; opacity: 1; }
+  .ai-header-search-{{ ai_gen_id }}__input::-webkit-search-cancel-button { -webkit-appearance: none; appearance: none; }
 
   .ai-header-search-{{ ai_gen_id }}__submit {
     display: inline-flex;
@@ -83,7 +66,7 @@
     border: 0;
     border-radius: 10px;
     background: #171717;
-    color: #ffffff;
+    color: #fff;
     font: inherit;
     font-size: 14px;
     font-weight: 500;
@@ -91,18 +74,99 @@
     transition: background-color 0.2s ease, transform 0.1s ease;
   }
 
-  .ai-header-search-{{ ai_gen_id }}__submit:hover {
-    background: #333333;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__submit:active {
-    transform: scale(0.97);
-  }
+  .ai-header-search-{{ ai_gen_id }}__submit:hover { background: #333; }
+  .ai-header-search-{{ ai_gen_id }}__submit:active { transform: scale(0.97); }
 
   .ai-header-search-{{ ai_gen_id }} button:focus-visible {
     outline: 2px solid #171717;
     outline-offset: 2px;
   }
+
+  /* ---------- Results dropdown ---------- */
+  .ai-header-search-{{ ai_gen_id }}__panel {
+    position: absolute;
+    top: calc(100% - 4px);
+    left: 0;
+    right: 0;
+    z-index: 100;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
+    padding: 8px;
+    border: 1px solid #e6e6e6;
+    border-radius: 14px;
+    background: #fff;
+    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.14);
+    animation: ai-hs-{{ ai_gen_id }}-in 0.14s ease-out;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__panel[hidden] { display: none; }
+
+  .ai-header-search-{{ ai_gen_id }}__group-title {
+    margin: 0;
+    padding: 10px 10px 6px;
+    color: #7a7a7a;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 8px 10px;
+    border-radius: 10px;
+    color: inherit;
+    text-decoration: none;
+    cursor: pointer;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__item:hover,
+  .ai-header-search-{{ ai_gen_id }}__item[aria-selected='true'] {
+    background: #f5f5f5;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__thumb {
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    border-radius: 8px;
+    background: #f3f3f3;
+    object-fit: cover;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__text { display: flex; flex-direction: column; min-width: 0; }
+
+  .ai-header-search-{{ ai_gen_id }}__title {
+    overflow: hidden;
+    font-size: 14px;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__price { margin-top: 2px; color: #555; font-size: 13px; }
+
+  .ai-header-search-{{ ai_gen_id }}__term-icon { display: inline-flex; width: 48px; justify-content: center; color: #9a9a9a; }
+  .ai-header-search-{{ ai_gen_id }}__term-icon svg { width: 16px; height: 16px; }
+
+  .ai-header-search-{{ ai_gen_id }}__all {
+    display: block;
+    margin-top: 6px;
+    padding: 12px 10px;
+    border-top: 1px solid #eee;
+    border-radius: 0 0 10px 10px;
+    color: #171717;
+    font-size: 14px;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__all:hover,
+  .ai-header-search-{{ ai_gen_id }}__all[aria-selected='true'] { background: #f5f5f5; }
+
+  .ai-header-search-{{ ai_gen_id }}__empty { padding: 18px 10px; color: #666; font-size: 14px; text-align: center; }
 
   .ai-header-search-{{ ai_gen_id }} .ai-visually-hidden {
     position: absolute;
@@ -116,36 +180,33 @@
     border: 0;
   }
 
+  @keyframes ai-hs-{{ ai_gen_id }}-in {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: none; }
+  }
+
   @media screen and (max-width: 749px) {
-    .ai-header-search-{{ ai_gen_id }} {
-      width: 100%;
-      padding-block: 8px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__form {
-      height: 44px;
-      padding-left: 14px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__input {
-      font-size: 16px; /* keeps iOS from zooming on focus */
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__submit {
-      height: 32px;
-      padding: 0 14px;
-    }
+    .ai-header-search-{{ ai_gen_id }} { width: 100%; padding-block: 8px; }
+    .ai-header-search-{{ ai_gen_id }}__form { height: 44px; padding-left: 14px; }
+    .ai-header-search-{{ ai_gen_id }}__submit { height: 32px; padding: 0 14px; }
+    .ai-header-search-{{ ai_gen_id }}__panel { max-height: 65vh; }
   }
 
   @media (prefers-reduced-motion: reduce) {
     .ai-header-search-{{ ai_gen_id }}__form,
-    .ai-header-search-{{ ai_gen_id }}__submit {
-      transition: none;
-    }
+    .ai-header-search-{{ ai_gen_id }}__submit { transition: none; }
+    .ai-header-search-{{ ai_gen_id }}__panel { animation: none; }
   }
 {% endstyle %}
 
-<div class="ai-header-search-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+<header-search-{{ ai_gen_id }}
+  class="ai-header-search-{{ ai_gen_id }}"
+  data-search-url="{{ routes.search_url }}"
+  data-suggest-url="{{ routes.predictive_search_url }}"
+  data-currency="{{ localization.country.currency.iso_code }}"
+  data-locale="{{ request.locale.iso_code }}"
+  {{ block.shopify_attributes }}
+>
   <form
     class="ai-header-search-{{ ai_gen_id }}__form"
     action="{{ routes.search_url }}"
@@ -168,13 +229,253 @@
       value="{{ search.terms | escape }}"
       placeholder="{{ block.settings.placeholder | escape }}"
       autocomplete="off"
+      role="combobox"
+      aria-expanded="false"
+      aria-controls="ai-header-search-panel-{{ ai_gen_id }}"
+      aria-autocomplete="list"
     >
     <input type="hidden" name="type" value="product">
     <input type="hidden" name="options[prefix]" value="last">
 
     <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit">Search</button>
   </form>
-</div>
+
+  <div
+    id="ai-header-search-panel-{{ ai_gen_id }}"
+    class="ai-header-search-{{ ai_gen_id }}__panel"
+    role="listbox"
+    aria-label="Search results"
+    hidden
+  ></div>
+</header-search-{{ ai_gen_id }}>
+
+<script>
+  (function () {
+    const tagName = 'header-search-{{ ai_gen_id }}';
+    if (customElements.get(tagName)) return;
+
+    const P = 'ai-header-search-{{ ai_gen_id }}';
+    const MIN_CHARS = {{ block.settings.min_characters }};
+    const LIMIT = {{ block.settings.product_limit }};
+
+    class HeaderSearch extends HTMLElement {
+      connectedCallback() {
+        this.input = this.querySelector('.' + P + '__input');
+        this.panel = this.querySelector('.' + P + '__panel');
+        this.form = this.querySelector('.' + P + '__form');
+        this.suggestUrl = this.dataset.suggestUrl;
+        this.searchUrl = this.dataset.searchUrl;
+        this.activeIndex = -1;
+        this.timer = null;
+        this.controller = null;
+
+        this.onInput = () => this.schedule();
+        this.onFocus = () => { if (this.panel.children.length) this.show(); };
+        this.onKeydown = (e) => this.handleKey(e);
+        this.onDocClick = (e) => { if (!this.contains(e.target)) this.hide(); };
+
+        this.input.addEventListener('input', this.onInput);
+        this.input.addEventListener('focus', this.onFocus);
+        this.input.addEventListener('keydown', this.onKeydown);
+        document.addEventListener('click', this.onDocClick);
+      }
+
+      disconnectedCallback() {
+        this.input.removeEventListener('input', this.onInput);
+        this.input.removeEventListener('focus', this.onFocus);
+        this.input.removeEventListener('keydown', this.onKeydown);
+        document.removeEventListener('click', this.onDocClick);
+        clearTimeout(this.timer);
+        if (this.controller) this.controller.abort();
+      }
+
+      schedule() {
+        clearTimeout(this.timer);
+        const term = this.input.value.trim();
+        if (term.length < MIN_CHARS) {
+          if (this.controller) this.controller.abort();
+          this.hide();
+          this.panel.replaceChildren();
+          return;
+        }
+        this.timer = setTimeout(() => this.fetchResults(term), 200);
+      }
+
+      async fetchResults(term) {
+        if (this.controller) this.controller.abort();
+        this.controller = new AbortController();
+
+        const params = new URLSearchParams({
+          q: term,
+          'resources[type]': 'product,collection,query',
+          'resources[limit]': String(LIMIT),
+          'resources[options][unavailable_products]': 'last',
+        });
+
+        try {
+          const res = await fetch(this.suggestUrl + '.json?' + params, {
+            signal: this.controller.signal,
+            headers: { Accept: 'application/json' },
+          });
+          if (!res.ok) throw new Error('Search request failed');
+          const data = await res.json();
+          this.render(term, data.resources.results);
+        } catch (err) {
+          if (err.name !== 'AbortError') this.hide();
+        }
+      }
+
+      formatPrice(value) {
+        const amount = parseFloat(value);
+        if (isNaN(amount)) return '';
+        try {
+          return new Intl.NumberFormat(this.dataset.locale || undefined, {
+            style: 'currency',
+            currency: this.dataset.currency,
+          }).format(amount);
+        } catch (e) {
+          return amount.toFixed(2);
+        }
+      }
+
+      el(tag, className, text) {
+        const node = document.createElement(tag);
+        if (className) node.className = className;
+        if (text !== undefined) node.textContent = text;
+        return node;
+      }
+
+      group(title) {
+        return this.el('p', P + '__group-title', title);
+      }
+
+      render(term, results) {
+        const products = results.products || [];
+        const collections = results.collections || [];
+        const queries = results.queries || [];
+        const frag = document.createDocumentFragment();
+        let id = 0;
+
+        const makeItem = (href) => {
+          const a = this.el('a', P + '__item');
+          a.href = href;
+          a.setAttribute('role', 'option');
+          a.id = P + '-opt-' + id++;
+          a.setAttribute('aria-selected', 'false');
+          return a;
+        };
+
+        if (queries.length) {
+          frag.appendChild(this.group('Suggestions'));
+          queries.forEach((q) => {
+            const a = makeItem(this.searchUrl + '?type=product&q=' + encodeURIComponent(q.text));
+            const icon = this.el('span', P + '__term-icon');
+            icon.innerHTML = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 4.2 4.2"/></svg>';
+            a.append(icon, this.el('span', P + '__title', q.text));
+            frag.appendChild(a);
+          });
+        }
+
+        if (products.length) {
+          frag.appendChild(this.group('Products'));
+          products.forEach((p) => {
+            const a = makeItem(p.url);
+            const imgUrl = (p.featured_image && p.featured_image.url) || p.image;
+            if (imgUrl) {
+              const img = this.el('img', P + '__thumb');
+              img.src = imgUrl + (imgUrl.includes('?') ? '&' : '?') + 'width=96';
+              img.alt = '';
+              img.loading = 'lazy';
+              img.width = 48;
+              img.height = 48;
+              a.appendChild(img);
+            } else {
+              a.appendChild(this.el('span', P + '__thumb'));
+            }
+            const text = this.el('span', P + '__text');
+            text.appendChild(this.el('span', P + '__title', p.title));
+            const price = this.formatPrice(p.price);
+            if (price) text.appendChild(this.el('span', P + '__price', price));
+            a.appendChild(text);
+            frag.appendChild(a);
+          });
+        }
+
+        if (collections.length) {
+          frag.appendChild(this.group('Collections'));
+          collections.forEach((c) => {
+            const a = makeItem(c.url);
+            const text = this.el('span', P + '__text');
+            text.appendChild(this.el('span', P + '__title', c.title));
+            a.appendChild(text);
+            a.style.paddingLeft = '70px';
+            frag.appendChild(a);
+          });
+        }
+
+        if (!products.length && !collections.length && !queries.length) {
+          frag.appendChild(this.el('div', P + '__empty', 'No results for "' + term + '"'));
+        } else {
+          const all = this.el('a', P + '__all', 'See all results for "' + term + '"');
+          all.href = this.searchUrl + '?type=product&q=' + encodeURIComponent(term);
+          all.setAttribute('role', 'option');
+          all.id = P + '-opt-' + id++;
+          all.setAttribute('aria-selected', 'false');
+          frag.appendChild(all);
+        }
+
+        this.panel.replaceChildren(frag);
+        this.activeIndex = -1;
+        this.show();
+      }
+
+      options() {
+        return Array.from(this.panel.querySelectorAll('[role="option"]'));
+      }
+
+      setActive(index) {
+        const opts = this.options();
+        if (!opts.length) return;
+        opts.forEach((o) => o.setAttribute('aria-selected', 'false'));
+        this.activeIndex = (index + opts.length) % opts.length;
+        const active = opts[this.activeIndex];
+        active.setAttribute('aria-selected', 'true');
+        active.scrollIntoView({ block: 'nearest' });
+        this.input.setAttribute('aria-activedescendant', active.id);
+      }
+
+      handleKey(e) {
+        if (e.key === 'Escape') {
+          this.hide();
+        } else if (e.key === 'ArrowDown') {
+          if (this.panel.hidden && this.panel.children.length) this.show();
+          e.preventDefault();
+          this.setActive(this.activeIndex + 1);
+        } else if (e.key === 'ArrowUp') {
+          e.preventDefault();
+          this.setActive(this.activeIndex - 1);
+        } else if (e.key === 'Enter' && this.activeIndex >= 0 && !this.panel.hidden) {
+          e.preventDefault();
+          this.options()[this.activeIndex].click();
+        }
+      }
+
+      show() {
+        this.panel.hidden = false;
+        this.input.setAttribute('aria-expanded', 'true');
+      }
+
+      hide() {
+        this.panel.hidden = true;
+        this.activeIndex = -1;
+        this.input.setAttribute('aria-expanded', 'false');
+        this.input.removeAttribute('aria-activedescendant');
+      }
+    }
+
+    customElements.define(tagName, HeaderSearch);
+  })();
+</script>
 
 {% schema %}
 {
@@ -195,6 +496,24 @@
       "step": 5,
       "unit": "%",
       "default": 100
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "label": "Results per group",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 5
+    },
+    {
+      "type": "range",
+      "id": "min_characters",
+      "label": "Start searching after (characters)",
+      "min": 1,
+      "max": 3,
+      "step": 1,
+      "default": 2
     }
   ],
   "presets": [

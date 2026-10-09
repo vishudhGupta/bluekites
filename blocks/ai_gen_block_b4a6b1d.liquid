@@ -197,6 +197,100 @@
     .ai-header-search-{{ ai_gen_id }}__submit { transition: none; }
     .ai-header-search-{{ ai_gen_id }}__panel { animation: none; }
   }
+
+    /* ---- Beat theme input styles (higher specificity) ---- */
+  .ai-header-search-{{ ai_gen_id }} .ai-header-search-{{ ai_gen_id }}__input {
+    appearance: none;
+    -webkit-appearance: none;
+    background: transparent !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    outline: none !important;
+    height: 100%;
+    padding: 0 !important;
+    margin: 0;
+    color: #171717;
+  }
+
+  /* ---- Polish ---- */
+  .ai-header-search-{{ ai_gen_id }}__form {
+    gap: 12px;
+    padding: 0 6px 0 18px;
+    border: 1px solid #ececec;
+    background: #f6f6f6;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form:hover {
+    background: #f1f1f1;
+    border-color: #e2e2e2;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form:focus-within {
+    background: #fff;
+    border-color: #171717;
+    box-shadow: 0 0 0 4px rgba(23, 23, 23, 0.06), 0 6px 20px rgba(0, 0, 0, 0.08);
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__icon {
+    transition: color 0.2s ease;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__form:focus-within .ai-header-search-{{ ai_gen_id }}__icon {
+    color: #171717;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit {
+    gap: 8px;
+    height: 38px;
+    padding: 0 20px;
+    border-radius: 11px;
+    letter-spacing: 0.01em;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__submit svg {
+    display: none;
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Dropdown sits slightly below the bar with a clear gap */
+  .ai-header-search-{{ ai_gen_id }}__panel {
+    top: calc(100% + 2px);
+    border-color: #ececec;
+    border-radius: 16px;
+    padding: 10px;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__item {
+    transition: background-color 0.15s ease;
+  }
+
+  .ai-header-search-{{ ai_gen_id }}__thumb {
+    border: 1px solid #efefef;
+    background: #fafafa;
+  }
+
+  /* Mobile: submit becomes an icon-only button */
+  @media screen and (max-width: 749px) {
+    .ai-header-search-{{ ai_gen_id }}__form {
+      padding-left: 14px;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__submit {
+      width: 36px;
+      height: 34px;
+      padding: 0;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__submit-text {
+      display: none;
+    }
+
+    .ai-header-search-{{ ai_gen_id }}__submit svg {
+      display: block;
+    }
+  }
 {% endstyle %}
 
 <header-search-{{ ai_gen_id }}

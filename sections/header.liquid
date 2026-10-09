@@ -1190,7 +1190,102 @@
     font-size: var(--menu-localization-font-size);
   }
 
-  
+    /* ================================
+   * Inline search bar
+   * ================================ */
+  .header-inline-search {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: var(--top-row-height, var(--header-height));
+    z-index: var(--layer-heightened);
+    display: flex;
+    align-items: center;
+    padding-inline: var(--page-margin, 24px);
+    background: var(--color-background);
+    color: var(--color-foreground);
+  }
+
+  .header-inline-search[hidden] {
+    display: none;
+  }
+
+  .header-inline-search__form {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    height: 44px;
+    padding-inline: 16px 8px;
+    border-radius: 14px;
+    background: rgb(var(--color-foreground-rgb) / 0.08);
+    animation: header-inline-search-in 0.18s var(--ease-out-cubic, ease-out);
+  }
+
+  .header-inline-search__form:focus-within {
+    box-shadow: 0 0 0 2px rgb(var(--color-foreground-rgb) / 0.25);
+  }
+
+  .header-inline-search__icon {
+    display: grid;
+    place-items: center;
+    opacity: 0.7;
+  }
+
+  .header-inline-search__input {
+    flex: 1;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: inherit;
+    font: inherit;
+    font-size: 1rem;
+    padding: 0;
+  }
+
+  .header-inline-search__input::placeholder {
+    color: inherit;
+    opacity: 0.55;
+  }
+
+  .header-inline-search__input::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  .header-inline-search__close {
+    display: grid;
+    place-items: center;
+    width: 32px;
+    height: 32px;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: inherit;
+    cursor: pointer;
+  }
+
+  .header-inline-search__close:hover {
+    background: rgb(var(--color-foreground-rgb) / 0.12);
+  }
+
+  @keyframes header-inline-search-in {
+    from { opacity: 0; transform: scaleX(0.97); }
+    to { opacity: 1; transform: none; }
+  }
+
+  @media screen and (max-width: 749px) {
+    .header-inline-search {
+      padding-inline: var(--padding-sm, 12px);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .header-inline-search__form {
+      animation: none;
+    }
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}

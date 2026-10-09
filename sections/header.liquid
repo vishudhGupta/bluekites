@@ -330,40 +330,6 @@
     class="header__underlay header__underlay-open"
   ></div>
   {%- if request.page_type == 'index' -%}
-      {%- if section.settings.show_search -%}
-    <div
-      class="header-inline-search color-{{ section.settings.color_scheme_top }}"
-      id="HeaderInlineSearch"
-      hidden
-    >
-      <form
-        class="header-inline-search__form"
-        action="{{ routes.search_url }}"
-        method="get"
-        role="search"
-      >
-        <span class="header-inline-search__icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/>
-          </svg>
-        </span>
-        <input
-          class="header-inline-search__input"
-          type="search"
-          name="q"
-          placeholder="Search anything"
-          autocomplete="off"
-          aria-label="{{ 'accessibility.search' | t | default: 'Search' }}"
-        >
-        <input type="hidden" name="options[prefix]" value="last">
-        <button class="header-inline-search__close" type="button" aria-label="Close search">
-          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
-            <path d="M6 6l12 12M18 6 6 18"/>
-          </svg>
-        </button>
-      </form>
-    </div>
-  {%- endif -%}
     <h1 class="visually-hidden">{{ shop.name }}</h1>
   {%- endif -%}
   {% for row in rows %}
@@ -440,48 +406,6 @@
   src="{{ 'header.js' | asset_url }}"
   type="module"
 ></script>
-<script>
-  (() => {
-    if (window.__headerInlineSearchBound) return;
-    window.__headerInlineSearchBound = true;
-
-    const getBar = () => document.getElementById('HeaderInlineSearch');
-
-    const open = () => {
-      const bar = getBar();
-      if (!bar) return;
-      bar.hidden = false;
-      bar.querySelector('input[type="search"]').focus();
-    };
-
-    const close = () => {
-      const bar = getBar();
-      if (!bar || bar.hidden) return;
-      bar.hidden = true;
-      bar.querySelector('input[type="search"]').value = '';
-    };
-
-    // Capture phase: runs before the theme's own search-modal handler.
-    document.addEventListener(
-      'click',
-      (e) => {
-        if (!getBar()) return;
-        if (e.target.closest('.search-action')) {
-          e.preventDefault();
-          e.stopImmediatePropagation();
-          open();
-        } else if (e.target.closest('.header-inline-search__close')) {
-          close();
-        }
-      },
-      true
-    );
-
-    document.addEventListener('keydown', (e) => {
-      if (e.key === 'Escape') close();
-    });
-  })();
-</script>
 
 {% stylesheet %}
   body {
@@ -1190,102 +1114,7 @@
     font-size: var(--menu-localization-font-size);
   }
 
-    /* ================================
-   * Inline search bar
-   * ================================ */
-  .header-inline-search {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    height: var(--top-row-height, var(--header-height));
-    z-index: var(--layer-heightened);
-    display: flex;
-    align-items: center;
-    padding-inline: var(--page-margin, 24px);
-    background: var(--color-background);
-    color: var(--color-foreground);
-  }
-
-  .header-inline-search[hidden] {
-    display: none;
-  }
-
-  .header-inline-search__form {
-    flex: 1;
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    height: 44px;
-    padding-inline: 16px 8px;
-    border-radius: 14px;
-    background: rgb(var(--color-foreground-rgb) / 0.08);
-    animation: header-inline-search-in 0.18s var(--ease-out-cubic, ease-out);
-  }
-
-  .header-inline-search__form:focus-within {
-    box-shadow: 0 0 0 2px rgb(var(--color-foreground-rgb) / 0.25);
-  }
-
-  .header-inline-search__icon {
-    display: grid;
-    place-items: center;
-    opacity: 0.7;
-  }
-
-  .header-inline-search__input {
-    flex: 1;
-    min-width: 0;
-    border: 0;
-    outline: 0;
-    background: transparent;
-    color: inherit;
-    font: inherit;
-    font-size: 1rem;
-    padding: 0;
-  }
-
-  .header-inline-search__input::placeholder {
-    color: inherit;
-    opacity: 0.55;
-  }
-
-  .header-inline-search__input::-webkit-search-cancel-button {
-    display: none;
-  }
-
-  .header-inline-search__close {
-    display: grid;
-    place-items: center;
-    width: 32px;
-    height: 32px;
-    border: 0;
-    border-radius: 50%;
-    background: transparent;
-    color: inherit;
-    cursor: pointer;
-  }
-
-  .header-inline-search__close:hover {
-    background: rgb(var(--color-foreground-rgb) / 0.12);
-  }
-
-  @keyframes header-inline-search-in {
-    from { opacity: 0; transform: scaleX(0.97); }
-    to { opacity: 1; transform: none; }
-  }
-
-  @media screen and (max-width: 749px) {
-    .header-inline-search {
-      padding-inline: var(--padding-sm, 12px);
-    }
-  }
-
-  @media (prefers-reduced-motion: reduce) {
-    .header-inline-search__form {
-      animation: none;
-    }
-  }
+  
 {% endstylesheet %}
 
 {% unless request.design_mode %}

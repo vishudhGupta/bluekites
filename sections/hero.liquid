@@ -346,16 +346,22 @@
 
 {% stylesheet %}
  
+
 /* =========================================================
    BLUE KITES — RESPONSIVE HERO SLIDER
-   Desktop banner: 2048 × 408 px (5:1 aspect ratio)
+   Desktop: 2400 × 800 (3:1)
+   Mobile: separate image recommended
    ========================================================= */
 
 /* Section wrapper */
 .hero-slider-wrapper.section-wrapper {
+  display: block;
   width: 100%;
+  max-width: none;
   margin: 0 !important;
   padding: 0 !important;
+  overflow: hidden;
+  background: #ffffff;
 }
 
 /* Main slider */
@@ -365,8 +371,8 @@
   width: 100%;
   height: auto !important;
   min-height: 0 !important;
-  max-height: none;
-  aspect-ratio: 2048 / 408;
+  max-height: none !important;
+  aspect-ratio: 3 / 1;
   margin: 0 !important;
   padding: 0 !important;
   overflow: hidden;
@@ -374,7 +380,7 @@
   background: #ffffff;
 }
 
-/* Slider viewport */
+/* Viewport */
 .hero-slider__viewport {
   position: absolute;
   inset: 0;
@@ -385,7 +391,7 @@
   background: #ffffff;
 }
 
-/* Individual slides */
+/* Slides */
 .hero-slider .hero-slide {
   position: absolute;
   inset: 0;
@@ -395,72 +401,54 @@
   min-height: 0 !important;
   margin: 0;
   padding: 0;
+  overflow: hidden;
   opacity: 0;
   visibility: hidden;
   pointer-events: none;
-  overflow: hidden;
   transition: opacity 350ms ease;
   background: #ffffff;
 }
 
 .hero-slider .hero-slide.is-active {
+  z-index: 1;
   opacity: 1;
   visibility: visible;
   pointer-events: auto;
-  z-index: 1;
 }
 
-/* Image container */
-.hero-slider .hero-slide__media {
-  position: absolute;
-  inset: 0;
-  display: block;
-  width: 100%;
-  height: 100%;
-  margin: 0;
-  padding: 0;
-  overflow: hidden;
-  background: #ffffff;
-  z-index: 0;
-}
-
-/* Picture wrapper */
+/* Media container and picture */
+.hero-slider .hero-slide__media,
 .hero-slider .hero-slide__media picture {
   position: absolute;
   inset: 0;
   display: block;
   width: 100%;
   height: 100%;
+  min-height: 0 !important;
   margin: 0;
   padding: 0;
+  overflow: hidden;
+  background: #ffffff;
 }
 
-/* Banner image — preserve the full artwork */
+/* Image: preserve product proportions */
 .hero-slider .hero-slide__image {
   position: absolute;
   inset: 0;
   display: block;
   width: 100% !important;
   height: 100% !important;
-  max-width: none;
-  max-height: none;
+  max-width: none !important;
+  max-height: none !important;
   margin: 0;
   padding: 0;
-  object-fit: contain !important;
-  object-position: center center;
   border: 0;
-  z-index: 0;
+  object-fit: contain !important;
+  object-position: center;
 }
 
-/* Remove theme overlays */
-.hero-slider .hero-slide__overlay {
-  display: none !important;
-  opacity: 0 !important;
-  background: transparent !important;
-}
-
-/* Hide separate text and social cards.
-   The uploaded banner already contains its finished design. */
+/* Artwork includes its own text and CTA */
+.hero-slider .hero-slide__overlay,
 .hero-slider .hero-slide__content-wrap,
 .hero-slider .hero-slide__content,
 .hero-slider .hero-slide__social {
@@ -483,7 +471,7 @@
   padding: 0;
   border: 1px solid rgb(17 24 39 / 18%);
   border-radius: 50%;
-  background: rgb(255 255 255 / 90%);
+  background: rgb(255 255 255 / 92%);
   color: #111827;
   box-shadow: 0 2px 8px rgb(0 0 0 / 8%);
   transform: translateY(-50%);
@@ -556,66 +544,37 @@
    DESKTOP
    ========================================================= */
 
-/* =========================================================
-   DESKTOP: container matches the 2048 x 408 artwork exactly
-   ========================================================= */
-
 @media screen and (min-width: 750px) {
-  /* Remove any theme spacing around the section */
-  .shopify-section:has(.hero-slider),
-  .hero-slider-wrapper.section-wrapper {
-    margin: 0 !important;
-    padding: 0 !important;
-    background: transparent;
-  }
-
   .hero-slider {
-    width: 100%;
+    aspect-ratio: 3 / 1;
     height: auto !important;
     min-height: 0 !important;
-    max-height: none !important;
-    aspect-ratio: 2048 / 408;
-    margin: 0 !important;
-    padding: 0 !important;
   }
 
   .hero-slider__viewport,
   .hero-slider .hero-slide,
   .hero-slider .hero-slide__media,
   .hero-slider .hero-slide__media picture {
-    position: absolute;
-    inset: 0;
-    width: 100%;
     height: 100%;
     min-height: 0 !important;
   }
 
-  /* Same ratio as the container, so "cover" fills it with no bars and no visible crop */
   .hero-slider .hero-slide__image {
-    position: absolute;
-    inset: 0;
-    width: 100% !important;
-    height: 100% !important;
-    max-width: none;
-    object-fit: cover !important;
-    object-position: center center;
+    object-fit: contain !important;
+    object-position: center;
   }
 }
+
 /* =========================================================
    MOBILE
    ========================================================= */
 
 @media screen and (max-width: 749px) {
-  .hero-slider-wrapper.section-wrapper {
-    margin: 0 !important;
-    padding: 0 !important;
-  }
-
   .hero-slider {
     width: 100%;
     height: auto !important;
     min-height: 0 !important;
-    aspect-ratio: 5 / 1;
+    aspect-ratio: 4 / 5;
     overflow: hidden;
   }
 
@@ -629,24 +588,11 @@
   .hero-slider .hero-slide {
     position: absolute;
     inset: 0;
-    display: block;
     height: 100%;
     min-height: 0 !important;
-    opacity: 0;
-    visibility: hidden;
   }
 
-  .hero-slider .hero-slide.is-active {
-    opacity: 1;
-    visibility: visible;
-  }
-
-  .hero-slider .hero-slide__media {
-    position: absolute;
-    inset: 0;
-    height: 100%;
-  }
-
+  .hero-slider .hero-slide__media,
   .hero-slider .hero-slide__media picture {
     position: absolute;
     inset: 0;
@@ -654,8 +600,6 @@
   }
 
   .hero-slider .hero-slide__image {
-    position: absolute;
-    inset: 0;
     width: 100% !important;
     height: 100% !important;
     object-fit: contain !important;
@@ -680,7 +624,7 @@
   }
 
   .hero-slider .hero-slider__dots {
-    bottom: 4px;
+    bottom: 5px;
     gap: 4px;
     padding: 4px 6px;
   }

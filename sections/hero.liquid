@@ -556,31 +556,51 @@
    DESKTOP
    ========================================================= */
 
+/* =========================================================
+   DESKTOP: container matches the 2048 x 408 artwork exactly
+   ========================================================= */
+
 @media screen and (min-width: 750px) {
-  .hero-slider {
-    aspect-ratio: 2048 / 408;
+  /* Remove any theme spacing around the section */
+  .shopify-section:has(.hero-slider),
+  .hero-slider-wrapper.section-wrapper {
+    margin: 0 !important;
+    padding: 0 !important;
+    background: transparent;
   }
 
-  .hero-slider__viewport {
+  .hero-slider {
+    width: 100%;
+    height: auto !important;
+    min-height: 0 !important;
+    max-height: none !important;
+    aspect-ratio: 2048 / 408;
+    margin: 0 !important;
+    padding: 0 !important;
+  }
+
+  .hero-slider__viewport,
+  .hero-slider .hero-slide,
+  .hero-slider .hero-slide__media,
+  .hero-slider .hero-slide__media picture {
     position: absolute;
     inset: 0;
+    width: 100%;
     height: 100%;
-  }
-
-  .hero-slider .hero-slide {
     min-height: 0 !important;
   }
 
-  .hero-slider .hero-slide__media,
-  .hero-slider .hero-slide__media picture {
-    height: 100%;
-  }
-
+  /* Same ratio as the container, so "cover" fills it with no bars and no visible crop */
   .hero-slider .hero-slide__image {
-    object-fit: contain !important;
+    position: absolute;
+    inset: 0;
+    width: 100% !important;
+    height: 100% !important;
+    max-width: none;
+    object-fit: cover !important;
+    object-position: center center;
   }
 }
-
 /* =========================================================
    MOBILE
    ========================================================= */

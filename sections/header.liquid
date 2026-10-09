@@ -440,6 +440,48 @@
   src="{{ 'header.js' | asset_url }}"
   type="module"
 ></script>
+<script>
+  (() => {
+    if (window.__headerInlineSearchBound) return;
+    window.__headerInlineSearchBound = true;
+
+    const getBar = () => document.getElementById('HeaderInlineSearch');
+
+    const open = () => {
+      const bar = getBar();
+      if (!bar) return;
+      bar.hidden = false;
+      bar.querySelector('input[type="search"]').focus();
+    };
+
+    const close = () => {
+      const bar = getBar();
+      if (!bar || bar.hidden) return;
+      bar.hidden = true;
+      bar.querySelector('input[type="search"]').value = '';
+    };
+
+    // Capture phase: runs before the theme's own search-modal handler.
+    document.addEventListener(
+      'click',
+      (e) => {
+        if (!getBar()) return;
+        if (e.target.closest('.search-action')) {
+          e.preventDefault();
+          e.stopImmediatePropagation();
+          open();
+        } else if (e.target.closest('.header-inline-search__close')) {
+          close();
+        }
+      },
+      true
+    );
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape') close();
+    });
+  })();
+</script>
 
 {% stylesheet %}
   body {

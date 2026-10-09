@@ -846,34 +846,93 @@
   }
 }
 
-/* Mobile: preserve the full banner without horizontal cropping. */
-@media screen and (min-width: 750px) {
+/* Blue Kites — fixed-ratio desktop banner */
+
+.hero-slider-wrapper.section-wrapper {
+  margin-block: 0 !important;
+  padding-block: 0 !important;
+}
+
+.hero-slider {
+  position: relative;
+  width: 100%;
+  height: auto !important;
+  min-height: 0 !important;
+  aspect-ratio: 5 / 1;
+  overflow: hidden;
+  isolation: isolate;
+  padding: 0 !important;
+}
+
+.hero-slider__viewport {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 0 !important;
+  overflow: hidden;
+}
+
+.hero-slider .hero-slide {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  min-height: 0 !important;
+}
+
+.hero-slider .hero-slide__media {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+.hero-slider .hero-slide__image {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain !important;
+  object-position: center center;
+}
+
+/* Remove the old dark overlay */
+.hero-slider .hero-slide__overlay {
+  display: none !important;
+}
+
+/* Keep existing slide transitions working */
+.hero-slider .hero-slide:not(.is-active) {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.hero-slider .hero-slide.is-active {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+/* Mobile uses a separate layout */
+@media screen and (max-width: 749px) {
   .hero-slider {
-    height: auto !important;
-    min-height: 0 !important;
     aspect-ratio: 5 / 1;
-    overflow: hidden;
+    min-height: 0 !important;
   }
 
-  .hero-slider__viewport,
-  .hero-slider .hero-slide,
-  .hero-slider .hero-slide__media {
+  .hero-slider__viewport {
     height: 100%;
-    min-height: 0;
+    min-height: 0 !important;
   }
 
   .hero-slider .hero-slide__image {
-    width: 100%;
-    height: 100%;
-    object-fit: fill;
-    object-position: center;
-  }
-
-  .hero-slider .hero-slide__overlay,
-  .hero-slider .hero-slide__content-wrap {
-    display: none !important;
+    object-fit: contain !important;
   }
 }
+
 
 /* Respect reduced-motion preferences. */
 @media (prefers-reduced-motion: reduce) {

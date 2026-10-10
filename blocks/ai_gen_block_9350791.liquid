@@ -1,8 +1,10 @@
 {% doc %}
   @prompt
-    Create a new stylish, modern, professional full-width homepage hero for Bluekites Global, inspired by the polished ecommerce promotional layouts of Flipkart and Amazon without copying their branding. The hero must be exactly 35vh tall on desktop and mobile, with compact responsive content and no large minimum height or excessive outside spacing. Design it to sit immediately above the existing Deals of the Day section so both the hero and the start of Deals of the Day are visible together on the initial screen wherever viewport height and the existing header allow. Use an elegant blue gradient with optional background image, a small New Arrivals badge, bold concise headline 'Discover Your Next Favourite', short subtitle, and prominent 'Shop Now' button. Keep the content readable within 35vh on small screens. Allow customization of text, colors, image, button label and link through theme settings. Do not invent discounts or promotional claims. Do not recreate the existing Deals of the Day section., please  make it a slider  , so that i can add images and it got fit and become a best ucx for the customers
+    Create a new stylish, modern, professional full-width homepage hero for Bluekites Global, inspired by the polished ecommerce promotional layouts of Flipkart and Amazon without copying their branding. The hero must be exactly 35vh tall on desktop and mobile, with compact responsive content and no large minimum height or excessive outside spacing. Design it to sit immediately above the existing Deals of the Day section so both the hero and the start of Deals of the Day are visible together on the initial screen wherever viewport height and the existing header allow. Use an elegant blue gradient with optional background image, a small New Arrivals badge, bold concise headline 'Discover Your Next Favourite', short subtitle, and prominent 'Shop Now' button. Keep the content readable within 35vh on small screens. Allow customization of text, colors, image, button label and link through theme settings. Do not invent discounts or promotional claims. Do not recreate the existing Deals of the Day section. Make it a slider so images can be added and fit well for the best customer UX.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign scrim_alpha = block.settings.scrim_strength | divided_by: 100.0 %}
+{% assign scrim_alpha_mid = scrim_alpha | times: 0.55 %}
 
 {% style %}
   .ai-hero-slider-{{ ai_gen_id }} {
@@ -15,7 +17,9 @@
     isolation: isolate;
     background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
     color: {{ block.settings.text_color }};
+    touch-action: pan-y;
   }
+  .ai-hero-slider-{{ ai_gen_id }} * { box-sizing: border-box; }
   .ai-hero-slider-{{ ai_gen_id }}__slide {
     position: absolute;
     inset: 0;
@@ -24,45 +28,46 @@
     visibility: hidden;
     opacity: 0;
     pointer-events: none;
+    transition: opacity .6s ease, visibility .6s;
   }
-  .ai-hero-slider-{{ ai_gen_id }}__slide.is-active {
-    visibility: visible;
-    opacity: 1;
-    pointer-events: auto;
-  }
+  .ai-hero-slider-{{ ai_gen_id }}__slide.is-active { visibility: visible; opacity: 1; pointer-events: auto; }
   .ai-hero-slider-{{ ai_gen_id }}__media,
-  .ai-hero-slider-{{ ai_gen_id }}__media img {
-    position: absolute;
-    inset: 0;
-    width: 100%;
-    height: 100%;
-  }
-  .ai-hero-slider-{{ ai_gen_id }}__media img { display: block; object-fit: cover; }
+  .ai-hero-slider-{{ ai_gen_id }}__media picture,
+  .ai-hero-slider-{{ ai_gen_id }}__media img,
   .ai-hero-slider-{{ ai_gen_id }}__placeholder {
     position: absolute;
     inset: 0;
-    overflow: hidden;
-    background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
+    display: block;
+    width: 100%;
+    height: 100%;
   }
-  .ai-hero-slider-{{ ai_gen_id }}__placeholder svg { width: 100%; height: 100%; object-fit: cover; opacity: 0.18; }
-  .ai-hero-slider-{{ ai_gen_id }}__shade {
+  .ai-hero-slider-{{ ai_gen_id }}__media img { object-fit: cover; object-position: {{ block.settings.image_focus }}; }
+  .ai-hero-slider-{{ ai_gen_id }}__placeholder { overflow: hidden; background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%); }
+  .ai-hero-slider-{{ ai_gen_id }}__placeholder svg { width: 100%; height: 100%; object-fit: cover; opacity: .18; }
+  /* Left-weighted scrim: keeps text readable while the image stays visible on the right */
+  .ai-hero-slider-{{ ai_gen_id }}__scrim {
     position: absolute;
     inset: 0;
-    background: linear-gradient(90deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 78%);
-    opacity: {{ block.settings.overlay_strength | divided_by: 100.0 }};
+    pointer-events: none;
+    background: linear-gradient(90deg,
+      {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
+      {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 45%,
+      {{ block.settings.gradient_end | color_modify: 'alpha', 0 }} 100%);
   }
+  .ai-hero-slider-{{ ai_gen_id }}__cover { position: absolute; inset: 0; z-index: 1; display: block; }
   .ai-hero-slider-{{ ai_gen_id }}__content {
     position: relative;
-    z-index: 1;
-    box-sizing: border-box;
+    z-index: 2;
     display: flex;
     flex-direction: column;
     align-items: flex-start;
     justify-content: center;
-    width: min(100%, 900px);
+    width: min(100%, 640px);
     height: 100%;
-    padding: clamp(14px, 3vw, 42px);
+    padding: 16px clamp(16px, 5vw, 80px);
+    pointer-events: none;
   }
+  .ai-hero-slider-{{ ai_gen_id }}__content a { pointer-events: auto; }
   .ai-hero-slider-{{ ai_gen_id }}__badge {
     margin: 0 0 8px;
     padding: 5px 11px;
@@ -71,36 +76,45 @@
     color: {{ block.settings.badge_text_color }};
     font-size: 11px;
     font-weight: 700;
-    letter-spacing: 0.08em;
+    letter-spacing: .08em;
     line-height: 1.2;
     text-transform: uppercase;
   }
   .ai-hero-slider-{{ ai_gen_id }}__heading {
-    max-width: 680px;
+    display: -webkit-box;
     margin: 0;
+    overflow: hidden;
     color: {{ block.settings.text_color }};
     font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-    font-size: clamp(25px, 4vw, 52px);
+    font-size: clamp(22px, min(3.6vw, 6.4vh), 48px);
     font-weight: 700;
-    line-height: 1.06;
-    letter-spacing: -0.035em;
+    line-height: 1.1;
+    letter-spacing: -.03em;
     text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(0,0,0,.25);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .ai-hero-slider-{{ ai_gen_id }}__subtitle {
-    max-width: 520px;
+    display: -webkit-box;
+    max-width: 500px;
     margin: 8px 0 0;
+    overflow: hidden;
     color: {{ block.settings.text_color }};
     font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    font-size: clamp(12px, 1.35vw, 16px);
+    font-size: clamp(12px, min(1.3vw, 2.3vh), 16px);
     line-height: 1.45;
+    text-shadow: 0 1px 8px rgba(0,0,0,.25);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
   .ai-hero-slider-{{ ai_gen_id }}__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: 40px;
+    min-height: 42px;
     margin-top: 14px;
-    padding: 9px 22px;
+    padding: 9px 26px;
     border: 1px solid {{ block.settings.button_background }};
     border-radius: 999px;
     background: {{ block.settings.button_background }};
@@ -110,108 +124,206 @@
     font-weight: 700;
     line-height: 1.2;
     text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    transition: background-color .2s ease, color .2s ease, transform .2s ease;
   }
   .ai-hero-slider-{{ ai_gen_id }}__button:hover {
     background: {{ block.settings.button_hover_background }};
     border-color: {{ block.settings.button_hover_background }};
     color: {{ block.settings.button_hover_text_color }};
+    transform: translateY(-1px);
   }
   .ai-hero-slider-{{ ai_gen_id }}__button:focus-visible,
-  .ai-hero-slider-{{ ai_gen_id }}__control:focus-visible {
-    outline: 3px solid {{ block.settings.text_color }};
-    outline-offset: 3px;
-  }
-  .ai-hero-slider-{{ ai_gen_id }}__controls {
+  .ai-hero-slider-{{ ai_gen_id }}__cover:focus-visible,
+  .ai-hero-slider-{{ ai_gen_id }}__arrow:focus-visible,
+  .ai-hero-slider-{{ ai_gen_id }}__dot:focus-visible,
+  .ai-hero-slider-{{ ai_gen_id }}__toggle:focus-visible { outline: 3px solid #ffffff; outline-offset: 2px; box-shadow: 0 0 0 5px #102A56; }
+
+  /* Side arrows (desktop) */
+  .ai-hero-slider-{{ ai_gen_id }}__arrow {
     position: absolute;
-    z-index: 2;
-    right: clamp(14px, 3vw, 32px);
-    bottom: 14px;
-    display: flex;
-    align-items: center;
-    gap: 8px;
-  }
-  .ai-hero-slider-{{ ai_gen_id }}__control {
+    top: 50%;
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 34px;
-    height: 34px;
+    width: 42px;
+    height: 42px;
     padding: 0;
-    border: 1px solid rgba(255,255,255,0.85);
+    margin-top: -21px;
+    border: 0;
     border-radius: 50%;
-    background: rgba(16,42,86,0.88);
-    color: #ffffff;
+    background: rgba(255,255,255,.92);
+    color: #102A56;
+    box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    opacity: 0;
     cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
   }
-  .ai-hero-slider-{{ ai_gen_id }}__control svg { width: 17px; height: 17px; }
-  .ai-hero-slider-{{ ai_gen_id }}__dots { display: flex; gap: 7px; align-items: center; }
+  .ai-hero-slider-{{ ai_gen_id }}__arrow--prev { left: 14px; }
+  .ai-hero-slider-{{ ai_gen_id }}__arrow--next { right: 14px; }
+  .ai-hero-slider-{{ ai_gen_id }}__arrow svg { width: 20px; height: 20px; }
+  .ai-hero-slider-{{ ai_gen_id }}:hover .ai-hero-slider-{{ ai_gen_id }}__arrow,
+  .ai-hero-slider-{{ ai_gen_id }}:focus-within .ai-hero-slider-{{ ai_gen_id }}__arrow { opacity: 1; }
+  .ai-hero-slider-{{ ai_gen_id }}__arrow:hover { transform: scale(1.08); }
+
+  /* Dots + pause */
+  .ai-hero-slider-{{ ai_gen_id }}__controls {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 10px;
+    display: flex;
+    align-items: center;
+    gap: 2px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(16,42,86,.6);
+    transform: translateX(-50%);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
+  }
+  .ai-hero-slider-{{ ai_gen_id }}__dots { display: flex; align-items: center; }
   .ai-hero-slider-{{ ai_gen_id }}__dot {
-    width: 9px;
-    height: 9px;
+    position: relative;
+    width: 24px;
+    height: 24px;
     padding: 0;
-    border: 1px solid #ffffff;
-    border-radius: 50%;
+    border: 0;
     background: transparent;
     cursor: pointer;
   }
-  .ai-hero-slider-{{ ai_gen_id }}__dot[aria-current="true"] { background: #ffffff; }
+  .ai-hero-slider-{{ ai_gen_id }}__dot::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.55);
+    transform: translate(-50%, -50%);
+    transition: width .25s ease, background-color .25s ease;
+  }
+  .ai-hero-slider-{{ ai_gen_id }}__dot[aria-current="true"]::before { width: 22px; background: #ffffff; }
+  .ai-hero-slider-{{ ai_gen_id }}__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
+  }
+  .ai-hero-slider-{{ ai_gen_id }}__toggle svg { width: 13px; height: 13px; }
+  .ai-hero-slider-{{ ai_gen_id }}__toggle .icon-play { display: none; }
+  .ai-hero-slider-{{ ai_gen_id }}__toggle[aria-pressed="true"] .icon-play { display: block; }
+  .ai-hero-slider-{{ ai_gen_id }}__toggle[aria-pressed="true"] .icon-pause { display: none; }
+
   @media screen and (max-width: 749px) {
-    .ai-hero-slider-{{ ai_gen_id }} { width: 100%; height: 35vh; }
-    .ai-hero-slider-{{ ai_gen_id }}__content { padding: 12px 18px 42px; }
-    .ai-hero-slider-{{ ai_gen_id }}__heading { max-width: 420px; font-size: clamp(23px, 7vw, 34px); }
-    .ai-hero-slider-{{ ai_gen_id }}__subtitle { max-width: 360px; margin-top: 6px; font-size: 12px; }
-    .ai-hero-slider-{{ ai_gen_id }}__button { min-height: 34px; margin-top: 9px; padding: 7px 17px; font-size: 13px; }
+    .ai-hero-slider-{{ ai_gen_id }}__arrow { display: none; }
+    .ai-hero-slider-{{ ai_gen_id }}__scrim {
+      background: linear-gradient(90deg,
+        {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
+        {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 100%);
+    }
+    .ai-hero-slider-{{ ai_gen_id }}__content { width: 100%; padding: 12px 18px 42px; }
     .ai-hero-slider-{{ ai_gen_id }}__badge { margin-bottom: 6px; padding: 4px 9px; font-size: 10px; }
-    .ai-hero-slider-{{ ai_gen_id }}__controls { right: 12px; bottom: 8px; gap: 6px; }
-    .ai-hero-slider-{{ ai_gen_id }}__control { width: 30px; height: 30px; }
+    .ai-hero-slider-{{ ai_gen_id }}__heading { font-size: clamp(22px, 6.6vw, 30px); }
+    .ai-hero-slider-{{ ai_gen_id }}__subtitle { margin-top: 6px; font-size: 12px; -webkit-line-clamp: 1; }
+    .ai-hero-slider-{{ ai_gen_id }}__button { min-height: 36px; margin-top: 10px; padding: 7px 20px; font-size: 13px; }
+    .ai-hero-slider-{{ ai_gen_id }}__controls { bottom: 6px; }
+  }
+  @media screen and (max-width: 749px) and (max-height: 680px) {
+    .ai-hero-slider-{{ ai_gen_id }}__subtitle { display: none; }
   }
   @media (prefers-reduced-motion: reduce) {
-    .ai-hero-slider-{{ ai_gen_id }}__slide { transition: none; }
+    .ai-hero-slider-{{ ai_gen_id }}__slide,
+    .ai-hero-slider-{{ ai_gen_id }}__button,
+    .ai-hero-slider-{{ ai_gen_id }}__arrow,
+    .ai-hero-slider-{{ ai_gen_id }}__dot::before { transition: none; }
   }
 {% endstyle %}
 
-<hero-slider-{{ ai_gen_id }} class="ai-hero-slider-{{ ai_gen_id }}" data-autoplay="{{ block.settings.autoplay }}" data-interval="{{ block.settings.autoplay_interval | times: 1000 }}" aria-roledescription="carousel" aria-label="Homepage highlights" {{ block.shopify_attributes }}>
+<hero-slider-{{ ai_gen_id }} class="ai-hero-slider-{{ ai_gen_id }}" data-autoplay="{{ block.settings.autoplay }}" data-interval="{{ block.settings.autoplay_interval | times: 1000 }}" role="region" aria-roledescription="carousel" aria-label="Homepage highlights" {{ block.shopify_attributes }}>
   {% assign slide_count = 0 %}
-  {% for i in (1..3) %}
+  {% for i in (1..5) %}
     {% liquid
       assign image_key = 'slide_' | append: i | append: '_image'
+      assign mobile_key = 'slide_' | append: i | append: '_mobile_image'
+      assign show_key = 'slide_' | append: i | append: '_show_text'
       assign badge_key = 'slide_' | append: i | append: '_badge'
       assign heading_key = 'slide_' | append: i | append: '_heading'
       assign subtitle_key = 'slide_' | append: i | append: '_subtitle'
       assign label_key = 'slide_' | append: i | append: '_button_label'
       assign link_key = 'slide_' | append: i | append: '_button_link'
       assign slide_image = block.settings[image_key]
+      assign slide_mobile = block.settings[mobile_key]
+      assign show_text = block.settings[show_key]
       assign slide_badge = block.settings[badge_key]
       assign slide_heading = block.settings[heading_key]
       assign slide_subtitle = block.settings[subtitle_key]
       assign slide_label = block.settings[label_key]
       assign slide_link = block.settings[link_key]
-      assign slide_count = slide_count | plus: 1
     %}
     {% if i == 1 or slide_image != blank or slide_heading != blank %}
-      <div class="ai-hero-slider-{{ ai_gen_id }}__slide{% if slide_count == 1 %} is-active{% endif %}" data-slide="{{ slide_count }}" aria-hidden="{% if slide_count == 1 %}false{% else %}true{% endif %}" aria-roledescription="slide">
+      {% assign slide_count = slide_count | plus: 1 %}
+      {% assign has_text = false %}
+      {% if show_text and slide_heading != blank %}{% assign has_text = true %}{% endif %}
+      {% assign has_button = false %}
+      {% if has_text and slide_label != blank and slide_link != blank %}{% assign has_button = true %}{% endif %}
+      {% assign img_alt = slide_image.alt %}
+      {% if img_alt == blank and has_text == false %}{% assign img_alt = slide_heading %}{% endif %}
+      <div class="ai-hero-slider-{{ ai_gen_id }}__slide{% if slide_count == 1 %} is-active{% endif %}" data-slide aria-hidden="{% if slide_count == 1 %}false{% else %}true{% endif %}" role="group" aria-roledescription="slide" aria-label="Slide {{ slide_count }}">
         {% if slide_image != blank %}
-          <div class="ai-hero-slider-{{ ai_gen_id }}__media"><img src="{{ slide_image | image_url: width: 2200 }}" alt="{{ slide_image.alt | escape }}" loading="{% if slide_count == 1 %}eager{% else %}lazy{% endif %}" width="{{ slide_image.width }}" height="{{ slide_image.height }}"></div>
+          <div class="ai-hero-slider-{{ ai_gen_id }}__media">
+            <picture>
+              {% if slide_mobile != blank %}
+                <source media="(max-width: 749px)" srcset="{{ slide_mobile | image_url: width: 750 }} 750w, {{ slide_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+              {% endif %}
+              <img src="{{ slide_image | image_url: width: 1600 }}" srcset="{{ slide_image | image_url: width: 1200 }} 1200w, {{ slide_image | image_url: width: 1600 }} 1600w, {{ slide_image | image_url: width: 2000 }} 2000w, {{ slide_image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ img_alt | escape }}" width="{{ slide_image.width }}" height="{{ slide_image.height }}" loading="{% if slide_count == 1 %}eager{% else %}lazy{% endif %}"{% if slide_count == 1 %} fetchpriority="high"{% endif %}>
+            </picture>
+          </div>
         {% else %}
           <div class="ai-hero-slider-{{ ai_gen_id }}__placeholder">{{ 'hero-apparel-1' | placeholder_svg_tag }}</div>
         {% endif %}
-        <div class="ai-hero-slider-{{ ai_gen_id }}__shade" aria-hidden="true"></div>
-        <div class="ai-hero-slider-{{ ai_gen_id }}__content">
-          {% if slide_badge != blank %}<p class="ai-hero-slider-{{ ai_gen_id }}__badge">{{ slide_badge | escape }}</p>{% endif %}
-          <h2 class="ai-hero-slider-{{ ai_gen_id }}__heading">{{ slide_heading | escape }}</h2>
-          {% if slide_subtitle != blank %}<p class="ai-hero-slider-{{ ai_gen_id }}__subtitle">{{ slide_subtitle | escape }}</p>{% endif %}
-          {% if slide_link != blank %}<a class="ai-hero-slider-{{ ai_gen_id }}__button" href="{{ slide_link }}">{{ slide_label | escape }}</a>{% elsif slide_label != blank %}<span class="ai-hero-slider-{{ ai_gen_id }}__button">{{ slide_label | escape }}</span>{% endif %}
-        </div>
+        {% if has_text %}<div class="ai-hero-slider-{{ ai_gen_id }}__scrim" aria-hidden="true"></div>{% endif %}
+        {% if slide_link != blank %}
+          {% if has_button %}
+            <a class="ai-hero-slider-{{ ai_gen_id }}__cover" href="{{ slide_link }}" tabindex="-1" aria-hidden="true"></a>
+          {% else %}
+            <a class="ai-hero-slider-{{ ai_gen_id }}__cover" href="{{ slide_link }}" aria-label="{{ slide_heading | default: 'View this banner' | escape }}"></a>
+          {% endif %}
+        {% endif %}
+        {% if has_text %}
+          <div class="ai-hero-slider-{{ ai_gen_id }}__content">
+            {% if slide_badge != blank %}<p class="ai-hero-slider-{{ ai_gen_id }}__badge">{{ slide_badge | escape }}</p>{% endif %}
+            <h2 class="ai-hero-slider-{{ ai_gen_id }}__heading">{{ slide_heading | escape }}</h2>
+            {% if slide_subtitle != blank %}<p class="ai-hero-slider-{{ ai_gen_id }}__subtitle">{{ slide_subtitle | escape }}</p>{% endif %}
+            {% if has_button %}<a class="ai-hero-slider-{{ ai_gen_id }}__button" href="{{ slide_link }}">{{ slide_label | escape }}</a>{% endif %}
+          </div>
+        {% endif %}
       </div>
     {% endif %}
   {% endfor %}
+
   {% if slide_count > 1 %}
-    <div class="ai-hero-slider-{{ ai_gen_id }}__controls" aria-label="Slider controls">
-      <button class="ai-hero-slider-{{ ai_gen_id }}__control" type="button" data-previous aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
-      <div class="ai-hero-slider-{{ ai_gen_id }}__dots" aria-label="Choose a slide">
+    <button class="ai-hero-slider-{{ ai_gen_id }}__arrow ai-hero-slider-{{ ai_gen_id }}__arrow--prev" type="button" data-previous aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="ai-hero-slider-{{ ai_gen_id }}__arrow ai-hero-slider-{{ ai_gen_id }}__arrow--next" type="button" data-next aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div class="ai-hero-slider-{{ ai_gen_id }}__controls">
+      {% if block.settings.autoplay %}
+        <button class="ai-hero-slider-{{ ai_gen_id }}__toggle" type="button" data-toggle aria-pressed="false" aria-label="Pause automatic slide change">
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
+        </button>
+      {% endif %}
+      <div class="ai-hero-slider-{{ ai_gen_id }}__dots">
         {% for i in (1..slide_count) %}<button class="ai-hero-slider-{{ ai_gen_id }}__dot" type="button" data-go="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>{% endfor %}
       </div>
-      <button class="ai-hero-slider-{{ ai_gen_id }}__control" type="button" data-next aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
     </div>
   {% endif %}
 </hero-slider-{{ ai_gen_id }}>
@@ -224,19 +336,56 @@
       connectedCallback() {
         this.slides = Array.from(this.querySelectorAll('[data-slide]'));
         this.dots = Array.from(this.querySelectorAll('[data-go]'));
+        this.toggleButton = this.querySelector('[data-toggle]');
         this.index = 0;
-        this.querySelector('[data-previous]')?.addEventListener('click', () => this.show(this.index - 1));
-        this.querySelector('[data-next]')?.addEventListener('click', () => this.show(this.index + 1));
+        this.userPaused = false;
+        this.hovering = false;
+        this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+        if (this.slides.length < 2) return;
+
+        this.querySelector('[data-previous]').addEventListener('click', () => this.show(this.index - 1));
+        this.querySelector('[data-next]').addEventListener('click', () => this.show(this.index + 1));
         this.dots.forEach((dot) => dot.addEventListener('click', () => this.show(Number(dot.dataset.go))));
-        this.addEventListener('mouseenter', () => this.pause());
-        this.addEventListener('mouseleave', () => this.play());
+        if (this.toggleButton) {
+          this.toggleButton.addEventListener('click', () => {
+            this.userPaused = !this.userPaused;
+            this.toggleButton.setAttribute('aria-pressed', String(this.userPaused));
+            this.toggleButton.setAttribute('aria-label', this.userPaused ? 'Resume automatic slide change' : 'Pause automatic slide change');
+            this.play();
+          });
+        }
+
+        this.addEventListener('mouseenter', () => { this.hovering = true; this.pause(); });
+        this.addEventListener('mouseleave', () => { this.hovering = false; this.play(); });
         this.addEventListener('focusin', () => this.pause());
         this.addEventListener('focusout', () => this.play());
+        this.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') this.show(this.index - 1);
+          if (event.key === 'ArrowRight') this.show(this.index + 1);
+        });
+
+        let startX = 0, startY = 0;
+        this.addEventListener('touchstart', (event) => {
+          startX = event.touches[0].clientX;
+          startY = event.touches[0].clientY;
+          this.pause();
+        }, { passive: true });
+        this.addEventListener('touchend', (event) => {
+          const dx = event.changedTouches[0].clientX - startX;
+          const dy = event.changedTouches[0].clientY - startY;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) this.show(this.index + (dx < 0 ? 1 : -1));
+          this.play();
+        }, { passive: true });
+
+        this.onVisibility = () => (document.hidden ? this.pause() : this.play());
+        document.addEventListener('visibilitychange', this.onVisibility);
         this.play();
       }
-      disconnectedCallback() { this.pause(); }
+      disconnectedCallback() {
+        this.pause();
+        document.removeEventListener('visibilitychange', this.onVisibility);
+      }
       show(nextIndex) {
-        if (this.slides.length < 2) return;
         this.index = (nextIndex + this.slides.length) % this.slides.length;
         this.slides.forEach((slide, index) => {
           const active = index === this.index;
@@ -247,11 +396,14 @@
       }
       play() {
         this.pause();
-        if (this.dataset.autoplay === 'true' && this.slides.length > 1 && !window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        if (this.dataset.autoplay === 'true' && !this.userPaused && !this.hovering && !this.reduceMotion && !document.hidden && this.slides.length > 1) {
           this.timer = window.setInterval(() => this.show(this.index + 1), Number(this.dataset.interval) || 5000);
         }
       }
-      pause() { if (this.timer) window.clearInterval(this.timer); }
+      pause() {
+        if (this.timer) window.clearInterval(this.timer);
+        this.timer = null;
+      }
     }
     customElements.define(tagName, HeroSlider);
   })();
@@ -262,30 +414,74 @@
   "name": "Bluekites hero slider",
   "settings": [
     { "type": "header", "content": "Slide 1" },
-    { "type": "image_picker", "id": "slide_1_image", "label": "Image" },
+    { "type": "image_picker", "id": "slide_1_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_1_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_1_show_text", "label": "Show text and button over image", "info": "Turn off if your banner image already contains text", "default": true },
     { "type": "text", "id": "slide_1_badge", "label": "Badge", "default": "New arrivals" },
     { "type": "text", "id": "slide_1_heading", "label": "Headline", "default": "Discover Your Next Favourite" },
     { "type": "text", "id": "slide_1_subtitle", "label": "Subtitle", "default": "Thoughtful finds for every day, all in one place." },
     { "type": "text", "id": "slide_1_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_1_button_link", "label": "Button link" },
+    { "type": "url", "id": "slide_1_button_link", "label": "Link (whole banner is clickable)" },
+
     { "type": "header", "content": "Slide 2" },
-    { "type": "image_picker", "id": "slide_2_image", "label": "Image" },
+    { "type": "image_picker", "id": "slide_2_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_2_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_2_show_text", "label": "Show text and button over image", "default": true },
     { "type": "text", "id": "slide_2_badge", "label": "Badge", "default": "Explore more" },
     { "type": "text", "id": "slide_2_heading", "label": "Headline", "default": "Find something made for you" },
     { "type": "text", "id": "slide_2_subtitle", "label": "Subtitle", "default": "Explore a considered range of everyday essentials." },
     { "type": "text", "id": "slide_2_button_label", "label": "Button label", "default": "Explore now" },
-    { "type": "url", "id": "slide_2_button_link", "label": "Button link" },
+    { "type": "url", "id": "slide_2_button_link", "label": "Link (whole banner is clickable)" },
+
     { "type": "header", "content": "Slide 3" },
-    { "type": "image_picker", "id": "slide_3_image", "label": "Image" },
+    { "type": "image_picker", "id": "slide_3_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_3_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_3_show_text", "label": "Show text and button over image", "default": true },
     { "type": "text", "id": "slide_3_badge", "label": "Badge", "default": "Bluekites Global" },
     { "type": "text", "id": "slide_3_heading", "label": "Headline", "default": "Everyday picks, made simple" },
     { "type": "text", "id": "slide_3_subtitle", "label": "Subtitle", "default": "Browse products chosen to fit your day." },
     { "type": "text", "id": "slide_3_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_3_button_link", "label": "Button link" },
-    { "type": "header", "content": "Slider and colors" },
+    { "type": "url", "id": "slide_3_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slide 4 (optional)" },
+    { "type": "image_picker", "id": "slide_4_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_4_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_4_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_4_badge", "label": "Badge" },
+    { "type": "text", "id": "slide_4_heading", "label": "Headline" },
+    { "type": "text", "id": "slide_4_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_4_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_4_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slide 5 (optional)" },
+    { "type": "image_picker", "id": "slide_5_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_5_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_5_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_5_badge", "label": "Badge" },
+    { "type": "text", "id": "slide_5_heading", "label": "Headline" },
+    { "type": "text", "id": "slide_5_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_5_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_5_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slider behaviour" },
     { "type": "checkbox", "id": "autoplay", "label": "Automatically change slides", "default": true },
     { "type": "range", "id": "autoplay_interval", "label": "Time between slides", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5 },
-    { "type": "range", "id": "overlay_strength", "label": "Image overlay strength", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 85 },
+    {
+      "type": "select",
+      "id": "image_focus",
+      "label": "Image focus when cropped",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top", "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ],
+      "default": "center center"
+    },
+
+    { "type": "header", "content": "Colors" },
+    { "type": "range", "id": "scrim_strength", "label": "Text-side shade strength", "info": "Darkens only the left side behind the text. Images stay visible on the right.", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 60 },
     { "type": "color", "id": "gradient_start", "label": "Gradient start", "default": "#102A56" },
     { "type": "color", "id": "gradient_end", "label": "Gradient end", "default": "#1769AA" },
     { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },

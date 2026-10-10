@@ -189,7 +189,7 @@
     .ai-header-search-{{ ai_gen_id }} { width: 100%; padding-block: 8px; }
     .ai-header-search-{{ ai_gen_id }}__form { height: 44px; padding-left: 14px; }
     .ai-header-search-{{ ai_gen_id }}__submit { height: 32px; padding: 0 14px; }
-    .ai-header-search-{{ ai_gen_id }}__panel { max-height: 65vh; }
+    .ai-header-search-{{ ai_gen_id }}__panel { max-height: min(65vh, 420px); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -278,7 +278,7 @@
     }
 
     .ai-header-search-{{ ai_gen_id }}__submit {
-      width: 36px;
+      width: 40px;
       height: 34px;
       padding: 0;
     }
@@ -291,6 +291,25 @@
       display: block;
     }
   }
+
+  /* Clear (x) button */
+  .ai-header-search-{{ ai_gen_id }}__clear {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    width: 26px;
+    height: 26px;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: #e3e3e3;
+    color: #555;
+    cursor: pointer;
+  }
+  .ai-header-search-{{ ai_gen_id }}__clear[hidden] { display: none; }
+  .ai-header-search-{{ ai_gen_id }}__clear:hover { background: #d6d6d6; }
+  .ai-header-search-{{ ai_gen_id }}__clear svg { width: 13px; height: 13px; }
 {% endstyle %}
 
 <header-search-{{ ai_gen_id }}
@@ -323,15 +342,24 @@
       value="{{ search.terms | escape }}"
       placeholder="{{ block.settings.placeholder | escape }}"
       autocomplete="off"
+      autocapitalize="off"
+      spellcheck="false"
+      enterkeyhint="search"
       role="combobox"
       aria-expanded="false"
       aria-controls="ai-header-search-panel-{{ ai_gen_id }}"
       aria-autocomplete="list"
     >
+    <button class="ai-header-search-{{ ai_gen_id }}__clear" type="button" aria-label="Clear search" hidden>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="m6 6 12 12M18 6 6 18"></path></svg>
+    </button>
     <input type="hidden" name="type" value="product">
     <input type="hidden" name="options[prefix]" value="last">
 
-    <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit">Search</button>
+    <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit" aria-label="Search">
+      <span class="ai-header-search-{{ ai_gen_id }}__submit-text">Search</span>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+    </button>
   </form>
 
   <div
@@ -363,12 +391,22 @@
         this.timer = null;
         this.controller = null;
 
-        this.onInput = () => this.schedule();
+        this.onInput = () => { this.toggleClear(); this.schedule(); };
         this.onFocus = () => { if (this.panel.children.length) this.show(); };
         this.onKeydown = (e) => this.handleKey(e);
         this.onDocClick = (e) => { if (!this.contains(e.target)) this.hide(); };
 
         this.input.addEventListener('input', this.onInput);
+        this.clearBtn = this.querySelector('.' + P + '__clear');
+        this.onClear = () => {
+          this.input.value = '';
+          this.toggleClear();
+          this.hide();
+          this.panel.replaceChildren();
+          this.input.focus();
+        };
+        if (this.clearBtn) this.clearBtn.addEventListener('click', this.onClear);
+        this.toggleClear();
         this.input.addEventListener('focus', this.onFocus);
         this.input.addEventListener('keydown', this.onKeydown);
         document.addEventListener('click', this.onDocClick);
@@ -378,9 +416,14 @@
         this.input.removeEventListener('input', this.onInput);
         this.input.removeEventListener('focus', this.onFocus);
         this.input.removeEventListener('keydown', this.onKeydown);
+        if (this.clearBtn) this.clearBtn.removeEventListener('click', this.onClear);
         document.removeEventListener('click', this.onDocClick);
         clearTimeout(this.timer);
         if (this.controller) this.controller.abort();
+      }
+
+      toggleClear() {
+        if (this.clearBtn) this.clearBtn.hidden = !this.input.value;
       }
 
       schedule() {
@@ -579,7 +622,7 @@
       "type": "text",
       "id": "placeholder",
       "label": "Placeholder text",
-      "default": "Search..."
+      "default": "Search for products"
     },
     {
       "type": "range",

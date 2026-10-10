@@ -15,6 +15,7 @@
     height: 40vh;
     min-height: 320px;
     color: #171717;
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
     background: {{ block.settings.section_background }};
     border-radius: 12px;
     overflow: hidden;
@@ -44,6 +45,9 @@
     overflow-x: auto;
     overflow-y: hidden;
     scroll-snap-type: x mandatory;
+    scroll-padding-inline: 16px;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
   }
   .ai-deals-{{ ai_gen_id }} .ai-deals__card {
@@ -73,7 +77,8 @@
   }
   .ai-deals-{{ ai_gen_id }} .ai-deals__media img,
   .ai-deals-{{ ai_gen_id }} .ai-deals__media svg,
-  .ai-deals-{{ ai_gen_id }} .ai-deals__placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 4px; }
+  .ai-deals-{{ ai_gen_id }} .ai-deals__placeholder { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+  .ai-deals-{{ ai_gen_id }} .ai-deals__media img { mix-blend-mode: multiply; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__badge { position: absolute; top: 6px; left: 6px; z-index: 1; padding: 3px 6px; color: #fff; background: #d62d20; border-radius: 4px; font-size: 10px; line-height: 1.1; font-weight: 700; letter-spacing: .02em; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__name {
     flex: 0 0 auto;
@@ -81,6 +86,7 @@
     margin: 0;
     overflow: hidden;
     color: #171717;
+    font-family: inherit;
     font-size: 13px;
     line-height: 1.3;
     font-weight: 600;
@@ -94,6 +100,7 @@
   .ai-deals-{{ ai_gen_id }} .ai-deals__button { display: block; width: 100%; min-height: 32px; padding: 7px 6px; border: 0; border-radius: 5px; background: {{ block.settings.button_background }}; color: {{ block.settings.button_text }}; text-align: center; text-decoration: none; font: inherit; font-size: 12px; line-height: 1.2; font-weight: 700; cursor: pointer; }
   .ai-deals-{{ ai_gen_id }} a.ai-deals__button { flex: 0 0 auto; opacity: .6; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__button:hover { filter: brightness(.92); }
+  .ai-deals-{{ ai_gen_id }} .ai-deals__button:active { transform: scale(.98); }
   .ai-deals-{{ ai_gen_id }} .ai-deals__button:focus-visible, .ai-deals-{{ ai_gen_id }} .ai-deals__products:focus-visible { outline: 3px solid #1d4ed8; outline-offset: 2px; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__empty { flex: 1; display: flex; align-items: center; justify-content: center; padding: 16px; text-align: center; color: #555; }
   @media (max-width: 600px) {
@@ -102,7 +109,9 @@
     .ai-deals-{{ ai_gen_id }} .ai-deals__timer-wrap { gap: 5px; font-size: 11px; }
     .ai-deals-{{ ai_gen_id }} .ai-deals__unit { min-width: 28px; padding: 4px; font-size: 12px; }
     .ai-deals-{{ ai_gen_id }} .ai-deals__products { gap: 9px; padding: 10px 12px; }
-    .ai-deals-{{ ai_gen_id }} .ai-deals__card { flex-basis: 142px; padding: 7px; }
+    .ai-deals-{{ ai_gen_id }} .ai-deals__card { flex-basis: 148px; padding: 7px; }
+    .ai-deals-{{ ai_gen_id }} .ai-deals__title { font-size: clamp(16px, 4.8vw, 20px); }
+    .ai-deals-{{ ai_gen_id }} .ai-deals__button { min-height: 36px; }
   }
 {% endstyle %}
 

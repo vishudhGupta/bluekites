@@ -13,6 +13,7 @@
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
     height: 35vh;
+    border-radius: {{ block.settings.corner_radius }}px;
     overflow: hidden;
     isolation: isolate;
     background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
@@ -231,11 +232,11 @@
         {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
         {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 100%);
     }
-    .ai-hero-slider-{{ ai_gen_id }}__content { width: 100%; padding: 12px 18px 42px; }
+    .ai-hero-slider-{{ ai_gen_id }}__content { width: 100%; padding: 12px 64px 44px 18px; }
     .ai-hero-slider-{{ ai_gen_id }}__badge { margin-bottom: 6px; padding: 4px 9px; font-size: 10px; }
     .ai-hero-slider-{{ ai_gen_id }}__heading { font-size: clamp(22px, 6.6vw, 30px); }
     .ai-hero-slider-{{ ai_gen_id }}__subtitle { margin-top: 6px; font-size: 12px; -webkit-line-clamp: 1; }
-    .ai-hero-slider-{{ ai_gen_id }}__button { min-height: 36px; margin-top: 10px; padding: 7px 20px; font-size: 13px; }
+    .ai-hero-slider-{{ ai_gen_id }}__button { min-height: 40px; margin-top: 10px; padding: 7px 22px; font-size: 13px; }
     .ai-hero-slider-{{ ai_gen_id }}__controls { bottom: 6px; }
   }
   @media screen and (max-width: 749px) and (max-height: 680px) {
@@ -275,7 +276,7 @@
       {% assign has_text = false %}
       {% if show_text and slide_heading != blank %}{% assign has_text = true %}{% endif %}
       {% assign has_button = false %}
-      {% if has_text and slide_label != blank and slide_link != blank %}{% assign has_button = true %}{% endif %}
+      {% if has_text and slide_label != blank %}{% assign has_button = true %}{% if slide_link == blank %}{% assign slide_link = routes.all_products_collection_url %}{% endif %}{% endif %}
       {% assign img_alt = slide_image.alt %}
       {% if img_alt == blank and has_text == false %}{% assign img_alt = slide_heading %}{% endif %}
       <div class="ai-hero-slider-{{ ai_gen_id }}__slide{% if slide_count == 1 %} is-active{% endif %}" data-slide aria-hidden="{% if slide_count == 1 %}false{% else %}true{% endif %}" role="group" aria-roledescription="slide" aria-label="Slide {{ slide_count }}">
@@ -421,7 +422,7 @@
     { "type": "text", "id": "slide_1_heading", "label": "Headline", "default": "Discover Your Next Favourite" },
     { "type": "text", "id": "slide_1_subtitle", "label": "Subtitle", "default": "Thoughtful finds for every day, all in one place." },
     { "type": "text", "id": "slide_1_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_1_button_link", "label": "Link (whole banner is clickable)" },
+    { "type": "url", "id": "slide_1_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, the button opens all products" },
 
     { "type": "header", "content": "Slide 2" },
     { "type": "image_picker", "id": "slide_2_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
@@ -431,7 +432,7 @@
     { "type": "text", "id": "slide_2_heading", "label": "Headline", "default": "Find something made for you" },
     { "type": "text", "id": "slide_2_subtitle", "label": "Subtitle", "default": "Explore a considered range of everyday essentials." },
     { "type": "text", "id": "slide_2_button_label", "label": "Button label", "default": "Explore now" },
-    { "type": "url", "id": "slide_2_button_link", "label": "Link (whole banner is clickable)" },
+    { "type": "url", "id": "slide_2_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, the button opens all products" },
 
     { "type": "header", "content": "Slide 3" },
     { "type": "image_picker", "id": "slide_3_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
@@ -441,7 +442,7 @@
     { "type": "text", "id": "slide_3_heading", "label": "Headline", "default": "Everyday picks, made simple" },
     { "type": "text", "id": "slide_3_subtitle", "label": "Subtitle", "default": "Browse products chosen to fit your day." },
     { "type": "text", "id": "slide_3_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_3_button_link", "label": "Link (whole banner is clickable)" },
+    { "type": "url", "id": "slide_3_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, the button opens all products" },
 
     { "type": "header", "content": "Slide 4 (optional)" },
     { "type": "image_picker", "id": "slide_4_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
@@ -451,7 +452,7 @@
     { "type": "text", "id": "slide_4_heading", "label": "Headline" },
     { "type": "text", "id": "slide_4_subtitle", "label": "Subtitle" },
     { "type": "text", "id": "slide_4_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_4_button_link", "label": "Link (whole banner is clickable)" },
+    { "type": "url", "id": "slide_4_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, the button opens all products" },
 
     { "type": "header", "content": "Slide 5 (optional)" },
     { "type": "image_picker", "id": "slide_5_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
@@ -461,7 +462,7 @@
     { "type": "text", "id": "slide_5_heading", "label": "Headline" },
     { "type": "text", "id": "slide_5_subtitle", "label": "Subtitle" },
     { "type": "text", "id": "slide_5_button_label", "label": "Button label", "default": "Shop Now" },
-    { "type": "url", "id": "slide_5_button_link", "label": "Link (whole banner is clickable)" },
+    { "type": "url", "id": "slide_5_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, the button opens all products" },
 
     { "type": "header", "content": "Slider behaviour" },
     { "type": "checkbox", "id": "autoplay", "label": "Automatically change slides", "default": true },
@@ -491,6 +492,7 @@
     { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#102A56" },
     { "type": "color", "id": "button_hover_background", "label": "Button hover background", "default": "#F4C95D" },
     { "type": "color", "id": "button_hover_text_color", "label": "Button hover text", "default": "#17243A" },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
     { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 }
   ],
   "presets": [{ "name": "Bluekites hero slider" }],

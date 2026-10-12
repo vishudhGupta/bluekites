@@ -54,6 +54,17 @@
 </div>
 
 {% stylesheet %}
+  /* Break out of the theme's page-width wrapper so the footer spans the viewport. */
+  .section.bk-footer {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-left: calc(50% - 50vw) !important;
+    margin-right: calc(50% - 50vw) !important;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+
+
   .bk-footer {
     --bk-footer-ink: #12325B;
     --bk-footer-muted: #4D617A;
@@ -248,14 +259,14 @@
   }
 
   .bk-footer__bottom {
-    display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     align-items: center;
     gap: 12px 24px;
+    display: flex;
     width: 100%;
-    max-width: 100%;
-    margin-inline: 0;
+    max-width: none;
+    margin: 0;
     padding: 18px max(48px, calc((100% - 1640px) / 2)) 22px;
     border-top: 1px solid var(--bk-footer-border);
     background: linear-gradient(90deg, #12325B 0%, #1F74BA 100%);

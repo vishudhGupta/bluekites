@@ -15,7 +15,7 @@
     --services-columns: {{ section.settings.columns_desktop }};
   "
 >
-  <div class="bk-services__inner page-width-normal">
+  <div class="bk-services__inner">
     {% if section.settings.subheading != blank
       or section.settings.heading != blank
       or section.settings.description != blank
@@ -51,13 +51,9 @@
               aria-controls="ServicesTrack-{{ section.id }}"
             >
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="M15 18 9 12l6-6"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                <path d="M15 18 9 12l6-6"
+                  stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
 
@@ -69,13 +65,9 @@
               aria-controls="ServicesTrack-{{ section.id }}"
             >
               <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path
-                  d="m9 18 6-6-6-6"
-                  stroke="currentColor"
-                  stroke-width="1.7"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                />
+                <path d="m9 18 6-6-6-6"
+                  stroke="currentColor" stroke-width="1.7"
+                  stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
             </button>
           </div>
@@ -84,7 +76,6 @@
     {% endif %}
 
     {% assign service_count = 0 %}
-
     {% for block in section.blocks %}
       {% if block.type == 'service_card' %}
         {% assign service_count = service_count | plus: 1 %}
@@ -144,7 +135,6 @@
                         | placeholder_svg_tag: 'bk-services__image bk-services__placeholder'
                       }}
                     {% endif %}
-
                     <span class="bk-services__image-overlay"></span>
                   </div>
 
@@ -164,15 +154,10 @@
                     {% if card_link != blank and block.settings.button_label != blank %}
                       <span class="bk-services__cta">
                         {{ block.settings.button_label | escape }}
-
                         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                          <path
-                            d="M4 10h12m-5-5 5 5-5 5"
-                            stroke="currentColor"
-                            stroke-width="1.5"
-                            stroke-linecap="round"
-                            stroke-linejoin="round"
-                          />
+                          <path d="M4 10h12m-5-5 5 5-5 5"
+                            stroke="currentColor" stroke-width="1.5"
+                            stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                       </span>
                     {% endif %}
@@ -198,7 +183,7 @@
           <p class="bk-services__counter" aria-live="polite">
             <span data-services-current>01</span>
             <span class="bk-services__counter-divider">/</span>
-            <span data-services-total>
+            <span>
               {% if service_count < 10 %}0{% endif %}{{ service_count }}
             </span>
           </p>
@@ -215,17 +200,20 @@
 {% stylesheet %}
   .bk-services {
     box-sizing: border-box;
+    width: 100%;
     background: var(--services-bg);
     color: var(--services-text);
     padding-block: var(--services-top) var(--services-bottom);
     overflow: hidden;
   }
 
-  /* Keep the same theme container and alignment as other sections. */
+  /* Explicitly align this section with the other homepage containers. */
   .bk-services__inner {
     box-sizing: border-box;
-    margin-inline: auto;
+    width: calc(100% - 96px);
+    max-width: 1640px;
     min-width: 0;
+    margin-inline: auto;
   }
 
   .bk-services__header {
@@ -283,9 +271,7 @@
     border: 1px solid var(--services-border);
     border-radius: 50%;
     cursor: pointer;
-    transition:
-      color .2s ease,
-      background .2s ease,
+    transition: color .2s ease, background .2s ease,
       border-color .2s ease;
   }
 
@@ -346,9 +332,7 @@
     border: 1px solid var(--services-border);
     border-radius: var(--services-radius);
     scroll-snap-align: start;
-    transition:
-      box-shadow .25s ease,
-      border-color .25s ease;
+    transition: box-shadow .25s ease, border-color .25s ease;
   }
 
   .bk-services__card:hover {
@@ -362,8 +346,8 @@
 
   .bk-services__card-link {
     display: flex;
-    flex-direction: column;
     flex: 1;
+    flex-direction: column;
     min-width: 0;
     color: inherit;
     text-decoration: none;
@@ -507,6 +491,10 @@
   }
 
   @media screen and (max-width: 749px) {
+    .bk-services__inner {
+      width: calc(100% - 48px);
+    }
+
     .bk-services__header {
       gap: 10px;
       margin-bottom: 14px;
@@ -530,7 +518,7 @@
     }
 
     .bk-services__track {
-      grid-auto-columns: minmax(0, 72%);
+      grid-auto-columns: minmax(0, 82%);
       gap: 10px;
       padding-right: 12px;
     }
@@ -697,9 +685,7 @@
     cards.forEach((card) => resizeObserver.observe(card));
 
     const handleSectionUnload = (event) => {
-      if (
-        event.target !== root.closest('.shopify-section')
-      ) {
+      if (event.target !== root.closest('.shopify-section')) {
         return;
       }
 
@@ -711,7 +697,6 @@
       );
 
       nextButton?.removeEventListener('click', handleNext);
-
       track.removeEventListener('scroll', handleScroll);
 
       if (animationFrame !== null) {

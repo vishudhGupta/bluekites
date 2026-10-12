@@ -1097,7 +1097,7 @@
 
           : 100;
 
-        progress.style.width = \`${percentage}%\`;
+        progress.style.width = String(percentage) + '%';
 
       }
 
@@ -1136,21 +1136,36 @@
     };
 
     const scroll = (direction) => {
-
       const reducedMotion = window.matchMedia(
-
         '(prefers-reduced-motion: reduce)'
-
       ).matches;
 
-      track.scrollBy({
+      const trackRect = track.getBoundingClientRect();
+      const currentIndex = cards.reduce((closestIndex, card, index) => {
+        const currentDistance = Math.abs(
+          cards[closestIndex].getBoundingClientRect().left - trackRect.left
+        );
+        const nextDistance = Math.abs(
+          card.getBoundingClientRect().left - trackRect.left
+        );
+        return nextDistance < currentDistance ? index : closestIndex;
+      }, 0);
+      const targetIndex = Math.max(
+        0,
+        Math.min(cards.length - 1, currentIndex + direction)
+      );
+      const targetLeft = Math.max(
+        0,
+        Math.min(
+          track.scrollWidth - track.clientWidth,
+          cards[targetIndex].offsetLeft - cards[0].offsetLeft
+        )
+      );
 
-        left: getScrollStep() * direction,
-
+      track.scrollTo({
+        left: targetLeft,
         behavior: reducedMotion ? 'auto' : 'smooth'
-
       });
-
     };
 
     const handlePrevious = () => scroll(-1);

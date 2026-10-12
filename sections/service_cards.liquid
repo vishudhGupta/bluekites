@@ -1,900 +1,1604 @@
 
+
 <section
+
   id="ServiceCards-{{ section.id }}"
+
   class="bk-services color-{{ section.settings.color_scheme }}"
+
   style="
+
     --services-bg: {{ section.settings.section_background }};
+
     --services-heading: {{ section.settings.heading_color }};
+
     --services-text: {{ section.settings.text_color }};
+
     --services-card-bg: {{ section.settings.card_background }};
+
     --services-border: {{ section.settings.card_border }};
+
     --services-gap: {{ section.settings.grid_gap }}px;
+
     --services-radius: {{ section.settings.card_radius }}px;
+
     --services-top: {{ section.settings.padding_top }}px;
+
     --services-bottom: {{ section.settings.padding_bottom }}px;
+
     --services-columns: {{ section.settings.columns_desktop }};
+
   "
+
 >
+
   <div class="bk-services__inner">
+
     {% if section.settings.subheading != blank
+
       or section.settings.heading != blank
+
       or section.settings.description != blank
+
     %}
+
       <header class="bk-services__header">
+
         <div class="bk-services__intro">
+
           {% if section.settings.subheading != blank %}
+
             <p class="bk-services__eyebrow">
+
               {{ section.settings.subheading | escape }}
+
             </p>
+
           {% endif %}
 
           {% if section.settings.heading != blank %}
+
             <h2 class="bk-services__heading">
+
               {{ section.settings.heading | escape }}
+
             </h2>
+
           {% endif %}
 
           {% if section.settings.description != blank %}
+
             <p class="bk-services__description">
+
               {{ section.settings.description | escape }}
+
             </p>
+
           {% endif %}
+
         </div>
 
-        {% if section.blocks.size > 1 %}
-          <div class="bk-services__controls">
-            <button
-              class="bk-services__arrow"
-              type="button"
-              data-services-prev
-              aria-label="Previous services"
-              aria-controls="ServicesTrack-{{ section.id }}"
-            >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="M15 18 9 12l6-6"
-                  stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-
-            <button
-              class="bk-services__arrow"
-              type="button"
-              data-services-next
-              aria-label="Next services"
-              aria-controls="ServicesTrack-{{ section.id }}"
-            >
-              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-                <path d="m9 18 6-6-6-6"
-                  stroke="currentColor" stroke-width="1.7"
-                  stroke-linecap="round" stroke-linejoin="round"/>
-              </svg>
-            </button>
-          </div>
-        {% endif %}
       </header>
+
     {% endif %}
 
     {% assign service_count = 0 %}
+
     {% for block in section.blocks %}
+
       {% if block.type == 'service_card' %}
+
         {% assign service_count = service_count | plus: 1 %}
+
       {% endif %}
+
     {% endfor %}
 
     {% if service_count > 0 %}
+
       <div class="bk-services__viewport">
+        {% if section.blocks.size > 1 %}
+          <div class="bk-services__controls">
+
+            <button
+
+              class="bk-services__arrow"
+
+              type="button"
+
+              data-services-prev
+
+              aria-label="Previous services"
+
+              aria-controls="ServicesTrack-{{ section.id }}"
+
+            >
+
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+
+                <path d="M15 18 9 12l6-6"
+
+                  stroke="currentColor" stroke-width="1.7"
+
+                  stroke-linecap="round" stroke-linejoin="round"/>
+
+              </svg>
+
+            </button>
+
+            <button
+
+              class="bk-services__arrow"
+
+              type="button"
+
+              data-services-next
+
+              aria-label="Next services"
+
+              aria-controls="ServicesTrack-{{ section.id }}"
+
+            >
+
+              <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+
+                <path d="m9 18 6-6-6-6"
+
+                  stroke="currentColor" stroke-width="1.7"
+
+                  stroke-linecap="round" stroke-linejoin="round"/>
+
+              </svg>
+
+            </button>
+
+          </div>
+
+        {% endif %}
+
         <div
+
           id="ServicesTrack-{{ section.id }}"
+
           class="bk-services__track"
+
           data-services-track
+
           role="list"
+
           aria-label="{{ section.settings.heading | default: 'Our services' | escape }}"
+
         >
+
           {% for block in section.blocks %}
+
             {% if block.type == 'service_card' %}
+
               {% assign card_link = block.settings.custom_url %}
 
               {% if card_link == blank and block.settings.link_page != blank %}
+
                 {% assign card_link = pages[block.settings.link_page].url %}
+
               {% endif %}
 
               <article
+
                 class="bk-services__card"
+
                 role="listitem"
+
                 {{ block.shopify_attributes }}
+
               >
+
                 {% if card_link != blank %}
+
                   <a
+
                     class="bk-services__card-link"
+
                     href="{{ card_link }}"
+
                     {% if block.settings.open_in_new_tab %}
+
                       target="_blank"
+
                       rel="noopener noreferrer"
+
                     {% endif %}
+
                   >
+
                 {% else %}
+
                   <div class="bk-services__card-link">
+
                 {% endif %}
 
                   <div class="bk-services__media">
+
                     {% if block.settings.image != blank %}
+
                       {{
+
                         block.settings.image
+
                         | image_url: width: 600
+
                         | image_tag:
+
                           widths: '240, 320, 400, 500, 600',
+
                           sizes: '(max-width: 480px) 75vw, (max-width: 749px) 65vw, (max-width: 1099px) 40vw, 20vw',
+
                           loading: 'lazy',
+
                           class: 'bk-services__image',
+
                           alt: block.settings.image.alt
+
                       }}
+
                     {% else %}
+
                       {{
+
                         'image'
+
                         | placeholder_svg_tag: 'bk-services__image bk-services__placeholder'
+
                       }}
+
                     {% endif %}
+
                     <span class="bk-services__image-overlay"></span>
+
                   </div>
 
                   <div class="bk-services__content">
+
                     {% if block.settings.title != blank %}
+
                       <h3 class="bk-services__title">
+
                         {{ block.settings.title | escape }}
+
                       </h3>
+
                     {% endif %}
 
                     {% if block.settings.description != blank %}
+
                       <p class="bk-services__text">
+
                         {{ block.settings.description | escape }}
+
                       </p>
+
                     {% endif %}
 
                     {% if card_link != blank and block.settings.button_label != blank %}
+
                       <span class="bk-services__cta">
+
                         {{ block.settings.button_label | escape }}
+
                         <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+
                           <path d="M4 10h12m-5-5 5 5-5 5"
+
                             stroke="currentColor" stroke-width="1.5"
+
                             stroke-linecap="round" stroke-linejoin="round"/>
+
                         </svg>
+
                       </span>
+
                     {% endif %}
+
                   </div>
 
                 {% if card_link != blank %}
+
                   </a>
+
                 {% else %}
+
                   </div>
+
                 {% endif %}
+
               </article>
+
             {% endif %}
+
           {% endfor %}
+
         </div>
+
       </div>
 
       {% if service_count > 1 %}
+
         <div class="bk-services__footer">
+
           <div class="bk-services__progress" aria-hidden="true">
+
             <span data-services-progress></span>
+
           </div>
 
           <p class="bk-services__counter" aria-live="polite">
+
             <span data-services-current>01</span>
+
             <span class="bk-services__counter-divider">/</span>
+
             <span>
+
               {% if service_count < 10 %}0{% endif %}{{ service_count }}
+
             </span>
+
           </p>
+
         </div>
+
       {% endif %}
+
     {% else %}
+
       <p class="bk-services__empty">
+
         Add Service card blocks to display your services.
+
       </p>
+
     {% endif %}
+
   </div>
+
 </section>
 
 {% stylesheet %}
+
   .bk-services {
+
     box-sizing: border-box;
+
     width: 100%;
+
     background: var(--services-bg);
+
     color: var(--services-text);
+
     padding-block: var(--services-top) var(--services-bottom);
+
     overflow: hidden;
+
   }
 
   /* Explicitly align this section with the other homepage containers. */
+
   .bk-services__inner {
+
     box-sizing: border-box;
+
     width: calc(100% - 96px);
+
     max-width: 1640px;
+
     min-width: 0;
+
     margin-inline: auto;
+
   }
 
   .bk-services__header {
+
     display: flex;
+
     align-items: flex-end;
+
     justify-content: space-between;
+
     gap: 16px;
+
     margin-bottom: 18px;
+
   }
 
   .bk-services__intro {
+
     min-width: 0;
+
   }
 
   .bk-services__eyebrow {
+
     margin: 0 0 7px;
+
     color: var(--services-text);
+
     font-size: 10px;
+
     line-height: 1.3;
+
     font-weight: 650;
+
     letter-spacing: .15em;
+
     text-transform: uppercase;
+
   }
 
   .bk-services__heading {
+
     margin: 0;
+
     color: var(--services-heading);
+
     font-size: clamp(24px, 2.5vw, 32px);
+
     line-height: 1.15;
+
     letter-spacing: -.035em;
+
   }
 
   .bk-services__description {
+
     max-width: 520px;
+
     margin: 7px 0 0;
+
     color: var(--services-text);
+
     font-size: 12px;
+
     line-height: 1.55;
+
   }
 
   .bk-services__controls {
-    display: flex;
-    flex-shrink: 0;
-    gap: 7px;
+    display: contents;
   }
 
   .bk-services__arrow {
+
     display: grid;
+
     place-items: center;
+
     width: 34px;
+
     height: 34px;
+
     padding: 0;
+
     color: var(--services-heading);
+
     background: var(--services-card-bg);
+
     border: 1px solid var(--services-border);
+
     border-radius: 50%;
+
     cursor: pointer;
+
     transition: color .2s ease, background .2s ease,
+
       border-color .2s ease;
+
   }
 
   .bk-services__arrow svg {
+
     width: 16px;
+
     height: 16px;
+
   }
 
   .bk-services__arrow:hover:not(:disabled) {
+
     color: #fff;
+
     background: var(--services-heading);
+
     border-color: var(--services-heading);
+
   }
 
   .bk-services__arrow:disabled {
+
     opacity: .35;
+
     cursor: not-allowed;
+
   }
 
   .bk-services__arrow:focus-visible,
+
   .bk-services__card-link:focus-visible {
+
     outline: 2px solid var(--services-heading);
+
     outline-offset: 3px;
+
   }
 
   .bk-services__viewport {
+    position: relative;
     min-width: 0;
-    overflow: hidden;
+    overflow: visible;
+  }
+
+  /* Keep the carousel arrows at the far left and right edges of this section. */
+  .bk-services__controls {
+    display: contents;
+  }
+
+  .bk-services__arrow {
+    position: absolute;
+    z-index: 2;
+    top: 50%;
+    transform: translateY(-50%);
+  }
+
+  .bk-services__arrow[data-services-prev] {
+    left: clamp(-42px, -2.5vw, -18px);
+  }
+
+  .bk-services__arrow[data-services-next] {
+    right: clamp(-42px, -2.5vw, -18px);
   }
 
   .bk-services__track {
+
     display: grid;
+
     grid-auto-columns: calc(
+
       (100% - (var(--services-columns, 5) - 1) * var(--services-gap))
+
       / var(--services-columns, 5)
+
     );
+
     grid-auto-flow: column;
+
     gap: var(--services-gap);
+
     overflow-x: auto;
+
     overscroll-behavior-inline: contain;
+
     scroll-snap-type: x mandatory;
+
     scroll-padding-inline: 1px;
+
     scrollbar-width: none;
+
     -webkit-overflow-scrolling: touch;
+
     padding: 1px 1px 4px;
+
   }
 
   .bk-services__track::-webkit-scrollbar {
+
     display: none;
+
   }
 
   .bk-services__card {
+
     display: flex;
+
     flex-direction: column;
+
     min-width: 0;
+
     overflow: hidden;
+
     background: var(--services-card-bg);
+
     border: 1px solid var(--services-border);
+
     border-radius: var(--services-radius);
+
     scroll-snap-align: start;
+
     transition: box-shadow .25s ease, border-color .25s ease;
+
   }
 
   .bk-services__card:hover {
+
     border-color: color-mix(
+
       in srgb,
+
       var(--services-heading) 22%,
+
       var(--services-border)
+
     );
+
     box-shadow: 0 6px 18px rgb(23 35 57 / 7%);
+
   }
 
   .bk-services__card-link {
+
     display: flex;
+
     flex: 1;
+
     flex-direction: column;
+
     min-width: 0;
+
     color: inherit;
+
     text-decoration: none;
+
   }
 
   .bk-services__media {
+
     position: relative;
+
     overflow: hidden;
+
     aspect-ratio: 1.9;
+
     background: #edf0f4;
+
   }
 
   .bk-services__image {
+
     display: block;
+
     width: 100%;
+
     height: 100%;
+
     object-fit: cover;
+
     transition: transform .4s ease;
+
   }
 
   .bk-services__placeholder {
+
     color: #9ba5b5;
+
     background: #edf0f4;
+
   }
 
   .bk-services__image-overlay {
+
     position: absolute;
+
     inset: 0;
+
     pointer-events: none;
+
     background: linear-gradient(
+
       180deg,
+
       transparent 72%,
+
       rgb(10 24 43 / 8%)
+
     );
+
   }
 
   .bk-services__card:hover .bk-services__image {
+
     transform: scale(1.035);
+
   }
 
   .bk-services__content {
+
     display: flex;
+
     flex: 1;
+
     flex-direction: column;
+
     align-items: flex-start;
+
     padding: 11px 11px 12px;
+
   }
 
   .bk-services__title {
+
     margin: 0;
+
     color: var(--services-heading);
+
     font-size: 14px;
+
     font-weight: 600;
+
     line-height: 1.35;
+
     letter-spacing: -.02em;
+
   }
 
   .bk-services__text {
+
     display: -webkit-box;
+
     overflow: hidden;
+
     margin: 5px 0 0;
+
     color: var(--services-text);
+
     font-size: 11px;
+
     line-height: 1.5;
+
     -webkit-box-orient: vertical;
+
     -webkit-line-clamp: 2;
+
   }
 
   .bk-services__cta {
+
     display: inline-flex;
+
     align-items: center;
+
     gap: 5px;
+
     margin-top: auto;
+
     padding-top: 10px;
+
     color: var(--services-heading);
+
     font-size: 10px;
+
     font-weight: 650;
+
     line-height: 1.4;
+
   }
 
   .bk-services__cta svg {
+
     width: 13px;
+
     height: 13px;
+
     transition: transform .2s ease;
+
   }
 
   .bk-services__card:hover .bk-services__cta svg {
+
     transform: translateX(3px);
+
   }
 
   .bk-services__footer {
+
     display: flex;
+
     align-items: center;
+
     justify-content: space-between;
+
     gap: 12px;
+
     margin-top: 11px;
+
   }
 
   .bk-services__progress {
+
     width: 100%;
+
     height: 2px;
+
     overflow: hidden;
+
     background: var(--services-border);
+
     border-radius: 10px;
+
   }
 
   .bk-services__progress span {
+
     display: block;
+
     width: 0;
+
     height: 100%;
+
     background: var(--services-heading);
+
     transition: width .2s ease;
+
   }
 
   .bk-services__counter {
+
     display: flex;
+
     flex-shrink: 0;
+
     gap: 4px;
+
     margin: 0;
+
     color: var(--services-heading);
+
     font-size: 10px;
+
     font-variant-numeric: tabular-nums;
+
   }
 
   .bk-services__counter-divider {
+
     opacity: .45;
+
   }
 
   .bk-services__empty {
+
     margin: 0;
+
     color: var(--services-text);
+
     font-size: 12px;
+
   }
 
   @media screen and (max-width: 1099px) {
+
     .bk-services__track {
+
       grid-auto-columns: calc(
+
         (100% - var(--services-gap)) / 2
+
       );
+
     }
+
   }
 
   @media screen and (max-width: 749px) {
+    .bk-services__arrow[data-services-prev] {
+      left: -22px;
+    }
+
+    .bk-services__arrow[data-services-next] {
+      right: -22px;
+    }
+
     .bk-services__inner {
+
       width: calc(100% - 48px);
+
     }
 
     .bk-services__header {
+
       gap: 10px;
+
       margin-bottom: 14px;
+
     }
 
     .bk-services__heading {
+
       font-size: clamp(23px, 6vw, 29px);
+
     }
 
     .bk-services__description {
+
       font-size: 11px;
+
     }
 
     .bk-services__controls {
+
       gap: 5px;
+
     }
 
     .bk-services__arrow {
+
       width: 30px;
+
       height: 30px;
+
     }
 
     .bk-services__track {
+
       grid-auto-columns: minmax(0, 82%);
+
       gap: 10px;
+
       padding-right: 12px;
+
     }
 
     .bk-services__media {
+
       aspect-ratio: 1.95;
+
     }
 
     .bk-services__content {
+
       padding: 10px;
+
     }
 
     .bk-services__title {
+
       font-size: 13px;
+
     }
 
     .bk-services__text {
+
       font-size: 10.5px;
+
     }
 
     .bk-services__cta {
+
       padding-top: 9px;
+
       font-size: 10px;
+
     }
 
     .bk-services__footer {
+
       margin-top: 9px;
+
     }
+
   }
 
   @media (prefers-reduced-motion: reduce) {
+
     .bk-services *,
+
     .bk-services *::before,
+
     .bk-services *::after {
+
       scroll-behavior: auto !important;
+
       transition-duration: .01ms !important;
+
     }
+
   }
+
 {% endstylesheet %}
 
 <script>
+
   (() => {
+
     const root = document.getElementById(
+
       'ServiceCards-{{ section.id }}'
+
     );
 
     if (!root || root.dataset.servicesInitialized === 'true') {
+
       return;
+
     }
 
     root.dataset.servicesInitialized = 'true';
 
     const track = root.querySelector('[data-services-track]');
+
     const previousButton = root.querySelector('[data-services-prev]');
+
     const nextButton = root.querySelector('[data-services-next]');
+
     const progress = root.querySelector('[data-services-progress]');
+
     const currentCounter = root.querySelector('[data-services-current]');
 
     if (!track) return;
 
     const cards = Array.from(
+
       track.querySelectorAll('.bk-services__card')
+
     );
 
     if (!cards.length) return;
 
     const formatNumber = (number) =>
+
       String(number).padStart(2, '0');
 
     const getScrollStep = () => {
+
       const cardWidth = cards[0].getBoundingClientRect().width;
+
       const gap = parseFloat(
+
         window.getComputedStyle(track).columnGap
+
       ) || 0;
 
       return cardWidth + gap;
+
     };
 
     const updateControls = () => {
+
       const maxScroll = Math.max(
+
         0,
+
         track.scrollWidth - track.clientWidth
+
       );
 
       const scrollLeft = Math.max(0, track.scrollLeft);
+
       const canScroll = maxScroll > 2;
 
       if (previousButton) {
+
         previousButton.disabled =
+
           !canScroll || scrollLeft <= 2;
+
       }
 
       if (nextButton) {
+
         nextButton.disabled =
+
           !canScroll || scrollLeft >= maxScroll - 2;
+
       }
 
       if (progress) {
+
         const percentage = maxScroll > 0
+
           ? Math.min(100, (scrollLeft / maxScroll) * 100)
+
           : 100;
 
-        progress.style.width = `${percentage}%`;
+        progress.style.width = \`${percentage}%\`;
+
       }
 
       if (currentCounter) {
+
         const trackLeft = track.getBoundingClientRect().left;
+
         let nearestIndex = 0;
+
         let nearestDistance = Infinity;
 
         cards.forEach((card, index) => {
+
           const distance = Math.abs(
+
             card.getBoundingClientRect().left - trackLeft
+
           );
 
           if (distance < nearestDistance) {
+
             nearestDistance = distance;
+
             nearestIndex = index;
+
           }
+
         });
 
         currentCounter.textContent =
+
           formatNumber(nearestIndex + 1);
+
       }
+
     };
 
     const scroll = (direction) => {
+
       const reducedMotion = window.matchMedia(
+
         '(prefers-reduced-motion: reduce)'
+
       ).matches;
 
       track.scrollBy({
+
         left: getScrollStep() * direction,
+
         behavior: reducedMotion ? 'auto' : 'smooth'
+
       });
+
     };
 
     const handlePrevious = () => scroll(-1);
+
     const handleNext = () => scroll(1);
 
     previousButton?.addEventListener('click', handlePrevious);
+
     nextButton?.addEventListener('click', handleNext);
 
     let animationFrame = null;
 
     const handleScroll = () => {
+
       if (animationFrame !== null) {
+
         cancelAnimationFrame(animationFrame);
+
       }
 
       animationFrame = requestAnimationFrame(() => {
+
         updateControls();
+
         animationFrame = null;
+
       });
+
     };
 
     track.addEventListener('scroll', handleScroll, {
+
       passive: true
+
     });
 
     const resizeObserver = new ResizeObserver(updateControls);
 
     resizeObserver.observe(track);
+
     cards.forEach((card) => resizeObserver.observe(card));
 
     const handleSectionUnload = (event) => {
+
       if (event.target !== root.closest('.shopify-section')) {
+
         return;
+
       }
 
       resizeObserver.disconnect();
 
       previousButton?.removeEventListener(
+
         'click',
+
         handlePrevious
+
       );
 
       nextButton?.removeEventListener('click', handleNext);
+
       track.removeEventListener('scroll', handleScroll);
 
       if (animationFrame !== null) {
+
         cancelAnimationFrame(animationFrame);
+
       }
 
       root.dataset.servicesInitialized = 'false';
 
       document.removeEventListener(
+
         'shopify:section:unload',
+
         handleSectionUnload
+
       );
+
     };
 
     document.addEventListener(
+
       'shopify:section:unload',
+
       handleSectionUnload
+
     );
 
     updateControls();
+
   })();
+
 </script>
 
 {% schema %}
+
 {
+
   "name": "Service carousel",
+
   "tag": "section",
+
   "class": "section-wrapper",
+
   "settings": [
+
     {
+
       "type": "text",
+
       "id": "subheading",
+
       "label": "Eyebrow",
+
       "default": "OUR SERVICES"
+
     },
+
     {
+
       "type": "text",
+
       "id": "heading",
+
       "label": "Heading",
+
       "default": "What We Can Help You With"
+
     },
+
     {
+
       "type": "textarea",
+
       "id": "description",
+
       "label": "Description",
+
       "default": "Explore our services, designed to make everyday needs simpler."
+
     },
+
     {
+
       "type": "range",
+
       "id": "columns_desktop",
+
       "label": "Cards visible on desktop",
+
       "min": 3,
+
       "max": 5,
+
       "step": 1,
+
       "default": 5
+
     },
+
     {
+
       "type": "range",
+
       "id": "grid_gap",
+
       "label": "Card spacing",
+
       "min": 8,
+
       "max": 24,
+
       "step": 2,
+
       "unit": "px",
+
       "default": 14
+
     },
+
     {
+
       "type": "range",
+
       "id": "card_radius",
+
       "label": "Card corner radius",
+
       "min": 0,
+
       "max": 20,
+
       "step": 2,
+
       "unit": "px",
+
       "default": 10
+
     },
+
     {
+
       "type": "range",
+
       "id": "padding_top",
+
       "label": "Top padding",
+
       "min": 0,
+
       "max": 80,
+
       "step": 4,
+
       "unit": "px",
+
       "default": 24
+
     },
+
     {
+
       "type": "range",
+
       "id": "padding_bottom",
+
       "label": "Bottom padding",
+
       "min": 0,
+
       "max": 80,
+
       "step": 4,
+
       "unit": "px",
+
       "default": 24
+
     },
+
     {
+
       "type": "color_scheme",
+
       "id": "color_scheme",
+
       "label": "Color scheme",
+
       "default": "scheme-1"
+
     },
+
     {
+
       "type": "header",
+
       "content": "Colors"
+
     },
+
     {
+
       "type": "color",
+
       "id": "section_background",
+
       "label": "Section background",
+
       "default": "#F8F7F4"
+
     },
+
     {
+
       "type": "color",
+
       "id": "heading_color",
+
       "label": "Heading and title color",
+
       "default": "#1C2740"
+
     },
+
     {
+
       "type": "color",
+
       "id": "text_color",
+
       "label": "Description color",
+
       "default": "#5C6478"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_background",
+
       "label": "Card background",
+
       "default": "#FFFFFF"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_border",
+
       "label": "Card border",
+
       "default": "#E5E8EE"
+
     }
+
   ],
+
   "blocks": [
+
     {
+
       "type": "service_card",
+
       "name": "Service card",
+
       "settings": [
+
         {
+
           "type": "image_picker",
+
           "id": "image",
+
           "label": "Image"
+
         },
+
         {
+
           "type": "text",
+
           "id": "title",
+
           "label": "Title",
+
           "default": "Service title"
+
         },
+
         {
+
           "type": "textarea",
+
           "id": "description",
+
           "label": "Description",
+
           "default": "Discover how our service can help you."
+
         },
+
         {
+
           "type": "page",
+
           "id": "link_page",
+
           "label": "Link to page"
+
         },
+
         {
+
           "type": "url",
+
           "id": "custom_url",
+
           "label": "Custom URL",
+
           "info": "Overrides the selected page when provided."
+
         },
+
         {
+
           "type": "text",
+
           "id": "button_label",
+
           "label": "Link label",
+
           "default": "Explore service"
+
         },
+
         {
+
           "type": "checkbox",
+
           "id": "open_in_new_tab",
+
           "label": "Open link in a new tab",
+
           "default": false
+
         }
+
       ]
+
     }
+
   ],
+
   "max_blocks": 24,
+
   "presets": [
+
     {
+
       "name": "Service carousel",
+
       "blocks": [
+
         { "type": "service_card" },
+
         { "type": "service_card" },
+
         { "type": "service_card" },
+
         { "type": "service_card" },
+
         { "type": "service_card" },
+
         { "type": "service_card" }
+
       ]
+
     }
+
   ]
+
 }
+
 {% endschema %}

@@ -194,7 +194,23 @@
 
   .ai-refined-nav-{{ ai_gen_id }} .ai-refined-nav__link:focus-visible { outline: 2px solid {{ block.settings.green_color }}; outline-offset: 2px; }
 
-  .ai-refined-nav-{{ ai_gen_id }} .ai-refined-nav__icon { width: 21px; height: 21px; flex: 0 0 21px; }
+  .ai-refined-nav-{{ ai_gen_id }} .ai-refined-nav__icon {
+    width: 28px;
+    height: 28px;
+    flex: 0 0 28px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f5f1e9;
+    font-size: 20px;
+    line-height: 1;
+  }
+
+  .ai-refined-nav-{{ ai_gen_id }} .ai-refined-nav__menu-link:first-child .ai-refined-nav__icon {
+    background: transparent;
+    font-size: 27px;
+  }
 
   .ai-refined-nav-{{ ai_gen_id }} .ai-refined-nav__actions .ai-refined-nav__link { gap: 7px; padding-inline: 5px; }
 
@@ -290,25 +306,24 @@
 
             <a class="ai-refined-nav__link ai-refined-nav__menu-link" href="{{ link.url }}" aria-label="{{ link.title | escape }}">
 
-              <svg class="ai-refined-nav__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-
-                {% if nav_label contains 'home' %}<path d="m3 10 9-7 9 7"/><path d="M5 9v11h14V9M9 20v-7h6v7"/>
-                {% elsif nav_label contains 'search' %}<circle cx="10.8" cy="10.8" r="6.8"/><path d="m16 16 5 5"/>
-                {% elsif nav_label contains 'shop' or nav_label contains 'catalog' or nav_label contains 'product' or nav_label contains 'collection' %}<path d="M4 8h16l-1 12H5L4 8Z"/><path d="M8 9V6a4 4 0 0 1 8 0v3"/>
-                {% elsif nav_label contains 'about' or nav_label contains 'story' %}<path d="M12 21s-8-4.5-8-11a4.5 4.5 0 0 1 8-2.8A4.5 4.5 0 0 1 20 10c0 6.5-8 11-8 11Z"/><path d="M12 17c0-4 1.5-6 4-8"/>
-                {% elsif nav_label contains 'contact' %}<path d="M4 5h16v14H4z"/><path d="m4 7 8 6 8-6"/>
-                {% elsif nav_label contains 'service' or nav_label contains 'help' or nav_label contains 'support' %}<circle cx="12" cy="12" r="9"/><path d="M3 13v-2a9 9 0 0 1 18 0v2"/><path d="M3 12h3v5H5a2 2 0 0 1-2-2v-3Zm18 0h-3v5h1a2 2 0 0 0 2-2v-3ZM18 18c-1 2-3 3-6 3"/>
-                {% elsif nav_label contains 'blog' or nav_label contains 'article' or nav_label contains 'journal' or nav_label contains 'news' %}<path d="M5 3.5h10l4 4V21H5z"/><path d="M15 3.5V8h4M8 12h8M8 16h8"/>
-                {% elsif nav_label contains 'faq' or nav_label contains 'question' %}<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.6 2.6 0 1 1 4.4 1.9c-1.2 1-1.9 1.4-1.9 3M12 17.5h.01"/>
-                {% elsif nav_label contains 'sale' or nav_label contains 'offer' or nav_label contains 'discount' %}<path d="m20.5 13-7.5 7.5L3 10.5V3h7.5L20.5 13Z"/><circle cx="7.5" cy="7.5" r="1.2"/>
-                {% elsif nav_label contains 'track' or nav_label contains 'delivery' or nav_label contains 'shipping' %}<path d="M3 6h11v11H3zM14 10h4l3 3v4h-7z"/><circle cx="7" cy="19" r="2"/><circle cx="18" cy="19" r="2"/>
-                {% elsif nav_label contains 'location' or nav_label contains 'store' or nav_label contains 'find' %}<path d="M20 10c0 5-8 11-8 11S4 15 4 10a8 8 0 1 1 16 0Z"/><circle cx="12" cy="10" r="2.5"/>
-                {% elsif nav_label contains 'account' or nav_label contains 'profile' or nav_label contains 'login' %}<circle cx="12" cy="8" r="4"/><path d="M4 21v-2a8 8 0 0 1 16 0v2"/>
-                {% elsif nav_label contains 'sustain' or nav_label contains 'eco' or nav_label contains 'nature' %}<path d="M20 4c-9 0-15 4-15 11a5 5 0 0 0 5 5c7 0 11-7 10-16Z"/><path d="M4 21c3-5 6-8 11-11"/>
-                {% else %}<path d="m12 3 2.7 5.5 6.1.9-4.4 4.3 1 6.1-5.4-2.9-5.4 2.9 1-6.1-4.4-4.3 6.1-.9L12 3Z"/>
+              <span class="ai-refined-nav__icon" aria-hidden="true">
+                {% if nav_label contains 'home' %}⌂
+                {% elsif nav_label contains 'surgical' or nav_label contains 'product' or nav_label contains 'catalog' or nav_label contains 'shop' or nav_label contains 'collection' %}🩺
+                {% elsif nav_label contains 'handrub' or nav_label contains 'disinfect' or nav_label contains 'sanit' %}🧴
+                {% elsif nav_label contains 'health' or nav_label contains 'medical' or nav_label contains 'care' or nav_label contains 'service' or nav_label contains 'support' %}🩺
+                {% elsif nav_label contains 'cosmetic' or nav_label contains 'beauty' or nav_label contains 'skin' %}💄
+                {% elsif nav_label contains 'about' or nav_label contains 'story' %}🌿
+                {% elsif nav_label contains 'contact' %}✉️
+                {% elsif nav_label contains 'blog' or nav_label contains 'article' or nav_label contains 'journal' or nav_label contains 'news' %}📰
+                {% elsif nav_label contains 'faq' or nav_label contains 'question' %}❔
+                {% elsif nav_label contains 'sale' or nav_label contains 'offer' or nav_label contains 'discount' %}🏷️
+                {% elsif nav_label contains 'track' or nav_label contains 'delivery' or nav_label contains 'shipping' %}🚚
+                {% elsif nav_label contains 'location' or nav_label contains 'store' or nav_label contains 'find' %}📍
+                {% elsif nav_label contains 'account' or nav_label contains 'profile' or nav_label contains 'login' %}👤
+                {% elsif nav_label contains 'sustain' or nav_label contains 'eco' or nav_label contains 'nature' %}🍃
+                {% else %}✦
                 {% endif %}
-
-              </svg>
+              </span>
 
               <span class="ai-refined-nav__label">{{ link.title | escape }}</span>
 

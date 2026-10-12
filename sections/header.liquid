@@ -2424,6 +2424,93 @@
     }
   }
 
+
+
+  /* Final action-bar correction: hide search and keep Login/Cart text visible */
+  #header-component .search-action,
+  #header-component .search-action--hidden-on-menu,
+  #header-component .search-action--hidden-on-drawer,
+  #header-component .header-actions__action[aria-label*="Search" i],
+  #header-component .header-actions__action[title*="Search" i] {
+    display: none !important;
+  }
+
+  #header-component .header-actions {
+    gap: 20px !important;
+  }
+
+  #header-component .header-actions__action,
+  #header-component .header-actions__action:hover,
+  #header-component .header-actions__action:focus-visible,
+  #header-component .header-actions__action .svg-wrapper,
+  #header-component .header-actions__action .svg-wrapper svg,
+  #header-component shopify-account,
+  #header-component .account-button,
+  #header-component .account-button svg {
+    color: #292d29 !important;
+    stroke: #292d29 !important;
+  }
+
+  #header-component .account-button {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #292d29 !important;
+    font-size: 17px !important;
+    text-decoration: none !important;
+  }
+
+  #header-component .account-button::after {
+    content: "Login";
+    display: inline-block;
+    color: #292d29;
+    font: inherit;
+    white-space: nowrap;
+  }
+
+  #header-component a[href$="/cart"],
+  #header-component a[href="{{ routes.cart_url }}"] {
+    display: inline-flex !important;
+    align-items: center !important;
+    gap: 10px !important;
+    color: #292d29 !important;
+    font-size: 17px !important;
+    text-decoration: none !important;
+    white-space: nowrap;
+  }
+
+  #header-component a[href$="/cart"]::after,
+  #header-component a[href="{{ routes.cart_url }}"]::after {
+    content: "Cart";
+    display: inline-block;
+    color: #292d29;
+    font: inherit;
+    white-space: nowrap;
+  }
+
+  #header-component .account-button .svg-wrapper,
+  #header-component a[href$="/cart"] .svg-wrapper,
+  #header-component a[href="{{ routes.cart_url }}"] .svg-wrapper {
+    color: #292d29 !important;
+    background: #f3f1e8 !important;
+  }
+
+  #header-component .account-button .svg-wrapper svg,
+  #header-component a[href$="/cart"] .svg-wrapper svg,
+  #header-component a[href="{{ routes.cart_url }}"] .svg-wrapper svg {
+    color: #292d29 !important;
+    stroke: #292d29 !important;
+    width: 25px !important;
+    height: 25px !important;
+  }
+
+  @media (max-width: 749px) {
+    #header-component .header-actions { gap: 10px !important; }
+    #header-component .account-button,
+    #header-component a[href$="/cart"],
+    #header-component a[href="{{ routes.cart_url }}"] { gap: 6px !important; font-size: 14px !important; }
+  }
+
 {% endstylesheet %}
 
 

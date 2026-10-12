@@ -2305,159 +2305,122 @@
     border-color: transparent;
   }
 
-  /* ---------- Header actions: Login + Cart (no search here) ---------- */
+  /* ---------- Header actions: icon-only tiles ---------- */
 
-  /* Search lives in its own bar now, so hide the header search icon */
+  /* Search has its own bar, so hide the header search icon */
   #header-component .search-action {
     display: none !important;
-  }
-
-  #header-component {
-    --bk-tile: #f3f1e8;
-    --bk-tile-hover: rgb(23 75 58 / 9%);
   }
 
   #header-component .header-actions {
     display: flex;
     align-items: center;
-    gap: 28px;
-  }
-
-  /* Shared button look */
-  #header-component .header-actions__action {
-    display: inline-flex !important;
-    align-items: center;
     gap: 12px;
-    min-height: 40px;
-    padding: 0 !important;
-    border: 0;
-    background: transparent !important;
-    color: var(--bk-charcoal) !important;
-    font-size: 17px;
-    font-weight: 400;
-    line-height: 1;
-    white-space: nowrap;
-    text-decoration: none;
   }
 
-  /* Fix: login icon was white (theme variable) */
-  #header-component shopify-account,
-  #header-component .account-button,
-  #header-component .header-actions__action.account-button {
-    --color-account-icon: var(--bk-charcoal);
-    --button-color: var(--bk-charcoal);
-    color: var(--bk-charcoal) !important;
-  }
-
-  #header-component .account-button svg,
-  #header-component shopify-account svg {
-    color: var(--bk-charcoal);
-  }
-
-  /* Icon tile */
-  #header-component .header-actions__action .svg-wrapper,
-  #header-component .account-button .svg-wrapper {
+  /* The button itself is the tile, identical for Login and Cart */
+  #header-component .header-actions__action {
+    position: relative;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    flex: 0 0 40px;
-    order: 0;
-    width: 40px !important;
-    height: 40px !important;
-    border-radius: 12px;
-    background: var(--bk-tile);
-    color: var(--bk-charcoal);
-    transition: background-color 0.2s ease, color 0.2s ease;
+    width: 44px;
+    height: 44px;
+    padding: 0 !important;
+    border: 1px solid rgb(23 75 58 / 10%);
+    border-radius: 14px;
+    background: #f3f1e8 !important;
+    color: #292d29 !important;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.15s ease;
   }
 
-  #header-component .header-actions__action .svg-wrapper svg {
+  /* Inner wrapper is plain, so no tile inside a tile */
+  #header-component .header-actions__action .svg-wrapper {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    width: 24px !important;
+    height: 24px !important;
+    background: transparent !important;
+    border-radius: 0;
+    color: inherit;
+  }
+
+  #header-component .header-actions__action svg {
     display: block;
     width: 24px !important;
     height: 24px !important;
+    color: #292d29 !important;
     stroke-width: 1.8;
   }
 
-  /* Labels added with CSS, so no markup changes are needed */
-  #header-component shopify-account .header-actions__action::after,
-  #header-component .account-button::after {
-    content: 'Login';
-    order: 1;
+  /* Hide any text labels the theme outputs, for an icon-only look */
+  #header-component .header-actions__action > span:not(.svg-wrapper):not([class*='count']):not([class*='bubble']) {
+    display: none !important;
   }
 
-  #header-component .header-actions__action[href$='/cart']::after,
-  #header-component cart-icon .header-actions__action::after {
-    content: 'Cart';
-    order: 1;
-  }
-
-  /* Hover / focus */
   #header-component .header-actions__action:hover,
   #header-component .header-actions__action:focus-visible {
-    color: var(--bk-green) !important;
+    background: rgb(23 75 58 / 9%) !important;
+    border-color: rgb(23 75 58 / 25%);
+    color: #174b3a !important;
   }
 
-  #header-component .header-actions__action:hover .svg-wrapper,
-  #header-component .header-actions__action:focus-visible .svg-wrapper {
-    background: var(--bk-tile-hover);
-    color: var(--bk-green);
+  #header-component .header-actions__action:hover svg,
+  #header-component .header-actions__action:focus-visible svg {
+    color: #174b3a !important;
   }
 
-  /* Cart count badge: lime circle, after the label */
+  #header-component .header-actions__action:active {
+    transform: scale(0.96);
+  }
+
+  /* Cart count: small lime badge pinned to the top-right corner of the cart tile */
+  #header-component cart-icon,
+  #header-component .cart-bubble {
+    position: relative;
+  }
+
   #header-component .cart-count,
   #header-component .cart-count-bubble,
   #header-component [class*='cart-bubble'],
   #header-component [class*='cart-count'] {
-    position: static !important;
+    position: absolute !important;
+    top: -6px;
+    right: -6px;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
-    order: 2;
-    flex: 0 0 28px;
-    width: 28px;
-    height: 28px;
-    min-width: 28px;
-    margin: 0 0 0 2px;
-    padding: 0;
-    border: 0;
-    border-radius: 50%;
-    background: var(--bk-lime);
-    color: var(--bk-green);
-    font-size: 14px;
+    width: auto;
+    height: 20px;
+    min-width: 20px;
+    margin: 0;
+    padding: 0 5px;
+    border: 2px solid #faf9f2;
+    border-radius: 999px;
+    background: #e5ed8c;
+    color: #174b3a;
+    font-size: 11px;
     font-weight: 700;
     line-height: 1;
     transform: none;
   }
 
   @media (max-width: 749px) {
-    #header-component .header-actions { gap: 12px; }
+    #header-component .header-actions {
+      gap: 8px;
+    }
 
     #header-component .header-actions__action {
-      gap: 8px;
-      min-height: 36px;
-      font-size: 14px;
+      width: 40px;
+      height: 40px;
+      border-radius: 12px;
     }
 
+    #header-component .header-actions__action svg,
     #header-component .header-actions__action .svg-wrapper {
-      flex-basis: 36px;
-      width: 36px !important;
-      height: 36px !important;
-      border-radius: 10px;
-    }
-
-    #header-component .header-actions__action .svg-wrapper svg {
       width: 22px !important;
       height: 22px !important;
-    }
-
-    #header-component .cart-count,
-    #header-component .cart-count-bubble,
-    #header-component [class*='cart-bubble'],
-    #header-component [class*='cart-count'] {
-      flex-basis: 24px;
-      width: 24px;
-      height: 24px;
-      min-width: 24px;
-      font-size: 12px;
     }
   }
 

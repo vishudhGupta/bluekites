@@ -2511,6 +2511,140 @@
     #header-component a[href="{{ routes.cart_url }}"] { gap: 6px !important; font-size: 14px !important; }
   }
 
+
+
+  /* Alignment fix: keep Login and Cart as two separate, evenly spaced controls */
+  #header-component .header-actions {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-end !important;
+    gap: 24px !important;
+    flex-wrap: nowrap !important;
+  }
+
+  #header-component .header-actions > *,
+  #header-component .header-actions shopify-account,
+  #header-component .header-actions .account-button,
+  #header-component .header-actions a[href$="/cart"],
+  #header-component .header-actions a[href="{{ routes.cart_url }}"] {
+    flex: 0 0 auto !important;
+    min-width: max-content !important;
+    box-sizing: border-box !important;
+  }
+
+  #header-component .header-actions .account-button {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 36px !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+  }
+
+  /* The account icon may be a direct SVG rather than an .svg-wrapper */
+  #header-component .header-actions .account-button > svg,
+  #header-component .header-actions .account-button > .svg-wrapper {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 6px !important;
+    box-sizing: border-box !important;
+    border-radius: 11px !important;
+    background: #f3f1e8 !important;
+    color: #292d29 !important;
+    stroke: #292d29 !important;
+  }
+
+  #header-component .header-actions .account-button > svg {
+    width: 36px !important;
+    height: 36px !important;
+  }
+
+  #header-component .header-actions .account-button::after {
+    content: "Login" !important;
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+  }
+
+  #header-component .header-actions a[href$="/cart"],
+  #header-component .header-actions a[href="{{ routes.cart_url }}"] {
+    display: inline-flex !important;
+    flex-direction: row !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+    gap: 12px !important;
+    padding: 0 !important;
+    margin: 0 !important;
+    min-height: 36px !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+  }
+
+  #header-component .header-actions a[href$="/cart"]::after,
+  #header-component .header-actions a[href="{{ routes.cart_url }}"]::after {
+    content: "Cart" !important;
+    display: inline-block !important;
+    flex: 0 0 auto !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    white-space: nowrap !important;
+    line-height: 1.2 !important;
+  }
+
+  #header-component .header-actions a[href$="/cart"] .svg-wrapper,
+  #header-component .header-actions a[href="{{ routes.cart_url }}"] .svg-wrapper {
+    flex: 0 0 36px !important;
+    width: 36px !important;
+    min-width: 36px !important;
+    height: 36px !important;
+    padding: 5px !important;
+    box-sizing: border-box !important;
+    border-radius: 11px !important;
+    background: #f3f1e8 !important;
+  }
+
+  #header-component .header-actions .cart-count,
+  #header-component .header-actions .cart-count-bubble,
+  #header-component .header-actions [class*="cart-count"] {
+    position: static !important;
+    inset: auto !important;
+    transform: none !important;
+    margin: 0 0 0 0 !important;
+    flex: 0 0 26px !important;
+  }
+
+  @media (max-width: 749px) {
+    #header-component .header-actions { gap: 14px !important; }
+    #header-component .header-actions .account-button,
+    #header-component .header-actions a[href$="/cart"],
+    #header-component .header-actions a[href="{{ routes.cart_url }}"] {
+      gap: 7px !important;
+      font-size: 14px !important;
+    }
+    #header-component .header-actions .account-button > svg,
+    #header-component .header-actions .account-button > .svg-wrapper,
+    #header-component .header-actions a[href$="/cart"] .svg-wrapper,
+    #header-component .header-actions a[href="{{ routes.cart_url }}"] .svg-wrapper {
+      flex-basis: 34px !important;
+      width: 34px !important;
+      min-width: 34px !important;
+      height: 34px !important;
+    }
+    #header-component .header-actions .account-button > svg { padding: 5px !important; }
+  }
+
 {% endstylesheet %}
 
 

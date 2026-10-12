@@ -20,7 +20,7 @@
           "settings": {
             "inverse": false,
             "font": "heading",
-            "unit": "pixel",
+            "unit": "percent",
             "percent_width": 100,
             "pixel_height": 128,
             "custom_mobile_size": false,

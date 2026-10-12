@@ -1,4 +1,4 @@
-content = r'''{% liquid
+{% liquid
   assign first_product = section.settings.main_product
   assign second_product = section.settings.second_product
   assign product_count = 0
@@ -978,8 +978,3 @@ content = r'''{% liquid
   ]
 }
 {% endschema %}
-'''
-path = "/mnt/data/last-searched-products.liquid"
-with open(path, "w", encoding="utf-8") as f:
-    f.write(content)
-print(f"Created {path} ({len(content.splitlines())} lines, {len(content)} characters).")

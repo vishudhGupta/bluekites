@@ -1,437 +1,293 @@
 {% liquid
-  assign first_product = section.settings.main_product
-  assign second_product = section.settings.second_product
-  assign product_count = 0
+  assign product_one = section.settings.product_one
+  assign product_two = section.settings.product_two
+  assign product_three = section.settings.product_three
+  assign visible_products = 0
 
-  if first_product != blank
-    assign product_count = product_count | plus: 1
+  if product_one != blank
+    assign visible_products = visible_products | plus: 1
   endif
-
-  if second_product != blank
-    assign product_count = product_count | plus: 1
+  if product_two != blank
+    assign visible_products = visible_products | plus: 1
+  endif
+  if product_three != blank
+    assign visible_products = visible_products | plus: 1
   endif
 %}
 
 <section
   id="LastSearched-{{ section.id }}"
-  class="last-searched color-{{ section.settings.color_scheme }}"
+  class="bk-last-products color-{{ section.settings.color_scheme }}"
   style="
-    --ls-bg: {{ section.settings.background_color }};
-    --ls-heading: {{ section.settings.heading_color }};
-    --ls-text: {{ section.settings.text_color }};
-    --ls-pill-bg: {{ section.settings.pill_background }};
-    --ls-pill-text: {{ section.settings.pill_text_color }};
-    --ls-pill-border: {{ section.settings.pill_border_color }};
-    --ls-pill-active-bg: {{ section.settings.pill_active_background }};
-    --ls-pill-active-text: {{ section.settings.pill_active_text_color }};
-    --ls-panel-bg: {{ section.settings.panel_background }};
-    --ls-panel-heading: {{ section.settings.panel_heading_color }};
-    --ls-card-bg: {{ section.settings.update_card_background }};
-    --ls-card-text: {{ section.settings.update_card_text_color }};
-    --ls-card-accent: {{ section.settings.update_card_shadow_color }};
-    --ls-radius: {{ section.settings.card_radius }}px;
-    --ls-pill-radius: {{ section.settings.pill_radius }}px;
-    --ls-gap: {{ section.settings.content_gap }}px;
-    --ls-padding-top: {{ section.settings.padding_top }}px;
-    --ls-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --blp-bg: {{ section.settings.background_color }};
+    --blp-heading: {{ section.settings.heading_color }};
+    --blp-text: {{ section.settings.text_color }};
+    --blp-card-bg: {{ section.settings.card_background }};
+    --blp-border: {{ section.settings.card_border }};
+    --blp-radius: {{ section.settings.card_radius }}px;
+    --blp-gap: {{ section.settings.grid_gap }}px;
+    --blp-top: {{ section.settings.padding_top }}px;
+    --blp-bottom: {{ section.settings.padding_bottom }}px;
   "
 >
-  <div class="last-searched__inner">
-    <header class="last-searched__header">
-      <div class="last-searched__intro">
-        {% if section.settings.eyebrow != blank %}
-          <p class="last-searched__eyebrow">{{ section.settings.eyebrow | escape }}</p>
-        {% endif %}
-
+  <div class="bk-last-products__inner">
+    {% if section.settings.heading != blank or section.settings.subheading != blank %}
+      <header class="bk-last-products__header">
         {% if section.settings.heading != blank %}
-          <h2 class="last-searched__heading">{{ section.settings.heading | escape }}</h2>
+          <h2 class="bk-last-products__heading">{{ section.settings.heading | escape }}</h2>
         {% endif %}
-
         {% if section.settings.subheading != blank %}
-          <p class="last-searched__subheading">{{ section.settings.subheading | escape }}</p>
+          <p class="bk-last-products__subheading">{{ section.settings.subheading | escape }}</p>
         {% endif %}
-      </div>
-    </header>
+        <span class="bk-last-products__rule" aria-hidden="true"></span>
+      </header>
+    {% endif %}
 
-    <div class="last-searched__layout">
-      <div class="last-searched__main">
-        {% assign chip_count = 0 %}
-        {% for block in section.blocks %}
-          {% if block.type == 'chip' and block.settings.label != blank %}
-            {% assign chip_count = chip_count | plus: 1 %}
+    {% if visible_products > 0 %}
+      <div class="bk-last-products__grid" role="list" aria-label="{{ section.settings.heading | default: 'Selected products' | escape }}">
+        {% for slot in (1..3) %}
+          {% liquid
+            case slot
+              when 1
+                assign product_item = product_one
+              when 2
+                assign product_item = product_two
+              when 3
+                assign product_item = product_three
+            endcase
+          %}
+
+          {% if product_item != blank %}
+            <article class="bk-last-products__card" role="listitem">
+              <a class="bk-last-products__product-link" href="{{ product_item.url }}" aria-label="View {{ product_item.title | escape }}">
+                <div class="bk-last-products__media">
+                  {% if product_item.featured_media != blank %}
+                    {% assign product_alt = product_item.featured_media.alt | default: product_item.title %}
+                    {{
+                      product_item.featured_media
+                      | image_url: width: 700
+                      | image_tag:
+                        widths: '240, 320, 420, 560, 700',
+                        sizes: '(max-width: 549px) 42vw, (max-width: 749px) 38vw, 230px',
+                        loading: 'lazy',
+                        class: 'bk-last-products__image',
+                        alt: product_alt
+                    }}
+                  {% else %}
+                    {{ 'product-1' | placeholder_svg_tag: 'bk-last-products__placeholder' }}
+                  {% endif %}
+                  {% if product_item.compare_at_price > product_item.price %}
+                    <span class="bk-last-products__badge">{{ section.settings.sale_label | escape }}</span>
+                  {% endif %}
+                </div>
+                <div class="bk-last-products__details">
+                  <h3 class="bk-last-products__title">{{ product_item.title | escape }}</h3>
+                  <div class="bk-last-products__prices">
+                    <span class="bk-last-products__price">{{ product_item.price | money }}</span>
+                    {% if product_item.compare_at_price > product_item.price %}
+                      <s class="bk-last-products__compare-price">{{ product_item.compare_at_price | money }}</s>
+                    {% endif %}
+                  </div>
+                </div>
+              </a>
+              <a class="bk-last-products__button" href="{{ product_item.url }}">
+                {{ section.settings.button_label | escape }}
+                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                  <path d="M3.75 10h12.5M10 3.75 16.25 10 10 16.25" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              </a>
+            </article>
           {% endif %}
         {% endfor %}
-
-        {% if chip_count > 0 %}
-          <div class="last-searched__chips" aria-label="Product highlights">
-            <span class="last-searched__sparkle" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                <path d="m12 2 1.7 4.3L18 8l-4.3 1.7L12 14l-1.7-4.3L6 8l4.3-1.7L12 2Z"/>
-                <path d="m5 14 .9 2.1L8 17l-2.1.9L5 20l-.9-2.1L2 17l2.1-.9L5 14Z"/>
-              </svg>
-            </span>
-            {% for block in section.blocks %}
-              {% if block.type == 'chip' and block.settings.label != blank %}
-                <span class="last-searched__chip" {{ block.shopify_attributes }}>
-                  {{ block.settings.label | escape }}
-                </span>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% endif %}
-
-        {% if product_count > 0 %}
-          <div class="last-searched__products{% if product_count == 2 %} last-searched__products--two{% endif %}">
-            {% for slot in (1..2) %}
-              {% liquid
-                if slot == 1
-                  assign product_item = first_product
-                else
-                  assign product_item = second_product
-                endif
-              %}
-
-              {% if product_item != blank %}
-                <article class="last-searched__product">
-                  <a
-                    class="last-searched__product-link"
-                    href="{{ product_item.url }}"
-                    aria-label="View {{ product_item.title | escape }}"
-                  >
-                    <div class="last-searched__product-media">
-                      {% if product_item.featured_media != blank %}
-                        {{
-                          product_item.featured_media
-                          | image_url: width: 1000
-                          | image_tag:
-                            widths: '320, 480, 640, 800, 1000',
-                            sizes: '(max-width: 749px) 90vw, (max-width: 999px) 44vw, 30vw',
-                            class: 'last-searched__image',
-                            loading: 'lazy',
-                            alt: product_item.featured_media.alt | default: product_item.title
-                        }}
-                      {% else %}
-                        {{ 'product-1' | placeholder_svg_tag: 'last-searched__placeholder' }}
-                      {% endif %}
-
-                      {% if product_item.compare_at_price > product_item.price %}
-                        <span class="last-searched__badge">Sale</span>
-                      {% endif %}
-                    </div>
-
-                    <div class="last-searched__product-info">
-                      <h3 class="last-searched__product-title">{{ product_item.title | escape }}</h3>
-                      <div class="last-searched__price-row">
-                        <span class="last-searched__price">{{ product_item.price | money }}</span>
-                        {% if product_item.compare_at_price > product_item.price %}
-                          <s class="last-searched__compare-price">{{ product_item.compare_at_price | money }}</s>
-                        {% endif %}
-                      </div>
-                    </div>
-                  </a>
-
-                  <a class="last-searched__button" href="{{ product_item.url }}">
-                    {{ section.settings.button_label | default: 'View product' | escape }}
-                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                      <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                  </a>
-                </article>
-              {% endif %}
-            {% endfor %}
-          </div>
-        {% else %}
-          <div class="last-searched__empty">
-            <span class="last-searched__empty-icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
-                <circle cx="10.8" cy="10.8" r="6.8"/>
-                <path d="m16 16 4.5 4.5M8 10.8h5.6"/>
-              </svg>
-            </span>
-            <h3>Discover products you'll love</h3>
-            <p>Select one or two products in this section's settings to display them here.</p>
-          </div>
-        {% endif %}
       </div>
-
-      {% assign update_count = 0 %}
-      {% for block in section.blocks %}
-        {% if block.type == 'update' %}
-          {% assign update_count = update_count | plus: 1 %}
-        {% endif %}
-      {% endfor %}
-
-      {% if section.settings.panel_heading != blank or update_count > 0 %}
-        <aside class="last-searched__panel" aria-label="{{ section.settings.panel_heading | escape }}">
-          {% if section.settings.panel_heading != blank %}
-            <h3 class="last-searched__panel-heading">
-              <span class="last-searched__status-dot" aria-hidden="true"></span>
-              {{ section.settings.panel_heading | escape }}
-            </h3>
-          {% endif %}
-
-          {% if update_count > 0 %}
-            <div class="last-searched__updates">
-              {% for block in section.blocks %}
-                {% if block.type == 'update' %}
-                  <article class="last-searched__update" {{ block.shopify_attributes }}>
-                    <span class="last-searched__update-marker" aria-hidden="true">
-                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
-                        <path d="m5 12 4 4L19 6"/>
-                      </svg>
-                    </span>
-                    <div class="last-searched__update-content">
-                      {% if block.settings.title != blank %}
-                        <h4 class="last-searched__update-title">{{ block.settings.title | escape }}</h4>
-                      {% endif %}
-                      {% if block.settings.text != blank %}
-                        <p class="last-searched__update-text">{{ block.settings.text | escape }}</p>
-                      {% endif %}
-                    </div>
-                  </article>
-                {% endif %}
-              {% endfor %}
-            </div>
-          {% endif %}
-        </aside>
-      {% endif %}
-    </div>
+    {% else %}
+      <div class="bk-last-products__empty">
+        <p>Choose up to three products in this section’s settings to display them here.</p>
+      </div>
+    {% endif %}
   </div>
 </section>
 
 {% stylesheet %}
-  .last-searched {
-    box-sizing: border-box;
+  .bk-last-products {
     width: 100%;
+    padding-block: var(--blp-top) var(--blp-bottom);
     overflow: hidden;
-    padding-block: var(--ls-padding-top) var(--ls-padding-bottom);
-    background: var(--ls-bg);
-    color: var(--ls-text);
+    background: var(--blp-bg);
   }
 
-  .last-searched *,
-  .last-searched *::before,
-  .last-searched *::after {
+  .bk-last-products,
+  .bk-last-products * {
     box-sizing: border-box;
   }
 
-  .last-searched__inner {
-    position: relative;
+  /* Match the horizontal gutter used by the other Bluekites homepage sections. */
+  .bk-last-products__inner {
     width: calc(100% - 96px);
     max-width: 1640px;
     margin-inline: auto;
   }
 
-  .last-searched__header {
-    margin-bottom: 22px;
+  .bk-last-products__header {
+    margin: 0 0 20px;
   }
 
-  .last-searched__eyebrow {
-    margin: 0 0 7px;
-    color: var(--ls-heading);
-    font-size: 11px;
-    font-weight: 650;
-    line-height: 1.4;
-    letter-spacing: .12em;
-    text-transform: uppercase;
-  }
-
-  .last-searched__heading {
+  .bk-last-products__heading {
     margin: 0;
-    color: var(--ls-heading);
-    font-size: clamp(24px, 2.5vw, 32px);
+    color: var(--blp-heading);
+    font-family: inherit;
+    font-size: clamp(25px, 2.2vw, 32px);
     font-weight: 500;
-    line-height: 1.15;
-    letter-spacing: -.035em;
+    line-height: 1.18;
+    letter-spacing: -0.035em;
     text-wrap: balance;
   }
 
-  .last-searched__subheading {
-    max-width: 58ch;
-    margin: 7px 0 0;
-    color: var(--ls-text);
+  .bk-last-products__subheading {
+    margin: 6px 0 0;
+    color: var(--blp-text);
     font-size: 13px;
-    line-height: 1.55;
+    line-height: 1.5;
   }
 
-  .last-searched__layout {
+  .bk-last-products__rule {
+    display: block;
+    width: 34px;
+    height: 2px;
+    margin-top: 10px;
+    border-radius: 99px;
+    background: var(--blp-heading);
+    opacity: .65;
+  }
+
+  .bk-last-products__grid {
     display: grid;
-    grid-template-columns: minmax(0, 1.65fr) minmax(260px, .9fr);
+    grid-template-columns: repeat(3, minmax(0, 232px));
     align-items: stretch;
-    gap: 20px;
+    gap: var(--blp-gap);
   }
 
-  .last-searched__main {
+  .bk-last-products__card {
+    display: flex;
     min-width: 0;
-  }
-
-  .last-searched__chips {
-    display: flex;
-    align-items: center;
-    flex-wrap: wrap;
-    gap: 8px;
-    margin-bottom: 14px;
-  }
-
-  .last-searched__sparkle {
-    display: inline-grid;
-    place-items: center;
-    width: 30px;
-    height: 30px;
-    flex: 0 0 auto;
-    border-radius: 9px;
-    background: var(--ls-heading);
-    color: #fff;
-  }
-
-  .last-searched__sparkle svg {
-    width: 17px;
-    height: 17px;
-  }
-
-  .last-searched__chip {
-    display: inline-flex;
-    align-items: center;
-    min-height: 30px;
-    padding: 6px 11px;
-    border: 1px solid var(--ls-pill-border);
-    border-radius: var(--ls-pill-radius);
-    background: var(--ls-pill-bg);
-    color: var(--ls-pill-text);
-    font-size: 11px;
-    font-weight: 550;
-    line-height: 1.25;
-  }
-
-  .last-searched__products {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: 14px;
-  }
-
-  .last-searched__products--two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-  }
-
-  .last-searched__product {
-    display: flex;
     flex-direction: column;
-    min-width: 0;
-    padding: 10px;
-    border: 1px solid var(--ls-pill-border);
-    border-radius: var(--ls-radius);
-    background: #fff;
+    padding: 9px;
+    overflow: hidden;
+    border: 1px solid var(--blp-border);
+    border-radius: var(--blp-radius);
+    background: var(--blp-card-bg);
+    box-shadow: 0 3px 12px rgb(35 25 27 / 4%);
     transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
   }
 
-  .last-searched__product:hover {
+  .bk-last-products__card:hover {
     transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--ls-heading) 28%, var(--ls-pill-border));
-    box-shadow: 0 10px 26px rgb(58 30 37 / 7%);
+    border-color: color-mix(in srgb, var(--blp-heading) 30%, var(--blp-border));
+    box-shadow: 0 9px 22px rgb(35 25 27 / 8%);
   }
 
-  .last-searched__product-link {
+  .bk-last-products__product-link {
     display: block;
     min-width: 0;
     color: inherit;
     text-decoration: none;
   }
 
-  .last-searched__product-link:focus-visible,
-  .last-searched__button:focus-visible {
-    outline: 2px solid var(--ls-heading);
+  .bk-last-products__product-link:focus-visible,
+  .bk-last-products__button:focus-visible {
+    outline: 2px solid var(--blp-heading);
     outline-offset: 3px;
   }
 
-  .last-searched__product-media {
+  .bk-last-products__media {
     position: relative;
     display: grid;
     place-items: center;
-    aspect-ratio: 1.18 / 1;
+    aspect-ratio: 1.08 / 1;
     overflow: hidden;
-    border-radius: max(0px, calc(var(--ls-radius) - 4px));
-    background: #f7f5f3;
+    border-radius: max(3px, calc(var(--blp-radius) - 5px));
+    background: #f5f4f2;
   }
 
-  .last-searched__image,
-  .last-searched__placeholder {
+  .bk-last-products__image,
+  .bk-last-products__placeholder {
     display: block;
     width: 100%;
     height: 100%;
     object-fit: contain;
-    transition: transform .35s ease;
+    transition: transform .3s ease;
   }
 
-  .last-searched__product:hover .last-searched__image {
+  .bk-last-products__card:hover .bk-last-products__image {
     transform: scale(1.035);
   }
 
-  .last-searched__badge {
+  .bk-last-products__badge {
     position: absolute;
-    top: 9px;
-    left: 9px;
-    padding: 5px 8px;
-    border-radius: 5px;
-    background: var(--ls-heading);
+    top: 7px;
+    right: 7px;
+    padding: 4px 7px;
+    border-radius: 4px;
+    background: var(--blp-heading);
     color: #fff;
     font-size: 10px;
-    font-weight: 650;
-    line-height: 1;
+    font-weight: 600;
+    line-height: 1.1;
   }
 
-  .last-searched__product-info {
+  .bk-last-products__details {
     display: grid;
-    gap: 7px;
-    padding: 12px 2px 10px;
+    gap: 6px;
+    padding: 10px 2px 11px;
   }
 
-  .last-searched__product-title {
+  .bk-last-products__title {
     display: -webkit-box;
     overflow: hidden;
     margin: 0;
-    color: var(--ls-heading);
+    color: var(--blp-heading);
     font-size: 13px;
     font-weight: 600;
-    line-height: 1.45;
+    line-height: 1.4;
     letter-spacing: -.01em;
     -webkit-box-orient: vertical;
     -webkit-line-clamp: 2;
   }
 
-  .last-searched__price-row {
+  .bk-last-products__prices {
     display: flex;
     flex-wrap: wrap;
     align-items: baseline;
-    gap: 7px;
+    gap: 6px;
   }
 
-  .last-searched__price {
-    color: var(--ls-heading);
-    font-size: 14px;
+  .bk-last-products__price {
+    color: var(--blp-heading);
+    font-size: 13px;
     font-weight: 700;
     line-height: 1.3;
   }
 
-  .last-searched__compare-price {
-    color: var(--ls-text);
+  .bk-last-products__compare-price {
+    color: var(--blp-text);
     font-size: 11px;
     opacity: .65;
   }
 
-  .last-searched__button {
+  .bk-last-products__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 8px;
+    gap: 7px;
+    min-height: 35px;
     width: 100%;
-    min-height: 38px;
     margin-top: auto;
-    padding: 9px 12px;
-    border: 1px solid var(--ls-heading);
-    border-radius: max(4px, calc(var(--ls-radius) - 3px));
-    background: var(--ls-heading);
+    padding: 8px 10px;
+    border: 1px solid var(--blp-heading);
+    border-radius: max(3px, calc(var(--blp-radius) - 5px));
+    background: var(--blp-heading);
     color: #fff;
-    font-size: 12px;
+    font-size: 11px;
     font-weight: 600;
     line-height: 1.2;
     text-align: center;
@@ -439,285 +295,122 @@
     transition: background .2s ease, color .2s ease;
   }
 
-  .last-searched__button:hover {
+  .bk-last-products__button:hover {
     background: transparent;
-    color: var(--ls-heading);
+    color: var(--blp-heading);
   }
 
-  .last-searched__button svg {
-    width: 15px;
-    height: 15px;
+  .bk-last-products__button svg {
+    width: 14px;
+    height: 14px;
     flex: 0 0 auto;
-    transition: transform .2s ease;
   }
 
-  .last-searched__button:hover svg {
-    transform: translateX(2px);
+  .bk-last-products__empty {
+    max-width: 700px;
+    padding: 18px 20px;
+    border: 1px dashed var(--blp-border);
+    border-radius: var(--blp-radius);
+    color: var(--blp-text);
+    font-size: 13px;
   }
 
-  .last-searched__panel {
-    min-width: 0;
-    padding: 20px;
-    border: 1px solid var(--ls-pill-border);
-    border-radius: var(--ls-radius);
-    background: var(--ls-panel-bg);
-  }
-
-  .last-searched__panel-heading {
-    display: flex;
-    align-items: center;
-    gap: 9px;
-    margin: 0 0 16px;
-    color: var(--ls-panel-heading);
-    font-size: 16px;
-    font-weight: 650;
-    line-height: 1.35;
-    letter-spacing: -.02em;
-  }
-
-  .last-searched__status-dot {
-    position: relative;
-    width: 7px;
-    height: 7px;
-    flex: 0 0 auto;
-    border-radius: 50%;
-    background: #319b68;
-  }
-
-  .last-searched__status-dot::after {
-    position: absolute;
-    inset: -3px;
-    border: 1px solid #319b68;
-    border-radius: inherit;
-    content: "";
-    opacity: .4;
-  }
-
-  .last-searched__updates {
-    display: grid;
-    gap: 10px;
-  }
-
-  .last-searched__update {
-    display: grid;
-    grid-template-columns: 28px minmax(0, 1fr);
-    align-items: start;
-    gap: 11px;
-    padding: 13px;
-    border: 1px solid color-mix(in srgb, var(--ls-card-accent) 48%, transparent);
-    border-radius: max(4px, calc(var(--ls-radius) - 3px));
-    background: var(--ls-card-bg);
-  }
-
-  .last-searched__update-marker {
-    display: grid;
-    place-items: center;
-    width: 28px;
-    height: 28px;
-    border-radius: 8px;
-    background: color-mix(in srgb, var(--ls-card-accent) 28%, white);
-    color: var(--ls-card-text);
-  }
-
-  .last-searched__update-marker svg {
-    width: 15px;
-    height: 15px;
-  }
-
-  .last-searched__update-content {
-    min-width: 0;
-  }
-
-  .last-searched__update-title {
+  .bk-last-products__empty p {
     margin: 0;
-    color: var(--ls-card-text);
-    font-size: 12px;
-    font-weight: 650;
-    line-height: 1.45;
-  }
-
-  .last-searched__update-text {
-    margin: 4px 0 0;
-    color: var(--ls-card-text);
-    font-size: 11px;
-    line-height: 1.55;
-    opacity: .82;
-  }
-
-  .last-searched__empty {
-    display: grid;
-    justify-items: start;
-    gap: 8px;
-    padding: 28px;
-    border: 1px dashed var(--ls-pill-border);
-    border-radius: var(--ls-radius);
-    background: color-mix(in srgb, var(--ls-panel-bg) 55%, white);
-  }
-
-  .last-searched__empty-icon {
-    display: grid;
-    place-items: center;
-    width: 36px;
-    height: 36px;
-    border-radius: 10px;
-    background: var(--ls-panel-bg);
-    color: var(--ls-heading);
-  }
-
-  .last-searched__empty-icon svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .last-searched__empty h3 {
-    margin: 0;
-    color: var(--ls-heading);
-    font-size: 15px;
-    font-weight: 650;
-  }
-
-  .last-searched__empty p {
-    max-width: 42ch;
-    margin: 0;
-    color: var(--ls-text);
-    font-size: 12px;
-    line-height: 1.6;
-  }
-
-  @media screen and (min-width: 750px) and (max-width: 1100px) {
-    .last-searched__inner {
-      width: calc(100% - 64px);
-    }
-
-    .last-searched__layout {
-      grid-template-columns: minmax(0, 1.3fr) minmax(240px, .9fr);
-      gap: 16px;
-    }
-
-    .last-searched__panel {
-      padding: 16px;
-    }
-
-    .last-searched__products--two {
-      gap: 10px;
-    }
-
-    .last-searched__product {
-      padding: 8px;
-    }
   }
 
   @media screen and (max-width: 749px) {
-    .last-searched__inner {
+    .bk-last-products__inner {
       width: calc(100% - 48px);
     }
 
-    .last-searched__header {
-      margin-bottom: 16px;
+    .bk-last-products__header {
+      margin-bottom: 15px;
     }
 
-    .last-searched__heading {
-      font-size: clamp(23px, 6vw, 29px);
+    .bk-last-products__heading {
+      font-size: clamp(23px, 5.8vw, 28px);
     }
 
-    .last-searched__subheading {
-      font-size: 12px;
+    .bk-last-products__grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 9px;
     }
 
-    .last-searched__layout {
-      grid-template-columns: minmax(0, 1fr);
-      gap: 16px;
+    .bk-last-products__card {
+      padding: 6px;
+      border-radius: max(6px, calc(var(--blp-radius) - 2px));
     }
 
-    .last-searched__chips {
-      gap: 6px;
-      margin-bottom: 10px;
+    .bk-last-products__media {
+      aspect-ratio: .82 / 1;
     }
 
-    .last-searched__chip {
-      min-height: 28px;
-      padding: 5px 9px;
-      font-size: 10px;
-    }
-
-    .last-searched__products {
-      gap: 10px;
-    }
-
-    .last-searched__products--two {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-
-    .last-searched__product {
-      padding: 7px;
-    }
-
-    .last-searched__product-media {
-      aspect-ratio: .92 / 1;
-    }
-
-    .last-searched__product-info {
+    .bk-last-products__details {
       gap: 5px;
-      padding: 9px 1px;
+      padding: 8px 1px;
     }
 
-    .last-searched__product-title {
-      font-size: 12px;
+    .bk-last-products__title {
+      font-size: 11px;
+      line-height: 1.35;
     }
 
-    .last-searched__price {
-      font-size: 12px;
-    }
-
-    .last-searched__compare-price {
-      font-size: 10px;
-    }
-
-    .last-searched__button {
-      min-height: 35px;
-      gap: 5px;
-      padding: 8px 5px;
+    .bk-last-products__price {
       font-size: 11px;
     }
 
-    .last-searched__panel {
-      padding: 15px;
+    .bk-last-products__compare-price {
+      font-size: 9px;
     }
 
-    .last-searched__panel-heading {
-      margin-bottom: 12px;
-      font-size: 15px;
+    .bk-last-products__button {
+      min-height: 31px;
+      gap: 4px;
+      padding: 6px 3px;
+      font-size: 10px;
     }
 
-    .last-searched__updates {
-      gap: 8px;
+    .bk-last-products__button svg {
+      width: 12px;
+      height: 12px;
     }
 
-    .last-searched__update {
-      padding: 11px;
+    .bk-last-products__badge {
+      top: 4px;
+      right: 4px;
+      padding: 3px 4px;
+      font-size: 8px;
     }
   }
 
-  @media screen and (max-width: 360px) {
-    .last-searched__inner {
+  @media screen and (max-width: 390px) {
+    .bk-last-products__inner {
       width: calc(100% - 32px);
     }
 
-    .last-searched__products--two {
-      grid-template-columns: minmax(0, 1fr);
+    .bk-last-products__grid {
+      gap: 6px;
     }
 
-    .last-searched__product-media {
-      aspect-ratio: 1.2 / 1;
+    .bk-last-products__card {
+      padding: 5px;
+    }
+
+    .bk-last-products__title {
+      font-size: 10px;
+    }
+
+    .bk-last-products__button {
+      font-size: 9px;
     }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .last-searched *,
-    .last-searched *::before,
-    .last-searched *::after {
-      transition-duration: .01ms !important;
-      animation-duration: .01ms !important;
+    .bk-last-products__card,
+    .bk-last-products__image,
+    .bk-last-products__button {
+      transition: none;
     }
   }
 {% endstylesheet %}
@@ -730,43 +423,42 @@
   "settings": [
     {
       "type": "text",
-      "id": "eyebrow",
-      "label": "Small label above heading",
-      "default": "PICKED FOR YOU"
-    },
-    {
-      "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "Products to explore"
+      "default": "Last Searched Product"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Discover selected products from the Bluekites collection."
+      "default": "Pick up where you left off."
     },
     {
       "type": "product",
-      "id": "main_product",
-      "label": "First product"
+      "id": "product_one",
+      "label": "Product 1"
     },
     {
       "type": "product",
-      "id": "second_product",
-      "label": "Second product (optional)"
+      "id": "product_two",
+      "label": "Product 2"
+    },
+    {
+      "type": "product",
+      "id": "product_three",
+      "label": "Product 3"
     },
     {
       "type": "text",
       "id": "button_label",
-      "label": "Product button label",
-      "default": "View product"
+      "label": "Button label",
+      "default": "Shop now"
     },
     {
       "type": "text",
-      "id": "panel_heading",
-      "label": "Information panel heading",
-      "default": "The Bluekites difference"
+      "id": "sale_label",
+      "label": "Sale badge label",
+      "default": "Sale"
     },
     {
       "type": "color_scheme",
@@ -781,13 +473,13 @@
     {
       "type": "color",
       "id": "background_color",
-      "label": "Background",
+      "label": "Section background",
       "default": "#FCFBFA"
     },
     {
       "type": "color",
       "id": "heading_color",
-      "label": "Heading color",
+      "label": "Heading and price color",
       "default": "#3A1E25"
     },
     {
@@ -798,63 +490,15 @@
     },
     {
       "type": "color",
-      "id": "pill_background",
-      "label": "Highlight background",
+      "id": "card_background",
+      "label": "Product card background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
-      "id": "pill_text_color",
-      "label": "Highlight text",
-      "default": "#5A3B41"
-    },
-    {
-      "type": "color",
-      "id": "pill_border_color",
-      "label": "Border color",
-      "default": "#E5DCDD"
-    },
-    {
-      "type": "color",
-      "id": "pill_active_background",
-      "label": "Active highlight background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "pill_active_text_color",
-      "label": "Active highlight text",
-      "default": "#3A1E25"
-    },
-    {
-      "type": "color",
-      "id": "panel_background",
-      "label": "Information panel background",
-      "default": "#F8F5F2"
-    },
-    {
-      "type": "color",
-      "id": "panel_heading_color",
-      "label": "Panel heading color",
-      "default": "#4A2A30"
-    },
-    {
-      "type": "color",
-      "id": "update_card_background",
-      "label": "Information card background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "update_card_text_color",
-      "label": "Information card text",
-      "default": "#4A2A30"
-    },
-    {
-      "type": "color",
-      "id": "update_card_shadow_color",
-      "label": "Information card accent",
-      "default": "#D1C2B0"
+      "id": "card_border",
+      "label": "Product card border",
+      "default": "#DCCBCD"
     },
     {
       "type": "header",
@@ -862,118 +506,48 @@
     },
     {
       "type": "range",
-      "id": "pill_radius",
-      "label": "Highlight corner radius",
-      "min": 0,
-      "max": 32,
+      "id": "grid_gap",
+      "label": "Space between cards",
+      "min": 8,
+      "max": 24,
       "step": 2,
       "unit": "px",
-      "default": 16
+      "default": 14
     },
     {
       "type": "range",
       "id": "card_radius",
       "label": "Card corner radius",
-      "min": 0,
-      "max": 24,
+      "min": 4,
+      "max": 20,
       "step": 2,
       "unit": "px",
-      "default": 10
-    },
-    {
-      "type": "range",
-      "id": "content_gap",
-      "label": "Information card gap",
-      "min": 8,
-      "max": 28,
-      "step": 2,
-      "unit": "px",
-      "default": 10
+      "default": 12
     },
     {
       "type": "range",
       "id": "padding_top",
       "label": "Top padding",
       "min": 0,
-      "max": 120,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "default": 32
+      "default": 28
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "label": "Bottom padding",
       "min": 0,
-      "max": 120,
+      "max": 100,
       "step": 4,
       "unit": "px",
-      "default": 32
-    }
-  ],
-  "blocks": [
-    {
-      "type": "chip",
-      "name": "Highlight label",
-      "settings": [
-        {
-          "type": "text",
-          "id": "label",
-          "label": "Label",
-          "default": "Bluekites Recommended"
-        }
-      ]
-    },
-    {
-      "type": "update",
-      "name": "Information card",
-      "settings": [
-        {
-          "type": "text",
-          "id": "title",
-          "label": "Title",
-          "default": "Quality you can trust"
-        },
-        {
-          "type": "textarea",
-          "id": "text",
-          "label": "Description",
-          "default": "Carefully selected products from trusted suppliers."
-        }
-      ]
+      "default": 28
     }
   ],
   "presets": [
     {
-      "name": "Last searched products",
-      "blocks": [
-        {
-          "type": "chip",
-          "settings": {
-            "label": "Bluekites Recommended"
-          }
-        },
-        {
-          "type": "chip",
-          "settings": {
-            "label": "Quality Assured"
-          }
-        },
-        {
-          "type": "update",
-          "settings": {
-            "title": "Trusted product selection",
-            "text": "Explore products selected for quality and value."
-          }
-        },
-        {
-          "type": "update",
-          "settings": {
-            "title": "Support when you need it",
-            "text": "Our team is here to help with product enquiries."
-          }
-        }
-      ]
+      "name": "Last searched products"
     }
   ]
 }

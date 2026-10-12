@@ -383,6 +383,7 @@
             "button_text_color": "#102a56",
             "button_hover_background": "#f4c95d",
             "button_hover_text_color": "#17243a",
+            "corner_radius": 12,
             "desktop_width_percent": 100
           },
           "blocks": {}
@@ -559,15 +560,22 @@
       "settings": {
         "heading": "Featured Products",
         "subheading": "Premium products curated by our AI engine, tailored to global market demands and quality standards.",
+        "view_all_url": "",
+        "view_all_label": "View all",
+        "show_timer": false,
+        "end_time": "2026-12-31T23:59:59+05:30",
         "button_label": "Shop now",
-        "color_scheme": "",
-        "background_color": "#745862",
-        "heading_color": "#ffffff",
-        "text_color": "#f4edee",
-        "button_bg": "rgba(0,0,0,0)",
+        "options_label": "Choose options",
+        "sold_out_label": "Sold out",
+        "from_label": "From",
+        "color_palette": "blue",
+        "section_background": "#eef5fb",
+        "header_background": "#1769aa",
+        "header_text": "#ffffff",
+        "button_background": "#102a56",
         "button_text": "#ffffff",
-        "expanded_ratio": 22,
-        "collapsed_ratio": 10,
+        "show_arrows": true,
+        "card_width": 168,
         "card_gap": 8,
         "card_radius": 6,
         "padding_top": 60,
@@ -585,7 +593,8 @@
             "description": "",
             "link_page": "paint-services",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         },
         "service_card_UDPHNM": {
@@ -596,7 +605,8 @@
             "description": "",
             "link_page": "healthcare-services",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         },
         "service_card_TCtPtC": {
@@ -607,7 +617,8 @@
             "description": "",
             "link_page": "tours-travels",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         },
         "service_card_4Jb4PG": {
@@ -618,7 +629,8 @@
             "description": "",
             "link_page": "software-development-services",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         },
         "service_card_z8XqVA": {
@@ -629,7 +641,8 @@
             "description": "",
             "link_page": "insurance-service",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         },
         "service_card_y8cAwm": {
@@ -640,7 +653,8 @@
             "description": "",
             "link_page": "real-estate",
             "custom_url": "",
-            "button_label": "Explore service"
+            "button_label": "Explore service",
+            "open_in_new_tab": false
           }
         }
       },
@@ -762,6 +776,19 @@
         "contact_form_mjLX3q": {
           "type": "contact-form",
           "settings": {
+            "heading": "Get in touch",
+            "subheading": "Have a question about an order or a product? Send us a message and our team will get back to you.",
+            "message_placeholder": "How can we help you?",
+            "optional_label": "Optional",
+            "footnote": "Fields marked * are required.",
+            "success_link_label": "Send another message",
+            "accent_color": "#1769aa",
+            "corner_radius": 12,
+            "show_card": true,
+            "style_submit": true,
+            "error_required": "This field is required.",
+            "error_email": "Enter a valid email address, like name@example.com.",
+            "error_phone": "Enter a valid phone number.",
             "width": "custom",
             "custom_width": 50,
             "width_mobile": "custom",
@@ -826,45 +853,23 @@
     },
     "ai_smart_AMQE9r": {
       "type": "ai_smart",
-      "blocks": {
-        "update_abwmBi": {
-          "type": "update",
-          "settings": {
-            "title": "Free Worldwide Shipping",
-            "text": "On orders above $500 across selected regions."
-          }
-        }
-      },
-      "block_order": [
-        "update_abwmBi"
-      ],
       "name": "AI smart section",
       "settings": {
-        "eyebrow": "",
         "heading": "Last Searched Product",
         "subheading": "",
-        "main_product": "sterillium",
-        "second_product": "aceptik-hc-plus",
-        "show_product_caption": true,
+        "product_one": "bacillol-25",
+        "product_two": "bactorinse",
+        "product_three": "bluekites-aptiviz-syp-200ml-200-ml-pack-of-3",
         "button_label": "Shop now",
-        "panel_heading": "",
+        "sale_label": "Sale",
         "color_scheme": "",
         "background_color": "#fcfbfa",
         "heading_color": "#3a1e25",
         "text_color": "#4a2a30",
-        "pill_background": "#ffffff",
-        "pill_text_color": "#5a3b41",
-        "pill_border_color": "#b99ea3",
-        "pill_active_background": "#ffffff",
-        "pill_active_text_color": "#3a1e25",
-        "panel_background": "#f8f5f2",
-        "panel_heading_color": "#4a2a30",
-        "update_card_background": "#ffffff",
-        "update_card_text_color": "#4a2a30",
-        "update_card_shadow_color": "#d1c2b0",
-        "pill_radius": 20,
+        "card_background": "#ffffff",
+        "card_border": "#dccbcd",
+        "grid_gap": 14,
         "card_radius": 18,
-        "content_gap": 16,
         "padding_top": 24,
         "padding_bottom": 20
       }

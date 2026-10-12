@@ -75,9 +75,9 @@
 
   .bk-footer .bk-footer__content {
     display: grid;
-    grid-template-columns: minmax(160px, 1.05fr) minmax(0, 1.2fr) minmax(0, 1fr) minmax(220px, 1.1fr);
+    grid-template-columns: minmax(220px, 1.1fr) minmax(0, 1.15fr) minmax(0, 1fr) minmax(240px, 1.1fr);
     align-items: start;
-    gap: clamp(24px, 3vw, 54px);
+    gap: clamp(28px, 3.2vw, 56px);
     width: calc(100% - 96px);
     max-width: 1640px;
     margin-inline: auto;
@@ -160,6 +160,24 @@
     object-position: left center;
   }
 
+  /* Restore a prominent logo without changing the theme's saved logo block settings. */
+  .bk-footer .bk-footer__content > :first-child img,
+  .bk-footer .bk-footer__content > :first-child .image-block img,
+  .bk-footer .bk-footer__content > :first-child .footer-logo img {
+    width: 180px !important;
+    max-width: 100%;
+    max-height: 128px;
+    height: auto;
+    object-fit: contain;
+    object-position: left top;
+  }
+
+  /* Keep block content aligned consistently inside each grid column. */
+  .bk-footer .bk-footer__content > * {
+    align-self: start;
+    justify-self: stretch;
+  }
+
   .bk-footer .bk-footer__content input:not([type='checkbox']):not([type='radio']),
   .bk-footer .bk-footer__content select,
   .bk-footer .bk-footer__content textarea {
@@ -235,10 +253,10 @@
     justify-content: space-between;
     align-items: center;
     gap: 12px 24px;
-    width: calc(100% - 96px);
-    max-width: 1640px;
-    margin-inline: auto;
-    padding: 18px 0 22px;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding: 18px max(48px, calc((100% - 1640px) / 2)) 22px;
     border-top: 1px solid var(--bk-footer-border);
     background: linear-gradient(90deg, #12325B 0%, #1F74BA 100%);
   }
@@ -281,8 +299,15 @@
       max-height: 82px;
     }
 
+    .bk-footer .bk-footer__content > :first-child img,
+    .bk-footer .bk-footer__content > :first-child .image-block img,
+    .bk-footer .bk-footer__content > :first-child .footer-logo img {
+      width: 165px !important;
+      max-height: 112px;
+    }
+
     .bk-footer__bottom {
-      width: calc(100% - 64px);
+      padding-inline: 32px;
     }
   }
 
@@ -317,11 +342,18 @@
       max-height: 72px;
     }
 
+    .bk-footer .bk-footer__content > :first-child img,
+    .bk-footer .bk-footer__content > :first-child .image-block img,
+    .bk-footer .bk-footer__content > :first-child .footer-logo img {
+      width: 150px !important;
+      max-height: 100px;
+    }
+
     .bk-footer__bottom {
-      width: calc(100% - 40px);
+      width: 100%;
       justify-content: center;
       text-align: center;
-      padding-block: 16px 20px;
+      padding: 16px 20px 20px;
     }
 
     .bk-footer__legal {
@@ -344,8 +376,16 @@
       max-height: 76px;
     }
 
+    .bk-footer .bk-footer__content > :first-child img,
+    .bk-footer .bk-footer__content > :first-child .image-block img,
+    .bk-footer .bk-footer__content > :first-child .footer-logo img {
+      width: 160px !important;
+      max-height: 104px;
+    }
+
     .bk-footer__bottom {
-      width: calc(100% - 36px);
+      width: 100%;
+      padding-inline: 18px;
     }
   }
 
@@ -402,7 +442,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 24
+      "default": 0
     },
     {
       "type": "color_scheme",
@@ -422,7 +462,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 36
+      "default": 20
     },
     {
       "type": "range",
@@ -432,7 +472,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 24
+      "default": 20
     }
   ],
   "presets": [
@@ -440,10 +480,10 @@
       "name": "t:names.footer",
       "category": "t:categories.footer",
       "settings": {
-        "gap": 24,
+        "gap": 0,
         "color_scheme": "scheme-1",
-        "padding-block-start": 36,
-        "padding-block-end": 24
+        "padding-block-start": 20,
+        "padding-block-end": 20
       },
       "blocks": {
         "newsletter-group": {

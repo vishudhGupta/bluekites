@@ -870,4 +870,44 @@
       font-size: 11px;
     }
   }
+    /* ===== Icon-only: hide Login / Cart text, keep the tiles ===== */
+  #header-component .account-button__label,
+  #header-component .header-actions__cart-label {
+    display: none !important;
+  }
+
+  #header-component header-actions {
+    gap: 14px;
+  }
+
+  #header-component .account-button__combo,
+  #header-component .header-actions__cart-icon {
+    gap: 0;
+  }
+
+  #header-component .account-button__tile,
+  #header-component .header-actions__action .cart-icon-svg {
+    width: 44px !important;
+    height: 44px !important;
+    border-radius: 14px;
+  }
+
+  /* Count badge: lime circle on the top-right corner of the cart tile */
+  #header-component .header-actions__cart-icon {
+    position: relative;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    width: 22px;
+    height: 22px;
+    border: 2px solid #faf9f2;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble__text,
+  #header-component .header-actions__cart-icon .cart-bubble__text-count {
+    font-size: 12px;
+  }
 {% endstylesheet %}

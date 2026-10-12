@@ -1,94 +1,154 @@
 {% capture children %}
+
   {% content_for 'blocks' %}
+
 {% endcapture %}
 
 {% if section.settings.horizontal_layout %}
+
   {% style %}
+
     #shopify-section-{{ section.id }} {
+
       --bk-edge: clamp(16px, 3.5vw, 56px);
+
       --bk-gap: {{ section.settings.gap | at_least: 16 }}px;
+
       --bk-radius: 16px;
+
     }
 
     /* Use the full left and right space */
+
     #shopify-section-{{ section.id }} .section,
+
     #shopify-section-{{ section.id }} .custom-section-content {
+
       max-width: none;
+
     }
 
     /* Horizontal row of blocks */
+
     #shopify-section-{{ section.id }} .custom-section-content {
+
       display: flex;
+
       flex-direction: row;
+
       flex-wrap: wrap;
+
       align-items: stretch;
+
       justify-content: space-between;
+
       gap: var(--bk-gap);
+
       width: 100%;
+
       padding-inline: var(--bk-edge);
+
     }
 
     #shopify-section-{{ section.id }} .custom-section-content > * {
-      flex: 1 1 260px;
+
+      flex: 1 1 420px;
+
       min-width: 0;
+
       max-width: 100%;
+
     }
 
     /* Polished cards: colours come from your scheme, none are hard-coded */
+
     #shopify-section-{{ section.id }} .custom-section-content > :is(.group-block, .image-block, [class*='group-block'], [class*='image-block']) {
+
       overflow: hidden;
+
       border-radius: var(--bk-radius);
+
       border: 1px solid rgb(var(--color-foreground-rgb) / 0.08);
+
       box-shadow: 0 1px 2px rgb(var(--color-foreground-rgb) / 0.04);
+
       transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
     }
 
     #shopify-section-{{ section.id }} .custom-section-content > :is(.group-block, .image-block, [class*='group-block'], [class*='image-block']):hover {
+
       transform: translateY(-4px);
+
       border-color: rgb(var(--color-foreground-rgb) / 0.16);
+
       box-shadow: 0 14px 32px rgb(var(--color-foreground-rgb) / 0.10);
+
     }
 
     #shopify-section-{{ section.id }} img {
+
       transition: transform 0.5s ease;
+
     }
 
     #shopify-section-{{ section.id }} .custom-section-content > *:hover img {
+
       transform: scale(1.04);
+
     }
 
     /* Tablet: two per row. Mobile: stacked */
+
     @media screen and (max-width: 989px) {
+
       #shopify-section-{{ section.id }} .custom-section-content > * {
+
         flex-basis: calc(50% - var(--bk-gap));
+
       }
+
     }
 
     @media screen and (max-width: 749px) {
+
       #shopify-section-{{ section.id }} .custom-section-content {
+
         flex-direction: column;
+
         padding-inline: var(--padding-md, 16px);
+
       }
 
       #shopify-section-{{ section.id }} .custom-section-content > * {
+
         flex-basis: auto;
+
         width: 100%;
+
       }
+
     }
 
     @media (prefers-reduced-motion: reduce) {
+
       #shopify-section-{{ section.id }} .custom-section-content > *,
+
       #shopify-section-{{ section.id }} img {
+
         transition: none;
+
         transform: none !important;
+
       }
+
     }
+
   {% endstyle %}
+
 {% endif %}
 
 {% render 'section', section: section, children: children %}
-
-
 
 {% schema %}
 
@@ -127,12 +187,19 @@
   },
 
   "settings": [
+
     {
+
       "type": "checkbox",
+
       "id": "horizontal_layout",
+
       "label": "Horizontal modern layout",
+
       "info": "Blocks sit side by side across the full width, with card styling.",
+
       "default": false
+
     },
 
     {
@@ -1955,11 +2022,13 @@
 
       "settings": {
 
-        "content_direction": "column",
+        "horizontal_layout": true,
+
+        "content_direction": "row",
 
         "vertical_on_mobile": true,
 
-        "horizontal_alignment": "flex-start",
+        "horizontal_alignment": "space-between",
 
         "vertical_alignment": "center",
 
@@ -1967,9 +2036,9 @@
 
         "vertical_alignment_flex_direction_column": "center",
 
-        "gap": 32,
+        "gap": 40,
 
-        "section_width": "page-width",
+        "section_width": "full-width",
 
         "section_height": "",
 
@@ -1989,9 +2058,9 @@
 
         "border_radius": 0,
 
-        "padding-block-start": 32,
+        "padding-block-start": 24,
 
-        "padding-block-end": 32
+        "padding-block-end": 24
 
       }
 

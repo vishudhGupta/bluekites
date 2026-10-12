@@ -2305,6 +2305,105 @@
     border-color: transparent;
   }
 
+  /* Login + Cart controls: match the supplied compact, rounded reference UI */
+  #header-component .header-actions {
+    align-items: center;
+    gap: clamp(16px, 2vw, 30px);
+  }
+
+  #header-component .header-actions__action {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    padding: 0 2px;
+    border: 0;
+    border-radius: 14px;
+    background: transparent;
+    color: var(--bk-charcoal);
+    text-decoration: none;
+    white-space: nowrap;
+    font-size: 18px;
+    line-height: 1.2;
+  }
+
+  #header-component .header-actions__action .svg-wrapper {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 56px;
+    width: 56px;
+    height: 56px;
+    border-radius: 17px;
+    background: #f3f1e8;
+    color: var(--bk-charcoal);
+  }
+
+  #header-component .header-actions__action .svg-wrapper svg {
+    width: 38px;
+    height: 38px;
+    stroke-width: 1.8;
+  }
+
+  #header-component .header-actions__action:hover .svg-wrapper,
+  #header-component .header-actions__action:focus-visible .svg-wrapper {
+    background: rgb(23 75 58 / 9%);
+    color: var(--bk-green);
+  }
+
+  #header-component .cart-count,
+  #header-component .cart-count-bubble,
+  #header-component [class*="cart-count"] {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 36px;
+    width: 36px;
+    height: 36px;
+    padding: 0;
+    margin-inline-start: 2px;
+    border-radius: 50%;
+    background: var(--bk-lime);
+    color: var(--bk-green);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  @media (max-width: 749px) {
+    #header-component .header-actions {
+      gap: 8px;
+    }
+
+    #header-component .header-actions__action {
+      gap: 6px;
+      min-height: 40px;
+      font-size: 14px;
+    }
+
+    #header-component .header-actions__action .svg-wrapper {
+      flex-basis: 40px;
+      width: 40px;
+      height: 40px;
+      border-radius: 13px;
+    }
+
+    #header-component .header-actions__action .svg-wrapper svg {
+      width: 28px;
+      height: 28px;
+    }
+
+    #header-component .cart-count,
+    #header-component .cart-count-bubble,
+    #header-component [class*="cart-count"] {
+      min-width: 25px;
+      width: 25px;
+      height: 25px;
+      font-size: 12px;
+    }
+  }
+
   @media (max-width: 749px) {
     #header-component .header-logo img,
     #header-component .header__heading-logo,

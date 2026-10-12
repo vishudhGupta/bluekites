@@ -1,578 +1,1155 @@
 
+
 <section
+
   id="WhyUs-{{ section.id }}"
+
   class="bk-why-us color-{{ section.settings.color_scheme }}"
+
   style="
-    --wu-bg: {{ section.settings.background_color }};
+
+    --wu-bg: #FAF9F2;
+
     --wu-heading: {{ section.settings.heading_color }};
+
     --wu-subheading: {{ section.settings.subheading_color }};
+
     --wu-card-bg: {{ section.settings.card_background }};
+
     --wu-card-border: {{ section.settings.card_border_color }};
+
     --wu-icon: {{ section.settings.icon_color }};
+
     --wu-title: {{ section.settings.card_title_color }};
+
     --wu-text: {{ section.settings.card_text_color }};
+
     --wu-radius: {{ section.settings.card_radius }}px;
+
     --wu-gap: {{ section.settings.card_gap }}px;
+
     --wu-padding-top: {{ section.settings.padding_top }}px;
+
     --wu-padding-bottom: {{ section.settings.padding_bottom }}px;
+
   "
+
 >
+
   <div class="bk-why-us__inner">
+
     {% if section.settings.heading != blank or section.settings.subheading != blank %}
+
       <header class="bk-why-us__header">
+
         <div class="bk-why-us__intro">
+
           {% if section.settings.heading != blank %}
+
             <h2 class="bk-why-us__heading">
+
               {{ section.settings.heading | escape }}
+
             </h2>
+
           {% endif %}
+
+
 
           {% if section.settings.subheading != blank %}
+
             <p class="bk-why-us__subheading">
+
               {{ section.settings.subheading | escape }}
+
             </p>
+
           {% endif %}
+
         </div>
+
       </header>
+
     {% endif %}
+
+
 
     {% if section.blocks.size > 0 %}
+
       <div class="bk-why-us__grid">
+
         {% for block in section.blocks %}
+
           <article
+
             class="bk-why-us__card"
+
             {{ block.shopify_attributes }}
+
           >
+
             <div class="bk-why-us__icon-wrap" aria-hidden="true">
+
               {% if block.settings.custom_icon != blank %}
+
                 {{
+
                   block.settings.custom_icon
+
                   | image_url: width: 120
+
                   | image_tag:
+
                     widths: '60, 90, 120',
+
                     sizes: '32px',
+
                     class: 'bk-why-us__icon-image',
+
                     loading: 'lazy',
+
                     alt: ''
+
                 }}
+
               {% else %}
+
                 {% case block.settings.icon %}
+
                   {% when 'global' %}
+
                     <svg class="bk-why-us__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
                       <circle cx="24" cy="24" r="15"/>
+
                       <path d="M9 24h30"/>
+
                       <path d="M24 9c5 4.5 7.5 9.5 7.5 15S29 34.5 24 39c-5-4.5-7.5-9.5-7.5-15S19 13.5 24 9Z"/>
+
                       <path d="M4 17h8M4 31h8M36 17h8M36 31h8"/>
+
                     </svg>
+
+
 
                   {% when 'export' %}
+
                     <svg class="bk-why-us__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
                       <circle cx="20" cy="25" r="14"/>
+
                       <path d="M20 11c4.5 4 7 8.8 7 14s-2.5 10-7 14c-4.5-4-7-8.8-7-14s2.5-10 7-14Z"/>
+
                       <path d="M6 25h28"/>
+
                       <path d="M29 10h12v12"/>
+
                       <path d="m41 10-16 16"/>
+
                     </svg>
+
+
 
                   {% when 'quality' %}
+
                     <svg class="bk-why-us__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
                       <path d="m24 6 14 5v11c0 9-5.7 15.3-14 20-8.3-4.7-14-11-14-20V11l14-5Z"/>
+
                       <path d="m18 24 4 4 8-9"/>
+
                       <path d="M6 16H3M8 23H3"/>
+
                     </svg>
+
+
 
                   {% else %}
+
                     <svg class="bk-why-us__icon" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+
                       <circle cx="24" cy="24" r="4"/>
+
                       <path d="M24 5v7M24 36v7M5 24h7M36 24h7"/>
+
                       <path d="m10.6 10.6 5 5m16.8 16.8 5 5m0-26.8-5 5m-16.8 16.8-5 5"/>
+
                       <circle cx="24" cy="24" r="15" stroke-dasharray="1 5"/>
+
                     </svg>
+
                 {% endcase %}
+
               {% endif %}
+
             </div>
+
+
 
             <div class="bk-why-us__content">
+
               {% if block.settings.title != blank %}
+
                 <h3 class="bk-why-us__card-title">
+
                   {{ block.settings.title | escape }}
+
                 </h3>
+
               {% endif %}
+
+
 
               {% if block.settings.text != blank %}
+
                 <p class="bk-why-us__card-text">
+
                   {{ block.settings.text | escape }}
+
                 </p>
+
               {% endif %}
+
             </div>
 
+
+
             <span class="bk-why-us__card-accent" aria-hidden="true"></span>
+
           </article>
+
         {% endfor %}
+
       </div>
+
     {% else %}
+
       <p class="bk-why-us__empty">
+
         Add cards in the theme editor to display your advantages.
+
       </p>
+
     {% endif %}
+
   </div>
+
 </section>
 
+
+
 {% stylesheet %}
+
   .bk-why-us {
+
     box-sizing: border-box;
+
     width: 100%;
+
     background: var(--wu-bg);
+
     padding-block: var(--wu-padding-top) var(--wu-padding-bottom);
+
     color: var(--wu-text);
+
   }
+
+
 
   /*
+
    * Match the explicit 48px desktop and 24px mobile gutters
+
    * used by the redesigned Services section.
+
    */
+
   .bk-why-us__inner {
+
     box-sizing: border-box;
+
     width: calc(100% - 96px);
+
     max-width: 1640px;
+
     min-width: 0;
+
     margin-inline: auto;
+
   }
+
+
 
   .bk-why-us__header {
+
     display: flex;
+
     align-items: flex-end;
+
     justify-content: space-between;
+
     margin-bottom: 22px;
+
   }
+
+
 
   .bk-why-us__intro {
+
     min-width: 0;
+
   }
+
+
 
   .bk-why-us__heading {
+
     margin: 0;
+
     color: var(--wu-heading);
+
     font-size: clamp(24px, 2.5vw, 32px);
+
     font-weight: 500;
+
     line-height: 1.15;
+
     letter-spacing: -.035em;
+
   }
+
+
 
   .bk-why-us__subheading {
+
     margin: 7px 0 0;
+
     color: var(--wu-subheading);
+
     font-size: 13px;
+
     line-height: 1.55;
+
   }
+
+
 
   .bk-why-us__grid {
+
     display: grid;
+
     grid-template-columns: repeat(4, minmax(0, 1fr));
+
     gap: var(--wu-gap);
+
   }
+
+
 
   .bk-why-us__card {
+
     position: relative;
+
     display: flex;
+
     flex-direction: column;
+
     align-items: flex-start;
+
     min-width: 0;
+
     min-height: 174px;
+
     overflow: hidden;
+
     padding: 22px 20px 20px;
+
     background: var(--wu-card-bg);
+
     border: 1px solid var(--wu-card-border);
+
     border-radius: var(--wu-radius);
+
     transition:
+
       border-color .22s ease,
+
       box-shadow .22s ease,
+
       transform .22s ease;
+
   }
+
+
 
   .bk-why-us__card:hover {
+
     transform: translateY(-2px);
+
     border-color: color-mix(
+
       in srgb,
+
       var(--wu-icon) 30%,
+
       var(--wu-card-border)
+
     );
+
     box-shadow: 0 8px 24px rgb(58 30 37 / 6%);
+
   }
+
+
 
   .bk-why-us__icon-wrap {
+
     display: inline-flex;
+
     align-items: center;
+
     justify-content: center;
+
     width: 38px;
+
     height: 38px;
+
     flex: 0 0 auto;
+
     margin-bottom: 15px;
+
     color: var(--wu-icon);
+
     background: color-mix(in srgb, var(--wu-icon) 7%, transparent);
+
     border-radius: 10px;
+
   }
+
+
 
   .bk-why-us__icon,
-  .bk-why-us__icon-image {
-    display: block;
-    width: 26px;
-    height: 26px;
-  }
 
   .bk-why-us__icon-image {
-    object-fit: contain;
+
+    display: block;
+
+    width: 26px;
+
+    height: 26px;
+
   }
+
+
+
+  .bk-why-us__icon-image {
+
+    object-fit: contain;
+
+  }
+
+
 
   .bk-why-us__content {
+
     min-width: 0;
+
   }
+
+
 
   .bk-why-us__card-title {
+
     margin: 0;
+
     color: var(--wu-title);
+
     font-size: 15px;
+
     font-weight: 650;
+
     line-height: 1.4;
+
     letter-spacing: -.02em;
+
     overflow-wrap: anywhere;
+
   }
+
+
 
   .bk-why-us__card-text {
+
     margin: 7px 0 0;
+
     color: var(--wu-text);
+
     font-size: 12px;
+
     line-height: 1.6;
+
     overflow-wrap: anywhere;
+
   }
+
+
 
   .bk-why-us__card-accent {
+
     position: absolute;
+
     right: 0;
+
     bottom: 0;
+
     left: 0;
+
     height: 2px;
+
     background: var(--wu-icon);
+
     opacity: 0;
+
     transform: scaleX(.35);
+
     transform-origin: left;
+
     transition: opacity .22s ease, transform .22s ease;
+
   }
+
+
 
   .bk-why-us__card:hover .bk-why-us__card-accent {
+
     opacity: .8;
+
     transform: scaleX(1);
+
   }
+
+
 
   .bk-why-us__empty {
+
     margin: 0;
+
     color: var(--wu-text);
+
     font-size: 12px;
+
   }
+
+
 
   @media screen and (min-width: 750px) and (max-width: 1199px) {
+
     .bk-why-us__grid {
+
       grid-template-columns: repeat(2, minmax(0, 1fr));
+
     }
 
+
+
     .bk-why-us__card {
+
       min-height: 150px;
+
     }
+
   }
+
+
 
   @media screen and (max-width: 749px) {
+
     .bk-why-us {
+
       padding-block: var(--wu-padding-top) var(--wu-padding-bottom);
+
     }
+
+
 
     .bk-why-us__inner {
+
       width: calc(100% - 48px);
+
     }
+
+
 
     .bk-why-us__header {
+
       margin-bottom: 16px;
+
     }
+
+
 
     .bk-why-us__heading {
+
       font-size: clamp(23px, 6vw, 29px);
+
     }
+
+
 
     .bk-why-us__subheading {
+
       margin-top: 6px;
+
       font-size: 12px;
+
     }
+
+
 
     .bk-why-us__grid {
+
       grid-template-columns: repeat(2, minmax(0, 1fr));
+
       gap: 10px;
+
     }
+
+
 
     .bk-why-us__card {
+
       min-height: 0;
+
       padding: 15px 13px 16px;
+
       border-radius: min(var(--wu-radius), 10px);
+
     }
 
+
+
     .bk-why-us__icon-wrap {
+
       width: 33px;
+
       height: 33px;
+
       margin-bottom: 11px;
+
       border-radius: 8px;
+
     }
+
+
 
     .bk-why-us__icon,
+
     .bk-why-us__icon-image {
+
       width: 23px;
+
       height: 23px;
+
     }
+
+
 
     .bk-why-us__card-title {
+
       font-size: 13px;
+
       line-height: 1.4;
+
     }
+
+
 
     .bk-why-us__card-text {
+
       margin-top: 5px;
+
       font-size: 11px;
+
       line-height: 1.5;
+
     }
+
   }
+
+
 
   @media screen and (max-width: 380px) {
+
     .bk-why-us__grid {
+
       grid-template-columns: 1fr;
+
     }
+
+
 
     .bk-why-us__card {
+
       display: grid;
+
       grid-template-columns: 34px minmax(0, 1fr);
+
       align-items: start;
+
       column-gap: 12px;
+
       padding: 14px;
+
     }
+
+
 
     .bk-why-us__icon-wrap {
+
       margin: 0;
+
     }
+
   }
+
+
 
   @media (prefers-reduced-motion: reduce) {
+
     .bk-why-us *,
+
     .bk-why-us *::before,
+
     .bk-why-us *::after {
+
       transition-duration: .01ms !important;
+
     }
+
   }
+
 {% endstylesheet %}
 
+
+
 {% schema %}
+
 {
+
   "name": "Why us",
+
   "tag": "section",
+
   "class": "section-wrapper",
+
   "settings": [
+
     {
+
       "type": "text",
+
       "id": "heading",
+
       "label": "Heading",
+
       "default": "Why Choose Bluekites"
+
     },
+
     {
+
       "type": "text",
+
       "id": "subheading",
+
       "label": "Subheading",
+
       "default": "Multiple Industries, One mutual Network"
+
     },
+
     {
+
       "type": "color_scheme",
+
       "id": "color_scheme",
+
       "label": "Color scheme",
+
       "default": "scheme-1"
+
     },
+
     {
+
       "type": "header",
+
       "content": "Colors"
+
     },
+
     {
+
       "type": "color",
+
       "id": "background_color",
+
       "label": "Background",
-      "default": "#FCFBFA"
+
+      "default": "#FAF9F2"
+
     },
+
     {
+
       "type": "color",
+
       "id": "heading_color",
+
       "label": "Heading color",
+
       "default": "#3A1E25"
+
     },
+
     {
+
       "type": "color",
+
       "id": "subheading_color",
+
       "label": "Subheading color",
+
       "default": "#4A2A30"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_background",
+
       "label": "Card background",
+
       "default": "#FFFFFF"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_border_color",
+
       "label": "Card border",
+
       "default": "#E5DCDD"
+
     },
+
     {
+
       "type": "color",
+
       "id": "icon_color",
+
       "label": "Icon color",
+
       "default": "#4A242C"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_title_color",
+
       "label": "Card title color",
+
       "default": "#3A1E25"
+
     },
+
     {
+
       "type": "color",
+
       "id": "card_text_color",
+
       "label": "Card text color",
+
       "default": "#5C454A"
+
     },
+
     {
+
       "type": "header",
+
       "content": "Layout"
+
     },
+
     {
+
       "type": "range",
+
       "id": "card_gap",
+
       "label": "Card gap",
+
       "min": 8,
+
       "max": 28,
+
       "step": 2,
+
       "unit": "px",
+
       "default": 14
+
     },
+
     {
+
       "type": "range",
+
       "id": "card_radius",
+
       "label": "Card corner radius",
+
       "min": 0,
+
       "max": 20,
+
       "step": 2,
+
       "unit": "px",
+
       "default": 8
+
     },
+
     {
+
       "type": "range",
+
       "id": "padding_top",
+
       "label": "Top padding",
+
       "min": 0,
+
       "max": 100,
+
       "step": 4,
+
       "unit": "px",
+
       "default": 28
+
     },
+
     {
+
       "type": "range",
+
       "id": "padding_bottom",
+
       "label": "Bottom padding",
+
       "min": 0,
+
       "max": 100,
+
       "step": 4,
+
       "unit": "px",
+
       "default": 28
+
     }
+
   ],
+
   "blocks": [
+
     {
+
       "type": "item",
+
       "name": "Benefit card",
+
       "settings": [
+
         {
+
           "type": "select",
+
           "id": "icon",
+
           "label": "Fallback icon",
+
           "default": "expertise",
+
           "options": [
+
             {
+
               "value": "expertise",
+
               "label": "Expertise"
+
             },
+
             {
+
               "value": "global",
+
               "label": "Global network"
+
             },
+
             {
+
               "value": "export",
+
               "label": "Export"
+
             },
+
             {
+
               "value": "quality",
+
               "label": "Quality"
+
             }
+
           ]
+
         },
+
         {
+
           "type": "image_picker",
+
           "id": "custom_icon",
+
           "label": "Custom icon image"
+
         },
+
         {
+
           "type": "text",
+
           "id": "title",
+
           "label": "Title",
+
           "default": "Multi-domain Expertise"
+
         },
+
         {
+
           "type": "textarea",
+
           "id": "text",
+
           "label": "Description",
+
           "default": "Diverse business verticals for all your needs."
+
         }
+
       ]
+
     }
+
   ],
+
   "presets": [
+
     {
+
       "name": "Why us",
+
       "blocks": [
+
         {
+
           "type": "item",
+
           "settings": {
+
             "icon": "expertise",
+
             "title": "Multi-domain Expertise",
+
             "text": "Diverse business verticals for all your needs."
+
           }
+
         },
+
         {
+
           "type": "item",
+
           "settings": {
+
             "icon": "global",
+
             "title": "Global Sourcing Network",
+
             "text": "Strong network of manufacturers & suppliers worldwide."
+
           }
+
         },
+
         {
+
           "type": "item",
+
           "settings": {
+
             "icon": "export",
+
             "title": "Export Capabilities",
+
             "text": "Seamless export support & global logistics."
+
           }
+
         },
+
         {
+
           "type": "item",
+
           "settings": {
+
             "icon": "quality",
+
             "title": "Quality & Compliance",
+
             "text": "ISO standards, certified processes & quality assurance."
+
           }
+
         }
+
       ]
+
     }
+
   ]
+
 }
+
 {% endschema %}

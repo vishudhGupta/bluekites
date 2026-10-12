@@ -850,55 +850,6 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
-    },
-    "1791826676a83af163": {
-      "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_0c452ce_kbFJHN": {
-          "type": "ai_gen_block_0c452ce",
-          "settings": {
-            "menu": "main-menu-copy",
-            "desktop_width_percent": 100,
-            "logo_height": 28,
-            "background_color": "#FAF9F1",
-            "text_color": "#292D29",
-            "green_color": "#244D38",
-            "accent_color": "#E5EC9A",
-            "border_color": "#E4E5D9"
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_0c452ce_kbFJHN"
-      ],
-      "settings": {
-        "content_direction": "column",
-        "vertical_on_mobile": true,
-        "horizontal_alignment": "flex-start",
-        "vertical_alignment": "center",
-        "align_baseline": false,
-        "horizontal_alignment_flex_direction_column": "flex-start",
-        "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
-        "section_width": "page-width",
-        "section_height": "",
-        "section_height_custom": 50,
-        "color_scheme": "",
-        "background_media": "none",
-        "video_position": "cover",
-        "background_image_position": "cover",
-        "border": "none",
-        "border_width": 1,
-        "border_opacity": 100,
-        "border_radius": 0,
-        "toggle_overlay": false,
-        "overlay_color": "#00000026",
-        "overlay_style": "solid",
-        "gradient_direction": "to top",
-        "padding-block-start": 0,
-        "padding-block-end": 0
-      }
     }
   },
   "order": [
@@ -909,7 +860,6 @@
     "feature_product_bLRpkG",
     "service_cards_9R7Aax",
     "whyus_XEjggw",
-    "section_UeE3JB",
-    "1791826676a83af163"
+    "section_UeE3JB"
   ]
 }

@@ -2305,7 +2305,13 @@
     border-color: transparent;
   }
 
-  /* ---------- Login + Cart: icon tile + label (+ cart badge) ---------- */
+  /* ---------- Header actions: Login + Cart (no search here) ---------- */
+
+  /* Search lives in its own bar now, so hide the header search icon */
+  #header-component .search-action {
+    display: none !important;
+  }
+
   #header-component {
     --bk-tile: #f3f1e8;
     --bk-tile-hover: rgb(23 75 58 / 9%);
@@ -2317,16 +2323,16 @@
     gap: 28px;
   }
 
+  /* Shared button look */
   #header-component .header-actions__action {
     display: inline-flex !important;
     align-items: center;
-    justify-content: flex-start;
     gap: 12px;
     min-height: 40px;
     padding: 0 !important;
     border: 0;
     background: transparent !important;
-    color: var(--bk-charcoal);
+    color: var(--bk-charcoal) !important;
     font-size: 17px;
     font-weight: 400;
     line-height: 1;
@@ -2334,12 +2340,28 @@
     text-decoration: none;
   }
 
+  /* Fix: login icon was white (theme variable) */
+  #header-component shopify-account,
+  #header-component .account-button,
+  #header-component .header-actions__action.account-button {
+    --color-account-icon: var(--bk-charcoal);
+    --button-color: var(--bk-charcoal);
+    color: var(--bk-charcoal) !important;
+  }
+
+  #header-component .account-button svg,
+  #header-component shopify-account svg {
+    color: var(--bk-charcoal);
+  }
+
   /* Icon tile */
-  #header-component .header-actions__action .svg-wrapper {
+  #header-component .header-actions__action .svg-wrapper,
+  #header-component .account-button .svg-wrapper {
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
     flex: 0 0 40px;
+    order: 0;
     width: 40px !important;
     height: 40px !important;
     border-radius: 12px;
@@ -2355,21 +2377,23 @@
     stroke-width: 1.8;
   }
 
-  /* Label text (Login / Cart) */
-  #header-component .header-actions__action > span:not(.svg-wrapper):not([class*="cart-count"]),
-  #header-component .header-actions__action .header-actions__text,
-  #header-component .header-actions__action .account-text,
-  #header-component .header-actions__action .cart-text {
-    display: inline !important;
-    visibility: visible !important;
-    opacity: 1 !important;
-    color: inherit;
+  /* Labels added with CSS, so no markup changes are needed */
+  #header-component shopify-account .header-actions__action::after,
+  #header-component .account-button::after {
+    content: 'Login';
+    order: 1;
+  }
+
+  #header-component .header-actions__action[href$='/cart']::after,
+  #header-component cart-icon .header-actions__action::after {
+    content: 'Cart';
+    order: 1;
   }
 
   /* Hover / focus */
   #header-component .header-actions__action:hover,
   #header-component .header-actions__action:focus-visible {
-    color: var(--bk-green);
+    color: var(--bk-green) !important;
   }
 
   #header-component .header-actions__action:hover .svg-wrapper,
@@ -2378,14 +2402,16 @@
     color: var(--bk-green);
   }
 
-  /* Cart count badge: lime circle */
+  /* Cart count badge: lime circle, after the label */
   #header-component .cart-count,
   #header-component .cart-count-bubble,
-  #header-component [class*="cart-count"] {
+  #header-component [class*='cart-bubble'],
+  #header-component [class*='cart-count'] {
     position: static !important;
     display: inline-flex !important;
     align-items: center;
     justify-content: center;
+    order: 2;
     flex: 0 0 28px;
     width: 28px;
     height: 28px;
@@ -2402,11 +2428,8 @@
     transform: none;
   }
 
-  /* Mobile: slightly tighter, same look */
   @media (max-width: 749px) {
-    #header-component .header-actions {
-      gap: 12px;
-    }
+    #header-component .header-actions { gap: 12px; }
 
     #header-component .header-actions__action {
       gap: 8px;
@@ -2428,7 +2451,8 @@
 
     #header-component .cart-count,
     #header-component .cart-count-bubble,
-    #header-component [class*="cart-count"] {
+    #header-component [class*='cart-bubble'],
+    #header-component [class*='cart-count'] {
       flex-basis: 24px;
       width: 24px;
       height: 24px;

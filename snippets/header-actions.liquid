@@ -708,74 +708,164 @@
     }
   }
 
- /* Cart: cart icon, orange count above basket, bold label tight on the right */
-.header-actions__cart-icon {
-  --cart-count-color: #f08804;
+  /* ===== Login + Cart: beige icon tile + label (+ lime count) ===== */
+  #header-component .search-action {
+    display: none !important;
+  }
 
-  display: inline-flex;
-  align-items: flex-end;
-  gap: 8px;
-  position: relative;
-}
+  #header-component header-actions {
+    align-items: center;
+    gap: 28px;
+  }
 
-/* Override the theme's fixed 44px icon box */
-.header-actions__action:not(.account-button) .cart-icon-svg {
-  width: 36px;
-  height: 34px;
-}
+  #header-component .header-actions__action {
+    display: inline-flex;
+    align-items: center;
+    width: auto;
+    height: auto;
+    min-height: 0;
+    padding: 0;
+    border: 0;
+    background: transparent !important;
+    color: #292d29;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1;
+    white-space: nowrap;
+  }
 
-.header-actions__action:not(.account-button) .cart-icon-svg svg {
-  width: 36px;
-  height: 34px;
-}
+  /* Login: fix the white icon */
+  #header-component .account-button {
+    --color-account-icon: #292d29;
+    margin: 0;
+  }
 
-/* Remove the donut cut-out meant for the old bag icon */
-.header-actions__cart-icon.header-actions__cart-icon--has-cart svg {
-  mask: none;
-}
+  #header-component .account-button__combo,
+  #header-component .header-actions__cart-icon {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+  }
 
-.header-actions__cart-label {
-  font-size: 1.125rem;
-  font-weight: 700;
-  line-height: 1;
-  margin-bottom: 2px;
-  white-space: nowrap;
-}
+  /* The tile: identical for both */
+  #header-component .account-button__tile,
+  #header-component .header-actions__action .cart-icon-svg {
+    display: inline-flex !important;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+    width: 40px !important;
+    height: 40px !important;
+    border-radius: 12px;
+    background: #f3f1e8;
+    color: #292d29;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
 
-/* Count: orange number centered above the basket (half of the 36px icon = 18px) */
-.header-actions__cart-icon .cart-bubble {
-  position: absolute;
-  top: 0;
-  left: 18px;
-  right: auto;
-  transform: translateX(-50%);
-  width: auto;
-  height: auto;
-  aspect-ratio: auto;
-  padding: 0;
-  pointer-events: none;
-}
+  #header-component .account-button__tile svg {
+    display: block;
+    width: 22px;
+    height: 24px;
+    color: #292d29;
+  }
 
-.header-actions__cart-icon .cart-bubble__background {
-  display: none;
-}
+  #header-component .header-actions__action .cart-icon-svg svg {
+    display: block;
+    width: 24px !important;
+    height: 24px !important;
+    color: #292d29;
+    mask: none;
+    -webkit-mask: none;
+  }
 
-.header-actions__cart-icon .cart-bubble__text,
-.header-actions__cart-icon .cart-bubble__text-count {
-  color: var(--cart-count-color);
-  font-size: 1rem;
-  font-weight: 800;
-  line-height: 1;
-}
+  #header-component .header-actions__cart-icon--has-cart svg {
+    mask: none;
+    -webkit-mask: none;
+  }
 
-/* Show "0" for an empty cart */
-.header-actions__cart-icon .cart-bubble__text-count:empty::before {
-  content: '0';
-}
+  #header-component .account-button__label,
+  #header-component .header-actions__cart-label {
+    display: inline;
+    color: #292d29;
+    font-size: 17px;
+    font-weight: 400;
+    line-height: 1;
+  }
 
-@media screen and (max-width: 749px) {
-  .header-actions__cart-label {
+  /* Cart count: lime circle after the label */
+  #header-component .header-actions__cart-icon .cart-bubble {
+    position: static;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 28px;
+    height: 28px;
+    aspect-ratio: 1;
+    margin: 0;
+    padding: 0;
+    border-radius: 50%;
+    background: #e5ed8c;
+    pointer-events: none;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble__background {
     display: none;
   }
-}
+
+  #header-component .header-actions__cart-icon .cart-bubble__text,
+  #header-component .header-actions__cart-icon .cart-bubble__text-count {
+    color: #174b3a;
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble__text-count:empty::before {
+    content: '0';
+  }
+
+  /* Hover / focus */
+  #header-component .header-actions__action:hover .account-button__tile,
+  #header-component .header-actions__action:hover .cart-icon-svg,
+  #header-component .header-actions__action:focus-visible .account-button__tile,
+  #header-component .header-actions__action:focus-visible .cart-icon-svg {
+    background: rgb(23 75 58 / 9%);
+    color: #174b3a;
+  }
+
+  #header-component .header-actions__action:hover :is(.account-button__label, .header-actions__cart-label) {
+    color: #174b3a;
+  }
+
+  /* Mobile: icons only, count pinned to the tile corner */
+  @media screen and (max-width: 749px) {
+    #header-component header-actions {
+      gap: 10px;
+    }
+
+    #header-component .account-button__label,
+    #header-component .header-actions__cart-label {
+      display: none;
+    }
+
+    #header-component .account-button__tile,
+    #header-component .header-actions__action .cart-icon-svg {
+      width: 38px !important;
+      height: 38px !important;
+    }
+
+    #header-component .header-actions__cart-icon .cart-bubble {
+      position: absolute;
+      top: -5px;
+      right: -5px;
+      width: 20px;
+      height: 20px;
+      border: 2px solid #faf9f2;
+    }
+
+    #header-component .header-actions__cart-icon .cart-bubble__text,
+    #header-component .header-actions__cart-icon .cart-bubble__text-count {
+      font-size: 11px;
+    }
+  }
 {% endstylesheet %}

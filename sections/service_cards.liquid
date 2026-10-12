@@ -11,6 +11,7 @@
 		--bk-sc-radius: {{ section.settings.card_radius }}px;
 		--bk-sc-padding-top: {{ section.settings.padding_top }}px;
 		--bk-sc-padding-bottom: {{ section.settings.padding_bottom }}px;
+		--bk-sc-columns: {{ section.settings.columns_desktop }};
 	"
 >
 	<div class="bk-service-cards__inner page-width-normal">
@@ -31,56 +32,56 @@
 		{% endif %}
 
 		{% if section.blocks.size > 0 %}
-			<div
-				class="bk-service-cards__grid"
-				role="list"
-				style="--bk-sc-columns: {{ section.settings.columns_desktop }};"
-			>
+			<div class="bk-service-cards__grid" role="list">
 				{% for block in section.blocks %}
 					{% if block.type == 'service_card' %}
 						{% assign card_link = block.settings.custom_url %}
 						{% if card_link == blank and block.settings.link_page != blank %}
-							{% assign card_link = pages[block.settings.link_page].url %}
+							{% assign card_link = block.settings.link_page.url %}
 						{% endif %}
 
 						<article class="bk-service-cards__card" role="listitem" {{ block.shopify_attributes }}>
 							{% if card_link != blank %}
 								<a class="bk-service-cards__card-link" href="{{ card_link }}">
+							{% else %}
+								<div class="bk-service-cards__card-link">
 							{% endif %}
 
-							<div class="bk-service-cards__media">
-								{% if block.settings.image != blank %}
-									{{
-										block.settings.image
-										| image_url: width: 900
-										| image_tag:
-											widths: '320, 480, 640, 800, 900',
-											sizes: '(max-width: 749px) 92vw, (max-width: 1099px) 46vw, 30vw',
-											loading: 'lazy',
-											class: 'bk-service-cards__image',
-											alt: block.settings.title
-									}}
-								{% else %}
-									<div class="bk-service-cards__image bk-service-cards__image--placeholder" aria-hidden="true"></div>
-								{% endif %}
-							</div>
+								<div class="bk-service-cards__media">
+									{% if block.settings.image != blank %}
+										{{
+											block.settings.image
+											| image_url: width: 480
+											| image_tag:
+												widths: '200, 320, 400, 480',
+												sizes: '(max-width: 749px) 46vw, (max-width: 1099px) 30vw, 16vw',
+												loading: 'lazy',
+												class: 'bk-service-cards__image',
+												alt: block.settings.title
+										}}
+									{% else %}
+										<div class="bk-service-cards__image bk-service-cards__image--placeholder" aria-hidden="true"></div>
+									{% endif %}
+								</div>
 
-							<div class="bk-service-cards__content">
-								{% if block.settings.title != blank %}
-									<h3 class="bk-service-cards__title">{{ block.settings.title }}</h3>
-								{% endif %}
+								<div class="bk-service-cards__content">
+									{% if block.settings.title != blank %}
+										<h3 class="bk-service-cards__title">{{ block.settings.title }}</h3>
+									{% endif %}
 
-								{% if block.settings.description != blank %}
-									<p class="bk-service-cards__text">{{ block.settings.description }}</p>
-								{% endif %}
+									{% if section.settings.show_description and block.settings.description != blank %}
+										<p class="bk-service-cards__text">{{ block.settings.description }}</p>
+									{% endif %}
 
-								{% if card_link != blank and block.settings.button_label != blank %}
-									<span class="bk-service-cards__button">{{ block.settings.button_label }}</span>
-								{% endif %}
-							</div>
+									{% if card_link != blank and block.settings.button_label != blank %}
+										<span class="bk-service-cards__button">{{ block.settings.button_label }}</span>
+									{% endif %}
+								</div>
 
 							{% if card_link != blank %}
 								</a>
+							{% else %}
+								</div>
 							{% endif %}
 						</article>
 					{% endif %}
@@ -97,6 +98,12 @@
 		background: var(--bk-sc-bg);
 		padding-top: var(--bk-sc-padding-top);
 		padding-bottom: var(--bk-sc-padding-bottom);
+		/* 60vh viewport height. min-height (not fixed height) so content is never clipped on small screens. */
+		min-height: 60vh;
+		min-height: 60svh;
+		display: flex;
+		align-items: center;
+		box-sizing: border-box;
 	}
 
 	.bk-service-cards__inner {
@@ -112,12 +119,12 @@
 	}
 
 	.bk-service-cards__header {
-		margin-bottom: 1.4rem;
+		margin-bottom: 1.1rem;
 	}
 
 	.bk-service-cards__subheading {
 		margin: 0;
-		font-size: 0.76rem;
+		font-size: 0.7rem;
 		line-height: 1;
 		letter-spacing: 0.15em;
 		text-transform: uppercase;
@@ -126,24 +133,24 @@
 	}
 
 	.bk-service-cards__heading {
-		margin: 0.65rem 0 0;
+		margin: 0.5rem 0 0;
 		color: var(--bk-sc-heading);
-		font-size: clamp(1.8rem, 3vw, 3rem);
-		line-height: 1.08;
+		font-size: clamp(1.5rem, 2.4vw, 2.4rem);
+		line-height: 1.1;
 		letter-spacing: -0.02em;
 	}
 
 	.bk-service-cards__description {
-		margin: 0.72rem 0 0;
+		margin: 0.55rem 0 0;
 		color: var(--bk-sc-text);
-		font-size: 0.98rem;
-		line-height: 1.5;
+		font-size: 0.92rem;
+		line-height: 1.45;
 		max-width: 64ch;
 	}
 
 	.bk-service-cards__grid {
 		display: grid;
-		grid-template-columns: repeat(var(--bk-sc-columns, 3), minmax(0, 1fr));
+		grid-template-columns: repeat(var(--bk-sc-columns, 6), minmax(0, 1fr));
 		gap: var(--bk-sc-gap);
 	}
 
@@ -155,9 +162,10 @@
 		transition: transform 0.2s ease, box-shadow 0.2s ease;
 	}
 
-	.bk-service-cards__card:hover {
+	.bk-service-cards__card:hover,
+	.bk-service-cards__card:focus-within {
 		transform: translateY(-2px);
-		box-shadow: 0 10px 24px rgba(0, 0, 0, 0.1);
+		box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
 	}
 
 	.bk-service-cards__card-link {
@@ -168,8 +176,13 @@
 		color: inherit;
 	}
 
+	.bk-service-cards__card-link:focus-visible {
+		outline: 2px solid var(--bk-sc-heading);
+		outline-offset: -2px;
+	}
+
 	.bk-service-cards__media {
-		aspect-ratio: 1.45;
+		aspect-ratio: 4 / 3;
 		overflow: hidden;
 	}
 
@@ -185,35 +198,39 @@
 	}
 
 	.bk-service-cards__content {
-		padding: 1rem;
+		padding: 0.6rem 0.65rem 0.7rem;
 		display: grid;
-		gap: 0.62rem;
+		gap: 0.4rem;
 		align-content: start;
 	}
 
 	.bk-service-cards__title {
 		margin: 0;
 		color: var(--bk-sc-heading);
-		font-size: clamp(1rem, 1.5vw, 1.32rem);
-		line-height: 1.28;
+		font-size: 0.88rem;
+		line-height: 1.25;
 	}
 
 	.bk-service-cards__text {
 		margin: 0;
 		color: var(--bk-sc-text);
-		font-size: 0.93rem;
-		line-height: 1.45;
+		font-size: 0.78rem;
+		line-height: 1.35;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		overflow: hidden;
 	}
 
 	.bk-service-cards__button {
 		display: inline-flex;
 		align-items: center;
 		width: fit-content;
-		margin-top: 0.2rem;
-		font-size: 0.86rem;
+		margin-top: 0.1rem;
+		font-size: 0.72rem;
 		line-height: 1;
 		font-weight: 600;
-		padding: 0.62rem 0.92rem;
+		padding: 0.45rem 0.7rem;
 		border-radius: 999px;
 		background: color-mix(in srgb, var(--bk-sc-heading) 10%, transparent);
 		color: var(--bk-sc-heading);
@@ -225,24 +242,33 @@
 		font-size: 0.96rem;
 	}
 
+	/* Tablet */
 	@media screen and (max-width: 1099px) {
 		.bk-service-cards__grid {
-			grid-template-columns: repeat(2, minmax(0, 1fr));
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 	}
 
+	/* Mobile */
 	@media screen and (max-width: 749px) {
 		.bk-service-cards__grid {
-			grid-template-columns: 1fr;
-			gap: 0.84rem;
-		}
-
-		.bk-service-cards__content {
-			padding: 0.88rem;
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+			gap: 0.65rem;
 		}
 
 		.bk-service-cards__description {
-			font-size: 0.92rem;
+			font-size: 0.88rem;
+		}
+	}
+
+	@media (prefers-reduced-motion: reduce) {
+		.bk-service-cards__card {
+			transition: none;
+		}
+
+		.bk-service-cards__card:hover,
+		.bk-service-cards__card:focus-within {
+			transform: none;
 		}
 	}
 {% endstylesheet %}
@@ -275,10 +301,16 @@
 			"type": "range",
 			"id": "columns_desktop",
 			"label": "Desktop columns",
-			"min": 2,
-			"max": 4,
+			"min": 3,
+			"max": 8,
 			"step": 1,
-			"default": 3
+			"default": 6
+		},
+		{
+			"type": "checkbox",
+			"id": "show_description",
+			"label": "Show card descriptions",
+			"default": false
 		},
 		{
 			"type": "range",
@@ -288,7 +320,7 @@
 			"max": 32,
 			"step": 2,
 			"unit": "px",
-			"default": 16
+			"default": 12
 		},
 		{
 			"type": "range",
@@ -298,7 +330,7 @@
 			"max": 28,
 			"step": 1,
 			"unit": "px",
-			"default": 14
+			"default": 10
 		},
 		{
 			"type": "range",
@@ -308,7 +340,7 @@
 			"max": 120,
 			"step": 4,
 			"unit": "px",
-			"default": 44
+			"default": 32
 		},
 		{
 			"type": "range",
@@ -318,7 +350,7 @@
 			"max": 120,
 			"step": 4,
 			"unit": "px",
-			"default": 44
+			"default": 32
 		},
 		{
 			"type": "color_scheme",
@@ -408,15 +440,12 @@
 		{
 			"name": "Service cards",
 			"blocks": [
-				{
-					"type": "service_card"
-				},
-				{
-					"type": "service_card"
-				},
-				{
-					"type": "service_card"
-				}
+				{ "type": "service_card" },
+				{ "type": "service_card" },
+				{ "type": "service_card" },
+				{ "type": "service_card" },
+				{ "type": "service_card" },
+				{ "type": "service_card" }
 			]
 		}
 	]

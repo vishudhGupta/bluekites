@@ -37,6 +37,8 @@
       </svg>
     </span>
 
+    <span class="header-actions__cart-label">{{ 'content.cart_title' | t }}</span>
+
     {% render 'cart-bubble', limit: 100 %}
   </cart-icon>
 {% endcapture %}
@@ -96,7 +98,7 @@
       >
         {% if customer %}
           <div class="account-button__fallback"></div>
-                {% else %}
+        {% else %}
           <span slot="signed-out-avatar" class="account-button__combo">
             <span class="account-button__tile" aria-hidden="true">
               <svg

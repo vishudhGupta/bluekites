@@ -850,29 +850,6 @@
         "padding-block-start": 32,
         "padding-block-end": 32
       }
-    },
-    "ai_smart_AMQE9r": {
-      "type": "ai_smart",
-      "name": "AI smart section",
-      "settings": {
-        "heading": "Last Searched Product",
-        "subheading": "",
-        "product_one": "bacillol-25",
-        "product_two": "bactorinse",
-        "product_three": "bluekites-aptiviz-syp-200ml-200-ml-pack-of-3",
-        "button_label": "Shop now",
-        "sale_label": "Sale",
-        "color_scheme": "",
-        "background_color": "#fcfbfa",
-        "heading_color": "#3a1e25",
-        "text_color": "#4a2a30",
-        "card_background": "#ffffff",
-        "card_border": "#dccbcd",
-        "grid_gap": 14,
-        "card_radius": 18,
-        "padding_top": 24,
-        "padding_bottom": 20
-      }
     }
   },
   "order": [
@@ -883,7 +860,6 @@
     "feature_product_bLRpkG",
     "service_cards_9R7Aax",
     "whyus_XEjggw",
-    "section_UeE3JB",
-    "ai_smart_AMQE9r"
+    "section_UeE3JB"
   ]
 }

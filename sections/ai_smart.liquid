@@ -1,751 +1,755 @@
-{% liquid
-  assign selected_product = section.settings.main_product
+content = r'''{% liquid
+  assign first_product = section.settings.main_product
+  assign second_product = section.settings.second_product
+  assign product_count = 0
+
+  if first_product != blank
+    assign product_count = product_count | plus: 1
+  endif
+
+  if second_product != blank
+    assign product_count = product_count | plus: 1
+  endif
 %}
 
 <section
-  id="AiSmart-{{ section.id }}"
-  class="ai-smart color-{{ section.settings.color_scheme }}"
+  id="LastSearched-{{ section.id }}"
+  class="last-searched color-{{ section.settings.color_scheme }}"
   style="
-    --ai-bg: {{ section.settings.background_color }};
-    --ai-heading: {{ section.settings.heading_color }};
-    --ai-text: {{ section.settings.text_color }};
-    --ai-pill-bg: {{ section.settings.pill_background }};
-    --ai-pill-text: {{ section.settings.pill_text_color }};
-    --ai-pill-border: {{ section.settings.pill_border_color }};
-    --ai-pill-active-bg: {{ section.settings.pill_active_background }};
-    --ai-pill-active-text: {{ section.settings.pill_active_text_color }};
-    --ai-panel-bg: {{ section.settings.panel_background }};
-    --ai-panel-heading: {{ section.settings.panel_heading_color }};
-    --ai-card-bg: {{ section.settings.update_card_background }};
-    --ai-card-text: {{ section.settings.update_card_text_color }};
-    --ai-card-shadow: {{ section.settings.update_card_shadow_color }};
-    --ai-card-radius: {{ section.settings.card_radius }}px;
-    --ai-pill-radius: {{ section.settings.pill_radius }}px;
-    --ai-gap: {{ section.settings.content_gap }}px;
-    --ai-padding-top: {{ section.settings.padding_top }}px;
-    --ai-padding-bottom: {{ section.settings.padding_bottom }}px;
+    --ls-bg: {{ section.settings.background_color }};
+    --ls-heading: {{ section.settings.heading_color }};
+    --ls-text: {{ section.settings.text_color }};
+    --ls-pill-bg: {{ section.settings.pill_background }};
+    --ls-pill-text: {{ section.settings.pill_text_color }};
+    --ls-pill-border: {{ section.settings.pill_border_color }};
+    --ls-pill-active-bg: {{ section.settings.pill_active_background }};
+    --ls-pill-active-text: {{ section.settings.pill_active_text_color }};
+    --ls-panel-bg: {{ section.settings.panel_background }};
+    --ls-panel-heading: {{ section.settings.panel_heading_color }};
+    --ls-card-bg: {{ section.settings.update_card_background }};
+    --ls-card-text: {{ section.settings.update_card_text_color }};
+    --ls-card-accent: {{ section.settings.update_card_shadow_color }};
+    --ls-radius: {{ section.settings.card_radius }}px;
+    --ls-pill-radius: {{ section.settings.pill_radius }}px;
+    --ls-gap: {{ section.settings.content_gap }}px;
+    --ls-padding-top: {{ section.settings.padding_top }}px;
+    --ls-padding-bottom: {{ section.settings.padding_bottom }}px;
   "
 >
-  <div class="page-width-normal ai-smart__inner">
-    <header class="ai-smart__header">
-      {% if section.settings.eyebrow != blank %}
-        <p class="ai-smart__eyebrow">{{ section.settings.eyebrow }}</p>
-      {% endif %}
-      {% if section.settings.heading != blank %}
-        <h2 class="ai-smart__heading">{{ section.settings.heading }}</h2>
-        <span class="ai-smart__rule" aria-hidden="true"></span>
-      {% endif %}
-      {% if section.settings.subheading != blank %}
-        <p class="ai-smart__subheading">{{ section.settings.subheading }}</p>
-      {% endif %}
+  <div class="last-searched__inner">
+    <header class="last-searched__header">
+      <div class="last-searched__intro">
+        {% if section.settings.eyebrow != blank %}
+          <p class="last-searched__eyebrow">{{ section.settings.eyebrow | escape }}</p>
+        {% endif %}
+
+        {% if section.settings.heading != blank %}
+          <h2 class="last-searched__heading">{{ section.settings.heading | escape }}</h2>
+        {% endif %}
+
+        {% if section.settings.subheading != blank %}
+          <p class="last-searched__subheading">{{ section.settings.subheading | escape }}</p>
+        {% endif %}
+      </div>
     </header>
 
-    <div class="ai-smart__body">
-      <div class="ai-smart__left">
+    <div class="last-searched__layout">
+      <div class="last-searched__main">
         {% assign chip_count = 0 %}
         {% for block in section.blocks %}
-          {% if block.type == 'chip' %}
+          {% if block.type == 'chip' and block.settings.label != blank %}
             {% assign chip_count = chip_count | plus: 1 %}
           {% endif %}
         {% endfor %}
 
         {% if chip_count > 0 %}
-          <div class="ai-smart__chips" role="list" aria-label="Recommendation filters">
-            <div class="ai-smart__sparkle" aria-hidden="true">
-              <svg viewBox="0 0 24 24" class="ai-smart__sparkle-icon" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <path d="M12 2l1.7 4.3L18 8l-4.3 1.7L12 14l-1.7-4.3L6 8l4.3-1.7L12 2Z"></path>
-                <path d="M5 14l0.9 2.1L8 17l-2.1 0.9L5 20l-0.9-2.1L2 17l2.1-0.9L5 14Z"></path>
+          <div class="last-searched__chips" aria-label="Product highlights">
+            <span class="last-searched__sparkle" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                <path d="m12 2 1.7 4.3L18 8l-4.3 1.7L12 14l-1.7-4.3L6 8l4.3-1.7L12 2Z"/>
+                <path d="m5 14 .9 2.1L8 17l-2.1.9L5 20l-.9-2.1L2 17l2.1-.9L5 14Z"/>
               </svg>
-            </div>
-
-            {% assign first_chip_rendered = false %}
+            </span>
             {% for block in section.blocks %}
-              {% if block.type == 'chip' %}
-                <span class="ai-smart__chip{% unless first_chip_rendered %} is-active{% endunless %}" role="listitem" {{ block.shopify_attributes }}>
-                  {{ block.settings.label }}
+              {% if block.type == 'chip' and block.settings.label != blank %}
+                <span class="last-searched__chip" {{ block.shopify_attributes }}>
+                  {{ block.settings.label | escape }}
                 </span>
-                {% assign first_chip_rendered = true %}
               {% endif %}
             {% endfor %}
           </div>
         {% endif %}
 
-        {% liquid
-          assign first_product = selected_product | default: section.settings.second_product
-          assign second_product = blank
-          if selected_product != blank and section.settings.second_product != blank
-            assign second_product = section.settings.second_product
-          endif
-          assign products_class = ''
-          if second_product != blank
-            assign products_class = ' ai-smart__products--two'
-          endif
-        %}
+        {% if product_count > 0 %}
+          <div class="last-searched__products{% if product_count == 2 %} last-searched__products--two{% endif %}">
+            {% for slot in (1..2) %}
+              {% liquid
+                if slot == 1
+                  assign product_item = first_product
+                else
+                  assign product_item = second_product
+                endif
+              %}
 
-        <div class="ai-smart__products{{ products_class }}">
-          {% for slot in (1..2) %}
-            {% liquid
-              if slot == 1
-                assign p = first_product
-              else
-                assign p = second_product
-              endif
-            %}
-
-            {% if p != blank %}
-              <div class="ai-smart__media">
-                {% if p != blank %}
-                  <a class="ai-smart__product-link" href="{{ p.url }}" aria-label="View {{ p.title | escape }}">
-                    {% if p.featured_media != blank %}
-                      {% assign product_alt = p.featured_media.alt | default: p.title %}
-                      {{
-                        p.featured_media
-                        | image_url: width: 1600
-                        | image_tag:
-                          widths: '480, 720, 960, 1200, 1600',
-                          sizes: '(max-width: 749px) 100vw, (max-width: 999px) 90vw, 56vw',
-                          class: 'ai-smart__image',
-                          loading: 'lazy',
-                          alt: product_alt
-                      }}
-
-                      {% if section.settings.show_product_caption %}
-                        <div class="ai-smart__caption">
-                          <div class="ai-smart__caption-text">
-                            <span class="ai-smart__caption-title">{{ p.title }}</span>
-                            <span class="ai-smart__caption-price">
-                              {{ p.price | money }}
-                              {% if p.compare_at_price > p.price %}
-                                <s class="ai-smart__caption-compare">{{ p.compare_at_price | money }}</s>
-                              {% endif %}
-                            </span>
-                          </div>
-                          {% if section.settings.button_label != blank %}
-                            <span class="ai-smart__cta">
-                              {{ section.settings.button_label }}
-                              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"></path></svg>
-                            </span>
-                          {% endif %}
-                        </div>
+              {% if product_item != blank %}
+                <article class="last-searched__product">
+                  <a
+                    class="last-searched__product-link"
+                    href="{{ product_item.url }}"
+                    aria-label="View {{ product_item.title | escape }}"
+                  >
+                    <div class="last-searched__product-media">
+                      {% if product_item.featured_media != blank %}
+                        {{
+                          product_item.featured_media
+                          | image_url: width: 1000
+                          | image_tag:
+                            widths: '320, 480, 640, 800, 1000',
+                            sizes: '(max-width: 749px) 90vw, (max-width: 999px) 44vw, 30vw',
+                            class: 'last-searched__image',
+                            loading: 'lazy',
+                            alt: product_item.featured_media.alt | default: product_item.title
+                        }}
+                      {% else %}
+                        {{ 'product-1' | placeholder_svg_tag: 'last-searched__placeholder' }}
                       {% endif %}
-                    {% else %}
-                      <div class="ai-smart__product-fallback">
-                        <p class="ai-smart__product-name">{{ p.title }}</p>
-                        <p class="ai-smart__product-price">{{ p.price | money }}</p>
+
+                      {% if product_item.compare_at_price > product_item.price %}
+                        <span class="last-searched__badge">Sale</span>
+                      {% endif %}
+                    </div>
+
+                    <div class="last-searched__product-info">
+                      <h3 class="last-searched__product-title">{{ product_item.title | escape }}</h3>
+                      <div class="last-searched__price-row">
+                        <span class="last-searched__price">{{ product_item.price | money }}</span>
+                        {% if product_item.compare_at_price > product_item.price %}
+                          <s class="last-searched__compare-price">{{ product_item.compare_at_price | money }}</s>
+                        {% endif %}
                       </div>
-                    {% endif %}
+                    </div>
                   </a>
-                {% endif %}
-              </div>
-            {% endif %}
-          {% endfor %}
-        </div>
+
+                  <a class="last-searched__button" href="{{ product_item.url }}">
+                    {{ section.settings.button_label | default: 'View product' | escape }}
+                    <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                      <path d="M4 10h12M10 4l6 6-6 6" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                  </a>
+                </article>
+              {% endif %}
+            {% endfor %}
+          </div>
+        {% else %}
+          <div class="last-searched__empty">
+            <span class="last-searched__empty-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
+                <circle cx="10.8" cy="10.8" r="6.8"/>
+                <path d="m16 16 4.5 4.5M8 10.8h5.6"/>
+              </svg>
+            </span>
+            <h3>Discover products you'll love</h3>
+            <p>Select one or two products in this section's settings to display them here.</p>
+          </div>
+        {% endif %}
       </div>
 
-      <aside class="ai-smart__panel" aria-label="{{ section.settings.panel_heading | escape }}">
-        {% if section.settings.panel_heading != blank %}
-          <h3 class="ai-smart__panel-heading">
-            <span class="ai-smart__live-dot" aria-hidden="true"></span>
-            {{ section.settings.panel_heading }}
-          </h3>
+      {% assign update_count = 0 %}
+      {% for block in section.blocks %}
+        {% if block.type == 'update' %}
+          {% assign update_count = update_count | plus: 1 %}
         {% endif %}
+      {% endfor %}
 
-        <div class="ai-smart__updates">
-          {% assign update_count = 0 %}
-          {% for block in section.blocks %}
-            {% if block.type == 'update' %}
-              {% assign update_count = update_count | plus: 1 %}
-              <article class="ai-smart__update" {{ block.shopify_attributes }}>
-                <div class="ai-smart__update-body">
-                  {% if block.settings.title != blank %}
-                    <h4 class="ai-smart__update-title">{{ block.settings.title }}</h4>
-                  {% endif %}
-                  {% if block.settings.text != blank %}
-                    <p class="ai-smart__update-text">{{ block.settings.text }}</p>
-                  {% endif %}
-                </div>
-              </article>
-            {% endif %}
-          {% endfor %}
-        </div>
-      </aside>
+      {% if section.settings.panel_heading != blank or update_count > 0 %}
+        <aside class="last-searched__panel" aria-label="{{ section.settings.panel_heading | escape }}">
+          {% if section.settings.panel_heading != blank %}
+            <h3 class="last-searched__panel-heading">
+              <span class="last-searched__status-dot" aria-hidden="true"></span>
+              {{ section.settings.panel_heading | escape }}
+            </h3>
+          {% endif %}
+
+          {% if update_count > 0 %}
+            <div class="last-searched__updates">
+              {% for block in section.blocks %}
+                {% if block.type == 'update' %}
+                  <article class="last-searched__update" {{ block.shopify_attributes }}>
+                    <span class="last-searched__update-marker" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="m5 12 4 4L19 6"/>
+                      </svg>
+                    </span>
+                    <div class="last-searched__update-content">
+                      {% if block.settings.title != blank %}
+                        <h4 class="last-searched__update-title">{{ block.settings.title | escape }}</h4>
+                      {% endif %}
+                      {% if block.settings.text != blank %}
+                        <p class="last-searched__update-text">{{ block.settings.text | escape }}</p>
+                      {% endif %}
+                    </div>
+                  </article>
+                {% endif %}
+              {% endfor %}
+            </div>
+          {% endif %}
+        </aside>
+      {% endif %}
     </div>
   </div>
 </section>
 
 {% stylesheet %}
-  .ai-smart {
-    position: relative;
+  .last-searched {
+    box-sizing: border-box;
+    width: 100%;
     overflow: hidden;
-    background: var(--ai-bg);
-    padding-top: var(--ai-padding-top);
-    padding-bottom: var(--ai-padding-bottom);
+    padding-block: var(--ls-padding-top) var(--ls-padding-bottom);
+    background: var(--ls-bg);
+    color: var(--ls-text);
   }
 
-  /* soft ambient glow behind the content */
-  .ai-smart::before {
-    content: '';
-    position: absolute;
-    inset: -20% -10% auto auto;
-    width: 60%;
-    aspect-ratio: 1;
-    border-radius: 50%;
-    background: radial-gradient(circle, color-mix(in srgb, var(--ai-heading) 9%, transparent), transparent 65%);
-    pointer-events: none;
+  .last-searched *,
+  .last-searched *::before,
+  .last-searched *::after {
+    box-sizing: border-box;
   }
 
-  .ai-smart__inner {
-    --ai-page-margin: 16px;
+  .last-searched__inner {
     position: relative;
-    width: min(var(--narrow-page-width), calc(100% - (var(--ai-page-margin) * 2)));
+    width: calc(100% - 96px);
+    max-width: 1640px;
     margin-inline: auto;
   }
 
-  @media screen and (min-width: 750px) {
-    .ai-smart__inner {
-      --ai-page-margin: 40px;
-    }
+  .last-searched__header {
+    margin-bottom: 22px;
   }
 
-  /* ---------- Header ---------- */
-  .ai-smart__header {
-    margin-bottom: 2.25rem;
-    animation: ai-smart-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .ai-smart__eyebrow {
-    display: inline-block;
-    margin: 0 0 0.75rem;
-    padding: 0.3rem 0.85rem;
-    border-radius: 999px;
-    background: color-mix(in srgb, var(--ai-heading) 8%, transparent);
-    color: var(--ai-heading);
-    font-size: 0.78rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
+  .last-searched__eyebrow {
+    margin: 0 0 7px;
+    color: var(--ls-heading);
+    font-size: 11px;
+    font-weight: 650;
+    line-height: 1.4;
+    letter-spacing: .12em;
     text-transform: uppercase;
   }
 
-  .ai-smart__heading {
+  .last-searched__heading {
     margin: 0;
-    color: var(--ai-heading);
-    font-size: clamp(2.2rem, 4vw, 3.7rem);
-    line-height: 1.05;
-    letter-spacing: -0.035em;
+    color: var(--ls-heading);
+    font-size: clamp(24px, 2.5vw, 32px);
+    font-weight: 500;
+    line-height: 1.15;
+    letter-spacing: -.035em;
     text-wrap: balance;
   }
 
-  .ai-smart__rule {
-    display: block;
-    width: 56px;
-    height: 4px;
-    margin-top: 1rem;
-    border-radius: 999px;
-    background: linear-gradient(90deg, var(--ai-heading), color-mix(in srgb, var(--ai-heading) 15%, transparent));
+  .last-searched__subheading {
+    max-width: 58ch;
+    margin: 7px 0 0;
+    color: var(--ls-text);
+    font-size: 13px;
+    line-height: 1.55;
   }
 
-  .ai-smart__subheading {
-    margin: 0.9rem 0 0;
-    max-width: 52ch;
-    color: var(--ai-text);
-    font-size: clamp(1rem, 1.45vw, 1.3rem);
-    line-height: 1.45;
-    opacity: 0.9;
-  }
-
-  /* ---------- Layout ---------- */
-  .ai-smart__body {
+  .last-searched__layout {
     display: grid;
-    grid-template-columns: minmax(0, 1.55fr) minmax(300px, 0.95fr);
-    gap: clamp(20px, 3vw, 44px);
+    grid-template-columns: minmax(0, 1.65fr) minmax(260px, .9fr);
     align-items: stretch;
+    gap: 20px;
   }
 
-  .ai-smart__left {
+  .last-searched__main {
     min-width: 0;
-    animation: ai-smart-rise 0.7s 0.08s cubic-bezier(0.22, 1, 0.36, 1) both;
   }
 
-  /* ---------- Filter pills ---------- */
-  .ai-smart__chips {
+  .last-searched__chips {
     display: flex;
     align-items: center;
-    gap: 0.65rem;
-    margin-bottom: 1.25rem;
-    padding: 0.2rem 0.1rem 0.5rem;
-    overflow-x: auto;
-    scrollbar-width: none;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 14px;
   }
 
-  .ai-smart__chips::-webkit-scrollbar {
-    display: none;
-  }
-
-  .ai-smart__sparkle {
+  .last-searched__sparkle {
     display: inline-grid;
     place-items: center;
+    width: 30px;
+    height: 30px;
     flex: 0 0 auto;
-    width: 2.35rem;
-    height: 2.35rem;
-    border-radius: 50%;
-    background: var(--ai-heading);
-    color: var(--ai-bg);
-    box-shadow: 0 6px 16px color-mix(in srgb, var(--ai-heading) 30%, transparent);
+    border-radius: 9px;
+    background: var(--ls-heading);
+    color: #fff;
   }
 
-  .ai-smart__sparkle-icon {
-    display: block;
-    width: 1.2rem;
-    height: 1.2rem;
+  .last-searched__sparkle svg {
+    width: 17px;
+    height: 17px;
   }
 
-  .ai-smart__chip {
+  .last-searched__chip {
     display: inline-flex;
-    flex: 0 0 auto;
     align-items: center;
-    justify-content: center;
-    min-height: 2.35rem;
-    padding: 0.45rem 1.15rem;
-    border: 1px solid var(--ai-pill-border);
-    border-radius: var(--ai-pill-radius);
-    background: var(--ai-pill-bg);
-    color: var(--ai-pill-text);
-    font-size: 0.93rem;
-    line-height: 1.1;
-    text-align: center;
-    white-space: nowrap;
-    transition: transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease;
+    min-height: 30px;
+    padding: 6px 11px;
+    border: 1px solid var(--ls-pill-border);
+    border-radius: var(--ls-pill-radius);
+    background: var(--ls-pill-bg);
+    color: var(--ls-pill-text);
+    font-size: 11px;
+    font-weight: 550;
+    line-height: 1.25;
   }
 
-  .ai-smart__chip:hover {
-    transform: translateY(-1px);
-    box-shadow: 0 6px 14px color-mix(in srgb, var(--ai-heading) 12%, transparent);
+  .last-searched__products {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 14px;
   }
 
-  .ai-smart__chip.is-active {
-    border-color: var(--ai-pill-active-text);
-    background: var(--ai-pill-active-bg);
-    color: var(--ai-pill-active-text);
-    font-weight: 600;
-    box-shadow: 0 6px 16px color-mix(in srgb, var(--ai-heading) 16%, transparent);
+  .last-searched__products--two {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
-  .ai-smart__chip.is-active::before {
-    content: '';
-    width: 0.45rem;
-    height: 0.45rem;
-    margin-right: 0.5rem;
-    border-radius: 50%;
-    background: currentColor;
-  }
-
-  /* ---------- Product media ---------- */
-  .ai-smart__media {
-    position: relative;
-    overflow: hidden;
-    border-radius: calc(var(--ai-card-radius) + 6px);
+  .last-searched__product {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    padding: 10px;
+    border: 1px solid var(--ls-pill-border);
+    border-radius: var(--ls-radius);
     background: #fff;
-    aspect-ratio: 1.35 / 1;
-    box-shadow:
-      0 1px 0 color-mix(in srgb, var(--ai-heading) 8%, transparent),
-      0 24px 48px -20px color-mix(in srgb, var(--ai-heading) 35%, transparent);
+    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
   }
 
-  .ai-smart__product-link {
-    position: relative;
+  .last-searched__product:hover {
+    transform: translateY(-2px);
+    border-color: color-mix(in srgb, var(--ls-heading) 28%, var(--ls-pill-border));
+    box-shadow: 0 10px 26px rgb(58 30 37 / 7%);
+  }
+
+  .last-searched__product-link {
     display: block;
-    width: 100%;
-    height: 100%;
+    min-width: 0;
     color: inherit;
     text-decoration: none;
   }
 
-  .ai-smart__product-link:focus-visible {
-    outline: 3px solid var(--ai-heading);
-    outline-offset: -3px;
+  .last-searched__product-link:focus-visible,
+  .last-searched__button:focus-visible {
+    outline: 2px solid var(--ls-heading);
+    outline-offset: 3px;
   }
 
-  .ai-smart__image {
+  .last-searched__product-media {
+    position: relative;
+    display: grid;
+    place-items: center;
+    aspect-ratio: 1.18 / 1;
+    overflow: hidden;
+    border-radius: max(0px, calc(var(--ls-radius) - 4px));
+    background: #f7f5f3;
+  }
+
+  .last-searched__image,
+  .last-searched__placeholder {
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    transition: transform 0.8s cubic-bezier(0.22, 1, 0.36, 1);
+    object-fit: contain;
+    transition: transform .35s ease;
   }
 
-  .ai-smart__product-link:hover .ai-smart__image {
-    transform: scale(1.045);
+  .last-searched__product:hover .last-searched__image {
+    transform: scale(1.035);
   }
 
-  .ai-smart__image--placeholder {
-    background: #f3f0ee;
-    color: #cabdbc;
-  }
-
-  .ai-smart__caption {
+  .last-searched__badge {
     position: absolute;
-    inset: auto 0 0 0;
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    gap: 1rem;
-    padding: 3.5rem 1.4rem 1.25rem;
-    background: linear-gradient(to top, rgb(22 8 12 / 0.78), rgb(22 8 12 / 0));
+    top: 9px;
+    left: 9px;
+    padding: 5px 8px;
+    border-radius: 5px;
+    background: var(--ls-heading);
     color: #fff;
+    font-size: 10px;
+    font-weight: 650;
+    line-height: 1;
   }
 
-  .ai-smart__caption-text {
+  .last-searched__product-info {
     display: grid;
-    gap: 0.2rem;
-    min-width: 0;
+    gap: 7px;
+    padding: 12px 2px 10px;
   }
 
-  .ai-smart__caption-title {
+  .last-searched__product-title {
+    display: -webkit-box;
     overflow: hidden;
-    font-size: clamp(1.05rem, 1.6vw, 1.45rem);
-    font-weight: 700;
-    line-height: 1.2;
-    text-overflow: ellipsis;
-    white-space: nowrap;
-  }
-
-  .ai-smart__caption-price {
-    font-size: 0.98rem;
-    opacity: 0.95;
-  }
-
-  .ai-smart__caption-compare {
-    margin-left: 0.4rem;
-    opacity: 0.65;
-  }
-
-  .ai-smart__cta {
-    display: inline-flex;
-    flex: 0 0 auto;
-    align-items: center;
-    gap: 0.45rem;
-    padding: 0.6rem 1.05rem;
-    border-radius: 999px;
-    background: rgb(255 255 255 / 0.94);
-    color: var(--ai-heading);
-    font-size: 0.9rem;
+    margin: 0;
+    color: var(--ls-heading);
+    font-size: 13px;
     font-weight: 600;
-    transition: transform 0.25s ease, gap 0.25s ease;
+    line-height: 1.45;
+    letter-spacing: -.01em;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
-  .ai-smart__product-link:hover .ai-smart__cta {
-    gap: 0.7rem;
-    transform: translateY(-2px);
+  .last-searched__price-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 7px;
   }
 
-  .ai-smart__product-fallback {
-    display: grid;
-    place-items: center;
-    align-content: center;
-    gap: 0.4rem;
-    width: 100%;
-    height: 100%;
-    padding: 1.25rem;
-    background: linear-gradient(180deg, #fff, #f5efeb);
-    text-align: center;
-  }
-
-  .ai-smart__product-name {
-    margin: 0;
-    color: var(--ai-heading);
-    font-size: clamp(1.2rem, 1.8vw, 1.7rem);
+  .last-searched__price {
+    color: var(--ls-heading);
+    font-size: 14px;
     font-weight: 700;
+    line-height: 1.3;
   }
 
-  .ai-smart__product-price {
-    margin: 0;
-    color: var(--ai-text);
-    font-size: 1rem;
+  .last-searched__compare-price {
+    color: var(--ls-text);
+    font-size: 11px;
+    opacity: .65;
   }
 
-  /* ---------- Live updates panel ---------- */
-  .ai-smart__panel {
-    display: flex;
-    flex-direction: column;
-    padding: 1.7rem 1.3rem 1.4rem;
-    border: 1px solid color-mix(in srgb, var(--ai-heading) 9%, transparent);
-    border-radius: calc(var(--ai-card-radius) + 6px);
-    background: linear-gradient(180deg, color-mix(in srgb, var(--ai-panel-bg) 90%, white 10%), var(--ai-panel-bg));
-    animation: ai-smart-rise 0.7s 0.16s cubic-bezier(0.22, 1, 0.36, 1) both;
-  }
-
-  .ai-smart__panel-heading {
-    display: flex;
+  .last-searched__button {
+    display: inline-flex;
     align-items: center;
     justify-content: center;
-    gap: 0.6rem;
-    margin: 0 0 1.4rem;
-    color: var(--ai-panel-heading);
-    font-size: clamp(1.3rem, 1.8vw, 1.8rem);
+    gap: 8px;
+    width: 100%;
+    min-height: 38px;
+    margin-top: auto;
+    padding: 9px 12px;
+    border: 1px solid var(--ls-heading);
+    border-radius: max(4px, calc(var(--ls-radius) - 3px));
+    background: var(--ls-heading);
+    color: #fff;
+    font-size: 12px;
+    font-weight: 600;
     line-height: 1.2;
     text-align: center;
+    text-decoration: none;
+    transition: background .2s ease, color .2s ease;
   }
 
-  .ai-smart__live-dot {
-    position: relative;
+  .last-searched__button:hover {
+    background: transparent;
+    color: var(--ls-heading);
+  }
+
+  .last-searched__button svg {
+    width: 15px;
+    height: 15px;
     flex: 0 0 auto;
-    width: 0.6rem;
-    height: 0.6rem;
-    border-radius: 50%;
-    background: #e5484d;
+    transition: transform .2s ease;
   }
 
-  .ai-smart__live-dot::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    background: inherit;
-    animation: ai-smart-pulse 1.8s ease-out infinite;
+  .last-searched__button:hover svg {
+    transform: translateX(2px);
   }
 
-  .ai-smart__updates {
-    display: grid;
-    flex: 1;
-    grid-auto-rows: 1fr;
-    gap: var(--ai-gap);
-    counter-reset: ai-update;
+  .last-searched__panel {
+    min-width: 0;
+    padding: 20px;
+    border: 1px solid var(--ls-pill-border);
+    border-radius: var(--ls-radius);
+    background: var(--ls-panel-bg);
   }
 
-  .ai-smart__update {
-    position: relative;
-    display: grid;
-    grid-template-columns: auto minmax(0, 1fr);
+  .last-searched__panel-heading {
+    display: flex;
     align-items: center;
-    gap: 0.95rem;
-    padding: 1rem 1.2rem 1rem 1rem;
-    overflow: hidden;
-    border-radius: calc(var(--ai-card-radius) + 4px);
-    background: var(--ai-card-bg);
-    box-shadow: 0 10px 24px -14px color-mix(in srgb, var(--ai-card-text) 40%, transparent);
-    counter-increment: ai-update;
-    transition: transform 0.25s ease, box-shadow 0.25s ease;
-    animation: ai-smart-rise 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
+    gap: 9px;
+    margin: 0 0 16px;
+    color: var(--ls-panel-heading);
+    font-size: 16px;
+    font-weight: 650;
+    line-height: 1.35;
+    letter-spacing: -.02em;
   }
 
-  .ai-smart__update:nth-child(1) { animation-delay: 0.22s; }
-  .ai-smart__update:nth-child(2) { animation-delay: 0.3s; }
-  .ai-smart__update:nth-child(3) { animation-delay: 0.38s; }
-  .ai-smart__update:nth-child(4) { animation-delay: 0.46s; }
-  .ai-smart__update:nth-child(5) { animation-delay: 0.54s; }
+  .last-searched__status-dot {
+    position: relative;
+    width: 7px;
+    height: 7px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: #319b68;
+  }
 
-  .ai-smart__update::before {
-    content: counter(ai-update, decimal-leading-zero);
+  .last-searched__status-dot::after {
+    position: absolute;
+    inset: -3px;
+    border: 1px solid #319b68;
+    border-radius: inherit;
+    content: "";
+    opacity: .4;
+  }
+
+  .last-searched__updates {
+    display: grid;
+    gap: 10px;
+  }
+
+  .last-searched__update {
+    display: grid;
+    grid-template-columns: 28px minmax(0, 1fr);
+    align-items: start;
+    gap: 11px;
+    padding: 13px;
+    border: 1px solid color-mix(in srgb, var(--ls-card-accent) 48%, transparent);
+    border-radius: max(4px, calc(var(--ls-radius) - 3px));
+    background: var(--ls-card-bg);
+  }
+
+  .last-searched__update-marker {
     display: grid;
     place-items: center;
-    width: 2.4rem;
-    height: 2.4rem;
-    border-radius: 50%;
-    background: color-mix(in srgb, var(--ai-card-shadow) 45%, transparent);
-    color: var(--ai-card-text);
-    font-size: 0.78rem;
-    font-weight: 700;
-    letter-spacing: 0.04em;
+    width: 28px;
+    height: 28px;
+    border-radius: 8px;
+    background: color-mix(in srgb, var(--ls-card-accent) 28%, white);
+    color: var(--ls-card-text);
   }
 
-  .ai-smart__update::after {
-    content: '';
-    position: absolute;
-    inset: 0 auto 0 0;
-    width: 4px;
-    background: var(--ai-card-shadow);
-    transition: width 0.25s ease;
+  .last-searched__update-marker svg {
+    width: 15px;
+    height: 15px;
   }
 
-  .ai-smart__update:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 16px 30px -14px color-mix(in srgb, var(--ai-card-text) 45%, transparent);
-  }
-
-  .ai-smart__update:hover::after {
-    width: 7px;
-  }
-
-  .ai-smart__update-body {
+  .last-searched__update-content {
     min-width: 0;
   }
 
-  .ai-smart__update-title {
+  .last-searched__update-title {
     margin: 0;
-    color: var(--ai-card-text);
-    font-size: 1rem;
-    font-weight: 700;
-    line-height: 1.25;
+    color: var(--ls-card-text);
+    font-size: 12px;
+    font-weight: 650;
+    line-height: 1.45;
   }
 
-  .ai-smart__update-text {
-    margin: 0.25rem 0 0;
-    color: var(--ai-card-text);
-    font-size: 0.92rem;
-    line-height: 1.4;
-    opacity: 0.85;
+  .last-searched__update-text {
+    margin: 4px 0 0;
+    color: var(--ls-card-text);
+    font-size: 11px;
+    line-height: 1.55;
+    opacity: .82;
   }
 
-  .ai-smart__empty {
-    margin: 0;
-    color: var(--ai-card-text);
-    font-size: 0.95rem;
-  }
-
-  /* ---------- Responsive ---------- */
-  @media screen and (max-width: 999px) {
-    .ai-smart__body {
-      grid-template-columns: 1fr;
-      gap: 1.5rem;
-    }
-
-    .ai-smart__updates {
-      grid-auto-rows: auto;
-    }
-  }
-
-  @media screen and (max-width: 749px) {
-    .ai-smart__header {
-      margin-bottom: 1.5rem;
-    }
-
-    .ai-smart__chips {
-      gap: 0.5rem;
-      margin-inline: -0.25rem;
-      padding-inline: 0.25rem;
-    }
-
-    .ai-smart__chip {
-      min-height: 2.15rem;
-      padding: 0.4rem 0.95rem;
-      font-size: 0.85rem;
-    }
-
-    .ai-smart__media {
-      aspect-ratio: 1.1 / 1;
-    }
-
-    .ai-smart__caption {
-      padding: 3rem 1rem 1rem;
-    }
-
-    .ai-smart__panel {
-      padding: 1.3rem 1rem 1.1rem;
-    }
-
-    .ai-smart__update {
-      padding: 0.85rem 1rem 0.85rem 0.85rem;
-    }
-  }
-
-  /* ---------- One or two products ---------- */
-  .ai-smart__products {
+  .last-searched__empty {
     display: grid;
-    grid-template-columns: minmax(0, 1fr);
-    gap: var(--ai-gap);
+    justify-items: start;
+    gap: 8px;
+    padding: 28px;
+    border: 1px dashed var(--ls-pill-border);
+    border-radius: var(--ls-radius);
+    background: color-mix(in srgb, var(--ls-panel-bg) 55%, white);
   }
 
-  .ai-smart__products--two {
-    grid-template-columns: repeat(2, minmax(0, 1fr));
+  .last-searched__empty-icon {
+    display: grid;
+    place-items: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: var(--ls-panel-bg);
+    color: var(--ls-heading);
   }
 
-  .ai-smart__products--two .ai-smart__media {
-    aspect-ratio: 0.88 / 1;
+  .last-searched__empty-icon svg {
+    width: 20px;
+    height: 20px;
   }
 
-  .ai-smart__products--two .ai-smart__caption {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 0.75rem;
+  .last-searched__empty h3 {
+    margin: 0;
+    color: var(--ls-heading);
+    font-size: 15px;
+    font-weight: 650;
   }
 
-  .ai-smart__products--two .ai-smart__caption-title {
-    max-width: 100%;
-    font-size: clamp(1rem, 1.3vw, 1.2rem);
+  .last-searched__empty p {
+    max-width: 42ch;
+    margin: 0;
+    color: var(--ls-text);
+    font-size: 12px;
+    line-height: 1.6;
+  }
+
+  @media screen and (min-width: 750px) and (max-width: 1100px) {
+    .last-searched__inner {
+      width: calc(100% - 64px);
+    }
+
+    .last-searched__layout {
+      grid-template-columns: minmax(0, 1.3fr) minmax(240px, .9fr);
+      gap: 16px;
+    }
+
+    .last-searched__panel {
+      padding: 16px;
+    }
+
+    .last-searched__products--two {
+      gap: 10px;
+    }
+
+    .last-searched__product {
+      padding: 8px;
+    }
   }
 
   @media screen and (max-width: 749px) {
-    .ai-smart__products--two .ai-smart__media {
-      aspect-ratio: 0.78 / 1;
+    .last-searched__inner {
+      width: calc(100% - 48px);
     }
 
-    .ai-smart__products--two .ai-smart__caption {
-      padding: 2.5rem 0.8rem 0.8rem;
+    .last-searched__header {
+      margin-bottom: 16px;
     }
 
-    .ai-smart__products--two .ai-smart__caption-title {
-      font-size: 0.95rem;
-      white-space: normal;
-      display: -webkit-box;
-      -webkit-line-clamp: 2;
-      -webkit-box-orient: vertical;
+    .last-searched__heading {
+      font-size: clamp(23px, 6vw, 29px);
     }
 
-    .ai-smart__products--two .ai-smart__caption-price {
-      font-size: 0.88rem;
+    .last-searched__subheading {
+      font-size: 12px;
     }
 
-    .ai-smart__products--two .ai-smart__cta {
-      display: none;
+    .last-searched__layout {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 16px;
+    }
+
+    .last-searched__chips {
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .last-searched__chip {
+      min-height: 28px;
+      padding: 5px 9px;
+      font-size: 10px;
+    }
+
+    .last-searched__products {
+      gap: 10px;
+    }
+
+    .last-searched__products--two {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .last-searched__product {
+      padding: 7px;
+    }
+
+    .last-searched__product-media {
+      aspect-ratio: .92 / 1;
+    }
+
+    .last-searched__product-info {
+      gap: 5px;
+      padding: 9px 1px;
+    }
+
+    .last-searched__product-title {
+      font-size: 12px;
+    }
+
+    .last-searched__price {
+      font-size: 12px;
+    }
+
+    .last-searched__compare-price {
+      font-size: 10px;
+    }
+
+    .last-searched__button {
+      min-height: 35px;
+      gap: 5px;
+      padding: 8px 5px;
+      font-size: 11px;
+    }
+
+    .last-searched__panel {
+      padding: 15px;
+    }
+
+    .last-searched__panel-heading {
+      margin-bottom: 12px;
+      font-size: 15px;
+    }
+
+    .last-searched__updates {
+      gap: 8px;
+    }
+
+    .last-searched__update {
+      padding: 11px;
     }
   }
 
-  /* ---------- Motion ---------- */
-  @keyframes ai-smart-rise {
-    from { opacity: 0; transform: translateY(16px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  @media screen and (max-width: 360px) {
+    .last-searched__inner {
+      width: calc(100% - 32px);
+    }
 
-  @keyframes ai-smart-pulse {
-    0% { opacity: 0.7; transform: scale(1); }
-    100% { opacity: 0; transform: scale(2.8); }
+    .last-searched__products--two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .last-searched__product-media {
+      aspect-ratio: 1.2 / 1;
+    }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .ai-smart__header,
-    .ai-smart__left,
-    .ai-smart__panel,
-    .ai-smart__update,
-    .ai-smart__live-dot::after {
-      animation: none;
-    }
-
-    .ai-smart__image,
-    .ai-smart__cta,
-    .ai-smart__chip,
-    .ai-smart__update {
-      transition: none;
+    .last-searched *,
+    .last-searched *::before,
+    .last-searched *::after {
+      transition-duration: .01ms !important;
+      animation-duration: .01ms !important;
     }
   }
 {% endstylesheet %}
 
 {% schema %}
 {
-  "name": "AI smart section",
+  "name": "Last searched products",
   "tag": "section",
   "class": "section-wrapper",
   "settings": [
     {
       "type": "text",
       "id": "eyebrow",
-      "label": "Small label above heading"
+      "label": "Small label above heading",
+      "default": "PICKED FOR YOU"
     },
     {
       "type": "text",
       "id": "heading",
       "label": "Heading",
-      "default": "AI Smart Recommendations"
+      "default": "Products to explore"
     },
     {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
-      "default": "Personalized for you based on your preferences"
+      "default": "Discover selected products from the Bluekites collection."
     },
     {
       "type": "product",
       "id": "main_product",
-      "label": "Main product"
+      "label": "First product"
     },
     {
       "type": "product",
@@ -753,22 +757,16 @@
       "label": "Second product (optional)"
     },
     {
-      "type": "checkbox",
-      "id": "show_product_caption",
-      "label": "Show product name and price on image",
-      "default": true
-    },
-    {
       "type": "text",
       "id": "button_label",
-      "label": "Image button label",
-      "default": "Shop now"
+      "label": "Product button label",
+      "default": "View product"
     },
     {
       "type": "text",
       "id": "panel_heading",
-      "label": "Panel heading",
-      "default": "Live Updates"
+      "label": "Information panel heading",
+      "default": "The Bluekites difference"
     },
     {
       "type": "color_scheme",
@@ -795,43 +793,43 @@
     {
       "type": "color",
       "id": "text_color",
-      "label": "Subheading color",
-      "default": "#4A2A30"
+      "label": "Supporting text color",
+      "default": "#5C454A"
     },
     {
       "type": "color",
       "id": "pill_background",
-      "label": "Pill background",
+      "label": "Highlight background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "pill_text_color",
-      "label": "Pill text color",
+      "label": "Highlight text",
       "default": "#5A3B41"
     },
     {
       "type": "color",
       "id": "pill_border_color",
-      "label": "Pill border color",
-      "default": "#B99EA3"
+      "label": "Border color",
+      "default": "#E5DCDD"
     },
     {
       "type": "color",
       "id": "pill_active_background",
-      "label": "Active pill background",
+      "label": "Active highlight background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "pill_active_text_color",
-      "label": "Active pill text color",
+      "label": "Active highlight text",
       "default": "#3A1E25"
     },
     {
       "type": "color",
       "id": "panel_background",
-      "label": "Panel background",
+      "label": "Information panel background",
       "default": "#F8F5F2"
     },
     {
@@ -843,19 +841,19 @@
     {
       "type": "color",
       "id": "update_card_background",
-      "label": "Update card background",
+      "label": "Information card background",
       "default": "#FFFFFF"
     },
     {
       "type": "color",
       "id": "update_card_text_color",
-      "label": "Update card text color",
+      "label": "Information card text",
       "default": "#4A2A30"
     },
     {
       "type": "color",
       "id": "update_card_shadow_color",
-      "label": "Update card accent color",
+      "label": "Information card accent",
       "default": "#D1C2B0"
     },
     {
@@ -865,53 +863,58 @@
     {
       "type": "range",
       "id": "pill_radius",
-      "label": "Pill radius",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "default": 20
+      "label": "Highlight corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 16
     },
     {
       "type": "range",
       "id": "card_radius",
-      "label": "Update card radius",
-      "min": 8,
-      "max": 40,
-      "step": 1,
-      "default": 18
+      "label": "Card corner radius",
+      "min": 0,
+      "max": 24,
+      "step": 2,
+      "unit": "px",
+      "default": 10
     },
     {
       "type": "range",
       "id": "content_gap",
-      "label": "Gap between update cards",
-      "min": 12,
-      "max": 40,
+      "label": "Information card gap",
+      "min": 8,
+      "max": 28,
       "step": 2,
-      "default": 18
+      "unit": "px",
+      "default": 10
     },
     {
       "type": "range",
       "id": "padding_top",
       "label": "Top padding",
       "min": 0,
-      "max": 160,
+      "max": 120,
       "step": 4,
-      "default": 56
+      "unit": "px",
+      "default": 32
     },
     {
       "type": "range",
       "id": "padding_bottom",
       "label": "Bottom padding",
       "min": 0,
-      "max": 160,
+      "max": 120,
       "step": 4,
-      "default": 56
+      "unit": "px",
+      "default": 32
     }
   ],
   "blocks": [
     {
       "type": "chip",
-      "name": "Filter pill",
+      "name": "Highlight label",
       "settings": [
         {
           "type": "text",
@@ -923,26 +926,26 @@
     },
     {
       "type": "update",
-      "name": "Live update",
+      "name": "Information card",
       "settings": [
         {
           "type": "text",
           "id": "title",
           "label": "Title",
-          "default": "Free Worldwide Shipping"
+          "default": "Quality you can trust"
         },
         {
           "type": "textarea",
           "id": "text",
-          "label": "Text",
-          "default": "On orders above $500 across selected regions."
+          "label": "Description",
+          "default": "Carefully selected products from trusted suppliers."
         }
       ]
     }
   ],
   "presets": [
     {
-      "name": "AI smart section",
+      "name": "Last searched products",
       "blocks": [
         {
           "type": "chip",
@@ -953,48 +956,21 @@
         {
           "type": "chip",
           "settings": {
-            "label": "You may Like"
-          }
-        },
-        {
-          "type": "chip",
-          "settings": {
-            "label": "AI Picked for you"
+            "label": "Quality Assured"
           }
         },
         {
           "type": "update",
           "settings": {
-            "title": "Free Worldwide Shipping",
-            "text": "On orders above $500 across selected regions."
+            "title": "Trusted product selection",
+            "text": "Explore products selected for quality and value."
           }
         },
         {
           "type": "update",
           "settings": {
-            "title": "Trending Now",
-            "text": "Smart Home Devices at exclusive global prices."
-          }
-        },
-        {
-          "type": "update",
-          "settings": {
-            "title": "New Launch",
-            "text": "Luxury Watch Collection with premium craftsmanship"
-          }
-        },
-        {
-          "type": "update",
-          "settings": {
-            "title": "Limited-Time Offer",
-            "text": "Premium Health Monitors now available at 30% OFF."
-          }
-        },
-        {
-          "type": "update",
-          "settings": {
-            "title": "Just Arrived",
-            "text": "Designer Fashion Collection 2026 now live."
+            "title": "Support when you need it",
+            "text": "Our team is here to help with product enquiries."
           }
         }
       ]
@@ -1002,3 +978,8 @@
   ]
 }
 {% endschema %}
+'''
+path = "/mnt/data/last-searched-products.liquid"
+with open(path, "w", encoding="utf-8") as f:
+    f.write(content)
+print(f"Created {path} ({len(content.splitlines())} lines, {len(content)} characters).")

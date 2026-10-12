@@ -1,414 +1,343 @@
-{% liquid
-  assign total_blocks = section.blocks.size
-  assign grid_columns = total_blocks | at_most: 4
-  assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-  assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
-
-  assign has_isolated_grid_item_desktop = false
-  assign has_isolated_grid_item_tablet = false
-
-  if total_blocks > 4 and last_row_count == 1
-    assign has_isolated_grid_item_desktop = true
-  endif
-
-  if total_blocks == 5
-    assign has_isolated_grid_item_tablet = true
-  endif
-%}
-
+<div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div
-  class="bk-footer"
-  style="
-    --bk-top: {{ section.settings.top_bar_color }};
-    --bk-main: {{ section.settings.main_color }};
-    --bk-bottom: {{ section.settings.bottom_color }};
-    --bk-accent: {{ section.settings.accent_color }};
-    --bk-blue: {{ section.settings.trust_icon_color }};
-    --color-foreground: #ffffff;
-    --color-foreground-rgb: 255 255 255;
-    --color-background: {{ section.settings.main_color }};
-    --color-border: rgb(255 255 255 / 0.14);
-    --color-border-rgb: 255 255 255;
-  "
+  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }} bk-footer"
 >
-  {% if section.settings.show_back_to_top %}
-    <button class="bk-footer__top" type="button" data-bk-back-to-top>
-      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
-      <span>Back to top</span>
-    </button>
-  {% endif %}
+  {% liquid
+    assign total_blocks = section.blocks.size
+    assign grid_columns = total_blocks | at_most: 4
+    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
+    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
 
-  <div class="bk-footer__main">
-    <div class="section section--{{ section.settings.section_width }}">
-      {% if section.settings.show_trust_strip %}
-        <ul class="bk-trust" role="list">
-          <li class="bk-trust__item">
-            <span class="bk-trust__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>
-            </span>
-            <span class="bk-trust__text">
-              <strong>{{ section.settings.trust_1_title | escape }}</strong>
-              <span>{{ section.settings.trust_1_text | escape }}</span>
-            </span>
-          </li>
-          <li class="bk-trust__item">
-            <span class="bk-trust__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
-            </span>
-            <span class="bk-trust__text">
-              <strong>{{ section.settings.trust_2_title | escape }}</strong>
-              <span>{{ section.settings.trust_2_text | escape }}</span>
-            </span>
-          </li>
-          <li class="bk-trust__item">
-            <span class="bk-trust__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4.5h-4.5"/></svg>
-            </span>
-            <span class="bk-trust__text">
-              <strong>{{ section.settings.trust_3_title | escape }}</strong>
-              <span>{{ section.settings.trust_3_text | escape }}</span>
-            </span>
-          </li>
-          <li class="bk-trust__item">
-            <span class="bk-trust__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20a3 3 0 0 1-3 2h-2"/></svg>
-            </span>
-            <span class="bk-trust__text">
-              <strong>{{ section.settings.trust_4_title | escape }}</strong>
-              <span>{{ section.settings.trust_4_text | escape }}</span>
-            </span>
-          </li>
-        </ul>
-      {% endif %}
+    assign has_isolated_grid_item_desktop = false
+    assign has_isolated_grid_item_tablet = false
 
-      <div
-        class="
-          footer-content
-          spacing-style
-          {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-          {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-        "
-        style="
-          {% render 'spacing-style', settings: section.settings %}
-          --footer-gap: {{ section.settings.gap }}px;
-          --grid-columns: {{ grid_columns }};
-          --last-row-count: {{ last_row_count }};
-          --tablet-last-row-count: {{ tablet_last_row_count }};
-        "
-      >
-        {% content_for 'blocks' %}
-      </div>
-    </div>
+    if total_blocks > 4 and last_row_count == 1
+      assign has_isolated_grid_item_desktop = true
+    endif
+
+    if total_blocks == 5
+      assign has_isolated_grid_item_tablet = true
+    endif
+  %}
+
+  <div
+    class="
+      footer-content
+      bk-footer__content
+      spacing-style
+      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
+      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
+    "
+    style="
+      {% render 'spacing-style', settings: section.settings %}
+      --footer-gap: {{ section.settings.gap }}px;
+      --grid-columns: {{ grid_columns }};
+      --last-row-count: {{ last_row_count }};
+      --tablet-last-row-count: {{ tablet_last_row_count }};
+    "
+  >
+    {% content_for 'blocks' %}
   </div>
 
   <div class="bk-footer__bottom">
-    <div class="section section--{{ section.settings.section_width }}">
-      <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright | escape }}</p>
-    </div>
+    <p class="bk-footer__copyright">© {{ 'now' | date: '%Y' }} Bluekites. All rights reserved.</p>
+    {% if shop.policies.size > 0 %}
+      <nav class="bk-footer__legal" aria-label="Legal">
+        {% for policy in shop.policies %}
+          {% if policy != blank %}
+            <a href="{{ policy.url }}">{{ policy.title | escape }}</a>
+          {% endif %}
+        {% endfor %}
+      </nav>
+    {% endif %}
   </div>
 </div>
 
-<script>
-  (() => {
-    if (window.__bkBackToTopBound) return;
-    window.__bkBackToTopBound = true;
-    document.addEventListener('click', (e) => {
-      if (!e.target.closest('[data-bk-back-to-top]')) return;
-      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-    });
-  })();
-</script>
-
 {% stylesheet %}
+  /* Full-bleed footer background; keep all existing Shopify content blocks intact. */
+  .section.bk-footer {
+    width: 100vw !important;
+    max-width: none !important;
+    margin-inline: calc(50% - 50vw) !important;
+    padding-inline: 0 !important;
+    overflow: hidden;
+  }
+
   .bk-footer {
-    display: block;
-    width: 100%;
-    background: var(--bk-main);
-    color: #d5dbe3;
-  }
-
-  /* ---------- Back to top ---------- */
-  .bk-footer__top {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    width: 100%;
-    padding: 14px 16px;
-    border: 0;
-    background: var(--bk-top);
-    color: #ffffff;
-    font: inherit;
-    font-size: 0.8125rem;
-    font-weight: 500;
-    letter-spacing: 0.02em;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-  }
-
-  .bk-footer__top:hover {
-    background: color-mix(in srgb, var(--bk-top) 85%, #ffffff);
-  }
-
-  /* ---------- Trust strip ---------- */
-  .bk-trust {
-    display: grid;
-    grid-template-columns: repeat(2, 1fr);
-    gap: 12px;
-    margin: 0;
-    padding: 32px 0 8px;
-    list-style: none;
-  }
-
-  .bk-trust__item {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-    padding: 14px;
-    border: 1px solid rgb(255 255 255 / 0.1);
-    border-radius: 12px;
-    background: rgb(255 255 255 / 0.03);
-    transition: border-color 0.2s ease, background-color 0.2s ease;
-  }
-
-  .bk-trust__item:hover {
-    border-color: rgb(255 255 255 / 0.22);
-    background: rgb(255 255 255 / 0.06);
-  }
-
-  .bk-trust__icon {
-    display: grid;
-    place-items: center;
-    flex: 0 0 auto;
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    background: var(--bk-blue);
-    color: #ffffff;
-  }
-
-  .bk-trust__icon svg {
-    width: 22px;
-    height: 22px;
-  }
-
-  .bk-trust__text {
-    display: flex;
-    flex-direction: column;
-    gap: 2px;
-    min-width: 0;
-    font-size: 0.8125rem;
-    line-height: 1.35;
-    color: #aab4c0;
-  }
-
-  .bk-trust__text strong {
-    color: #ffffff;
-    font-size: 0.9375rem;
-    font-weight: 600;
-  }
-
-  /* ---------- Main grid ---------- */
-  .footer-content {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: var(--footer-gap);
-    align-items: start;
-  }
-
-  .bk-footer .footer-content {
-    row-gap: 36px;
-  }
-
-  /* Column headings: Amazon-style, small and bold, orange accent bar */
-  .bk-footer .footer-content :is(h1, h2, h3, h4, h5, h6),
-  .bk-footer .footer-content .menu__heading,
-  .bk-footer .footer-content .menu__heading__default {
+    --bk-footer-bg: #10363d;
+    --bk-footer-bg-deep: #0c2e35;
+    --bk-footer-text: #d1e0e2;
+    --bk-footer-heading: #f6fbfb;
+    --bk-footer-muted: #b5cbd0;
+    --bk-footer-line: rgba(207, 226, 229, .18);
+    --bk-footer-accent: #b98245;
     position: relative;
-    margin: 0 0 18px !important;
-    padding-bottom: 12px;
-    color: #ffffff !important;
-    font-family: inherit !important;
-    font-size: 1rem !important;
-    font-weight: 600 !important;
-    letter-spacing: 0.02em;
-    line-height: 1.3 !important;
-    text-transform: none;
+    isolation: isolate;
+    color: var(--bk-footer-text);
+    background: var(--bk-footer-bg) !important;
+    border: 0 !important;
   }
 
-  .bk-footer .footer-content :is(h1, h2, h3, h4, h5, h6)::after,
-  .bk-footer .footer-content .menu__heading::after,
-  .bk-footer .footer-content .menu__heading__default::after {
+  .bk-footer,
+  .bk-footer * { box-sizing: border-box; }
+
+  .bk-footer .bk-footer__content {
+    display: grid;
+    grid-template-columns: minmax(250px, 1.35fr) minmax(170px, .8fr) minmax(170px, .8fr) minmax(250px, 1.05fr);
+    align-items: start;
+    gap: clamp(30px, 4vw, 76px);
+    width: min(100% - 112px, 1740px);
+    max-width: 1740px;
+    margin-inline: auto;
+    padding: clamp(58px, 6vw, 100px) 0 clamp(44px, 5vw, 76px);
+    contain: none;
+    content-visibility: visible;
+  }
+
+  .bk-footer .bk-footer__content > * {
+    min-width: 0;
+    align-self: start;
+    justify-self: stretch;
+  }
+
+  .bk-footer .bk-footer__content h2,
+  .bk-footer .bk-footer__content h3,
+  .bk-footer .bk-footer__content h4,
+  .bk-footer .bk-footer__content .menu__heading,
+  .bk-footer .bk-footer__content .menu__heading__default {
+    position: relative;
+    margin: 0 0 28px;
+    padding: 0 0 14px;
+    color: var(--bk-footer-heading) !important;
+    font-family: inherit;
+    font-size: clamp(20px, 1.35vw, 26px);
+    font-weight: 600;
+    line-height: 1.25;
+    letter-spacing: -.02em;
+    text-wrap: balance;
+  }
+
+  .bk-footer .bk-footer__content h2::after,
+  .bk-footer .bk-footer__content h3::after,
+  .bk-footer .bk-footer__content h4::after,
+  .bk-footer .bk-footer__content .menu__heading::after,
+  .bk-footer .bk-footer__content .menu__heading__default::after {
     content: '';
     position: absolute;
-    left: 0;
+    inset-inline-start: 0;
     bottom: 0;
-    width: 32px;
-    height: 3px;
+    width: 34px;
+    height: 2px;
     border-radius: 2px;
-    background: var(--bk-accent);
+    background: var(--bk-footer-accent);
   }
 
-  /* Links */
-  .bk-footer .footer-content a {
-    color: #cfd6df;
-    font-size: 0.9375rem;
-    line-height: 1.5;
+  .bk-footer .bk-footer__content p {
+    margin: 0 0 18px;
+    color: var(--bk-footer-muted) !important;
+    font-size: 14px;
+    line-height: 1.8;
+  }
+
+  .bk-footer .bk-footer__content a {
+    color: var(--bk-footer-text) !important;
     text-decoration: none;
-    transition: color 0.15s ease, transform 0.15s ease;
+    text-underline-offset: 4px;
+    transition: color 180ms ease, opacity 180ms ease;
   }
 
-  .bk-footer .footer-content a:hover {
-    color: #ffffff;
+  .bk-footer .bk-footer__content a:hover {
+    color: #e2b77f !important;
+    text-decoration: none;
   }
 
-  .bk-footer .footer-content :is(ul, ol) {
+  .bk-footer .bk-footer__content a:focus-visible,
+  .bk-footer__bottom a:focus-visible {
+    outline: 2px solid var(--bk-footer-accent);
+    outline-offset: 4px;
+    border-radius: 3px;
+  }
+
+  .bk-footer .bk-footer__content ul,
+  .bk-footer .bk-footer__content ol {
+    display: grid;
+    gap: 15px;
     margin: 0;
     padding: 0;
     list-style: none;
   }
 
-  .bk-footer .footer-content li {
+  .bk-footer .bk-footer__content li {
     margin: 0;
-  }
-
-  .bk-footer .footer-content li > a {
-    display: inline-block;
-    padding-block: 5px;
-  }
-
-  .bk-footer .footer-content li > a:hover {
-    transform: translateX(3px);
-    color: var(--bk-accent);
-  }
-
-  /* Contact text */
-  .bk-footer .footer-content p {
-    margin: 0 0 8px;
-    color: #cfd6df;
-    font-size: 0.9375rem;
+    color: var(--bk-footer-text);
+    font-size: 14px;
     line-height: 1.6;
   }
 
-  .bk-footer .footer-content strong,
-  .bk-footer .footer-content b {
-    color: #ffffff;
+  /* Preserve the theme's configured logo dimensions; only prevent overflow. */
+  .bk-footer .bk-footer__content img,
+  .bk-footer .bk-footer__content svg {
+    max-width: 100%;
+  }
+
+  .bk-footer .bk-footer__content input:not([type='checkbox']):not([type='radio']),
+  .bk-footer .bk-footer__content select,
+  .bk-footer .bk-footer__content textarea {
+    width: 100%;
+    min-height: 48px;
+    padding: 12px 15px;
+    border: 1px solid rgba(207, 226, 229, .35);
+    border-radius: 2px;
+    background: #f7f8f6;
+    color: #183a40;
+    font: inherit;
+  }
+
+  .bk-footer .bk-footer__content button,
+  .bk-footer .bk-footer__content input[type='submit'] {
+    min-height: 46px;
+    padding: 11px 20px;
+    border: 1px solid var(--bk-footer-accent);
+    border-radius: 2px;
+    background: var(--bk-footer-accent);
+    color: #fff;
+    font-size: 13px;
     font-weight: 600;
+    cursor: pointer;
+    transition: background 180ms ease, transform 180ms ease;
   }
 
-  /* Logo sits on a clean white tile so it stays legible on navy */
-  .bk-footer .footer-content img {
-    padding: 12px 16px;
-    border-radius: 14px;
-    background: #ffffff;
-    box-shadow: 0 6px 18px rgb(0 0 0 / 0.25);
+  .bk-footer .bk-footer__content button:hover,
+  .bk-footer .bk-footer__content input[type='submit']:hover {
+    background: #a56f37;
+    transform: translateY(-1px);
   }
 
-  /* Social icons: circular outline buttons */
-  .bk-footer .footer-content a:has(svg):not(:has(img)) {
-    display: inline-grid;
-    place-items: center;
-    width: 40px;
-    height: 40px;
-    border: 1px solid rgb(255 255 255 / 0.22);
+  .bk-footer .bk-footer__content .social-links,
+  .bk-footer .bk-footer__content .social-links__list {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 14px;
+  }
+
+  .bk-footer .bk-footer__content .social-links a,
+  .bk-footer .bk-footer__content .social-links__link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 38px;
+    height: 38px;
+    border: 1px solid var(--bk-footer-line);
     border-radius: 50%;
-    color: #ffffff;
-    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+    background: transparent;
+    color: var(--bk-footer-heading) !important;
   }
 
-  .bk-footer .footer-content a:has(svg):not(:has(img)):hover {
-    border-color: var(--bk-accent);
-    background: var(--bk-accent);
-    color: #111111;
-    transform: translateY(-2px);
+  .bk-footer .bk-footer__content .social-links a:hover,
+  .bk-footer .bk-footer__content .social-links__link:hover {
+    border-color: var(--bk-footer-accent);
+    background: var(--bk-footer-accent);
+    color: #fff !important;
   }
 
-  .bk-footer .footer-content a:has(svg):not(:has(img)) svg {
-    width: 18px;
-    height: 18px;
+  .bk-footer .bk-footer__content .payment-icons,
+  .bk-footer .bk-footer__content .list-payment {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
   }
 
-  /* Focus */
-  .bk-footer a:focus-visible,
-  .bk-footer button:focus-visible {
-    outline: 2px solid var(--bk-accent);
-    outline-offset: 3px;
-    border-radius: 6px;
-  }
-
-  /* ---------- Bottom bar ---------- */
   .bk-footer__bottom {
-    background: var(--bk-bottom);
-    border-top: 1px solid rgb(255 255 255 / 0.08);
-  }
-
-  .footer-copyright {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: center;
+    gap: 14px 28px;
+    width: 100%;
+    max-width: none;
     margin: 0;
-    padding: 18px 0;
-    text-align: center;
-    color: #9aa5b1;
-    font-size: 0.8125rem;
-    line-height: 1.4;
+    padding: 24px max(56px, calc((100% - 1740px) / 2));
+    border-top: 1px solid var(--bk-footer-line);
+    background: var(--bk-footer-bg-deep);
   }
 
-  /* ---------- Responsive ---------- */
-  @media screen and (min-width: 750px) {
-    .bk-trust {
-      grid-template-columns: repeat(4, 1fr);
-      gap: 16px;
-      padding-top: 40px;
-    }
+  .bk-footer__copyright {
+    margin: 0;
+    color: var(--bk-footer-muted);
+    font-size: 13px;
+    line-height: 1.6;
   }
 
-  @media screen and (min-width: 750px) and (max-width: 989px) {
-    .footer-content {
-      grid-template-columns: repeat(min(var(--grid-columns), 3), 1fr);
-      grid-auto-flow: row;
-    }
-
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: repeat(2, 1fr);
-    }
-
-    .footer-content--isolated-grid-item-tablet > :last-child {
-      grid-column: 1 / -1;
-    }
+  .bk-footer__legal {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px 24px;
   }
 
-  @media screen and (min-width: 990px) {
-    .footer-content {
-      grid-template-columns: repeat(var(--grid-columns), 1fr);
-    }
+  .bk-footer__legal a {
+    color: var(--bk-footer-muted) !important;
+    font-size: 13px;
+    line-height: 1.6;
+    text-decoration: none;
+  }
 
-    /* 4 blocks: wider brand and contact columns, slimmer link columns */
-    .footer-content[style*='--grid-columns: 4'] {
-      grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
-      column-gap: 48px;
-    }
+  .bk-footer__legal a:hover {
+    color: #e2b77f !important;
+  }
 
-    .footer-content[style*='--grid-columns: 1'] {
-      justify-items: center;
+  @media screen and (min-width: 750px) and (max-width: 1099px) {
+    .bk-footer .bk-footer__content {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 42px 48px;
+      width: calc(100% - 72px);
+      padding-block: 54px 44px;
     }
-
-    .footer-content--isolated-grid-item-desktop > :last-child {
-      grid-column: 1 / -1;
-    }
+    .bk-footer__bottom { padding-inline: 36px; }
   }
 
   @media screen and (max-width: 749px) {
-    .bk-trust__item {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 10px;
+    .bk-footer .bk-footer__content {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 36px 24px;
+      width: calc(100% - 40px);
+      padding-block: 42px 34px;
     }
+    .bk-footer .bk-footer__content h2,
+    .bk-footer .bk-footer__content h3,
+    .bk-footer .bk-footer__content h4,
+    .bk-footer .bk-footer__content .menu__heading,
+    .bk-footer .bk-footer__content .menu__heading__default {
+      margin-bottom: 20px;
+      font-size: 20px;
+    }
+    .bk-footer .bk-footer__content p,
+    .bk-footer .bk-footer__content li { font-size: 13px; }
+    .bk-footer .bk-footer__content ul,
+    .bk-footer .bk-footer__content ol { gap: 12px; }
+    .bk-footer__bottom {
+      justify-content: center;
+      text-align: center;
+      padding: 20px;
+    }
+    .bk-footer__legal { justify-content: center; }
+  }
+
+  @media screen and (max-width: 480px) {
+    .bk-footer .bk-footer__content {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 30px;
+      width: calc(100% - 40px);
+    }
+    .bk-footer .bk-footer__content > * { width: 100%; }
+    .bk-footer__bottom { padding-inline: 20px; }
   }
 
   @media (prefers-reduced-motion: reduce) {
-    .bk-footer *,
-    .bk-footer *::before,
-    .bk-footer *::after {
-      transition: none !important;
+    .bk-footer *, .bk-footer *::before, .bk-footer *::after {
+      scroll-behavior: auto !important;
+      transition-duration: .01ms !important;
+      animation-duration: .01ms !important;
     }
   }
 {% endstylesheet %}
@@ -455,115 +384,13 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 24
+      "default": 0
     },
     {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "top_bar_color",
-      "label": "Back to top bar",
-      "default": "#37475a"
-    },
-    {
-      "type": "color",
-      "id": "main_color",
-      "label": "Main background",
-      "default": "#232f3e"
-    },
-    {
-      "type": "color",
-      "id": "bottom_color",
-      "label": "Copyright bar",
-      "default": "#131921"
-    },
-    {
-      "type": "color",
-      "id": "accent_color",
-      "label": "Accent (underlines, hover)",
-      "default": "#ff9900"
-    },
-    {
-      "type": "color",
-      "id": "trust_icon_color",
-      "label": "Trust icon background",
-      "default": "#2874f0"
-    },
-    {
-      "type": "header",
-      "content": "Extras"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_back_to_top",
-      "label": "Show back to top bar",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "copyright",
-      "label": "Copyright text",
-      "default": "Bluekites | All rights reserved"
-    },
-    {
-      "type": "header",
-      "content": "Trust strip"
-    },
-    {
-      "type": "checkbox",
-      "id": "show_trust_strip",
-      "label": "Show trust strip",
-      "default": true
-    },
-    {
-      "type": "text",
-      "id": "trust_1_title",
-      "label": "Item 1 title",
-      "default": "Genuine Products"
-    },
-    {
-      "type": "text",
-      "id": "trust_1_text",
-      "label": "Item 1 text",
-      "default": "Sourced from trusted suppliers"
-    },
-    {
-      "type": "text",
-      "id": "trust_2_title",
-      "label": "Item 2 title",
-      "default": "Secure Payments"
-    },
-    {
-      "type": "text",
-      "id": "trust_2_text",
-      "label": "Item 2 text",
-      "default": "Safe and encrypted checkout"
-    },
-    {
-      "type": "text",
-      "id": "trust_3_title",
-      "label": "Item 3 title",
-      "default": "Easy Returns"
-    },
-    {
-      "type": "text",
-      "id": "trust_3_text",
-      "label": "Item 3 text",
-      "default": "See our refund and return policy"
-    },
-    {
-      "type": "text",
-      "id": "trust_4_title",
-      "label": "Item 4 title",
-      "default": "Customer Support"
-    },
-    {
-      "type": "text",
-      "id": "trust_4_text",
-      "label": "Item 4 text",
-      "default": "We are here to help"
+      "type": "color_scheme",
+      "id": "color_scheme",
+      "label": "t:settings.color_scheme",
+      "default": "scheme-1"
     },
     {
       "type": "header",
@@ -577,7 +404,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 24
+      "default": 20
     },
     {
       "type": "range",
@@ -587,7 +414,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 40
+      "default": 20
     }
   ],
   "presets": [
@@ -595,9 +422,10 @@
       "name": "t:names.footer",
       "category": "t:categories.footer",
       "settings": {
-        "gap": 24,
-        "padding-block-start": 24,
-        "padding-block-end": 40
+        "gap": 0,
+        "color_scheme": "scheme-1",
+        "padding-block-start": 20,
+        "padding-block-end": 20
       },
       "blocks": {
         "newsletter-group": {

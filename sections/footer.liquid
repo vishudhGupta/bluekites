@@ -1,83 +1,364 @@
+{% liquid
+  assign total_blocks = section.blocks.size
+  assign grid_columns = total_blocks | at_most: 4
+  assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
+  assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
 
+  assign has_isolated_grid_item_desktop = false
+  assign has_isolated_grid_item_tablet = false
 
-<div class="section-background color-{{ section.settings.color_scheme }}"></div>
+  if total_blocks > 4 and last_row_count == 1
+    assign has_isolated_grid_item_desktop = true
+  endif
+
+  if total_blocks == 5
+    assign has_isolated_grid_item_tablet = true
+  endif
+%}
+
 <div
-  class="section section--{{ section.settings.section_width }} color-{{ section.settings.color_scheme }}"
+  class="bk-footer"
+  style="
+    --bk-top: {{ section.settings.top_bar_color }};
+    --bk-main: {{ section.settings.main_color }};
+    --bk-bottom: {{ section.settings.bottom_color }};
+    --bk-accent: {{ section.settings.accent_color }};
+    --bk-blue: {{ section.settings.trust_icon_color }};
+    --color-foreground: #ffffff;
+    --color-foreground-rgb: 255 255 255;
+    --color-background: {{ section.settings.main_color }};
+    --color-border: rgb(255 255 255 / 0.14);
+    --color-border-rgb: 255 255 255;
+  "
 >
-  {% liquid
-    assign total_blocks = section.blocks.size
+  {% if section.settings.show_back_to_top %}
+    <button class="bk-footer__top" type="button" data-bk-back-to-top>
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+      <span>Back to top</span>
+    </button>
+  {% endif %}
 
-    # Grid layout calculations
-    assign grid_columns = total_blocks | at_most: 4
+  <div class="bk-footer__main">
+    <div class="section section--{{ section.settings.section_width }}">
+      {% if section.settings.show_trust_strip %}
+        <ul class="bk-trust" role="list">
+          <li class="bk-trust__item">
+            <span class="bk-trust__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3 4.5 6v5.5c0 4.5 3.2 8.2 7.5 9.5 4.3-1.3 7.5-5 7.5-9.5V6L12 3Z"/><path d="m9 12 2 2 4-4"/></svg>
+            </span>
+            <span class="bk-trust__text">
+              <strong>{{ section.settings.trust_1_title | escape }}</strong>
+              <span>{{ section.settings.trust_1_text | escape }}</span>
+            </span>
+          </li>
+          <li class="bk-trust__item">
+            <span class="bk-trust__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4.5" y="10.5" width="15" height="10" rx="2"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5"/></svg>
+            </span>
+            <span class="bk-trust__text">
+              <strong>{{ section.settings.trust_2_title | escape }}</strong>
+              <span>{{ section.settings.trust_2_text | escape }}</span>
+            </span>
+          </li>
+          <li class="bk-trust__item">
+            <span class="bk-trust__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M20 12a8 8 0 1 1-2.4-5.7"/><path d="M20 4v4.5h-4.5"/></svg>
+            </span>
+            <span class="bk-trust__text">
+              <strong>{{ section.settings.trust_3_title | escape }}</strong>
+              <span>{{ section.settings.trust_3_text | escape }}</span>
+            </span>
+          </li>
+          <li class="bk-trust__item">
+            <span class="bk-trust__icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 14v-2a8 8 0 0 1 16 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/><path d="M19 20a3 3 0 0 1-3 2h-2"/></svg>
+            </span>
+            <span class="bk-trust__text">
+              <strong>{{ section.settings.trust_4_title | escape }}</strong>
+              <span>{{ section.settings.trust_4_text | escape }}</span>
+            </span>
+          </li>
+        </ul>
+      {% endif %}
 
-    # Calculate last row counts using modulo arithmetic
-    # last_row_count = (total_blocks - 1) % N + 1
-    assign last_row_count = total_blocks | minus: 1 | modulo: 4 | plus: 1
-    assign tablet_last_row_count = total_blocks | minus: 1 | modulo: 2 | plus: 1
-
-    # Check if there are orphaned elements (single item in last row)
-    assign has_isolated_grid_item_desktop = false
-    assign has_isolated_grid_item_tablet = false
-
-    if total_blocks > 4 and last_row_count == 1
-      assign has_isolated_grid_item_desktop = true
-    endif
-
-    if total_blocks == 5
-      assign has_isolated_grid_item_tablet = true
-    endif
-  %}
-  <div
-    class="
-      footer-content
-      spacing-style
-      {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
-      {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
-    "
-    style="
-      {%  render 'spacing-style', settings: section.settings %}
-      --footer-gap: {{ section.settings.gap }}px;
-      --grid-columns: {{ grid_columns }};
-      --last-row-count: {{ last_row_count }};
-      --tablet-last-row-count: {{ tablet_last_row_count }};
-    "
-  >
-    {% content_for 'blocks' %}
+      <div
+        class="
+          footer-content
+          spacing-style
+          {% if has_isolated_grid_item_desktop %}footer-content--isolated-grid-item-desktop{% endif %}
+          {% if has_isolated_grid_item_tablet %}footer-content--isolated-grid-item-tablet{% endif %}
+        "
+        style="
+          {% render 'spacing-style', settings: section.settings %}
+          --footer-gap: {{ section.settings.gap }}px;
+          --grid-columns: {{ grid_columns }};
+          --last-row-count: {{ last_row_count }};
+          --tablet-last-row-count: {{ tablet_last_row_count }};
+        "
+      >
+        {% content_for 'blocks' %}
+      </div>
+    </div>
   </div>
 
-  <div class="footer-copyright">
-    <p>Copyright 2026 Bluekites | All rights Reserved</p>
+  <div class="bk-footer__bottom">
+    <div class="section section--{{ section.settings.section_width }}">
+      <p class="footer-copyright">&copy; {{ 'now' | date: '%Y' }} {{ section.settings.copyright | escape }}</p>
+    </div>
   </div>
 </div>
 
+<script>
+  (() => {
+    if (window.__bkBackToTopBound) return;
+    window.__bkBackToTopBound = true;
+    document.addEventListener('click', (e) => {
+      if (!e.target.closest('[data-bk-back-to-top]')) return;
+      const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
+    });
+  })();
+</script>
+
 {% stylesheet %}
+  .bk-footer {
+    display: block;
+    width: 100%;
+    background: var(--bk-main);
+    color: #d5dbe3;
+  }
+
+  /* ---------- Back to top ---------- */
+  .bk-footer__top {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 14px 16px;
+    border: 0;
+    background: var(--bk-top);
+    color: #ffffff;
+    font: inherit;
+    font-size: 0.8125rem;
+    font-weight: 500;
+    letter-spacing: 0.02em;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+  }
+
+  .bk-footer__top:hover {
+    background: color-mix(in srgb, var(--bk-top) 85%, #ffffff);
+  }
+
+  /* ---------- Trust strip ---------- */
+  .bk-trust {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+    margin: 0;
+    padding: 32px 0 8px;
+    list-style: none;
+  }
+
+  .bk-trust__item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 14px;
+    border: 1px solid rgb(255 255 255 / 0.1);
+    border-radius: 12px;
+    background: rgb(255 255 255 / 0.03);
+    transition: border-color 0.2s ease, background-color 0.2s ease;
+  }
+
+  .bk-trust__item:hover {
+    border-color: rgb(255 255 255 / 0.22);
+    background: rgb(255 255 255 / 0.06);
+  }
+
+  .bk-trust__icon {
+    display: grid;
+    place-items: center;
+    flex: 0 0 auto;
+    width: 42px;
+    height: 42px;
+    border-radius: 12px;
+    background: var(--bk-blue);
+    color: #ffffff;
+  }
+
+  .bk-trust__icon svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .bk-trust__text {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    min-width: 0;
+    font-size: 0.8125rem;
+    line-height: 1.35;
+    color: #aab4c0;
+  }
+
+  .bk-trust__text strong {
+    color: #ffffff;
+    font-size: 0.9375rem;
+    font-weight: 600;
+  }
+
+  /* ---------- Main grid ---------- */
   .footer-content {
-    contain: content;
-    content-visibility: auto;
     display: grid;
     grid-template-columns: 1fr;
     gap: var(--footer-gap);
     align-items: start;
   }
 
-  .footer-content .menu__heading__default {
-    font-weight: var(--font-heading--weight);
+  .bk-footer .footer-content {
+    row-gap: 36px;
+  }
+
+  /* Column headings: Amazon-style, small and bold, orange accent bar */
+  .bk-footer .footer-content :is(h1, h2, h3, h4, h5, h6),
+  .bk-footer .footer-content .menu__heading,
+  .bk-footer .footer-content .menu__heading__default {
+    position: relative;
+    margin: 0 0 18px !important;
+    padding-bottom: 12px;
+    color: #ffffff !important;
+    font-family: inherit !important;
+    font-size: 1rem !important;
+    font-weight: 600 !important;
+    letter-spacing: 0.02em;
+    line-height: 1.3 !important;
+    text-transform: none;
+  }
+
+  .bk-footer .footer-content :is(h1, h2, h3, h4, h5, h6)::after,
+  .bk-footer .footer-content .menu__heading::after,
+  .bk-footer .footer-content .menu__heading__default::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    width: 32px;
+    height: 3px;
+    border-radius: 2px;
+    background: var(--bk-accent);
+  }
+
+  /* Links */
+  .bk-footer .footer-content a {
+    color: #cfd6df;
+    font-size: 0.9375rem;
+    line-height: 1.5;
+    text-decoration: none;
+    transition: color 0.15s ease, transform 0.15s ease;
+  }
+
+  .bk-footer .footer-content a:hover {
+    color: #ffffff;
+  }
+
+  .bk-footer .footer-content :is(ul, ol) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  .bk-footer .footer-content li {
+    margin: 0;
+  }
+
+  .bk-footer .footer-content li > a {
+    display: inline-block;
+    padding-block: 5px;
+  }
+
+  .bk-footer .footer-content li > a:hover {
+    transform: translateX(3px);
+    color: var(--bk-accent);
+  }
+
+  /* Contact text */
+  .bk-footer .footer-content p {
+    margin: 0 0 8px;
+    color: #cfd6df;
+    font-size: 0.9375rem;
+    line-height: 1.6;
+  }
+
+  .bk-footer .footer-content strong,
+  .bk-footer .footer-content b {
+    color: #ffffff;
+    font-weight: 600;
+  }
+
+  /* Logo sits on a clean white tile so it stays legible on navy */
+  .bk-footer .footer-content img {
+    padding: 12px 16px;
+    border-radius: 14px;
+    background: #ffffff;
+    box-shadow: 0 6px 18px rgb(0 0 0 / 0.25);
+  }
+
+  /* Social icons: circular outline buttons */
+  .bk-footer .footer-content a:has(svg):not(:has(img)) {
+    display: inline-grid;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 1px solid rgb(255 255 255 / 0.22);
+    border-radius: 50%;
+    color: #ffffff;
+    transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease, transform 0.2s ease;
+  }
+
+  .bk-footer .footer-content a:has(svg):not(:has(img)):hover {
+    border-color: var(--bk-accent);
+    background: var(--bk-accent);
+    color: #111111;
+    transform: translateY(-2px);
+  }
+
+  .bk-footer .footer-content a:has(svg):not(:has(img)) svg {
+    width: 18px;
+    height: 18px;
+  }
+
+  /* Focus */
+  .bk-footer a:focus-visible,
+  .bk-footer button:focus-visible {
+    outline: 2px solid var(--bk-accent);
+    outline-offset: 3px;
+    border-radius: 6px;
+  }
+
+  /* ---------- Bottom bar ---------- */
+  .bk-footer__bottom {
+    background: var(--bk-bottom);
+    border-top: 1px solid rgb(255 255 255 / 0.08);
   }
 
   .footer-copyright {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    margin: 0;
+    padding: 18px 0;
     text-align: center;
-    margin-top: 16px;
-    padding-top: 12px;
+    color: #9aa5b1;
+    font-size: 0.8125rem;
+    line-height: 1.4;
   }
 
-  .footer-copyright p {
-    margin: 0;
-    font-size: 0.875rem;
-    line-height: 1.4;
-    color: currentColor;
+  /* ---------- Responsive ---------- */
+  @media screen and (min-width: 750px) {
+    .bk-trust {
+      grid-template-columns: repeat(4, 1fr);
+      gap: 16px;
+      padding-top: 40px;
+    }
   }
 
   @media screen and (min-width: 750px) and (max-width: 989px) {
@@ -100,13 +381,34 @@
       grid-template-columns: repeat(var(--grid-columns), 1fr);
     }
 
-    /* Single item centered */
+    /* 4 blocks: wider brand and contact columns, slimmer link columns */
+    .footer-content[style*='--grid-columns: 4'] {
+      grid-template-columns: 1.1fr 1fr 1fr 1.3fr;
+      column-gap: 48px;
+    }
+
     .footer-content[style*='--grid-columns: 1'] {
       justify-items: center;
     }
 
     .footer-content--isolated-grid-item-desktop > :last-child {
       grid-column: 1 / -1;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    .bk-trust__item {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 10px;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .bk-footer *,
+    .bk-footer *::before,
+    .bk-footer *::after {
+      transition: none !important;
     }
   }
 {% endstylesheet %}
@@ -116,48 +418,20 @@
   "name": "t:names.footer",
   "class": "section-wrapper",
   "blocks": [
-    {
-      "type": "_divider"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "button"
-    },
-    {
-      "type": "follow-on-shop"
-    },
-    {
-      "type": "group"
-    },
-    {
-      "type": "icon"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "menu"
-    },
-    {
-      "type": "payment-icons"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "logo"
-    },
-    {
-      "type": "jumbo-text"
-    },
-    {
-      "type": "social-links"
-    },
-    {
-      "type": "email-signup"
-    }
+    { "type": "_divider" },
+    { "type": "@app" },
+    { "type": "button" },
+    { "type": "follow-on-shop" },
+    { "type": "group" },
+    { "type": "icon" },
+    { "type": "image" },
+    { "type": "menu" },
+    { "type": "payment-icons" },
+    { "type": "text" },
+    { "type": "logo" },
+    { "type": "jumbo-text" },
+    { "type": "social-links" },
+    { "type": "email-signup" }
   ],
   "enabled_on": {
     "groups": ["footer"]
@@ -168,14 +442,8 @@
       "id": "section_width",
       "label": "t:settings.width",
       "options": [
-        {
-          "value": "page-width",
-          "label": "t:options.page"
-        },
-        {
-          "value": "full-width",
-          "label": "t:options.full"
-        }
+        { "value": "page-width", "label": "t:options.page" },
+        { "value": "full-width", "label": "t:options.full" }
       ],
       "default": "page-width"
     },
@@ -187,13 +455,115 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 24
     },
     {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "t:settings.color_scheme",
-      "default": "scheme-1"
+      "type": "header",
+      "content": "Colors"
+    },
+    {
+      "type": "color",
+      "id": "top_bar_color",
+      "label": "Back to top bar",
+      "default": "#37475a"
+    },
+    {
+      "type": "color",
+      "id": "main_color",
+      "label": "Main background",
+      "default": "#232f3e"
+    },
+    {
+      "type": "color",
+      "id": "bottom_color",
+      "label": "Copyright bar",
+      "default": "#131921"
+    },
+    {
+      "type": "color",
+      "id": "accent_color",
+      "label": "Accent (underlines, hover)",
+      "default": "#ff9900"
+    },
+    {
+      "type": "color",
+      "id": "trust_icon_color",
+      "label": "Trust icon background",
+      "default": "#2874f0"
+    },
+    {
+      "type": "header",
+      "content": "Extras"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_back_to_top",
+      "label": "Show back to top bar",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "copyright",
+      "label": "Copyright text",
+      "default": "Bluekites | All rights reserved"
+    },
+    {
+      "type": "header",
+      "content": "Trust strip"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_trust_strip",
+      "label": "Show trust strip",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "trust_1_title",
+      "label": "Item 1 title",
+      "default": "Genuine Products"
+    },
+    {
+      "type": "text",
+      "id": "trust_1_text",
+      "label": "Item 1 text",
+      "default": "Sourced from trusted suppliers"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_title",
+      "label": "Item 2 title",
+      "default": "Secure Payments"
+    },
+    {
+      "type": "text",
+      "id": "trust_2_text",
+      "label": "Item 2 text",
+      "default": "Safe and encrypted checkout"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_title",
+      "label": "Item 3 title",
+      "default": "Easy Returns"
+    },
+    {
+      "type": "text",
+      "id": "trust_3_text",
+      "label": "Item 3 text",
+      "default": "See our refund and return policy"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_title",
+      "label": "Item 4 title",
+      "default": "Customer Support"
+    },
+    {
+      "type": "text",
+      "id": "trust_4_text",
+      "label": "Item 4 text",
+      "default": "We are here to help"
     },
     {
       "type": "header",
@@ -207,7 +577,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 20
+      "default": 24
     },
     {
       "type": "range",
@@ -217,7 +587,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 20
+      "default": 40
     }
   ],
   "presets": [
@@ -225,10 +595,9 @@
       "name": "t:names.footer",
       "category": "t:categories.footer",
       "settings": {
-        "gap": 20,
-        "color_scheme": "scheme-1",
-        "padding-block-start": 36,
-        "padding-block-end": 36
+        "gap": 24,
+        "padding-block-start": 24,
+        "padding-block-end": 40
       },
       "blocks": {
         "newsletter-group": {

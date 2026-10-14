@@ -1,30 +1,13 @@
+```liquid
 {%- doc -%}
-  This snippet is used to render a collection card.
-  To be used inside a block to inherit the block object settings.
+  This snippet renders a collection card using the parent block's settings.
 
   @param {string} card_image - The image to display in the collection card
   @param {string} children - The content to render inside the collection card
-  @param {object} collection - The collection to render the card for
-  @param {object} block - The block object
-  @param {object} section - The section object
-
-  @example
-  {% render 'collection-card',
-    card_image: card_image,
-    children: children,
-    block: block,
-    collection: collection,
-    section: section
-  %}
+  @param {object} collection - The collection to render
+  @param {object} block - The parent block object
+  @param {object} section - The parent section object
 {%- enddoc -%}
-
-{% style %}
-  {% if request.visual_preview_mode %}
-    .collection-card {
-      min-width: 250px;
-    }
-  {% endif %}
-{% endstyle %}
 
 {% liquid
   assign onboarding = false
@@ -34,6 +17,14 @@
     assign onboarding = true
   endif
 %}
+
+{% style %}
+  {% if request.visual_preview_mode %}
+    .collection-card {
+      min-width: 250px;
+    }
+  {% endif %}
+{% endstyle %}
 
 <div
   class="
@@ -63,10 +54,18 @@
       href="{{ collection.url }}"
     {% endunless %}
   >
-    <span class="visually-hidden">{{ collection.title }}</span>
+    <span class="visually-hidden">
+      {% if onboarding %}
+        Collection preview
+      {% else %}
+        {{ collection.title | escape }}
+      {% endif %}
+    </span>
   </a>
+
   <div class="collection-card__inner">
     {{ card_image }}
+
     <div class="collection-card__content layout-panel-flex--column">
       {{ children }}
     </div>
@@ -76,54 +75,143 @@
 {% stylesheet %}
   .collection-card {
     --fixed-card-height: var(--height-small);
+    --collection-card-transition: 220ms ease;
 
+    position: relative;
+    isolation: isolate;
     flex: 1 1 var(--card-width-small);
-  }
-
-  .collection-card > svg {
-    height: 100%;
-    width: 100%;
-    aspect-ratio: var(--ratio);
-  }
-
-  .collection-card--image-bg .collection-card__inner {
-    height: 100%;
+    min-width: 0;
+    overflow: hidden;
+    transition:
+      box-shadow var(--collection-card-transition),
+      transform var(--collection-card-transition);
   }
 
   .collection-card__inner {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     gap: var(--gap);
-
-    a,
-    button {
-      pointer-events: auto;
-    }
+    width: 100%;
+    min-width: 0;
+    height: 100%;
   }
 
-  /* allow all blocks to be selectable in editor preview */
-  .shopify-design-mode .collection-card__content * {
+  .collection-card__inner a,
+  .collection-card__inner button {
     pointer-events: auto;
   }
 
   .collection-card__content {
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+    width: 100%;
     max-width: 100%;
+    min-width: 0;
     --flex-wrap: wrap;
   }
 
-  /* Nested image block rules */
+  .collection-card > svg {
+    width: 100%;
+    height: 100%;
+    aspect-ratio: var(--ratio);
+  }
+
+  /* Image presentation */
+
+  .collection-card__image {
+    position: relative;
+    display: block;
+    flex-shrink: 0;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .collection-card__image .resource-image__image {
+    display: block;
+    width: 100%;
+    height: 100%;
+    max-width: 100%;
+    object-fit: cover;
+    transition: transform 450ms cubic-bezier(0.2, 0.65, 0.3, 1);
+  }
+
+  .collection-card__image svg,
+  .collection-card__image .placeholder-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+  }
+
+  /* Image zoom: restrained and only on interactive devices */
+
+  @media (hover: hover) and (pointer: fine) {
+    .collection-card:hover .collection-card__image .resource-image__image {
+      transform: scale(1.045);
+    }
+
+    .collection-card:hover {
+      box-shadow: 0 10px 28px rgb(0 0 0 / 8%);
+    }
+  }
+
+  /* Content positioned over the image */
 
   .collection-card.collection-card--image-bg {
     aspect-ratio: var(--ratio);
   }
 
-  .collection-card.collection-card--image-bg .collection-card__content {
-    padding: var(--padding-lg);
+  .collection-card--image-bg .collection-card__inner {
+    height: 100%;
+    min-height: 0;
+    gap: 0;
   }
+
+  .collection-card--image-bg .collection-card__image {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+  }
+
+  .collection-card--image-bg .collection-card__content {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: var(--vertical-alignment, center);
+    align-items: var(--horizontal-alignment, flex-start);
+    padding: clamp(16px, 3%, 28px);
+    gap: var(--gap);
+    overflow: hidden;
+    background: linear-gradient(
+      180deg,
+      rgb(0 0 0 / 0%) 20%,
+      rgb(0 0 0 / 12%) 48%,
+      rgb(0 0 0 / 58%) 100%
+    );
+    color: #fff;
+  }
+
+  .collection-card--image-bg .collection-card__content > * {
+    max-width: 100%;
+  }
+
+  /* Content positioned below the image */
+
+  .collection-card:not(.collection-card--image-bg) .collection-card__content {
+    padding: 16px 0 4px;
+    gap: var(--gap);
+  }
+
+  /* Bento layout */
 
   .collection-card--image-height-fixed {
     height: 100%;
   }
 
-  /* Bento layout rules */
   .collection-card--image-height-fixed .collection-card__image {
     height: var(--fixed-card-height);
     width: 100%;
@@ -134,28 +222,45 @@
     aspect-ratio: unset;
   }
 
-  .collection-card__image .resource-image__image {
-    object-fit: cover;
-    width: 100%;
-    height: 100%;
-    max-width: 100%;
-  }
-
-  .collection-card--image-bg .collection-card__image {
+  .collection-card--image-height-fixed.collection-card--image-bg
+    .collection-card__image {
     position: absolute;
-    width: 100%;
+    inset: 0;
     height: 100%;
   }
 
-  .collection-card__image svg {
-    height: 100%;
-    width: 100%;
+  /* Editorial layout */
+
+  .resource-list:not(.hidden--desktop)
+    .collection-card--flexible-aspect-ratio.collection-card.collection-card--image-bg,
+  .resource-list:not(.hidden--desktop)
+    .collection-card--flexible-aspect-ratio.collection-card .placeholder-svg {
+    aspect-ratio: 99;
   }
 
-  .resource-list:not(.hidden--desktop) .collection-card--flexible-aspect-ratio {
-    &.collection-card.collection-card--image-bg,
-    &.collection-card .placeholder-svg {
-      aspect-ratio: 99;
+  /* Keyboard accessibility */
+
+  .collection-card__link:focus-visible {
+    outline: 2px solid currentColor;
+    outline-offset: -4px;
+    border-radius: inherit;
+  }
+
+  /* Keep Shopify theme-editor blocks selectable */
+
+  .shopify-design-mode .collection-card__content * {
+    pointer-events: auto;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .collection-card,
+    .collection-card__image .resource-image__image {
+      transition: none;
+    }
+
+    .collection-card:hover .collection-card__image .resource-image__image {
+      transform: none;
     }
   }
 {% endstylesheet %}
+```

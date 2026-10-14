@@ -34,6 +34,9 @@
     --bk-glass: {{ block.settings.glass_opacity | divided_by: 100.0 }};
     --bk-blur: {{ block.settings.glass_blur }}px;
     --bk-glow: {{ block.settings.glow_color }};
+    --bk-text: {{ block.settings.text_color }};
+    --bk-bg: {{ block.settings.background_color }};
+    --bk-height: {{ block.settings.block_height }}vh;
   "
   {{ block.shopify_attributes }}
 >
@@ -253,21 +256,25 @@
 
 {% stylesheet %}
   .bk-contact {
-    --bk-accent: #111111;
+    --bk-accent: #12363C;
     --bk-accent-text: #ffffff;
-    --bk-radius: 16px;
-    --bk-glass: 0.55;
+    --bk-radius: 14px;
+    --bk-glass: 0.6;
     --bk-blur: 18px;
-    --bk-glow: #e5e7eb;
-    --bk-text: var(--color-foreground, #111111);
-    --bk-muted: color-mix(in srgb, var(--bk-text) 64%, transparent);
-    --bk-line: color-mix(in srgb, var(--bk-text) 12%, transparent);
-    --bk-field-line: color-mix(in srgb, var(--bk-text) 18%, transparent);
+    --bk-glow: #CFE3E1;
+    --bk-text: #0F172A;
+    --bk-bg: #F6F8FA;
+    --bk-height: 60vh;
+    --bk-muted: color-mix(in srgb, var(--bk-text) 62%, #ffffff);
+    --bk-line: color-mix(in srgb, var(--bk-text) 10%, transparent);
+    --bk-field-line: color-mix(in srgb, var(--bk-text) 16%, transparent);
     --bk-danger: #c5221f;
 
     width: 100%;
     min-width: min(100%, 22rem);
     color: var(--bk-text);
+    background:
+      linear-gradient(180deg, color-mix(in srgb, var(--bk-bg) 100%, #ffffff) 0%, color-mix(in srgb, var(--bk-bg) 88%, var(--bk-accent)) 160%);
   }
 
   .bk-contact *,
@@ -283,10 +290,16 @@
   }
 
   .bk-contact__inner {
-    display: block;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
     position: relative;
     isolation: isolate;
+    overflow: hidden;
+    min-height: var(--bk-height);
+    padding-block: clamp(24px, 3.5vh, 40px);
   }
+  .bk-contact__inner > form { width: 100%; max-width: 1360px; margin-inline: auto; }
 
   /* Soft glow behind the glass so the blur is visible on plain backgrounds */
   .bk-contact__inner--glow::before,
@@ -306,7 +319,7 @@
   .bk-contact__form {
     display: flex;
     flex-direction: column;
-    gap: clamp(28px, 3.5vw, 44px);
+    gap: clamp(20px, 3vh, 32px);
   }
 
   /* ---------- Header row ---------- */
@@ -321,33 +334,43 @@
   .bk-contact__intro {
     display: flex;
     flex-direction: column;
-    gap: 14px;
-    max-width: 760px;
+    gap: 10px;
+    max-width: 720px;
   }
 
   .bk-contact__eyebrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
     margin: 0;
-    font-size: 0.8125rem;
+    font-size: 0.75rem;
     font-weight: 700;
-    letter-spacing: 0.12em;
+    letter-spacing: 0.14em;
     text-transform: uppercase;
-    color: var(--bk-muted);
+    color: var(--bk-accent);
+  }
+  .bk-contact__eyebrow::before {
+    content: '';
+    width: 22px;
+    height: 2px;
+    border-radius: 2px;
+    background: currentColor;
   }
 
   .bk-contact__title {
     margin: 0;
     font-family: var(--font-heading--family, inherit);
-    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
-    font-weight: 800;
-    line-height: 1;
-    letter-spacing: -0.03em;
+    font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
+    font-weight: 700;
+    line-height: 1.05;
+    letter-spacing: -0.025em;
     color: var(--bk-text);
   }
 
   .bk-contact__subtitle {
     margin: 0;
-    max-width: 60ch;
-    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+    max-width: 58ch;
+    font-size: clamp(0.9375rem, 0.9rem + 0.2vw, 1.0625rem);
     line-height: 1.55;
     color: var(--bk-muted);
   }
@@ -359,26 +382,40 @@
     padding: 16px 22px;
     border-radius: 14px;
     border: 1px solid var(--bk-line);
-    background: color-mix(in srgb, var(--color-background, #ffffff) calc(var(--bk-glass) * 100%), transparent);
+    background: rgb(255 255 255 / var(--bk-glass));
     -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(140%);
     backdrop-filter: blur(var(--bk-blur)) saturate(140%);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 10px 28px -16px rgb(0 0 0 / 0.25);
   }
-  .bk-contact__badge strong { font-size: 0.9375rem; font-weight: 700; }
+  .bk-contact__badge strong {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9375rem;
+    font-weight: 700;
+  }
+  .bk-contact__badge strong::before {
+    content: '';
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #16A34A;
+    box-shadow: 0 0 0 4px rgb(22 163 74 / 0.18);
+  }
   .bk-contact__badge span { font-size: 0.8125rem; color: var(--bk-muted); }
 
   /* ---------- Panel ---------- */
   .bk-contact__panel {
     display: flex;
     flex-direction: column;
-    gap: 20px;
+    gap: 16px;
   }
 
   .bk-contact--glass .bk-contact__panel {
-    padding: clamp(20px, 2.4vw, 32px);
+    padding: clamp(18px, 2vw, 28px);
     border-radius: calc(var(--bk-radius) + 4px);
     border: 1px solid var(--bk-line);
-    background: color-mix(in srgb, var(--color-background, #ffffff) calc(var(--bk-glass) * 100%), transparent);
+    background: rgb(255 255 255 / var(--bk-glass));
     -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(150%);
     backdrop-filter: blur(var(--bk-blur)) saturate(150%);
     box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 24px 50px -24px rgb(0 0 0 / 0.25);
@@ -400,8 +437,8 @@
   .bk-contact__panel-title {
     margin: 0;
     font-family: var(--font-heading--family, inherit);
-    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
-    font-weight: 800;
+    font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
+    font-weight: 700;
     line-height: 1.2;
     letter-spacing: -0.01em;
     color: var(--bk-text);
@@ -459,10 +496,10 @@
   .bk-contact .bk-field__input {
     display: block;
     width: 100%;
-    height: 52px;
-    min-height: 52px;
+    height: 48px;
+    min-height: 48px;
     margin: 0;
-    padding: 0 16px;
+    padding: 0 14px;
     font: inherit;
     font-size: 1rem; /* 16px stops iOS zooming into the field */
     line-height: 1.4;
@@ -487,9 +524,9 @@
   }
 
   .bk-contact .bk-field__input--textarea {
-    height: 64px;
-    min-height: 64px;
-    padding: 14px 16px;
+    height: 48px;
+    min-height: 48px;
+    padding: 12px 14px;
     overflow: auto;
     resize: vertical;
   }
@@ -505,9 +542,9 @@
 
   .bk-contact .bk-field__input:focus,
   .bk-contact .bk-field__input:focus-visible {
-    border-color: var(--bk-text);
-    background-color: var(--color-input-background, #ffffff);
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-text) 12%, transparent);
+    border-color: var(--bk-accent);
+    background-color: #ffffff;
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-accent) 18%, transparent);
     outline: none;
   }
 
@@ -610,8 +647,8 @@
     justify-content: center;
     gap: 8px;
     width: 100%;
-    height: 64px;
-    min-height: 56px;
+    height: 48px;
+    min-height: 48px;
     padding: 0 28px;
     font: inherit;
     font-size: 1rem;
@@ -654,7 +691,7 @@
   /* ---------- Mobile ---------- */
   @media screen and (max-width: 749px) {
     .bk-contact__head { align-items: flex-start; }
-    .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) { height: 56px; }
+    .bk-contact__inner { min-height: 0; }
   }
 
   @keyframes bk-contact-spin { to { transform: rotate(360deg); } }
@@ -809,17 +846,19 @@
     { "type": "text", "id": "success_link_label", "label": "Link text after sending", "info": "Leave empty to hide the link.", "default": "Send another message" },
 
     { "type": "header", "content": "Style" },
-    { "type": "color", "id": "accent_color", "label": "Button colour", "default": "#111111" },
+    { "type": "color", "id": "accent_color", "label": "Accent / button colour", "default": "#12363C" },
     { "type": "color", "id": "accent_text_color", "label": "Button text colour", "default": "#FFFFFF" },
-    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 4, "max": 24, "step": 2, "unit": "px", "default": 16 },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 4, "max": 24, "step": 2, "unit": "px", "default": 14 },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#0F172A" },
+    { "type": "color", "id": "background_color", "label": "Background colour", "default": "#F6F8FA" },
     { "type": "checkbox", "id": "style_submit", "label": "Style the submit button to match", "info": "Turn off to use the theme's own button style.", "default": true },
 
     { "type": "header", "content": "Glass effect" },
     { "type": "checkbox", "id": "show_card", "label": "Glass panel", "default": true },
-    { "type": "range", "id": "glass_opacity", "label": "Glass opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 55 },
+    { "type": "range", "id": "glass_opacity", "label": "Glass opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 60 },
     { "type": "range", "id": "glass_blur", "label": "Glass blur", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
     { "type": "checkbox", "id": "soft_glow", "label": "Soft background glow", "info": "Gives the glass something to blur on plain backgrounds.", "default": true },
-    { "type": "color", "id": "glow_color", "label": "Glow colour", "default": "#E5E7EB" },
+    { "type": "color", "id": "glow_color", "label": "Glow colour", "default": "#CFE3E1" },
 
     { "type": "header", "content": "Validation messages" },
     { "type": "text", "id": "error_required", "label": "Required field", "default": "This field is required." },
@@ -827,6 +866,7 @@
     { "type": "text", "id": "error_phone", "label": "Invalid phone number", "default": "Enter a valid phone number." },
 
     { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "block_height", "label": "Height", "min": 40, "max": 100, "step": 5, "unit": "vh", "default": 60 },
     { "type": "checkbox", "id": "full_bleed", "label": "Full screen width", "info": "Spans the whole page width even inside a page-width section.", "default": true },
     {
       "type": "select",

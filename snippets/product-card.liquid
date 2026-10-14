@@ -1,7 +1,6 @@
 {%- doc -%}
   This snippet is used to render a product card.
   It is used in the product block, featured product block, and the product card block.
-  The product object is null or when placeholders are rendered.
 
   @param {object} product - The product object
   @param {object} children - The children of the product card
@@ -34,7 +33,6 @@
   assign product_card_id = 'product-card-link-' | append: block.id | append: '-' | append: product.id
   assign product_card_gap_value = product_card_gap | default: block_settings.product_card_gap
 
-  # Logic to determine which variant URL to use (matching swatch selection logic)
   assign variant_to_link = product.selected_or_first_available_variant
 
   if settings.transition_to_main_product
@@ -100,10 +98,10 @@
       --quick-add-display: {% if has_quick_add %}flex{% else %}none{% endif %};
       --quick-add-mobile-display: {% if has_mobile_quick_add %}flex{% else %}none{% endif %};
       --quick-add-mobile-opacity: {% if has_mobile_quick_add %}1{% else %}0{% endif %};
-      {% if block_settings.padding-inline-start > 0 %}--zoom-out-padding-inline-start: min(var(--padding-xs), {{ block_settings.padding-inline-start | times: 0.7}}px);{% endif %}
-      {% if block_settings.padding-inline-end > 0 %}--zoom-out-padding-inline-end: min(var(--padding-xs), {{ block_settings.padding-inline-end | times: 0.7}}px);{% endif %}
-      {% if block_settings.padding-block-start > 0 %}--zoom-out-padding-block-start: min(var(--padding-xs), {{ block_settings.padding-block-start | times: 0.7}}px);{% endif %}
-      {% if block_settings.padding-block-end > 0 %}--zoom-out-padding-block-end: min(var(--padding-xs), {{ block_settings.padding-block-end | times: 0.7}}px);{% endif %}
+      {% if block_settings.padding-inline-start > 0 %}--zoom-out-padding-inline-start: min(var(--padding-xs), {{ block_settings.padding-inline-start | times: 0.7 }}px);{% endif %}
+      {% if block_settings.padding-inline-end > 0 %}--zoom-out-padding-inline-end: min(var(--padding-xs), {{ block_settings.padding-inline-end | times: 0.7 }}px);{% endif %}
+      {% if block_settings.padding-block-start > 0 %}--zoom-out-padding-block-start: min(var(--padding-xs), {{ block_settings.padding-block-start | times: 0.7 }}px);{% endif %}
+      {% if block_settings.padding-block-end > 0 %}--zoom-out-padding-block-end: min(var(--padding-xs), {{ block_settings.padding-block-end | times: 0.7 }}px);{% endif %}
     "
   >
     {{ children }}
@@ -119,8 +117,105 @@
     --cursor: pointer;
   }
 
+  /* Refined product-card interaction: subtle lift, clean edge and soft depth. */
+  product-card.product-card {
+    position: relative;
+    display: block;
+    isolation: isolate;
+    border-radius: 16px;
+    transition: transform 240ms cubic-bezier(.2, .7, .2, 1), box-shadow 240ms ease;
+    transform: translateZ(0);
+  }
+
+  product-card.product-card .product-card__content {
+    position: relative;
+    height: 100%;
+    overflow: hidden;
+    border-radius: inherit;
+    border: 1px solid rgb(var(--color-foreground-rgb, 30 35 32) / 0.08);
+    background: rgb(var(--color-background-rgb, 250 249 242) / 0.78);
+    -webkit-backdrop-filter: blur(12px) saturate(1.12);
+    backdrop-filter: blur(12px) saturate(1.12);
+    box-shadow: 0 2px 8px rgb(25 30 28 / 0.035), 0 1px 2px rgb(25 30 28 / 0.025);
+    transition: border-color 240ms ease, box-shadow 240ms ease, background-color 240ms ease;
+  }
+
+  product-card.product-card .product-card__content img,
+  product-card.product-card .product-card__content video,
+  product-card.product-card .product-card__content .product-card__image {
+    transform: translateZ(0);
+    transition: transform 420ms cubic-bezier(.2, .7, .2, 1), filter 320ms ease;
+    will-change: transform;
+  }
+
+  product-card.product-card:hover,
+  product-card.product-card:focus-within {
+    transform: translateY(-5px);
+  }
+
+  product-card.product-card:hover .product-card__content,
+  product-card.product-card:focus-within .product-card__content {
+    border-color: rgb(var(--color-foreground-rgb, 30 35 32) / 0.17);
+    background: rgb(var(--color-background-rgb, 250 249 242) / 0.92);
+    box-shadow: 0 16px 34px rgb(25 30 28 / 0.095), 0 4px 10px rgb(25 30 28 / 0.045);
+  }
+
+  product-card.product-card:hover .product-card__content img,
+  product-card.product-card:hover .product-card__content video,
+  product-card.product-card:hover .product-card__content .product-card__image,
+  product-card.product-card:focus-within .product-card__content img,
+  product-card.product-card:focus-within .product-card__content video,
+  product-card.product-card:focus-within .product-card__content .product-card__image {
+    transform: scale(1.035);
+  }
+
+  product-card.product-card .product-card__link:focus-visible {
+    outline: 2px solid #550000;
+    outline-offset: 3px;
+    border-radius: 12px;
+  }
+
+  @media (hover: none) {
+    product-card.product-card:hover {
+      transform: none;
+    }
+
+    product-card.product-card:hover .product-card__content {
+      box-shadow: 0 2px 8px rgb(25 30 28 / 0.035), 0 1px 2px rgb(25 30 28 / 0.025);
+    }
+
+    product-card.product-card:hover .product-card__content img,
+    product-card.product-card:hover .product-card__content video,
+    product-card.product-card:hover .product-card__content .product-card__image {
+      transform: none;
+    }
+  }
+
   @media screen and (max-width: 749px) {
-    .product-card slideshow-arrows .slideshow-control {
+    product-card.product-card {
+      border-radius: 13px;
+    }
+
+    product-card.product-card .product-card__content {
+      -webkit-backdrop-filter: blur(8px) saturate(1.06);
+      backdrop-filter: blur(8px) saturate(1.06);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    product-card.product-card,
+    product-card.product-card .product-card__content,
+    product-card.product-card .product-card__content img,
+    product-card.product-card .product-card__content video,
+    product-card.product-card .product-card__content .product-card__image {
+      transition: none !important;
+      transform: none !important;
+      will-change: auto;
+    }
+  }
+
+  @media screen and (max-width: 749px) {
+    product-card slideshow-arrows .slideshow-control {
       display: none;
     }
   }

@@ -1109,18 +1109,20 @@
 
   /* =====================================================================
      Blue Kites — maroon glass header (visual overrides only)
+     Targets the exact classes from _header-menu, header-actions and
+     header-location. Colour tokens live here so everything stays in sync.
      ===================================================================== */
 
   #header-component {
     --bk-maroon: #550000;
+    --bk-maroon-deep: #3a0000;
     --bk-maroon-glass: rgb(85 0 0 / 90%);
     --bk-maroon-glass-open: rgb(85 0 0 / 95%);
     --bk-cream: #faf3ea; /* text + icons */
-    --bk-cream-muted: #e6d6c8; /* secondary text */
-    --bk-gold: #d9b77e; /* accent: hover, focus, badge */
-    --bk-blush: #f2d9d0; /* soft hover wash */
-    --bk-tile: rgb(255 255 255 / 8%);
-    --bk-tile-hover: rgb(217 183 126 / 18%);
+    --bk-cream-muted: #e6d6c8; /* placeholders, secondary text */
+    --bk-gold: #d9b77e; /* accent: active, hover, focus, badge */
+    --bk-tile: rgb(255 255 255 / 9%);
+    --bk-tile-hover: rgb(217 183 126 / 20%);
     --bk-line: rgb(255 255 255 / 14%);
 
     color: var(--bk-cream);
@@ -1134,8 +1136,6 @@
     -webkit-backdrop-filter: blur(18px) saturate(160%);
     backdrop-filter: blur(18px) saturate(160%);
     border-bottom: 1px solid var(--bk-line);
-
-    /* top highlight sells the "glass edge" */
     box-shadow:
       inset 0 1px 0 rgb(255 255 255 / 16%),
       0 8px 32px rgb(40 0 0 / 28%);
@@ -1145,7 +1145,6 @@
     background: var(--bk-maroon-glass-open);
   }
 
-  /* Fallback for browsers without backdrop-filter */
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     #header-component .header__underlay-closed,
     #header-component .header__underlay-open {
@@ -1153,7 +1152,6 @@
     }
   }
 
-  /* Rows must be see-through so the glass underlay shows */
   #header-component .header__row,
   #header-component .header__columns {
     background-color: transparent;
@@ -1161,11 +1159,9 @@
     border-color: var(--bk-line);
   }
 
-  /* ---------- Text, links, focus ---------- */
+  /* ---------- Base text, links, focus ---------- */
   #header-component a,
-  #header-component button,
-  #header-component .header-actions__action,
-  #header-component .svg-wrapper {
+  #header-component button {
     color: var(--bk-cream);
   }
 
@@ -1183,7 +1179,6 @@
     border-radius: 6px;
   }
 
-  /* Logo: scaled down. If your logo is dark artwork, see the note at the end of this block. */
   #header-component .header-logo img,
   #header-component .header__heading-logo,
   #header-component .header-logo__image {
@@ -1192,249 +1187,163 @@
     object-fit: contain;
   }
 
-  /* Menu hover: soft blush wash on glass */
-  #header-component .menu-list__link:hover,
-  #header-component .menu-list__link:focus-visible {
-    background-color: rgb(242 217 208 / 12%);
-    color: var(--bk-gold);
-    border-radius: 10px;
-  }
-
-  /* ---------- Header actions: frosted icon tiles ---------- */
-
   /* Search has its own bar, so hide the header search icon */
   #header-component .search-action {
     display: none !important;
   }
 
-  #header-component .header-actions {
-    display: flex;
-    align-items: center;
-    gap: 12px;
-  }
-
-  /* The button itself is the tile, identical for Login and Cart */
-  #header-component .header-actions__action {
-    position: relative;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 44px;
-    height: 44px;
-    padding: 0 !important;
-    border: 1px solid var(--bk-line);
-    border-radius: 14px;
-    background: var(--bk-tile) !important;
-    -webkit-backdrop-filter: blur(10px);
-    backdrop-filter: blur(10px);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
+  /* ---------- Menu pills (_header-menu.liquid) ---------- */
+  #header-component .menu-list__list-item:not([slot='overflow']) > .menu-list__link,
+  #header-component .menu-list__list-item[slot='more'] .menu-list__link {
+    background-color: rgb(255 255 255 / 9%) !important;
+    border: 1px solid rgb(255 255 255 / 12%);
     color: var(--bk-cream) !important;
+    font-weight: 500;
     transition:
       background-color 0.2s ease,
       border-color 0.2s ease,
-      color 0.2s ease,
-      transform 0.15s ease;
+      color 0.2s ease;
   }
 
-  /* Inner wrapper is plain, so no tile inside a tile */
-  #header-component .header-actions__action .svg-wrapper {
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    width: 24px !important;
-    height: 24px !important;
-    background: transparent !important;
-    border-radius: 0;
-    color: inherit;
-  }
-
-  #header-component .header-actions__action svg {
-    display: block;
-    width: 24px !important;
-    height: 24px !important;
-    color: var(--bk-cream) !important;
-    stroke-width: 1.8;
-  }
-
-  /* Hide any text labels the theme outputs, for an icon-only look */
-  #header-component .header-actions__action > span:not(.svg-wrapper):not([class*='count']):not([class*='bubble']) {
-    display: none !important;
-  }
-
-  #header-component .header-actions__action:hover,
-  #header-component .header-actions__action:focus-visible {
-    background: var(--bk-tile-hover) !important;
-    border-color: rgb(217 183 126 / 55%);
-    color: var(--bk-gold) !important;
-  }
-
-  #header-component .header-actions__action:hover svg,
-  #header-component .header-actions__action:focus-visible svg {
-    color: var(--bk-gold) !important;
-  }
-
-  #header-component .header-actions__action:active {
-    transform: scale(0.96);
-  }
-
-  /* ---------- Cart count: gold badge pinned to the top-right of the cart tile ---------- */
-  #header-component cart-icon,
-  #header-component .cart-bubble {
-    position: relative;
-  }
-
-  #header-component .cart-count,
-  #header-component .cart-count-bubble,
-  #header-component [class*='cart-bubble'],
-  #header-component [class*='cart-count'] {
-    position: absolute !important;
-    top: -6px;
-    right: -6px;
-    display: inline-flex !important;
-    align-items: center;
-    justify-content: center;
-    width: auto;
-    height: 20px;
-    min-width: 20px;
-    margin: 0;
-    padding: 0 5px;
-    border: 2px solid var(--bk-maroon);
-    border-radius: 999px;
-    background: var(--bk-gold);
-    color: var(--bk-maroon);
-    font-size: 11px;
-    font-weight: 700;
-    line-height: 1;
-    transform: none;
-  }
-
-  /* ---------- Localization on dark glass ---------- */
-  #header-component .dropdown-localization__button,
-  #header-component .dropdown-localization .language-selector {
-    color: var(--bk-cream);
-  }
-
-  @media (max-width: 749px) {
-    #header-component .header-actions {
-      gap: 8px;
-    }
-
-    #header-component .header-actions__action {
-      width: 40px;
-      height: 40px;
-      border-radius: 12px;
-    }
-
-    #header-component .header-actions__action svg,
-    #header-component .header-actions__action .svg-wrapper {
-      width: 22px !important;
-      height: 22px !important;
-    }
-  }
-
-  /* =====================================================================
-     Contrast fixes: menu pills, active tab, location picker, Login/Cart
-     ===================================================================== */
-
-  /* ---------- Menu pills: readable cream text on frosted pills ---------- */
-  #header-component .menu-list__link {
-    background-color: rgb(255 255 255 / 8%) !important;
-    border: 1px solid rgb(255 255 255 / 10%);
-    color: var(--bk-cream) !important;
-    font-weight: 500;
-    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  }
-
-  #header-component .menu-list__link * {
+  #header-component .menu-list__link-title {
     color: inherit !important;
   }
 
-  /* Hover / open submenu: warm gold tint, text stays light */
-  #header-component .menu-list__link:hover,
-  #header-component .menu-list__link:focus-visible,
-  #header-component .menu-list__link[aria-expanded='true'] {
-    background-color: rgb(217 183 126 / 22%) !important;
+  /* Hover / focus / open: gold tint, light text */
+  #header-component .menu-list__list-item:not([slot='overflow']):hover > .menu-list__link,
+  #header-component .menu-list__list-item:not([slot='overflow']):focus-within > .menu-list__link,
+  #header-component .menu-list__list-item[slot='more']:hover .menu-list__link,
+  #header-component .menu-list__list-item:not([slot='overflow']) > .menu-list__link[aria-expanded='true'] {
+    background-color: var(--bk-tile-hover) !important;
     border-color: rgb(217 183 126 / 55%);
     color: #fff !important;
   }
 
-  /* Active / current tab: solid gold with deep maroon text */
-  #header-component .menu-list__link[aria-current],
-  #header-component .menu-list__link[aria-selected='true'],
-  #header-component .menu-list__link.active,
-  #header-component .menu-list__link.is-active,
-  #header-component .menu-list__link--active,
-  #header-component .menu-list__list-item.active > .menu-list__link,
-  #header-component .menu-list__list-item.is-active > .menu-list__link,
-  #header-component .menu-list__list-item[aria-current] > .menu-list__link {
+  /* Active page: solid gold, deep maroon text (declared last so it wins over hover) */
+  #header-component .menu-list__list-item:not([slot='overflow']) > .menu-list__link.menu-list__link--active,
+  #header-component .menu-list__list-item:not([slot='overflow']) > .menu-list__link[aria-current='page'],
+  #header-component .menu-list__list-item:not([slot='overflow']):hover > .menu-list__link.menu-list__link--active,
+  #header-component .menu-list__list-item:not([slot='overflow']):hover > .menu-list__link[aria-current='page'] {
     background-color: var(--bk-gold) !important;
     border-color: var(--bk-gold);
-    color: #3a0000 !important;
+    color: var(--bk-maroon-deep) !important;
     font-weight: 600;
     box-shadow: 0 2px 10px rgb(0 0 0 / 22%);
   }
 
-  /* ---------- Location picker: frosted field, light text ---------- */
-  #header-component [class*='location'] :is(input, select, button) {
-    background: rgb(255 255 255 / 10%) !important;
-    border: 1px solid var(--bk-line) !important;
+  /* ---------- Mega menu + overflow panel sit on maroon now ---------- */
+  #header-component .menu-list__submenu,
+  #header-component .overflow-menu::part(overflow) {
+    color: var(--bk-cream);
+  }
+
+  #header-component .mega-menu__link,
+  #header-component .mega-menu__link--parent,
+  #header-component .menu-list__list-item[slot='overflow'] > .menu-list__link {
     color: var(--bk-cream) !important;
+  }
+
+  #header-component .mega-menu__link:hover,
+  #header-component .mega-menu__link--parent:hover,
+  #header-component .menu-list__list-item[slot='overflow'] > .menu-list__link:hover,
+  #header-component .menu-list__list-item[slot='overflow'] > .menu-list__link[aria-expanded='true'] {
+    color: var(--bk-gold) !important;
+  }
+
+  /* ---------- Location picker trigger (header-location.liquid) ---------- */
+  #header-component .loc-pref--desktop .loc-pref__trigger,
+  #header-component .loc-pref--mobile .loc-pref__trigger {
+    background: rgb(255 255 255 / 10%);
+    color: var(--bk-cream);
+    border: 1px solid var(--bk-line);
     -webkit-backdrop-filter: blur(10px);
     backdrop-filter: blur(10px);
   }
 
-  #header-component [class*='location'] :is(input, select)::placeholder {
-    color: var(--bk-cream-muted) !important;
-    opacity: 1;
+  #header-component .loc-pref--desktop .loc-pref__trigger:hover,
+  #header-component .loc-pref--desktop .loc-pref__trigger[aria-expanded='true'],
+  #header-component .loc-pref--mobile .loc-pref__trigger:hover {
+    background: var(--bk-tile-hover);
+    color: #fff;
+    border-color: rgb(217 183 126 / 55%);
   }
 
-  #header-component [class*='location'] svg {
-    color: var(--bk-gold) !important;
+  #header-component .loc-pref__pin {
+    color: var(--bk-gold);
   }
 
-  /* ---------- Login + Cart tiles: same frosted tile, visible icons ---------- */
-  #header-component :is(
-    .header-actions__action,
-    .account-button,
-    shopify-account :is(a, button),
-    a[href='/cart'],
-    a[href*='/account']
-  ) {
+  #header-component .loc-pref--desktop .loc-pref__trigger:focus-visible {
+    outline-color: var(--bk-gold);
+  }
+
+  /* The popup is moved to <body> while open, so it is styled outside #header-component */
+  body .loc-pref__panel {
+    --loc-accent: #550000;
+    --loc-accent-hover: #6e0a0a;
+  }
+
+  body .loc-pref__submit {
+    color: #faf3ea;
+    border-color: #550000;
+  }
+
+  body .loc-pref__chip:hover {
+    border-color: #550000;
+    background: rgb(85 0 0 / 8%);
+  }
+
+  /* ---------- Login + Cart tiles (header-actions.liquid) ---------- */
+  #header-component .account-button {
+    --color-account-icon: var(--bk-cream);
+  }
+
+  #header-component .account-button__tile,
+  #header-component .header-actions__action .cart-icon-svg {
     background: var(--bk-tile) !important;
-    border: 1px solid var(--bk-line) !important;
+    border: 1px solid var(--bk-line);
+    color: var(--bk-cream) !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 12%);
+  }
+
+  #header-component .account-button__tile svg,
+  #header-component .account-button__icon,
+  #header-component .header-actions__action .cart-icon-svg svg {
     color: var(--bk-cream) !important;
   }
 
-  #header-component :is(
-    .header-actions__action,
-    .account-button,
-    shopify-account :is(a, button),
-    a[href='/cart'],
-    a[href*='/account']
-  ) :is(svg, .svg-wrapper, span:not([class*='count']):not([class*='bubble'])) {
-    color: var(--bk-cream) !important;
-    background: transparent !important;
-  }
-
-  #header-component :is(
-    .header-actions__action,
-    .account-button,
-    shopify-account :is(a, button),
-    a[href='/cart'],
-    a[href*='/account']
-  ):is(:hover, :focus-visible) {
+  #header-component .header-actions__action:hover .account-button__tile,
+  #header-component .header-actions__action:hover .cart-icon-svg,
+  #header-component .header-actions__action:focus-visible .account-button__tile,
+  #header-component .header-actions__action:focus-visible .cart-icon-svg {
     background: var(--bk-tile-hover) !important;
-    border-color: rgb(217 183 126 / 55%) !important;
+    border-color: rgb(217 183 126 / 55%);
+    color: var(--bk-gold) !important;
   }
 
-  #header-component :is(
-    .header-actions__action,
-    .account-button,
-    shopify-account :is(a, button),
-    a[href='/cart'],
-    a[href*='/account']
-  ):is(:hover, :focus-visible) :is(svg, .svg-wrapper) {
+  #header-component .header-actions__action:hover .account-button__tile svg,
+  #header-component .header-actions__action:hover .cart-icon-svg svg,
+  #header-component .header-actions__action:focus-visible .account-button__tile svg,
+  #header-component .header-actions__action:focus-visible .cart-icon-svg svg {
     color: var(--bk-gold) !important;
+  }
+
+  /* Cart count: gold badge with a maroon ring */
+  #header-component .header-actions__cart-icon .cart-bubble {
+    background: var(--bk-gold) !important;
+    border-color: var(--bk-maroon) !important;
+  }
+
+  #header-component .header-actions__cart-icon .cart-bubble__text,
+  #header-component .header-actions__cart-icon .cart-bubble__text-count {
+    color: var(--bk-maroon) !important;
+  }
+
+  /* ---------- Localization dropdown on dark glass ---------- */
+  #header-component .dropdown-localization__button,
+  #header-component .dropdown-localization .language-selector {
+    color: var(--bk-cream);
   }
 
   /* NOTE: if your logo is dark artwork, uncomment this to turn it white:

@@ -1,1984 +1,869 @@
 {% comment %}
-
-  Contact form block, redesigned: card layout, visible labels, inline validation,
-
-  clear success state. Keeps the theme's form tag, translation keys, spacing/size
-
-  snippets and the contact-form-submit-button child block.
-
+  Contact form block — full-width "Get in touch" layout with glass panel.
+  Header row: eyebrow, heading, subheading (left) + reply badge (right).
+  Glass panel: Name | Email | Phone | Topic in one row, then Message + Send.
+  Keeps the theme's form tag, translation keys, spacing/size snippets,
+  the contact-form-submit-button child block and inline validation.
 {% endcomment %}
 
-
-
 {% capture submit_button %}
-
   {% content_for 'block', type: 'contact-form-submit-button', id: 'submit-button' %}
-
 {% endcapture %}
 
-
-
 {% assign form_id = block.id | default: section.id | prepend: 'ContactForm-' %}
-
-
+{% assign topics = block.settings.topics | split: ',' %}
+{% assign has_topics = false %}
+{% for t in topics %}{% assign tt = t | strip %}{% if tt != blank %}{% assign has_topics = true %}{% endif %}{% endfor %}
 
 <div
-
   class="
-
     contact-form bk-contact
-
-    {% if block.settings.show_card %}bk-contact--card{% endif %}
-
+    {% if block.settings.full_bleed %}bk-contact--bleed{% endif %}
+    {% if block.settings.show_card %}bk-contact--glass{% endif %}
     {% if block.settings.style_submit %}bk-contact--styled-button{% endif %}
-
+    {% unless has_topics %}bk-contact--no-topic{% endunless %}
     spacing-style size-style
-
     {% if block.settings.inherit_color_scheme == false %}color-{{ block.settings.color_scheme }}{% endif %}
-
   "
-
   style="
-
     {% render 'spacing-style', settings: block.settings %}
-
     {% render 'size-style', settings: block.settings %}
-
     --bk-accent: {{ block.settings.accent_color }};
-
+    --bk-accent-text: {{ block.settings.accent_text_color }};
     --bk-radius: {{ block.settings.corner_radius }}px;
-
+    --bk-glass: {{ block.settings.glass_opacity | divided_by: 100.0 }};
+    --bk-blur: {{ block.settings.glass_blur }}px;
+    --bk-glow: {{ block.settings.glow_color }};
   "
-
   {{ block.shopify_attributes }}
-
 >
-
   <bk-contact-form
-
-    class="bk-contact__inner"
-
+    class="bk-contact__inner {% if block.settings.soft_glow %}bk-contact__inner--glow{% endif %}"
     data-msg-required="{{ block.settings.error_required | escape }}"
-
     data-msg-email="{{ block.settings.error_email | escape }}"
-
     data-msg-phone="{{ block.settings.error_phone | escape }}"
-
   >
-
     {%- form 'contact', id: form_id, class: 'contact-form__form bk-contact__form' -%}
+      <input name="contact[id]" type="hidden" value="{{ form_id }}">
 
-      <input
-
-        name="contact[id]"
-
-        type="hidden"
-
-        value="{{ form_id }}"
-
-      >
-
-
-
-      {%- if form.posted_successfully? and form.id == form_id -%}
-
-        <div
-
-          class="bk-contact__success"
-
-          role="status"
-
-          tabindex="-1"
-
-          data-bk-alert
-
-        >
-
-          <span class="bk-contact__success-icon" aria-hidden="true">
-
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
-
-          </span>
-
-          <p class="bk-contact__success-text">{{- 'blocks.contact_form.post_success' | t -}}</p>
-
-          {%- if block.settings.success_link_label != blank -%}
-
-            <a class="bk-contact__success-link" href="{{ request.path }}">{{ block.settings.success_link_label | escape }}</a>
-
-          {%- endif -%}
-
-        </div>
-
-      {%- else -%}
-
-        {%- if block.settings.heading != blank or block.settings.subheading != blank -%}
-
-          <header class="bk-contact__intro">
-
+      {%- if block.settings.heading != blank or block.settings.subheading != blank or block.settings.badge_title != blank -%}
+        <header class="bk-contact__head">
+          <div class="bk-contact__intro">
+            {%- if block.settings.eyebrow != blank -%}
+              <p class="bk-contact__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+            {%- endif -%}
             {%- if block.settings.heading != blank -%}
-
               <h2 class="bk-contact__title">{{ block.settings.heading | escape }}</h2>
-
             {%- endif -%}
-
             {%- if block.settings.subheading != blank -%}
-
               <p class="bk-contact__subtitle">{{ block.settings.subheading | escape }}</p>
-
             {%- endif -%}
-
-          </header>
-
-        {%- endif -%}
-
-
-
-        {%- if form.errors and form.id == form_id -%}
-
-          <div
-
-            class="bk-contact__alert"
-
-            role="alert"
-
-            tabindex="-1"
-
-            data-bk-alert
-
-          >
-
-            <svg class="bk-contact__alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
-
-            <ul class="bk-contact__alert-list">
-
-              {%- for field in form.errors -%}
-
-                <li>
-
-                  {%- if field == 'form' -%}
-
-                    {{ form.errors.messages[field] }}
-
-                  {%- else -%}
-
-                    <a href="#{{ form_id }}-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a>
-
-                  {%- endif -%}
-
-                </li>
-
-              {%- endfor -%}
-
-            </ul>
-
           </div>
-
-        {%- endif -%}
-
-
-
-        <div class="bk-contact__grid">
-
-          {%- comment -%} Name {%- endcomment -%}
-
-          <div class="bk-field">
-
-            <label class="bk-field__label" for="{{ form_id }}-name">
-
-              {{- 'blocks.contact_form.name' | t -}}
-
-              <span class="bk-field__req" aria-hidden="true">*</span>
-
-            </label>
-
-            <input
-
-              type="text"
-
-              id="{{ form_id }}-name"
-
-              class="contact-form__input bk-field__input"
-
-              name="contact[name]"
-
-              autocomplete="name"
-
-              required
-
-              data-bk-input
-
-              value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}"
-
-              {% if form.errors contains 'name' and form.id == form_id %}
-
-                aria-invalid="true"
-
-                aria-describedby="{{ form_id }}-name-error"
-
-              {% endif %}
-
-            >
-
-            <p
-
-              class="bk-field__error"
-
-              id="{{ form_id }}-name-error"
-
-              {% unless form.errors contains 'name' and form.id == form_id %}hidden{% endunless %}
-
-            >
-
-              {%- if form.errors contains 'name' and form.id == form_id -%}
-
-                {{ form.errors.translated_fields.name | capitalize }} {{ form.errors.messages.name }}
-
+          {%- if block.settings.badge_title != blank -%}
+            <div class="bk-contact__badge">
+              <strong>{{ block.settings.badge_title | escape }}</strong>
+              {%- if block.settings.badge_text != blank -%}
+                <span>{{ block.settings.badge_text | escape }}</span>
               {%- endif -%}
-
-            </p>
-
-          </div>
-
-
-
-          {%- comment -%} Email {%- endcomment -%}
-
-          <div class="bk-field">
-
-            <label class="bk-field__label" for="{{ form_id }}-email">
-
-              {{- 'blocks.contact_form.email' | t -}}
-
-              <span class="bk-field__req" aria-hidden="true">*</span>
-
-            </label>
-
-            <input
-
-              type="email"
-
-              id="{{ form_id }}-email"
-
-              class="contact-form__input bk-field__input"
-
-              name="contact[email]"
-
-              autocomplete="email"
-
-              autocapitalize="off"
-
-              spellcheck="false"
-
-              inputmode="email"
-
-              required
-
-              aria-required="true"
-
-              data-bk-input
-
-              value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
-
-              {% if form.errors contains 'email' and form.id == form_id %}
-
-                aria-invalid="true"
-
-                aria-describedby="{{ form_id }}-email-error"
-
-              {% endif %}
-
-            >
-
-            <p
-
-              class="bk-field__error"
-
-              id="{{ form_id }}-email-error"
-
-              {% unless form.errors contains 'email' and form.id == form_id %}hidden{% endunless %}
-
-            >
-
-              {%- if form.errors contains 'email' and form.id == form_id -%}
-
-                {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
-
-              {%- endif -%}
-
-            </p>
-
-          </div>
-
-
-
-          {%- comment -%} Phone {%- endcomment -%}
-
-          <div class="bk-field bk-field--full">
-
-            <label class="bk-field__label" for="{{ form_id }}-phone">
-
-              {{- 'blocks.contact_form.phone' | t -}}
-
-              {%- if block.settings.optional_label != blank -%}
-
-                <span class="bk-field__opt">{{ block.settings.optional_label | escape }}</span>
-
-              {%- endif -%}
-
-            </label>
-
-            <input
-
-              type="tel"
-
-              id="{{ form_id }}-phone"
-
-              class="contact-form__input bk-field__input"
-
-              name="contact[phone]"
-
-              autocomplete="tel"
-
-              inputmode="tel"
-
-              pattern="[0-9+\s\\-\\(\\)]*"
-
-              data-bk-input
-
-              value="{% if form.phone %}{{ form.phone | escape }}{% elsif customer %}{{ customer.phone | escape }}{% endif %}"
-
-              {% if form.errors contains 'phone' and form.id == form_id %}
-
-                aria-invalid="true"
-
-                aria-describedby="{{ form_id }}-phone-error"
-
-              {% endif %}
-
-            >
-
-            <p
-
-              class="bk-field__error"
-
-              id="{{ form_id }}-phone-error"
-
-              {% unless form.errors contains 'phone' and form.id == form_id %}hidden{% endunless %}
-
-            >
-
-              {%- if form.errors contains 'phone' and form.id == form_id -%}
-
-                {{ form.errors.translated_fields.phone | capitalize }} {{ form.errors.messages.phone }}
-
-              {%- endif -%}
-
-            </p>
-
-          </div>
-
-
-
-          {%- comment -%} Message {%- endcomment -%}
-
-          <div class="bk-field bk-field--full">
-
-            <label class="bk-field__label" for="{{ form_id }}-body">
-
-              {{- 'blocks.contact_form.comment' | t -}}
-
-              <span class="bk-field__req" aria-hidden="true">*</span>
-
-            </label>
-
-            <textarea
-
-              rows="5"
-
-              id="{{ form_id }}-body"
-
-              class="contact-form__input contact-form__input--textarea bk-field__input bk-field__input--textarea"
-
-              name="contact[body]"
-
-              required
-
-              data-bk-input
-
-              placeholder="{{ block.settings.message_placeholder | escape }}"
-
-              {% if form.errors contains 'body' and form.id == form_id %}
-
-                aria-invalid="true"
-
-                aria-describedby="{{ form_id }}-body-error"
-
-              {% endif %}
-
-            >{{- form.body | escape -}}</textarea>
-
-            <p
-
-              class="bk-field__error"
-
-              id="{{ form_id }}-body-error"
-
-              {% unless form.errors contains 'body' and form.id == form_id %}hidden{% endunless %}
-
-            >
-
-              {%- if form.errors contains 'body' and form.id == form_id -%}
-
-                {{ form.errors.translated_fields.body | capitalize }} {{ form.errors.messages.body }}
-
-              {%- endif -%}
-
-            </p>
-
-          </div>
-
-        </div>
-
-
-
-        <div class="bk-contact__actions">
-
-          {{ submit_button }}
-
-          {%- if block.settings.footnote != blank -%}
-
-            <p class="bk-contact__note">{{ block.settings.footnote | escape }}</p>
-
+            </div>
           {%- endif -%}
-
-        </div>
-
+        </header>
       {%- endif -%}
 
+      <div class="bk-contact__panel">
+        {%- if form.posted_successfully? and form.id == form_id -%}
+          <div class="bk-contact__success" role="status" tabindex="-1" data-bk-alert>
+            <span class="bk-contact__success-icon" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="m5 12.5 4.5 4.5L19 7.5"/></svg>
+            </span>
+            <p class="bk-contact__success-text">{{- 'blocks.contact_form.post_success' | t -}}</p>
+            {%- if block.settings.success_link_label != blank -%}
+              <a class="bk-contact__success-link" href="{{ request.path }}">{{ block.settings.success_link_label | escape }}</a>
+            {%- endif -%}
+          </div>
+        {%- else -%}
+          <div class="bk-contact__panel-head">
+            {%- if block.settings.form_heading != blank -%}
+              <h3 class="bk-contact__panel-title">{{ block.settings.form_heading | escape }}</h3>
+            {%- endif -%}
+            {%- if block.settings.footnote != blank -%}
+              <p class="bk-contact__note">{{ block.settings.footnote | escape }}</p>
+            {%- endif -%}
+          </div>
+
+          {%- if form.errors and form.id == form_id -%}
+            <div class="bk-contact__alert" role="alert" tabindex="-1" data-bk-alert>
+              <svg class="bk-contact__alert-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9.5"/><path d="M12 7.5v5.5M12 16.5h.01"/></svg>
+              <ul class="bk-contact__alert-list">
+                {%- for field in form.errors -%}
+                  <li>
+                    {%- if field == 'form' -%}
+                      {{ form.errors.messages[field] }}
+                    {%- else -%}
+                      <a href="#{{ form_id }}-{{ field }}">{{ form.errors.translated_fields[field] | capitalize }} {{ form.errors.messages[field] }}</a>
+                    {%- endif -%}
+                  </li>
+                {%- endfor -%}
+              </ul>
+            </div>
+          {%- endif -%}
+
+          <div class="bk-contact__grid">
+            {%- comment -%} Name {%- endcomment -%}
+            <div class="bk-field">
+              <label class="bk-field__label" for="{{ form_id }}-name">
+                {{- 'blocks.contact_form.name' | t -}}
+                <span class="bk-field__req" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="text"
+                id="{{ form_id }}-name"
+                class="contact-form__input bk-field__input"
+                name="contact[name]"
+                autocomplete="name"
+                required
+                data-bk-input
+                placeholder="{{ block.settings.name_placeholder | escape }}"
+                value="{% if form.name %}{{ form.name | escape }}{% elsif customer %}{{ customer.name | escape }}{% endif %}"
+                {% if form.errors contains 'name' and form.id == form_id %}
+                  aria-invalid="true"
+                  aria-describedby="{{ form_id }}-name-error"
+                {% endif %}
+              >
+              <p class="bk-field__error" id="{{ form_id }}-name-error" {% unless form.errors contains 'name' and form.id == form_id %}hidden{% endunless %}>
+                {%- if form.errors contains 'name' and form.id == form_id -%}
+                  {{ form.errors.translated_fields.name | capitalize }} {{ form.errors.messages.name }}
+                {%- endif -%}
+              </p>
+            </div>
+
+            {%- comment -%} Email {%- endcomment -%}
+            <div class="bk-field">
+              <label class="bk-field__label" for="{{ form_id }}-email">
+                {{- 'blocks.contact_form.email' | t -}}
+                <span class="bk-field__req" aria-hidden="true">*</span>
+              </label>
+              <input
+                type="email"
+                id="{{ form_id }}-email"
+                class="contact-form__input bk-field__input"
+                name="contact[email]"
+                autocomplete="email"
+                autocapitalize="off"
+                spellcheck="false"
+                inputmode="email"
+                required
+                aria-required="true"
+                data-bk-input
+                placeholder="{{ block.settings.email_placeholder | escape }}"
+                value="{% if form.email %}{{ form.email | escape }}{% elsif customer %}{{ customer.email | escape }}{% endif %}"
+                {% if form.errors contains 'email' and form.id == form_id %}
+                  aria-invalid="true"
+                  aria-describedby="{{ form_id }}-email-error"
+                {% endif %}
+              >
+              <p class="bk-field__error" id="{{ form_id }}-email-error" {% unless form.errors contains 'email' and form.id == form_id %}hidden{% endunless %}>
+                {%- if form.errors contains 'email' and form.id == form_id -%}
+                  {{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}
+                {%- endif -%}
+              </p>
+            </div>
+
+            {%- comment -%} Phone {%- endcomment -%}
+            <div class="bk-field bk-field--phone">
+              <label class="bk-field__label" for="{{ form_id }}-phone">
+                {{- 'blocks.contact_form.phone' | t -}}
+                {%- if block.settings.optional_label != blank -%}
+                  <span class="bk-field__opt">{{ block.settings.optional_label | escape }}</span>
+                {%- endif -%}
+              </label>
+              <input
+                type="tel"
+                id="{{ form_id }}-phone"
+                class="contact-form__input bk-field__input"
+                name="contact[phone]"
+                autocomplete="tel"
+                inputmode="tel"
+                pattern="[0-9+\s\\-\\(\\)]*"
+                data-bk-input
+                placeholder="{{ block.settings.phone_placeholder | escape }}"
+                value="{% if form.phone %}{{ form.phone | escape }}{% elsif customer %}{{ customer.phone | escape }}{% endif %}"
+                {% if form.errors contains 'phone' and form.id == form_id %}
+                  aria-invalid="true"
+                  aria-describedby="{{ form_id }}-phone-error"
+                {% endif %}
+              >
+              <p class="bk-field__error" id="{{ form_id }}-phone-error" {% unless form.errors contains 'phone' and form.id == form_id %}hidden{% endunless %}>
+                {%- if form.errors contains 'phone' and form.id == form_id -%}
+                  {{ form.errors.translated_fields.phone | capitalize }} {{ form.errors.messages.phone }}
+                {%- endif -%}
+              </p>
+            </div>
+
+            {%- comment -%} Topic (optional) {%- endcomment -%}
+            {%- if has_topics -%}
+              <div class="bk-field">
+                <label class="bk-field__label" for="{{ form_id }}-topic">{{ block.settings.topic_label | escape }}</label>
+                <select id="{{ form_id }}-topic" class="contact-form__input bk-field__input bk-field__input--select" name="contact[{{ block.settings.topic_label | escape }}]">
+                  {%- for t in topics -%}
+                    {%- assign tt = t | strip -%}
+                    {%- if tt != blank -%}
+                      <option value="{{ tt | escape }}" {% if form[block.settings.topic_label] == tt %}selected{% endif %}>{{ tt | escape }}</option>
+                    {%- endif -%}
+                  {%- endfor -%}
+                </select>
+              </div>
+            {%- endif -%}
+
+            {%- comment -%} Message + Send, on one row {%- endcomment -%}
+            <div class="bk-field bk-field--message">
+              <label class="bk-field__label" for="{{ form_id }}-body">
+                {{- 'blocks.contact_form.comment' | t -}}
+                <span class="bk-field__req" aria-hidden="true">*</span>
+              </label>
+              <textarea
+                rows="2"
+                id="{{ form_id }}-body"
+                class="contact-form__input contact-form__input--textarea bk-field__input bk-field__input--textarea"
+                name="contact[body]"
+                required
+                data-bk-input
+                placeholder="{{ block.settings.message_placeholder | escape }}"
+                {% if form.errors contains 'body' and form.id == form_id %}
+                  aria-invalid="true"
+                  aria-describedby="{{ form_id }}-body-error"
+                {% endif %}
+              >{{- form.body | escape -}}</textarea>
+              <p class="bk-field__error" id="{{ form_id }}-body-error" {% unless form.errors contains 'body' and form.id == form_id %}hidden{% endunless %}>
+                {%- if form.errors contains 'body' and form.id == form_id -%}
+                  {{ form.errors.translated_fields.body | capitalize }} {{ form.errors.messages.body }}
+                {%- endif -%}
+              </p>
+            </div>
+
+            <div class="bk-contact__actions">
+              {{ submit_button }}
+            </div>
+          </div>
+        {%- endif -%}
+      </div>
     {%- endform -%}
-
   </bk-contact-form>
-
 </div>
 
-
-
 {% stylesheet %}
-
   .bk-contact {
-
-    --bk-accent: #174B3A;
-
-    --bk-radius: 12px;
-
-    --bk-text: var(--color-foreground, #292D29);
-
-    --bk-muted: color-mix(in srgb, var(--bk-text) 66%, transparent);
-
-    --bk-border: color-mix(in srgb, var(--bk-text) 24%, transparent);
-
-    --bk-border-strong: color-mix(in srgb, var(--bk-text) 46%, transparent);
-
-    --bk-surface: var(--color-background, #FAF9F2);
-
+    --bk-accent: #111111;
+    --bk-accent-text: #ffffff;
+    --bk-radius: 16px;
+    --bk-glass: 0.55;
+    --bk-blur: 18px;
+    --bk-glow: #e5e7eb;
+    --bk-text: var(--color-foreground, #111111);
+    --bk-muted: color-mix(in srgb, var(--bk-text) 64%, transparent);
+    --bk-line: color-mix(in srgb, var(--bk-text) 12%, transparent);
+    --bk-field-line: color-mix(in srgb, var(--bk-text) 18%, transparent);
     --bk-danger: #c5221f;
 
+    width: 100%;
     min-width: min(100%, 22rem);
-
     color: var(--bk-text);
-
   }
-
-
 
   .bk-contact *,
-
   .bk-contact *::before,
+  .bk-contact *::after { box-sizing: border-box; }
 
-  .bk-contact *::after {
-
-    box-sizing: border-box;
-
+  /* Break out of a page-width section so the block spans the whole screen */
+  .bk-contact--bleed {
+    width: 100vw !important;
+    max-width: 100vw !important;
+    margin-inline: calc(50% - 50vw) !important;
+    padding-inline: clamp(16px, 5.5vw, 80px);
   }
-
-
 
   .bk-contact__inner {
-
     display: block;
-
     position: relative;
-
+    isolation: isolate;
   }
 
-
-
-  /* ---------- Card ---------- */
-
-  .bk-contact--card .bk-contact__inner {
-
-    overflow: hidden;
-
-    padding: clamp(20px, 4vw, 32px);
-
-    border: 1px solid color-mix(in srgb, var(--bk-text) 12%, transparent);
-
-    border-radius: var(--bk-radius);
-
-    background: var(--bk-surface);
-
-    box-shadow: 0 2px 6px rgb(41 45 41 / 0.035), 0 18px 48px rgb(41 45 41 / 0.075);
-
-  }
-
-
-
-  .bk-contact--card .bk-contact__inner::before {
-
+  /* Soft glow behind the glass so the blur is visible on plain backgrounds */
+  .bk-contact__inner--glow::before,
+  .bk-contact__inner--glow::after {
     content: '';
-
     position: absolute;
-
-    inset: 0 0 auto;
-
-    height: 4px;
-
-    background: linear-gradient(90deg, #174B3A 0%, #174B3A 72%, #E5ED8C 100%);
-
+    z-index: -1;
+    border-radius: 50%;
+    background: var(--bk-glow);
+    filter: blur(90px);
+    opacity: 0.6;
+    pointer-events: none;
   }
-
-
+  .bk-contact__inner--glow::before { width: 460px; height: 460px; top: -140px; right: 8%; }
+  .bk-contact__inner--glow::after { width: 420px; height: 420px; bottom: -160px; left: 2%; }
 
   .bk-contact__form {
-
     display: flex;
-
     flex-direction: column;
-
-    gap: 20px;
-
+    gap: clamp(28px, 3.5vw, 44px);
   }
 
-
-
-  /* ---------- Intro ---------- */
+  /* ---------- Header row ---------- */
+  .bk-contact__head {
+    display: flex;
+    align-items: flex-end;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 24px 48px;
+  }
 
   .bk-contact__intro {
-
     display: flex;
-
     flex-direction: column;
-
-    gap: 6px;
-
+    gap: 14px;
+    max-width: 760px;
   }
 
-
+  .bk-contact__eyebrow {
+    margin: 0;
+    font-size: 0.8125rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--bk-muted);
+  }
 
   .bk-contact__title {
-
     margin: 0;
-
     font-family: var(--font-heading--family, inherit);
-
-    font-size: clamp(1.25rem, 1.1rem + 0.8vw, 1.625rem);
-
-    font-weight: 700;
-
-    line-height: 1.2;
-
-    letter-spacing: -0.01em;
-
+    font-size: clamp(2.5rem, 1.6rem + 3.6vw, 4.5rem);
+    font-weight: 800;
+    line-height: 1;
+    letter-spacing: -0.03em;
     color: var(--bk-text);
-
   }
-
-
 
   .bk-contact__subtitle {
-
     margin: 0;
-
-    max-width: 52ch;
-
-    font-size: 0.9375rem;
-
-    line-height: 1.5;
-
+    max-width: 60ch;
+    font-size: clamp(1rem, 0.95rem + 0.3vw, 1.1875rem);
+    line-height: 1.55;
     color: var(--bk-muted);
-
   }
 
-
-
-  /* ---------- Grid ---------- */
-
-  .bk-contact__grid {
-
-    display: grid;
-
-    grid-template-columns: minmax(0, 1fr);
-
-    gap: 18px 16px;
-
-  }
-
-
-
-  @media screen and (min-width: 750px) {
-
-    .bk-contact__grid {
-
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-
-    }
-
-
-
-    .bk-field--full {
-
-      grid-column: 1 / -1;
-
-    }
-
-  }
-
-
-
-  /* ---------- Fields ---------- */
-
-  .bk-field {
-
+  .bk-contact__badge {
     display: flex;
-
     flex-direction: column;
-
-    gap: 6px;
-
-    min-width: 0;
-
+    gap: 4px;
+    padding: 16px 22px;
+    border-radius: 14px;
+    border: 1px solid var(--bk-line);
+    background: color-mix(in srgb, var(--color-background, #ffffff) calc(var(--bk-glass) * 100%), transparent);
+    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(140%);
+    backdrop-filter: blur(var(--bk-blur)) saturate(140%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 10px 28px -16px rgb(0 0 0 / 0.25);
   }
+  .bk-contact__badge strong { font-size: 0.9375rem; font-weight: 700; }
+  .bk-contact__badge span { font-size: 0.8125rem; color: var(--bk-muted); }
 
-
-
-  .bk-field__label {
-
+  /* ---------- Panel ---------- */
+  .bk-contact__panel {
     display: flex;
-
-    align-items: baseline;
-
-    gap: 6px;
-
-    font-size: 0.875rem;
-
-    font-weight: 600;
-
-    line-height: 1.3;
-
-    color: var(--bk-text);
-
-  }
-
-
-
-  .bk-field__req {
-
-    color: var(--bk-danger);
-
-    font-weight: 700;
-
-  }
-
-
-
-  .bk-field__opt {
-
-    font-size: 0.8125rem;
-
-    font-weight: 400;
-
-    color: var(--bk-muted);
-
-  }
-
-
-
-  .bk-contact .bk-field__input {
-
-    display: block;
-
-    width: 100%;
-
-    min-height: 48px;
-
-    margin: 0;
-
-    padding: 12px 14px;
-
-    overflow: hidden;
-
-    text-overflow: ellipsis;
-
-    font: inherit;
-
-    font-size: 1rem; /* 16px stops iOS zooming into the field */
-
-    line-height: 1.4;
-
-    color: var(--color-input-text, var(--bk-text));
-
-    background-color: var(--color-input-background, #FFFFFF);
-
-    border: 1px solid color-mix(in srgb, #292D29 16%, transparent);
-
-    border-radius: max(10px, calc(var(--bk-radius) - 2px));
-
-    box-shadow: none;
-
-    outline: none;
-
-    -webkit-appearance: none;
-
-    appearance: none;
-
-    -webkit-font-smoothing: antialiased;
-
-    scroll-margin-block: 96px;
-
-    transition: border-color 0.15s ease, box-shadow 0.15s ease;
-
-  }
-
-
-
-  .bk-contact .bk-field__input::placeholder {
-
-    color: color-mix(in srgb, var(--bk-text) 50%, transparent);
-
-    opacity: 1;
-
-  }
-
-
-
-  .bk-contact .bk-field__input:hover {
-
-    border-color: var(--bk-border-strong);
-
-  }
-
-
-
-  .bk-contact .bk-field__input:focus,
-
-  .bk-contact .bk-field__input:focus-visible {
-
-    border-color: var(--bk-accent);
-
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-accent) 24%, transparent);
-
-    outline: none;
-
-  }
-
-
-
-  .bk-contact .bk-field__input[aria-invalid='true'] {
-
-    border-color: var(--bk-danger);
-
-    background-image: none;
-
-  }
-
-
-
-  .bk-contact .bk-field__input[aria-invalid='true']:focus {
-
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-danger) 22%, transparent);
-
-  }
-
-
-
-  .bk-contact .bk-field__input--textarea {
-
-    min-height: 140px;
-
-    overflow: auto;
-
-    resize: vertical;
-
-    text-overflow: clip;
-
-  }
-
-
-
-  .bk-field__error {
-
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 6px;
-
-    margin: 0;
-
-    font-size: 0.8125rem;
-
-    line-height: 1.4;
-
-    color: var(--bk-danger);
-
-  }
-
-
-
-  .bk-field__error[hidden] {
-
-    display: none;
-
-  }
-
-
-
-  .bk-field__error::before {
-
-    content: '';
-
-    flex: 0 0 auto;
-
-    width: 14px;
-
-    height: 14px;
-
-    margin-top: 1px;
-
-    background-color: currentColor;
-
-    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www\.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5M12 16.5h.01'/%3E%3C/svg%3E") center / contain no-repeat;
-
-    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www\.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5M12 16.5h.01'/%3E%3C/svg%3E") center / contain no-repeat;
-
-  }
-
-
-
-  /* ---------- Alerts ---------- */
-
-  .bk-contact__alert {
-
-    display: flex;
-
-    align-items: flex-start;
-
-    gap: 10px;
-
-    padding: 12px 14px;
-
-    font-size: 0.875rem;
-
-    line-height: 1.45;
-
-    color: #912018;
-
-    background: #fef3f2;
-
-    border: 1px solid #fecdca;
-
-    border-radius: max(10px, calc(var(--bk-radius) - 2px));
-
-  }
-
-
-
-  .bk-contact__alert:focus {
-
-    outline: none;
-
-  }
-
-
-
-  .bk-contact__alert-icon {
-
-    flex: 0 0 auto;
-
-    width: 20px;
-
-    height: 20px;
-
-    margin-top: 1px;
-
-  }
-
-
-
-  .bk-contact__alert-list {
-
-    margin: 0;
-
-    padding: 0;
-
-    list-style: none;
-
-  }
-
-
-
-  .bk-contact__alert-list a {
-
-    color: inherit;
-
-    text-decoration: underline;
-
-    text-underline-offset: 2px;
-
-  }
-
-
-
-  /* ---------- Success ---------- */
-
-  .bk-contact__success {
-
-    display: flex;
-
     flex-direction: column;
+    gap: 20px;
+  }
 
+  .bk-contact--glass .bk-contact__panel {
+    padding: clamp(20px, 2.4vw, 32px);
+    border-radius: calc(var(--bk-radius) + 4px);
+    border: 1px solid var(--bk-line);
+    background: color-mix(in srgb, var(--color-background, #ffffff) calc(var(--bk-glass) * 100%), transparent);
+    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(150%);
+    backdrop-filter: blur(var(--bk-blur)) saturate(150%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 24px 50px -24px rgb(0 0 0 / 0.25);
+  }
+
+  @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
+    .bk-contact--glass .bk-contact__panel,
+    .bk-contact__badge { background: var(--color-background, #ffffff); }
+  }
+
+  .bk-contact__panel-head {
+    display: flex;
     align-items: center;
-
-    gap: 14px;
-
-    padding: clamp(12px, 3vw, 28px) 0;
-
-    text-align: center;
-
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 8px 16px;
   }
 
-
-
-  .bk-contact__success:focus {
-
-    outline: none;
-
-  }
-
-
-
-  .bk-contact__success-icon {
-
-    display: grid;
-
-    place-items: center;
-
-    width: 56px;
-
-    height: 56px;
-
-    color: #067647;
-
-    background: #ecfdf3;
-
-    border: 1px solid #abefc6;
-
-    border-radius: 50%;
-
-  }
-
-
-
-  .bk-contact__success-icon svg {
-
-    width: 28px;
-
-    height: 28px;
-
-  }
-
-
-
-  .bk-contact__success-text {
-
-    max-width: 40ch;
-
+  .bk-contact__panel-title {
     margin: 0;
-
-    font-size: 1.0625rem;
-
-    font-weight: 600;
-
-    line-height: 1.45;
-
+    font-family: var(--font-heading--family, inherit);
+    font-size: clamp(1.375rem, 1.2rem + 0.6vw, 1.75rem);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.01em;
     color: var(--bk-text);
-
   }
-
-
-
-  .bk-contact__success-link {
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    min-height: 44px;
-
-    padding: 10px 22px;
-
-    font-size: 0.9375rem;
-
-    font-weight: 600;
-
-    color: var(--bk-accent);
-
-    text-decoration: none;
-
-    border: 1.5px solid var(--bk-accent);
-
-    border-radius: 999px;
-
-    transition: background-color 0.15s ease, color 0.15s ease;
-
-  }
-
-
-
-  .bk-contact__success-link:hover {
-
-    color: #fff;
-
-    background: var(--bk-accent);
-
-  }
-
-
-
-  .bk-contact__success-link:focus-visible {
-
-    outline: 3px solid color-mix(in srgb, var(--bk-accent) 35%, transparent);
-
-    outline-offset: 2px;
-
-  }
-
-
-
-  /* ---------- Actions ---------- */
-
-  .bk-contact__actions {
-
-    display: flex;
-
-    flex-direction: column;
-
-    align-items: stretch;
-
-    gap: 12px;
-
-  }
-
-
 
   .bk-contact__note {
-
     margin: 0;
-
-    font-size: 0.8125rem;
-
+    font-size: 0.875rem;
     line-height: 1.4;
-
     color: var(--bk-muted);
-
   }
 
-
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) {
-
-    position: relative;
-
-    display: inline-flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    gap: 8px;
-
-    width: 100%;
-
-    min-height: 50px;
-
-    padding: 12px 28px;
-
-    font: inherit;
-
-    font-size: 1rem;
-
-    font-weight: 600;
-
-    line-height: 1.2;
-
-    letter-spacing: 0.01em;
-
-    color: #fff;
-
-    cursor: pointer;
-
-    background: var(--bk-accent);
-
-    border: 1px solid var(--bk-accent);
-
-    border-radius: 999px;
-
-    box-shadow: 0 2px 4px rgb(23 75 58 / 0.14), 0 8px 18px rgb(23 75 58 / 0.16);
-
-    transition: filter 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
-
+  /* ---------- Grid: 4 fields in a row, then Message + Send ---------- */
+  .bk-contact__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    gap: 16px;
+    align-items: start;
   }
-
-
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):hover {
-
-    filter: brightness(0.92);
-
-  }
-
-
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):active {
-
-    transform: scale(0.99);
-
-  }
-
-
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):focus-visible {
-
-    outline: 3px solid color-mix(in srgb, var(--bk-accent) 40%, transparent);
-
-    outline-offset: 2px;
-
-  }
-
-
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[disabled],
-
-  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[aria-busy='true'] {
-
-    cursor: progress;
-
-    filter: none;
-
-    opacity: 0.75;
-
-  }
-
-
-
-  .bk-contact--styled-button .bk-contact__actions button[aria-busy='true']::after {
-
-    content: '';
-
-    width: 16px;
-
-    height: 16px;
-
-    border: 2px solid rgb(255 255 255 / 0.45);
-
-    border-top-color: #fff;
-
-    border-radius: 50%;
-
-    animation: bk-contact-spin 0.7s linear infinite;
-
-  }
-
-
 
   @media screen and (min-width: 750px) {
-
-    .bk-contact__actions {
-
-      flex-direction: row;
-
-      align-items: center;
-
-      gap: 20px;
-
-    }
-
-
-
-    .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) {
-
-      width: auto;
-
-      min-width: 200px;
-
-    }
-
+    .bk-contact__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .bk-field--message { grid-column: 1 / -1; }
+    .bk-contact__actions { grid-column: 1 / -1; }
   }
 
-
-
-  .bk-contact__title {
-    letter-spacing: -0.035em;
+  @media screen and (min-width: 990px) {
+    .bk-contact__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+    .bk-contact--no-topic .bk-field--phone { grid-column: span 2; }
+    .bk-field--message { grid-column: 1 / span 3; }
+    .bk-contact__actions { grid-column: 4; align-self: start; padding-top: calc(0.875rem * 1.3 + 8px); }
   }
 
-  .bk-contact__subtitle {
-    color: color-mix(in srgb, var(--bk-text) 68%, transparent);
+  /* ---------- Fields ---------- */
+  .bk-field {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    min-width: 0;
   }
+
+  .bk-field__label {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+    font-size: 0.875rem;
+    font-weight: 600;
+    line-height: 1.3;
+    color: var(--bk-text);
+  }
+
+  .bk-field__req { color: var(--bk-danger); font-weight: 700; }
+  .bk-field__opt { margin-left: 4px; font-size: 0.8125rem; font-weight: 400; color: var(--bk-muted); }
 
   .bk-contact .bk-field__input {
-    box-shadow: 0 1px 2px rgb(41 45 41 / 0.025);
+    display: block;
+    width: 100%;
+    height: 52px;
+    min-height: 52px;
+    margin: 0;
+    padding: 0 16px;
+    font: inherit;
+    font-size: 1rem; /* 16px stops iOS zooming into the field */
+    line-height: 1.4;
+    color: var(--color-input-text, var(--bk-text));
+    background-color: color-mix(in srgb, var(--color-input-background, #ffffff) 85%, transparent);
+    border: 1px solid var(--bk-field-line);
+    border-radius: max(10px, calc(var(--bk-radius) - 4px));
+    box-shadow: none;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+    scroll-margin-block: 96px;
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, background-color 0.15s ease;
+  }
+
+  .bk-contact .bk-field__input--select {
+    padding-right: 42px;
+    cursor: pointer;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 16px center;
+  }
+
+  .bk-contact .bk-field__input--textarea {
+    height: 64px;
+    min-height: 64px;
+    padding: 14px 16px;
+    overflow: auto;
+    resize: vertical;
+  }
+
+  .bk-contact .bk-field__input::placeholder {
+    color: color-mix(in srgb, var(--bk-text) 48%, transparent);
+    opacity: 1;
+  }
+
+  .bk-contact .bk-field__input:hover {
+    border-color: color-mix(in srgb, var(--bk-text) 40%, transparent);
   }
 
   .bk-contact .bk-field__input:focus,
   .bk-contact .bk-field__input:focus-visible {
-    border-color: #174B3A;
-    box-shadow: 0 0 0 3px rgb(23 75 58 / 0.12);
+    border-color: var(--bk-text);
+    background-color: var(--color-input-background, #ffffff);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-text) 12%, transparent);
+    outline: none;
   }
+
+  .bk-contact .bk-field__input[aria-invalid='true'] { border-color: var(--bk-danger); }
+  .bk-contact .bk-field__input[aria-invalid='true']:focus {
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-danger) 22%, transparent);
+  }
+
+  .bk-field__error {
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    margin: 0;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    color: var(--bk-danger);
+  }
+  .bk-field__error[hidden] { display: none; }
+  .bk-field__error::before {
+    content: '';
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+    margin-top: 1px;
+    background-color: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5M12 16.5h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+    mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.4' stroke-linecap='round'%3E%3Ccircle cx='12' cy='12' r='9.5'/%3E%3Cpath d='M12 7.5v5.5M12 16.5h.01'/%3E%3C/svg%3E") center / contain no-repeat;
+  }
+
+  /* ---------- Alerts ---------- */
+  .bk-contact__alert {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 12px 14px;
+    font-size: 0.875rem;
+    line-height: 1.45;
+    color: #912018;
+    background: #fef3f2;
+    border: 1px solid #fecdca;
+    border-radius: max(10px, calc(var(--bk-radius) - 4px));
+  }
+  .bk-contact__alert:focus { outline: none; }
+  .bk-contact__alert-icon { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 1px; }
+  .bk-contact__alert-list { margin: 0; padding: 0; list-style: none; }
+  .bk-contact__alert-list a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+
+  /* ---------- Success ---------- */
+  .bk-contact__success {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 14px;
+    padding: clamp(12px, 3vw, 28px) 0;
+    text-align: center;
+  }
+  .bk-contact__success:focus { outline: none; }
+  .bk-contact__success-icon {
+    display: grid;
+    place-items: center;
+    width: 56px;
+    height: 56px;
+    color: #067647;
+    background: #ecfdf3;
+    border: 1px solid #abefc6;
+    border-radius: 50%;
+  }
+  .bk-contact__success-icon svg { width: 28px; height: 28px; }
+  .bk-contact__success-text {
+    max-width: 40ch;
+    margin: 0;
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.45;
+    color: var(--bk-text);
+  }
+  .bk-contact__success-link {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 44px;
+    padding: 10px 22px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--bk-text);
+    text-decoration: none;
+    border: 1.5px solid var(--bk-text);
+    border-radius: 12px;
+    transition: background-color 0.15s ease, color 0.15s ease;
+  }
+  .bk-contact__success-link:hover { color: var(--bk-accent-text); background: var(--bk-accent); border-color: var(--bk-accent); }
+
+  /* ---------- Send button ---------- */
+  .bk-contact__actions { display: flex; }
 
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) {
-    color: #FAF9F2;
-    background: #174B3A;
-    border-color: #174B3A;
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    height: 64px;
+    min-height: 56px;
+    padding: 0 28px;
+    font: inherit;
+    font-size: 1rem;
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    color: var(--bk-accent-text);
+    cursor: pointer;
+    background: var(--bk-accent);
+    border: 1px solid var(--bk-accent);
+    border-radius: max(10px, calc(var(--bk-radius) - 4px));
+    box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.5);
+    transition: opacity 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
   }
-
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):hover {
-    filter: brightness(1.08);
-    box-shadow: 0 8px 20px rgb(23 75 58 / 0.2);
+    opacity: 0.88;
+    box-shadow: 0 14px 28px -12px rgb(0 0 0 / 0.55);
+  }
+  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):active { transform: scale(0.98); }
+  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):focus-visible {
+    outline: 3px solid color-mix(in srgb, var(--bk-accent) 40%, transparent);
+    outline-offset: 2px;
+  }
+  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[disabled],
+  .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[aria-busy='true'] {
+    cursor: progress;
+    opacity: 0.7;
+  }
+  .bk-contact--styled-button .bk-contact__actions button[aria-busy='true']::after {
+    content: '';
+    width: 16px;
+    height: 16px;
+    border: 2px solid color-mix(in srgb, var(--bk-accent-text) 45%, transparent);
+    border-top-color: var(--bk-accent-text);
+    border-radius: 50%;
+    animation: bk-contact-spin 0.7s linear infinite;
+  }
+  .bk-contact__actions > * { width: 100%; }
+
+  /* ---------- Mobile ---------- */
+  @media screen and (max-width: 749px) {
+    .bk-contact__head { align-items: flex-start; }
+    .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) { height: 56px; }
   }
 
-  @keyframes bk-contact-spin {
-
-    to {
-
-      transform: rotate(360deg);
-
-    }
-
-  }
-
-
+  @keyframes bk-contact-spin { to { transform: rotate(360deg); } }
 
   @media (prefers-reduced-motion: reduce) {
-
     .bk-contact .bk-field__input,
-
     .bk-contact__success-link,
-
-    .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) {
-
-      transition: none;
-
-    }
-
-
-
-    .bk-contact--styled-button .bk-contact__actions button[aria-busy='true']::after {
-
-      animation-duration: 2s;
-
-    }
-
+    .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']) { transition: none; }
+    .bk-contact--styled-button .bk-contact__actions button[aria-busy='true']::after { animation-duration: 2s; }
   }
-
 {% endstylesheet %}
 
-
-
 <script>
-
   (function () {
-
     if (customElements.get('bk-contact-form')) return;
 
-
-
     var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    var PHONE_RE = /^[0-9+\s\\-()]{7,20}$/;
-
-
+    var PHONE_RE = /^[0-9+\s\-()]{7,20}$/;
 
     class BkContactForm extends HTMLElement {
-
       connectedCallback() {
-
         this.form = this.querySelector('form');
-
         if (!this.form) return;
-
-
 
         // Custom inline messages replace the browser's pop-up bubbles.
-
         // Without JS the browser's own validation still applies.
-
         this.form.noValidate = true;
 
-
-
         this.onSubmit = (event) => {
-
           if (!this.validateAll()) {
-
             event.preventDefault();
-
             return;
-
           }
-
           this.setBusy(true);
-
         };
-
         this.onFocusOut = (event) => {
-
           if (event.target.matches && event.target.matches('[data-bk-input]')) this.validate(event.target);
-
         };
-
         this.onInput = (event) => {
-
           var el = event.target;
-
           if (el.matches && el.matches('[data-bk-input]') && el.getAttribute('aria-invalid') === 'true') this.validate(el);
-
         };
-
         this.onPageShow = (event) => {
-
           if (event.persisted) this.setBusy(false);
-
         };
-
-
 
         this.form.addEventListener('submit', this.onSubmit);
-
         this.form.addEventListener('focusout', this.onFocusOut);
-
         this.form.addEventListener('input', this.onInput);
-
         window.addEventListener('pageshow', this.onPageShow);
 
-
-
         // After a server round-trip, move focus to the error or success message.
-
         var alertBox = this.querySelector('[data-bk-alert]');
-
         if (alertBox) alertBox.focus();
-
       }
-
-
 
       disconnectedCallback() {
-
         if (!this.form) return;
-
         this.form.removeEventListener('submit', this.onSubmit);
-
         this.form.removeEventListener('focusout', this.onFocusOut);
-
         this.form.removeEventListener('input', this.onInput);
-
         window.removeEventListener('pageshow', this.onPageShow);
-
       }
-
-
 
       validate(input) {
-
         var value = input.value.trim();
-
         var message = '';
 
-
-
         if (input.required && !value) {
-
           message = this.dataset.msgRequired;
-
         } else if (value && input.type === 'email' && !EMAIL_RE.test(value)) {
-
           message = this.dataset.msgEmail;
-
         } else if (value && input.type === 'tel' && !PHONE_RE.test(value)) {
-
           message = this.dataset.msgPhone;
-
         }
-
-
 
         this.setError(input, message);
-
         return !message;
-
       }
-
-
 
       validateAll() {
-
         var inputs = Array.prototype.slice.call(this.form.querySelectorAll('[data-bk-input]'));
-
         var firstInvalid = null;
-
         inputs.forEach((input) => {
-
           if (!this.validate(input) && !firstInvalid) firstInvalid = input;
-
         });
-
         if (firstInvalid) firstInvalid.focus();
-
         return !firstInvalid;
-
       }
-
-
 
       setError(input, message) {
-
         var error = this.querySelector('#' + CSS.escape(input.id + '-error'));
-
         if (message) {
-
           input.setAttribute('aria-invalid', 'true');
-
           if (error) {
-
             input.setAttribute('aria-describedby', error.id);
-
             error.textContent = message;
-
             error.hidden = false;
-
           }
-
         } else {
-
           input.removeAttribute('aria-invalid');
-
           input.removeAttribute('aria-describedby');
-
           if (error) {
-
             error.textContent = '';
-
             error.hidden = true;
-
           }
-
         }
-
       }
-
-
 
       setBusy(busy) {
-
         var button = this.form.querySelector('button[type="submit"], input[type="submit"]');
-
         if (!button) return;
-
         if (busy) {
-
           button.setAttribute('aria-busy', 'true');
-
           // Delay so the browser still submits the form before the button is locked.
-
           window.setTimeout(() => {
-
             button.disabled = true;
-
           }, 0);
-
         } else {
-
           button.removeAttribute('aria-busy');
-
           button.disabled = false;
-
         }
-
       }
-
     }
-
-
 
     customElements.define('bk-contact-form', BkContactForm);
-
   })();
-
 </script>
 
-
-
 {% schema %}
-
 {
-
   "name": "t:names.contact_form",
-
   "tag": null,
-
   "settings": [
+    { "type": "header", "content": "Header" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Contact us" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Get in touch" },
+    { "type": "textarea", "id": "subheading", "label": "Subheading", "default": "Questions about an order, a product or a partnership? Send us a note and our team will get back to you." },
+    { "type": "text", "id": "badge_title", "label": "Badge title", "info": "Leave empty to hide the badge.", "default": "Usually replies within 24 hours" },
+    { "type": "text", "id": "badge_text", "label": "Badge text", "default": "Mon–Sat, 10am–7pm IST" },
 
+    { "type": "header", "content": "Form" },
+    { "type": "text", "id": "form_heading", "label": "Form heading", "default": "Send us a message" },
+    { "type": "text", "id": "footnote", "label": "Required-fields note", "default": "All fields marked * are required" },
+    { "type": "text", "id": "topic_label", "label": "Topic label", "default": "Topic" },
+    { "type": "text", "id": "topics", "label": "Topic options", "info": "Comma-separated. Leave empty to hide the Topic field.", "default": "Order support, Product question, Partnership, Other" },
+    { "type": "text", "id": "name_placeholder", "label": "Name placeholder", "default": "Your name" },
+    { "type": "text", "id": "email_placeholder", "label": "Email placeholder", "default": "you@example.com" },
+    { "type": "text", "id": "phone_placeholder", "label": "Phone placeholder", "default": "+91" },
+    { "type": "text", "id": "message_placeholder", "label": "Message placeholder", "default": "Tell us how we can help…" },
+    { "type": "text", "id": "optional_label", "label": "Label for optional fields", "info": "Leave empty to hide." },
+    { "type": "text", "id": "success_link_label", "label": "Link text after sending", "info": "Leave empty to hide the link.", "default": "Send another message" },
+
+    { "type": "header", "content": "Style" },
+    { "type": "color", "id": "accent_color", "label": "Button colour", "default": "#111111" },
+    { "type": "color", "id": "accent_text_color", "label": "Button text colour", "default": "#FFFFFF" },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 4, "max": 24, "step": 2, "unit": "px", "default": 16 },
+    { "type": "checkbox", "id": "style_submit", "label": "Style the submit button to match", "info": "Turn off to use the theme's own button style.", "default": true },
+
+    { "type": "header", "content": "Glass effect" },
+    { "type": "checkbox", "id": "show_card", "label": "Glass panel", "default": true },
+    { "type": "range", "id": "glass_opacity", "label": "Glass opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 55 },
+    { "type": "range", "id": "glass_blur", "label": "Glass blur", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
+    { "type": "checkbox", "id": "soft_glow", "label": "Soft background glow", "info": "Gives the glass something to blur on plain backgrounds.", "default": true },
+    { "type": "color", "id": "glow_color", "label": "Glow colour", "default": "#E5E7EB" },
+
+    { "type": "header", "content": "Validation messages" },
+    { "type": "text", "id": "error_required", "label": "Required field", "default": "This field is required." },
+    { "type": "text", "id": "error_email", "label": "Invalid email", "default": "Enter a valid email address, like name@example.com." },
+    { "type": "text", "id": "error_phone", "label": "Invalid phone number", "default": "Enter a valid phone number." },
+
+    { "type": "header", "content": "Layout" },
+    { "type": "checkbox", "id": "full_bleed", "label": "Full screen width", "info": "Spans the whole page width even inside a page-width section.", "default": true },
     {
-
-      "type": "header",
-
-      "content": "Content"
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "heading",
-
-      "label": "Heading",
-
-      "default": "Get in touch"
-
-    },
-
-    {
-
-      "type": "textarea",
-
-      "id": "subheading",
-
-      "label": "Subheading",
-
-      "default": "Have a question about an order or a product? Send us a message and our team will get back to you."
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "message_placeholder",
-
-      "label": "Message placeholder",
-
-      "default": "How can we help you?"
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "optional_label",
-
-      "label": "Label for optional fields",
-
-      "default": "Optional"
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "footnote",
-
-      "label": "Note under the button",
-
-      "default": "Fields marked * are required."
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "success_link_label",
-
-      "label": "Link text after sending",
-
-      "info": "Leave empty to hide the link.",
-
-      "default": "Send another message"
-
-    },
-
-    {
-
-      "type": "header",
-
-      "content": "Style"
-
-    },
-
-    {
-
-      "type": "color",
-
-      "id": "accent_color",
-
-      "label": "Accent colour",
-
-      "info": "Used for the button, focus ring and top bar.",
-
-      "default": "#174B3A"
-
-    },
-
-    {
-
-      "type": "range",
-
-      "id": "corner_radius",
-
-      "label": "Corner radius",
-
-      "min": 4,
-
-      "max": 24,
-
-      "step": 2,
-
-      "unit": "px",
-
-      "default": 12
-
-    },
-
-    {
-
-      "type": "checkbox",
-
-      "id": "show_card",
-
-      "label": "Show form as a card",
-
-      "default": true
-
-    },
-
-    {
-
-      "type": "checkbox",
-
-      "id": "style_submit",
-
-      "label": "Style the submit button to match",
-
-      "info": "Turn off to use the theme's own button style.",
-
-      "default": true
-
-    },
-
-    {
-
-      "type": "header",
-
-      "content": "Validation messages"
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "error_required",
-
-      "label": "Required field",
-
-      "default": "This field is required."
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "error_email",
-
-      "label": "Invalid email",
-
-      "default": "Enter a valid email address, like name@example.com."
-
-    },
-
-    {
-
-      "type": "text",
-
-      "id": "error_phone",
-
-      "label": "Invalid phone number",
-
-      "default": "Enter a valid phone number."
-
-    },
-
-    {
-
-      "type": "header",
-
-      "content": "Layout"
-
-    },
-
-    {
-
       "type": "select",
-
       "id": "width",
-
       "label": "t:settings.width_desktop",
-
       "options": [
-
-        {
-
-          "value": "fit-content",
-
-          "label": "t:options.fit_content"
-
-        },
-
-        {
-
-          "value": "custom",
-
-          "label": "t:options.custom"
-
-        }
-
+        { "value": "fit-content", "label": "t:options.fit_content" },
+        { "value": "custom", "label": "t:options.custom" }
       ],
-
       "default": "custom"
-
     },
-
+    { "type": "range", "id": "custom_width", "label": "t:settings.width", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 100, "visible_if": "{{ block.settings.width == 'custom' }}" },
     {
-
-      "type": "range",
-
-      "id": "custom_width",
-
-      "label": "t:settings.width",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "%",
-
-      "default": 100,
-
-      "visible_if": "{{ block.settings.width == 'custom' }}"
-
-    },
-
-    {
-
       "type": "select",
-
       "id": "width_mobile",
-
       "label": "t:settings.width_mobile",
-
       "options": [
-
-        {
-
-          "value": "fit-content",
-
-          "label": "t:options.fit_content"
-
-        },
-
-        {
-
-          "value": "custom",
-
-          "label": "t:options.custom"
-
-        }
-
+        { "value": "fit-content", "label": "t:options.fit_content" },
+        { "value": "custom", "label": "t:options.custom" }
       ],
-
       "default": "custom"
-
     },
-
-    {
-
-      "type": "range",
-
-      "id": "custom_width_mobile",
-
-      "label": "t:settings.width",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "%",
-
-      "default": 100,
-
-      "visible_if": "{{ block.settings.width_mobile == 'custom' }}"
-
-    },
-
-    {
-
-      "type": "checkbox",
-
-      "id": "inherit_color_scheme",
-
-      "label": "t:settings.inherit_color_scheme",
-
-      "default": true
-
-    },
-
-    {
-
-      "type": "color_scheme",
-
-      "id": "color_scheme",
-
-      "label": "t:settings.color_scheme",
-
-      "default": "scheme-1",
-
-      "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
-
-    },
-
-    {
-
-      "type": "header",
-
-      "content": "t:content.padding"
-
-    },
-
-    {
-
-      "type": "range",
-
-      "id": "padding-block-start",
-
-      "label": "t:settings.top",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "px",
-
-      "default": 0
-
-    },
-
-    {
-
-      "type": "range",
-
-      "id": "padding-block-end",
-
-      "label": "t:settings.bottom",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "px",
-
-      "default": 0
-
-    },
-
-    {
-
-      "type": "range",
-
-      "id": "padding-inline-start",
-
-      "label": "t:settings.left",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "px",
-
-      "default": 0
-
-    },
-
-    {
-
-      "type": "range",
-
-      "id": "padding-inline-end",
-
-      "label": "t:settings.right",
-
-      "min": 0,
-
-      "max": 100,
-
-      "step": 1,
-
-      "unit": "px",
-
-      "default": 0
-
-    }
-
+    { "type": "range", "id": "custom_width_mobile", "label": "t:settings.width", "min": 0, "max": 100, "step": 1, "unit": "%", "default": 100, "visible_if": "{{ block.settings.width_mobile == 'custom' }}" },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "t:settings.inherit_color_scheme", "default": true },
+    { "type": "color_scheme", "id": "color_scheme", "label": "t:settings.color_scheme", "default": "scheme-1", "visible_if": "{{ block.settings.inherit_color_scheme == false }}" },
+
+    { "type": "header", "content": "t:content.padding" },
+    { "type": "range", "id": "padding-block-start", "label": "t:settings.top", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-block-end", "label": "t:settings.bottom", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-start", "label": "t:settings.left", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 },
+    { "type": "range", "id": "padding-inline-end", "label": "t:settings.right", "min": 0, "max": 100, "step": 1, "unit": "px", "default": 0 }
   ],
-
   "presets": [
-
     {
-
       "name": "t:names.contact_form",
-
       "category": "t:categories.forms"
-
     }
-
   ]
-
 }
-
 {% endschema %}

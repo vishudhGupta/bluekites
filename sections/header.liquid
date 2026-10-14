@@ -1113,8 +1113,8 @@
 
   #header-component {
     --bk-maroon: #550000;
-    --bk-maroon-glass: rgb(85 0 0 / 62%);
-    --bk-maroon-glass-open: rgb(85 0 0 / 78%);
+    --bk-maroon-glass: rgb(85 0 0 / 90%);
+    --bk-maroon-glass-open: rgb(85 0 0 / 95%);
     --bk-cream: #faf3ea; /* text + icons */
     --bk-cream-muted: #e6d6c8; /* secondary text */
     --bk-gold: #d9b77e; /* accent: hover, focus, badge */
@@ -1330,6 +1330,111 @@
       width: 22px !important;
       height: 22px !important;
     }
+  }
+
+  /* =====================================================================
+     Contrast fixes: menu pills, active tab, location picker, Login/Cart
+     ===================================================================== */
+
+  /* ---------- Menu pills: readable cream text on frosted pills ---------- */
+  #header-component .menu-list__link {
+    background-color: rgb(255 255 255 / 8%) !important;
+    border: 1px solid rgb(255 255 255 / 10%);
+    color: var(--bk-cream) !important;
+    font-weight: 500;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  }
+
+  #header-component .menu-list__link * {
+    color: inherit !important;
+  }
+
+  /* Hover / open submenu: warm gold tint, text stays light */
+  #header-component .menu-list__link:hover,
+  #header-component .menu-list__link:focus-visible,
+  #header-component .menu-list__link[aria-expanded='true'] {
+    background-color: rgb(217 183 126 / 22%) !important;
+    border-color: rgb(217 183 126 / 55%);
+    color: #fff !important;
+  }
+
+  /* Active / current tab: solid gold with deep maroon text */
+  #header-component .menu-list__link[aria-current],
+  #header-component .menu-list__link[aria-selected='true'],
+  #header-component .menu-list__link.active,
+  #header-component .menu-list__link.is-active,
+  #header-component .menu-list__link--active,
+  #header-component .menu-list__list-item.active > .menu-list__link,
+  #header-component .menu-list__list-item.is-active > .menu-list__link,
+  #header-component .menu-list__list-item[aria-current] > .menu-list__link {
+    background-color: var(--bk-gold) !important;
+    border-color: var(--bk-gold);
+    color: #3a0000 !important;
+    font-weight: 600;
+    box-shadow: 0 2px 10px rgb(0 0 0 / 22%);
+  }
+
+  /* ---------- Location picker: frosted field, light text ---------- */
+  #header-component [class*='location'] :is(input, select, button) {
+    background: rgb(255 255 255 / 10%) !important;
+    border: 1px solid var(--bk-line) !important;
+    color: var(--bk-cream) !important;
+    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(10px);
+  }
+
+  #header-component [class*='location'] :is(input, select)::placeholder {
+    color: var(--bk-cream-muted) !important;
+    opacity: 1;
+  }
+
+  #header-component [class*='location'] svg {
+    color: var(--bk-gold) !important;
+  }
+
+  /* ---------- Login + Cart tiles: same frosted tile, visible icons ---------- */
+  #header-component :is(
+    .header-actions__action,
+    .account-button,
+    shopify-account :is(a, button),
+    a[href='/cart'],
+    a[href*='/account']
+  ) {
+    background: var(--bk-tile) !important;
+    border: 1px solid var(--bk-line) !important;
+    color: var(--bk-cream) !important;
+  }
+
+  #header-component :is(
+    .header-actions__action,
+    .account-button,
+    shopify-account :is(a, button),
+    a[href='/cart'],
+    a[href*='/account']
+  ) :is(svg, .svg-wrapper, span:not([class*='count']):not([class*='bubble'])) {
+    color: var(--bk-cream) !important;
+    background: transparent !important;
+  }
+
+  #header-component :is(
+    .header-actions__action,
+    .account-button,
+    shopify-account :is(a, button),
+    a[href='/cart'],
+    a[href*='/account']
+  ):is(:hover, :focus-visible) {
+    background: var(--bk-tile-hover) !important;
+    border-color: rgb(217 183 126 / 55%) !important;
+  }
+
+  #header-component :is(
+    .header-actions__action,
+    .account-button,
+    shopify-account :is(a, button),
+    a[href='/cart'],
+    a[href*='/account']
+  ):is(:hover, :focus-visible) :is(svg, .svg-wrapper) {
+    color: var(--bk-gold) !important;
   }
 
   /* NOTE: if your logo is dark artwork, uncomment this to turn it white:

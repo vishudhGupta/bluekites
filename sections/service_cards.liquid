@@ -11,7 +11,7 @@
     --services-radius: {{ section.settings.card_radius }}px;
     --services-top: {{ section.settings.padding_top }}px;
     --services-bottom: {{ section.settings.padding_bottom }}px;
-    --services-card-w: {{ section.settings.card_width }}px;
+    --services-columns: {{ section.settings.columns_desktop }};
     --services-edge: {{ section.settings.side_margin }}px;
     --services-image-h: {{ section.settings.image_height }}px;
   "
@@ -268,11 +268,6 @@
     outline: 2px solid var(--services-heading);
     outline-offset: 3px;
   }
-  /* Desktop: exactly 4 cards are visible; the track is left-aligned like the other sections. */
-  .bk-services__viewport,
-  .bk-services__footer {
-    max-width: calc(var(--services-card-w) * 4 + var(--services-gap) * 3 + 2px);
-  }
   .bk-services__viewport {
     position: relative;
     min-width: 0;
@@ -297,7 +292,10 @@
   }
   .bk-services__track {
     display: grid;
-    grid-auto-columns: var(--services-card-w);
+    grid-auto-columns: calc(
+      (100% - (var(--services-columns, 5) - 1) * var(--services-gap))
+      / var(--services-columns, 5)
+    );
     grid-auto-flow: column;
     gap: var(--services-gap);
     overflow-x: auto;
@@ -451,10 +449,6 @@
     font-size: 12px;
   }
   @media screen and (max-width: 1099px) {
-    .bk-services__viewport,
-    .bk-services__footer {
-      max-width: none;
-    }
     .bk-services__track {
       grid-auto-columns: calc(
         (100% - var(--services-gap)) / 2
@@ -694,13 +688,12 @@
     },
     {
       "type": "range",
-      "id": "card_width",
-      "label": "Card width (4 cards visible on desktop)",
-      "min": 180,
-      "max": 340,
-      "step": 10,
-      "unit": "px",
-      "default": 240
+      "id": "columns_desktop",
+      "label": "Cards visible on desktop",
+      "min": 3,
+      "max": 5,
+      "step": 1,
+      "default": 4
     },
     {
       "type": "range",
@@ -710,7 +703,7 @@
       "max": 240,
       "step": 10,
       "unit": "px",
-      "default": 130
+      "default": 140
     },
     {
       "type": "range",

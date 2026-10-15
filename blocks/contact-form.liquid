@@ -38,6 +38,7 @@
     --bk-blur: {{ block.settings.glass_blur }}px;
     --bk-glow: {{ block.settings.glow_color }};
     --bk-text: {{ block.settings.text_color }};
+    --bk-panel-text: {{ block.settings.panel_text_color }};
     --bk-bg: {{ block.settings.background_color }};
     --bk-height: {{ block.settings.block_height }}vh;
   "
@@ -269,6 +270,8 @@
     --bk-glow: #8C3B4E;            /* muted rose glass */
     --bk-text: #F5ECEE;            /* warm ivory */
     --bk-bg: #3D1018;              /* smoky burgundy */
+    --bk-panel-text: #FFFFFF;      /* panel heading, note, badge */
+    --bk-panel-muted: color-mix(in srgb, var(--bk-panel-text) 78%, transparent);
     --bk-height: 60vh;
     --bk-muted: color-mix(in srgb, var(--bk-text) 66%, var(--bk-bg));
     --bk-line: color-mix(in srgb, var(--bk-text) 12%, transparent);
@@ -403,6 +406,7 @@
     gap: 8px;
     font-size: 0.9375rem;
     font-weight: 600;
+    color: var(--bk-panel-text);
   }
   .bk-contact__badge strong::before {
     content: '';
@@ -412,7 +416,7 @@
     background: var(--bk-highlight);
     box-shadow: 0 0 0 4px color-mix(in srgb, var(--bk-highlight) 18%, transparent);
   }
-  .bk-contact__badge span { font-size: 0.8125rem; color: var(--bk-muted); }
+  .bk-contact__badge span { font-size: 0.8125rem; color: var(--bk-panel-muted); }
 
   /* ---------- Panel ---------- */
   .bk-contact__panel {
@@ -451,14 +455,14 @@
     font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.01em;
-    color: var(--bk-text);
+    color: var(--bk-panel-text);
   }
 
   .bk-contact__note {
     margin: 0;
     font-size: 0.875rem;
     line-height: 1.4;
-    color: var(--bk-muted);
+    color: var(--bk-panel-muted);
   }
 
   /* ---------- Grid: 4 fields in a row, then Message + Send ---------- */
@@ -869,6 +873,7 @@
     { "type": "header", "content": "Style" },
     { "type": "color", "id": "background_color", "label": "Background colour", "default": "#3D1018" },
     { "type": "color", "id": "text_color", "label": "Text colour", "default": "#F5ECEE" },
+    { "type": "color", "id": "panel_text_color", "label": "Panel & badge heading colour", "info": "Form heading, required-fields note and reply badge.", "default": "#FFFFFF" },
     { "type": "color", "id": "highlight_color", "label": "Highlight colour", "info": "Eyebrow, focus ring, badge dot, required marks.", "default": "#D9A9B3" },
     { "type": "color", "id": "accent_color", "label": "Button colour", "default": "#F3E6E8" },
     { "type": "color", "id": "accent_text_color", "label": "Button text colour", "default": "#4A121A" },

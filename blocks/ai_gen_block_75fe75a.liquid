@@ -1,292 +1,550 @@
 {% doc %}
   @prompt
-    Create a header search block inspired by two reference states: initially a compact horizontal navigation row with a search icon; when the search icon is clicked, replace the central navigation area with a wide inline search bar while preserving the store's own branding and surrounding header controls. The search bar should have a very light gray background, subtly rounded corners, compact height, a small 'All' category selector at the left, and placeholder 'Search anything'. Provide a way to close search and restore navigation. Search should use the store's actual products and categories, not hard-coded reference-store content. Keep the design responsive on mobile. Do not copy the reference's DigiHaat logo or postal code. Match the clean white header and restrained spacing. This block should be usable in the header where the theme supports blocks; do not imply it automatically modifies the existing header.
+    Stylish, modern full-width category page banner slider for Bluekites Global. Exactly 35vh on desktop and mobile, compact content, elegant blue gradient with optional background image, small New Arrivals badge, bold custom category headline (falls back to the collection title), short subtitle, prominent Shop Now button. Fully customizable via theme settings. No invented discounts or promotional claims. Up to 5 slides with autoplay, arrows, dots, swipe and pause.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign scrim_alpha = block.settings.scrim_strength | divided_by: 100.0 %}
+{% assign scrim_alpha_mid = scrim_alpha | times: 0.55 %}
 
 {% style %}
-  .ai-header-search-{{ ai_gen_id }} {
+  .ai-cat-banner-{{ ai_gen_id }} {
     display: block;
+    position: relative;
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
-    color: #111111;
-    font-family: inherit;
+    height: 35vh;
+    margin: 0 auto;
+    border-radius: {{ block.settings.corner_radius }}px;
+    overflow: hidden;
+    isolation: isolate;
+    background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
+    color: {{ block.settings.text_color }};
+    touch-action: pan-y;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__row {
-    min-height: 44px;
+  .ai-cat-banner-{{ ai_gen_id }} * { box-sizing: border-box; }
+  .ai-cat-banner-{{ ai_gen_id }}__slide {
+    position: absolute;
+    inset: 0;
     display: flex;
     align-items: center;
-    justify-content: center;
-    gap: 24px;
+    visibility: hidden;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity .6s ease, visibility .6s;
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__slide.is-active { visibility: visible; opacity: 1; pointer-events: auto; }
+  .ai-cat-banner-{{ ai_gen_id }}__media,
+  .ai-cat-banner-{{ ai_gen_id }}__media picture,
+  .ai-cat-banner-{{ ai_gen_id }}__media img,
+  .ai-cat-banner-{{ ai_gen_id }}__placeholder {
+    position: absolute;
+    inset: 0;
+    display: block;
     width: 100%;
+    height: 100%;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__nav {
+  .ai-cat-banner-{{ ai_gen_id }}__media img { object-fit: cover; object-position: {{ block.settings.image_focus }}; }
+  .ai-cat-banner-{{ ai_gen_id }}__placeholder {
+    overflow: hidden;
+    background:
+      radial-gradient(circle at 85% 20%, rgba(255,255,255,.16) 0, rgba(255,255,255,0) 38%),
+      radial-gradient(circle at 70% 110%, rgba(255,255,255,.10) 0, rgba(255,255,255,0) 45%),
+      linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__scrim {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background: linear-gradient(90deg,
+      {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
+      {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 45%,
+      {{ block.settings.gradient_end | color_modify: 'alpha', 0 }} 100%);
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__cover { position: absolute; inset: 0; z-index: 1; display: block; }
+  .ai-cat-banner-{{ ai_gen_id }}__content {
+    position: relative;
+    z-index: 2;
     display: flex;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
     justify-content: center;
-    gap: {{ block.settings.nav_gap }}px;
-    flex: 1;
-    min-width: 0;
+    width: min(100%, 640px);
+    height: 100%;
+    padding: 16px clamp(16px, 5vw, 80px);
+    pointer-events: none;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__nav a {
-    color: inherit;
-    font-size: 14px;
-    text-decoration: none;
-    white-space: nowrap;
+  .ai-cat-banner-{{ ai_gen_id }}__content a { pointer-events: auto; }
+  .ai-cat-banner-{{ ai_gen_id }}__badge {
+    margin: 0 0 8px;
+    padding: 5px 11px;
+    border-radius: 999px;
+    background: {{ block.settings.badge_background }};
+    color: {{ block.settings.badge_text_color }};
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: .08em;
+    line-height: 1.2;
+    text-transform: uppercase;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__nav a:hover,
-  .ai-header-search-{{ ai_gen_id }}__nav a:focus-visible {
-    text-decoration: underline;
-    text-underline-offset: 4px;
+  .ai-cat-banner-{{ ai_gen_id }}__heading {
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
+    font-size: clamp(22px, min(3.6vw, 6.4vh), 48px);
+    font-weight: 700;
+    line-height: 1.1;
+    letter-spacing: -.03em;
+    text-wrap: balance;
+    text-shadow: 0 1px 12px rgba(0,0,0,.25);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__toggle,
-  .ai-header-search-{{ ai_gen_id }}__close,
-  .ai-header-search-{{ ai_gen_id }}__submit {
+  .ai-cat-banner-{{ ai_gen_id }}__subtitle {
+    display: -webkit-box;
+    max-width: 500px;
+    margin: 8px 0 0;
+    overflow: hidden;
+    color: {{ block.settings.text_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-size: clamp(12px, min(1.3vw, 2.3vh), 16px);
+    line-height: 1.45;
+    opacity: .92;
+    text-shadow: 0 1px 8px rgba(0,0,0,.25);
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    flex: 0 0 auto;
+    gap: 6px;
+    min-height: 42px;
+    margin-top: 14px;
+    padding: 9px 26px;
+    border: 1px solid {{ block.settings.button_background }};
+    border-radius: 999px;
+    background: {{ block.settings.button_background }};
+    color: {{ block.settings.button_text_color }};
+    font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.2;
+    text-decoration: none;
+    box-shadow: 0 4px 14px rgba(0,0,0,.2);
+    transition: background-color .2s ease, color .2s ease, transform .2s ease;
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__button svg { width: 16px; height: 16px; transition: transform .2s ease; }
+  .ai-cat-banner-{{ ai_gen_id }}__button:hover {
+    background: {{ block.settings.button_hover_background }};
+    border-color: {{ block.settings.button_hover_background }};
+    color: {{ block.settings.button_hover_text_color }};
+    transform: translateY(-1px);
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__button:hover svg { transform: translateX(3px); }
+  .ai-cat-banner-{{ ai_gen_id }}__button:focus-visible,
+  .ai-cat-banner-{{ ai_gen_id }}__cover:focus-visible,
+  .ai-cat-banner-{{ ai_gen_id }}__arrow:focus-visible,
+  .ai-cat-banner-{{ ai_gen_id }}__dot:focus-visible,
+  .ai-cat-banner-{{ ai_gen_id }}__toggle:focus-visible { outline: 3px solid #ffffff; outline-offset: 2px; box-shadow: 0 0 0 5px #102A56; }
+
+  .ai-cat-banner-{{ ai_gen_id }}__arrow {
+    position: absolute;
+    top: 50%;
+    z-index: 3;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
     width: 42px;
     height: 42px;
     padding: 0;
-    color: inherit;
-    background: transparent;
+    margin-top: -21px;
     border: 0;
-    border-radius: 4px;
+    border-radius: 50%;
+    background: rgba(255,255,255,.92);
+    color: #102A56;
+    box-shadow: 0 2px 10px rgba(0,0,0,.25);
+    opacity: 0;
     cursor: pointer;
+    transition: opacity .2s ease, transform .2s ease;
   }
+  .ai-cat-banner-{{ ai_gen_id }}__arrow--prev { left: 14px; }
+  .ai-cat-banner-{{ ai_gen_id }}__arrow--next { right: 14px; }
+  .ai-cat-banner-{{ ai_gen_id }}__arrow svg { width: 20px; height: 20px; }
+  .ai-cat-banner-{{ ai_gen_id }}:hover .ai-cat-banner-{{ ai_gen_id }}__arrow,
+  .ai-cat-banner-{{ ai_gen_id }}:focus-within .ai-cat-banner-{{ ai_gen_id }}__arrow { opacity: 1; }
+  .ai-cat-banner-{{ ai_gen_id }}__arrow:hover { transform: scale(1.08); }
 
-  .ai-header-search-{{ ai_gen_id }}__toggle:hover,
-  .ai-header-search-{{ ai_gen_id }}__close:hover,
-  .ai-header-search-{{ ai_gen_id }}__submit:hover {
-    background: #f3f3f3;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__toggle svg,
-  .ai-header-search-{{ ai_gen_id }}__close svg,
-  .ai-header-search-{{ ai_gen_id }}__submit svg {
-    width: 20px;
-    height: 20px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__form-wrap {
-    display: none;
-    flex: 1;
-    min-width: 0;
-    align-items: center;
-    gap: 10px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__nav,
-  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__toggle {
-    display: none;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__form-wrap {
-    display: flex;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__form {
+  .ai-cat-banner-{{ ai_gen_id }}__controls {
+    position: absolute;
+    z-index: 3;
+    left: 50%;
+    bottom: 10px;
     display: flex;
     align-items: center;
-    width: 100%;
-    height: 42px;
-    min-width: 0;
-    overflow: hidden;
-    background: #f3f3f3;
-    border-radius: 6px;
+    gap: 2px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: rgba(16,42,86,.6);
+    transform: translateX(-50%);
+    -webkit-backdrop-filter: blur(4px);
+    backdrop-filter: blur(4px);
   }
-
-  .ai-header-search-{{ ai_gen_id }}__category {
-    height: 100%;
-    max-width: 110px;
-    padding: 0 12px;
-    color: #111111;
-    background: transparent;
+  .ai-cat-banner-{{ ai_gen_id }}__dots { display: flex; align-items: center; }
+  .ai-cat-banner-{{ ai_gen_id }}__dot {
+    position: relative;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     border: 0;
-    border-right: 1px solid #dddddd;
-    font: inherit;
-    font-size: 13px;
+    background: transparent;
     cursor: pointer;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__input {
-    flex: 1;
-    min-width: 0;
-    height: 100%;
-    padding: 0 14px;
-    color: #111111;
-    background: transparent;
+  .ai-cat-banner-{{ ai_gen_id }}__dot::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 8px;
+    height: 8px;
+    border-radius: 999px;
+    background: rgba(255,255,255,.55);
+    transform: translate(-50%, -50%);
+    transition: width .25s ease, background-color .25s ease;
+  }
+  .ai-cat-banner-{{ ai_gen_id }}__dot[aria-current="true"]::before { width: 22px; background: #ffffff; }
+  .ai-cat-banner-{{ ai_gen_id }}__toggle {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 24px;
+    height: 24px;
+    padding: 0;
     border: 0;
-    outline: none;
-    font: inherit;
-    font-size: 14px;
+    border-radius: 50%;
+    background: transparent;
+    color: #ffffff;
+    cursor: pointer;
   }
-
-  .ai-header-search-{{ ai_gen_id }}__input::placeholder {
-    color: #555555;
-    opacity: 1;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__form:focus-within {
-    outline: 2px solid #111111;
-    outline-offset: 2px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__submit {
-    height: 100%;
-    border-radius: 0;
-  }
-
-  .ai-header-search-{{ ai_gen_id }}__close {
-    width: 36px;
-    height: 36px;
-  }
-
-  .ai-header-search-{{ ai_gen_id }} button:focus-visible,
-  .ai-header-search-{{ ai_gen_id }} a:focus-visible,
-  .ai-header-search-{{ ai_gen_id }} select:focus-visible {
-    outline: 2px solid #111111;
-    outline-offset: 2px;
-  }
+  .ai-cat-banner-{{ ai_gen_id }}__toggle svg { width: 13px; height: 13px; }
+  .ai-cat-banner-{{ ai_gen_id }}__toggle .icon-play { display: none; }
+  .ai-cat-banner-{{ ai_gen_id }}__toggle[aria-pressed="true"] .icon-play { display: block; }
+  .ai-cat-banner-{{ ai_gen_id }}__toggle[aria-pressed="true"] .icon-pause { display: none; }
 
   @media screen and (max-width: 749px) {
-    .ai-header-search-{{ ai_gen_id }}__row {
-      gap: 8px;
-      min-height: 42px;
+    .ai-cat-banner-{{ ai_gen_id }} { width: 100%; }
+    .ai-cat-banner-{{ ai_gen_id }}__arrow { display: none; }
+    .ai-cat-banner-{{ ai_gen_id }}__scrim {
+      background: linear-gradient(90deg,
+        {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
+        {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 100%);
     }
-
-    .ai-header-search-{{ ai_gen_id }}__nav {
-      justify-content: flex-start;
-      gap: 14px;
-      overflow-x: auto;
-      scrollbar-width: none;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__nav a {
-      font-size: 13px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}[data-open="true"] .ai-header-search-{{ ai_gen_id }}__form-wrap {
-      gap: 4px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__category {
-      max-width: 74px;
-      padding: 0 8px;
-      font-size: 12px;
-    }
-
-    .ai-header-search-{{ ai_gen_id }}__input {
-      padding: 0 9px;
-      font-size: 13px;
-    }
+    .ai-cat-banner-{{ ai_gen_id }}__content { width: 100%; padding: 12px 18px 40px; }
+    .ai-cat-banner-{{ ai_gen_id }}__badge { margin-bottom: 6px; padding: 4px 9px; font-size: 10px; }
+    .ai-cat-banner-{{ ai_gen_id }}__heading { font-size: clamp(22px, 6.6vw, 30px); }
+    .ai-cat-banner-{{ ai_gen_id }}__subtitle { margin-top: 6px; font-size: 12px; -webkit-line-clamp: 1; }
+    .ai-cat-banner-{{ ai_gen_id }}__button { min-height: 40px; margin-top: 10px; padding: 7px 22px; font-size: 13px; }
+    .ai-cat-banner-{{ ai_gen_id }}__controls { bottom: 6px; }
+  }
+  @media screen and (max-width: 749px) and (max-height: 680px) {
+    .ai-cat-banner-{{ ai_gen_id }}__subtitle { display: none; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .ai-cat-banner-{{ ai_gen_id }}__slide,
+    .ai-cat-banner-{{ ai_gen_id }}__button,
+    .ai-cat-banner-{{ ai_gen_id }}__button svg,
+    .ai-cat-banner-{{ ai_gen_id }}__arrow,
+    .ai-cat-banner-{{ ai_gen_id }}__dot::before { transition: none; }
   }
 {% endstyle %}
 
-<header-search-{{ ai_gen_id }} class="ai-header-search-{{ ai_gen_id }}" data-open="false" {{ block.shopify_attributes }}>
-  <div class="ai-header-search-{{ ai_gen_id }}__row">
-    <nav class="ai-header-search-{{ ai_gen_id }}__nav" aria-label="Main navigation">
-      {% if block.settings.navigation_menu != blank %}
-        {% for link in block.settings.navigation_menu.links %}
-          <a href="{{ link.url }}">{{ link.title | escape }}</a>
-        {% endfor %}
-      {% endif %}
-    </nav>
-    <button class="ai-header-search-{{ ai_gen_id }}__toggle" type="button" aria-label="Open search" aria-expanded="false">
-      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
-    </button>
-    <div class="ai-header-search-{{ ai_gen_id }}__form-wrap">
-      <form class="ai-header-search-{{ ai_gen_id }}__form" action="{{ routes.search_url }}" method="get" role="search">
-        <select class="ai-header-search-{{ ai_gen_id }}__category" aria-label="Search category" name="type">
-          <option value="product,page,article">All</option>
-          <option value="product">Products</option>
-          <option value="article">Articles</option>
-          <option value="page">Pages</option>
-        </select>
-        <input class="ai-header-search-{{ ai_gen_id }}__input" type="search" name="q" placeholder="Search anything" autocomplete="off" aria-label="Search anything">
-        <button class="ai-header-search-{{ ai_gen_id }}__submit" type="submit" aria-label="Submit search">
-          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="10.8" cy="10.8" r="6.8"></circle><path d="m16 16 4.2 4.2"></path></svg>
+{%- liquid
+  assign default_link = block.settings.default_target
+  if default_link == blank
+    if collection.url != blank
+      assign default_link = collection.url
+    else
+      assign default_link = routes.all_products_collection_url
+    endif
+  endif
+-%}
+
+<cat-banner-{{ ai_gen_id }} class="ai-cat-banner-{{ ai_gen_id }}" data-autoplay="{{ block.settings.autoplay }}" data-interval="{{ block.settings.autoplay_interval | times: 1000 }}" role="region" aria-roledescription="carousel" aria-label="{{ collection.title | default: 'Category' | escape }} highlights" {{ block.shopify_attributes }}>
+  {% assign slide_count = 0 %}
+  {% for i in (1..5) %}
+    {% liquid
+      assign image_key = 'slide_' | append: i | append: '_image'
+      assign mobile_key = 'slide_' | append: i | append: '_mobile_image'
+      assign show_key = 'slide_' | append: i | append: '_show_text'
+      assign badge_key = 'slide_' | append: i | append: '_badge'
+      assign heading_key = 'slide_' | append: i | append: '_heading'
+      assign subtitle_key = 'slide_' | append: i | append: '_subtitle'
+      assign label_key = 'slide_' | append: i | append: '_button_label'
+      assign link_key = 'slide_' | append: i | append: '_button_link'
+      assign slide_image = block.settings[image_key]
+      assign slide_mobile = block.settings[mobile_key]
+      assign show_text = block.settings[show_key]
+      assign slide_badge = block.settings[badge_key]
+      assign slide_heading = block.settings[heading_key]
+      assign slide_subtitle = block.settings[subtitle_key]
+      assign slide_label = block.settings[label_key]
+      assign slide_link = block.settings[link_key]
+
+      if i == 1
+        if slide_heading == blank and collection.title != blank
+          assign slide_heading = collection.title
+        endif
+        if slide_image == blank and block.settings.use_collection_image and collection.image != blank
+          assign slide_image = collection.image
+        endif
+      endif
+    %}
+    {% if i == 1 or slide_image != blank or slide_heading != blank %}
+      {% assign slide_count = slide_count | plus: 1 %}
+      {% assign has_text = false %}
+      {% if show_text and slide_heading != blank %}{% assign has_text = true %}{% endif %}
+      {% if slide_link == blank %}{% assign slide_link = default_link %}{% endif %}
+      {% assign has_button = false %}
+      {% if has_text and slide_label != blank %}{% assign has_button = true %}{% endif %}
+      {% assign img_alt = slide_image.alt %}
+      {% if img_alt == blank and has_text == false %}{% assign img_alt = slide_heading %}{% endif %}
+      <div class="ai-cat-banner-{{ ai_gen_id }}__slide{% if slide_count == 1 %} is-active{% endif %}" data-slide aria-hidden="{% if slide_count == 1 %}false{% else %}true{% endif %}" role="group" aria-roledescription="slide" aria-label="Slide {{ slide_count }}">
+        {% if slide_image != blank %}
+          <div class="ai-cat-banner-{{ ai_gen_id }}__media">
+            <picture>
+              {% if slide_mobile != blank %}
+                <source media="(max-width: 749px)" srcset="{{ slide_mobile | image_url: width: 750 }} 750w, {{ slide_mobile | image_url: width: 1100 }} 1100w" sizes="100vw">
+              {% endif %}
+              <img src="{{ slide_image | image_url: width: 1600 }}" srcset="{{ slide_image | image_url: width: 1200 }} 1200w, {{ slide_image | image_url: width: 1600 }} 1600w, {{ slide_image | image_url: width: 2000 }} 2000w, {{ slide_image | image_url: width: 2400 }} 2400w" sizes="100vw" alt="{{ img_alt | escape }}" width="{{ slide_image.width }}" height="{{ slide_image.height }}" loading="{% if slide_count == 1 %}eager{% else %}lazy{% endif %}"{% if slide_count == 1 %} fetchpriority="high"{% endif %}>
+            </picture>
+          </div>
+        {% else %}
+          <div class="ai-cat-banner-{{ ai_gen_id }}__placeholder" aria-hidden="true"></div>
+        {% endif %}
+        {% if has_text %}<div class="ai-cat-banner-{{ ai_gen_id }}__scrim" aria-hidden="true"></div>{% endif %}
+        {% if has_button %}
+          <a class="ai-cat-banner-{{ ai_gen_id }}__cover" href="{{ slide_link }}" tabindex="-1" aria-hidden="true"></a>
+        {% else %}
+          <a class="ai-cat-banner-{{ ai_gen_id }}__cover" href="{{ slide_link }}" aria-label="{{ slide_heading | default: 'View this category' | escape }}"></a>
+        {% endif %}
+        {% if has_text %}
+          <div class="ai-cat-banner-{{ ai_gen_id }}__content">
+            {% if slide_badge != blank %}<p class="ai-cat-banner-{{ ai_gen_id }}__badge">{{ slide_badge | escape }}</p>{% endif %}
+            {% if slide_count == 1 and block.settings.heading_as_h1 %}
+              <h1 class="ai-cat-banner-{{ ai_gen_id }}__heading">{{ slide_heading | escape }}</h1>
+            {% else %}
+              <h2 class="ai-cat-banner-{{ ai_gen_id }}__heading">{{ slide_heading | escape }}</h2>
+            {% endif %}
+            {% if slide_subtitle != blank %}<p class="ai-cat-banner-{{ ai_gen_id }}__subtitle">{{ slide_subtitle | escape }}</p>{% endif %}
+            {% if has_button %}
+              <a class="ai-cat-banner-{{ ai_gen_id }}__button" href="{{ slide_link }}">{{ slide_label | escape }}<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
+            {% endif %}
+          </div>
+        {% endif %}
+      </div>
+    {% endif %}
+  {% endfor %}
+
+  {% if slide_count > 1 %}
+    <button class="ai-cat-banner-{{ ai_gen_id }}__arrow ai-cat-banner-{{ ai_gen_id }}__arrow--prev" type="button" data-previous aria-label="Previous slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m15 18-6-6 6-6"/></svg></button>
+    <button class="ai-cat-banner-{{ ai_gen_id }}__arrow ai-cat-banner-{{ ai_gen_id }}__arrow--next" type="button" data-next aria-label="Next slide"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m9 18 6-6-6-6"/></svg></button>
+    <div class="ai-cat-banner-{{ ai_gen_id }}__controls">
+      {% if block.settings.autoplay %}
+        <button class="ai-cat-banner-{{ ai_gen_id }}__toggle" type="button" data-toggle aria-pressed="false" aria-label="Pause automatic slide change">
+          <svg class="icon-pause" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>
+          <svg class="icon-play" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13a1 1 0 0 0 1.5.86l10.5-6.5a1 1 0 0 0 0-1.72L9.5 4.64A1 1 0 0 0 8 5.5Z"/></svg>
         </button>
-      </form>
-      <button class="ai-header-search-{{ ai_gen_id }}__close" type="button" aria-label="Close search">
-        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="m18 6-12 12M6 6l12 12"></path></svg>
-      </button>
+      {% endif %}
+      <div class="ai-cat-banner-{{ ai_gen_id }}__dots">
+        {% for i in (1..slide_count) %}<button class="ai-cat-banner-{{ ai_gen_id }}__dot" type="button" data-go="{{ forloop.index0 }}" aria-label="Go to slide {{ forloop.index }}" aria-current="{% if forloop.first %}true{% else %}false{% endif %}"></button>{% endfor %}
+      </div>
     </div>
-  </div>
-</header-search-{{ ai_gen_id }}>
+  {% endif %}
+</cat-banner-{{ ai_gen_id }}>
 
 <script>
   (function() {
-    const tagName = 'header-search-{{ ai_gen_id }}';
+    const tagName = 'cat-banner-{{ ai_gen_id }}';
     if (customElements.get(tagName)) return;
-    class HeaderSearch{{ ai_gen_id }} extends HTMLElement {
+    class CategoryBanner extends HTMLElement {
       connectedCallback() {
-        this.openButton = this.querySelector('.ai-header-search-{{ ai_gen_id }}__toggle');
-        this.closeButton = this.querySelector('.ai-header-search-{{ ai_gen_id }}__close');
-        this.input = this.querySelector('.ai-header-search-{{ ai_gen_id }}__input');
-        this.openButton.addEventListener('click', () => this.openSearch());
-        this.closeButton.addEventListener('click', () => this.closeSearch());
-        this.addEventListener('keydown', (event) => {
-          if (event.key === 'Escape' && this.dataset.open === 'true') this.closeSearch();
+        this.slides = Array.from(this.querySelectorAll('[data-slide]'));
+        this.dots = Array.from(this.querySelectorAll('[data-go]'));
+        this.toggleButton = this.querySelector('[data-toggle]');
+        this.index = 0;
+        this.userPaused = false;
+        this.hovering = false;
+        this.reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+        // Smooth-scroll for in-page anchors (e.g. #ProductGridContainer)
+        this.querySelectorAll('a[href^="#"]').forEach((link) => {
+          link.addEventListener('click', (event) => {
+            const target = document.querySelector(link.getAttribute('href'));
+            if (!target) return;
+            event.preventDefault();
+            target.scrollIntoView({ behavior: this.reduceMotion ? 'auto' : 'smooth', block: 'start' });
+          });
         });
+
+        if (this.slides.length < 2) return;
+
+        this.querySelector('[data-previous]').addEventListener('click', () => this.show(this.index - 1));
+        this.querySelector('[data-next]').addEventListener('click', () => this.show(this.index + 1));
+        this.dots.forEach((dot) => dot.addEventListener('click', () => this.show(Number(dot.dataset.go))));
+        if (this.toggleButton) {
+          this.toggleButton.addEventListener('click', () => {
+            this.userPaused = !this.userPaused;
+            this.toggleButton.setAttribute('aria-pressed', String(this.userPaused));
+            this.toggleButton.setAttribute('aria-label', this.userPaused ? 'Resume automatic slide change' : 'Pause automatic slide change');
+            this.play();
+          });
+        }
+
+        this.addEventListener('mouseenter', () => { this.hovering = true; this.pause(); });
+        this.addEventListener('mouseleave', () => { this.hovering = false; this.play(); });
+        this.addEventListener('focusin', () => this.pause());
+        this.addEventListener('focusout', () => this.play());
+        this.addEventListener('keydown', (event) => {
+          if (event.key === 'ArrowLeft') this.show(this.index - 1);
+          if (event.key === 'ArrowRight') this.show(this.index + 1);
+        });
+
+        let startX = 0, startY = 0;
+        this.addEventListener('touchstart', (event) => {
+          startX = event.touches[0].clientX;
+          startY = event.touches[0].clientY;
+          this.pause();
+        }, { passive: true });
+        this.addEventListener('touchend', (event) => {
+          const dx = event.changedTouches[0].clientX - startX;
+          const dy = event.changedTouches[0].clientY - startY;
+          if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) this.show(this.index + (dx < 0 ? 1 : -1));
+          this.play();
+        }, { passive: true });
+
+        this.onVisibility = () => (document.hidden ? this.pause() : this.play());
+        document.addEventListener('visibilitychange', this.onVisibility);
+        this.play();
       }
-      openSearch() {
-        this.dataset.open = 'true';
-        this.openButton.setAttribute('aria-expanded', 'true');
-        this.input.focus();
+      disconnectedCallback() {
+        this.pause();
+        if (this.onVisibility) document.removeEventListener('visibilitychange', this.onVisibility);
       }
-      closeSearch() {
-        this.dataset.open = 'false';
-        this.openButton.setAttribute('aria-expanded', 'false');
-        this.openButton.focus();
+      show(nextIndex) {
+        this.index = (nextIndex + this.slides.length) % this.slides.length;
+        this.slides.forEach((slide, index) => {
+          const active = index === this.index;
+          slide.classList.toggle('is-active', active);
+          slide.setAttribute('aria-hidden', active ? 'false' : 'true');
+        });
+        this.dots.forEach((dot, index) => dot.setAttribute('aria-current', index === this.index ? 'true' : 'false'));
+      }
+      play() {
+        this.pause();
+        if (this.dataset.autoplay === 'true' && !this.userPaused && !this.hovering && !this.reduceMotion && !document.hidden && this.slides.length > 1) {
+          this.timer = window.setInterval(() => this.show(this.index + 1), Number(this.dataset.interval) || 5000);
+        }
+      }
+      pause() {
+        if (this.timer) window.clearInterval(this.timer);
+        this.timer = null;
       }
     }
-    customElements.define(tagName, HeaderSearch{{ ai_gen_id }});
+    customElements.define(tagName, CategoryBanner);
   })();
 </script>
 
 {% schema %}
 {
-  "name": "Header search row",
+  "name": "Bluekites category banner",
   "settings": [
+    { "type": "header", "content": "Slide 1" },
+    { "type": "image_picker", "id": "slide_1_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_1_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "use_collection_image", "label": "Use collection image if no image is set", "default": true },
+    { "type": "checkbox", "id": "slide_1_show_text", "label": "Show text and button over image", "info": "Turn off if your banner image already contains text", "default": true },
+    { "type": "text", "id": "slide_1_badge", "label": "Badge", "default": "New arrivals" },
+    { "type": "text", "id": "slide_1_heading", "label": "Category headline", "info": "Leave empty to show the collection title" },
+    { "type": "text", "id": "slide_1_subtitle", "label": "Subtitle", "default": "Explore our latest picks in this category." },
+    { "type": "text", "id": "slide_1_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_1_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, uses the default button target below" },
+
+    { "type": "header", "content": "Slide 2 (optional)" },
+    { "type": "image_picker", "id": "slide_2_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_2_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_2_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_2_badge", "label": "Badge", "default": "New arrivals" },
+    { "type": "text", "id": "slide_2_heading", "label": "Category headline" },
+    { "type": "text", "id": "slide_2_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_2_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_2_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slide 3 (optional)" },
+    { "type": "image_picker", "id": "slide_3_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_3_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_3_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_3_badge", "label": "Badge" },
+    { "type": "text", "id": "slide_3_heading", "label": "Category headline" },
+    { "type": "text", "id": "slide_3_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_3_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_3_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slide 4 (optional)" },
+    { "type": "image_picker", "id": "slide_4_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_4_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_4_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_4_badge", "label": "Badge" },
+    { "type": "text", "id": "slide_4_heading", "label": "Category headline" },
+    { "type": "text", "id": "slide_4_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_4_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_4_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Slide 5 (optional)" },
+    { "type": "image_picker", "id": "slide_5_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
+    { "type": "image_picker", "id": "slide_5_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
+    { "type": "checkbox", "id": "slide_5_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "text", "id": "slide_5_badge", "label": "Badge" },
+    { "type": "text", "id": "slide_5_heading", "label": "Category headline" },
+    { "type": "text", "id": "slide_5_subtitle", "label": "Subtitle" },
+    { "type": "text", "id": "slide_5_button_label", "label": "Button label", "default": "Shop Now" },
+    { "type": "url", "id": "slide_5_button_link", "label": "Link (whole banner is clickable)" },
+
+    { "type": "header", "content": "Behaviour" },
+    { "type": "text", "id": "default_target", "label": "Default button target", "info": "Used when a slide has no link. '#ProductGridContainer' scrolls to products (Dawn-based themes). Empty = current collection.", "default": "#ProductGridContainer" },
+    { "type": "checkbox", "id": "heading_as_h1", "label": "Use slide 1 headline as page H1", "info": "Enable only if your theme's collection title is hidden, to keep one H1 per page", "default": false },
+    { "type": "checkbox", "id": "autoplay", "label": "Automatically change slides", "default": true },
+    { "type": "range", "id": "autoplay_interval", "label": "Time between slides", "min": 3, "max": 10, "step": 1, "unit": "s", "default": 5 },
     {
-      "type": "link_list",
-      "id": "navigation_menu",
-      "label": "Navigation menu"
+      "type": "select",
+      "id": "image_focus",
+      "label": "Image focus when cropped",
+      "options": [
+        { "value": "center center", "label": "Center" },
+        { "value": "center top", "label": "Top" },
+        { "value": "center bottom", "label": "Bottom" },
+        { "value": "left center", "label": "Left" },
+        { "value": "right center", "label": "Right" }
+      ],
+      "default": "center center"
     },
-    {
-      "type": "range",
-      "id": "desktop_width_percent",
-      "label": "Desktop width",
-      "min": 50,
-      "max": 100,
-      "step": 5,
-      "unit": "%",
-      "default": 100
-    },
-    {
-      "type": "range",
-      "id": "nav_gap",
-      "label": "Navigation spacing",
-      "min": 8,
-      "max": 48,
-      "step": 4,
-      "unit": "px",
-      "default": 24
-    }
+
+    { "type": "header", "content": "Colors" },
+    { "type": "range", "id": "scrim_strength", "label": "Text-side shade strength", "info": "Darkens only the text side. Image stays visible on the right.", "min": 0, "max": 90, "step": 5, "unit": "%", "default": 60 },
+    { "type": "color", "id": "gradient_start", "label": "Gradient start", "default": "#102A56" },
+    { "type": "color", "id": "gradient_end", "label": "Gradient end", "default": "#1769AA" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#FFFFFF" },
+    { "type": "color", "id": "badge_background", "label": "Badge background", "default": "#F4C95D" },
+    { "type": "color", "id": "badge_text_color", "label": "Badge text", "default": "#17243A" },
+    { "type": "color", "id": "button_background", "label": "Button background", "default": "#FFFFFF" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#102A56" },
+    { "type": "color", "id": "button_hover_background", "label": "Button hover background", "default": "#F4C95D" },
+    { "type": "color", "id": "button_hover_text_color", "label": "Button hover text", "default": "#17243A" },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 }
   ],
-  "presets": [
-    {
-      "name": "Header search row"
-    }
-  ],
+  "presets": [{ "name": "Bluekites category banner" }],
   "tag": null,
-  "class": "header-search-row"
+  "class": "bluekites-category-banner-block"
 }
 {% endschema %}

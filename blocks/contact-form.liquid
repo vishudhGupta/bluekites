@@ -1,9 +1,9 @@
 {% comment %}
   Contact form block — full-width "Get in touch" layout with glass panel.
+  Maroon glass theme: smoky burgundy background, wine glass, ivory text,
+  muted rose highlights, ivory button.
   Header row: eyebrow, heading, subheading (left) + reply badge (right).
   Glass panel: Name | Email | Phone | Topic in one row, then Message + Send.
-  Keeps the theme's form tag, translation keys, spacing/size snippets,
-  the contact-form-submit-button child block and inline validation.
 {% endcomment %}
 
 {% capture submit_button %}
@@ -14,6 +14,7 @@
 {% assign topics = block.settings.topics | split: ',' %}
 {% assign has_topics = false %}
 {% for t in topics %}{% assign tt = t | strip %}{% if tt != blank %}{% assign has_topics = true %}{% endif %}{% endfor %}
+{% assign glass_c = block.settings.glass_color %}
 
 <div
   class="
@@ -30,8 +31,10 @@
     {% render 'size-style', settings: block.settings %}
     --bk-accent: {{ block.settings.accent_color }};
     --bk-accent-text: {{ block.settings.accent_text_color }};
+    --bk-highlight: {{ block.settings.highlight_color }};
     --bk-radius: {{ block.settings.corner_radius }}px;
     --bk-glass: {{ block.settings.glass_opacity | divided_by: 100.0 }};
+    --bk-glass-rgb: {{ glass_c.red }} {{ glass_c.green }} {{ glass_c.blue }};
     --bk-blur: {{ block.settings.glass_blur }}px;
     --bk-glow: {{ block.settings.glow_color }};
     --bk-text: {{ block.settings.text_color }};
@@ -256,25 +259,33 @@
 
 {% stylesheet %}
   .bk-contact {
-    --bk-accent: #12363C;
-    --bk-accent-text: #ffffff;
+    --bk-accent: #F3E6E8;          /* ivory button */
+    --bk-accent-text: #4A121A;     /* deep wine button text */
+    --bk-highlight: #D9A9B3;       /* muted rose — eyebrow, focus, badge dot */
     --bk-radius: 14px;
-    --bk-glass: 0.6;
+    --bk-glass: 0.45;
+    --bk-glass-rgb: 90 24 39;      /* #5A1827 maroon glass */
     --bk-blur: 18px;
-    --bk-glow: #CFE3E1;
-    --bk-text: #0F172A;
-    --bk-bg: #F6F8FA;
+    --bk-glow: #8C3B4E;            /* muted rose glass */
+    --bk-text: #F5ECEE;            /* warm ivory */
+    --bk-bg: #3D1018;              /* smoky burgundy */
     --bk-height: 60vh;
-    --bk-muted: color-mix(in srgb, var(--bk-text) 62%, #ffffff);
-    --bk-line: color-mix(in srgb, var(--bk-text) 10%, transparent);
-    --bk-field-line: color-mix(in srgb, var(--bk-text) 16%, transparent);
-    --bk-danger: #c5221f;
+    --bk-muted: color-mix(in srgb, var(--bk-text) 66%, var(--bk-bg));
+    --bk-line: color-mix(in srgb, var(--bk-text) 12%, transparent);
+    --bk-field-line: color-mix(in srgb, var(--bk-text) 18%, transparent);
+    --bk-field-bg: color-mix(in srgb, var(--bk-bg) 55%, transparent);
+    --bk-danger: #F2A7A7;
 
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
     width: 100%;
     min-width: min(100%, 22rem);
     color: var(--bk-text);
+    color-scheme: dark;
     background:
-      linear-gradient(180deg, color-mix(in srgb, var(--bk-bg) 100%, #ffffff) 0%, color-mix(in srgb, var(--bk-bg) 88%, var(--bk-accent)) 160%);
+      radial-gradient(120% 80% at 85% 0%, color-mix(in srgb, var(--bk-glow) 22%, transparent) 0%, transparent 60%),
+      linear-gradient(165deg, var(--bk-bg) 0%, color-mix(in srgb, var(--bk-bg) 72%, #000000) 100%);
   }
 
   .bk-contact *,
@@ -299,14 +310,9 @@
     padding-block: clamp(24px, 3.5vh, 40px);
   }
 
-    .bk-contact {
-    position: relative;
-    isolation: isolate;
-    overflow: hidden;
-  }
   .bk-contact__inner > form { width: 100%; max-width: 1360px; margin-inline: auto; }
 
-  /* Soft glow behind the glass so the blur is visible on plain backgrounds */
+  /* Soft glow behind the glass so the blur reads */
   .bk-contact__inner--glow::before,
   .bk-contact__inner--glow::after {
     content: '';
@@ -314,12 +320,12 @@
     z-index: -1;
     border-radius: 50%;
     background: var(--bk-glow);
-    filter: blur(90px);
-    opacity: 0.6;
+    filter: blur(110px);
+    opacity: 0.4;
     pointer-events: none;
   }
   .bk-contact__inner--glow::before { width: 460px; height: 460px; top: -140px; right: 8%; }
-  .bk-contact__inner--glow::after { width: 420px; height: 420px; bottom: -160px; left: 2%; }
+  .bk-contact__inner--glow::after { width: 420px; height: 420px; bottom: -160px; left: 2%; opacity: 0.28; }
 
   .bk-contact__form {
     display: flex;
@@ -349,16 +355,15 @@
     gap: 8px;
     margin: 0;
     font-size: 0.75rem;
-    font-weight: 700;
-    letter-spacing: 0.14em;
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--bk-accent);
+    color: var(--bk-highlight);
   }
   .bk-contact__eyebrow::before {
     content: '';
     width: 22px;
-    height: 2px;
-    border-radius: 2px;
+    height: 1px;
     background: currentColor;
   }
 
@@ -366,7 +371,7 @@
     margin: 0;
     font-family: var(--font-heading--family, inherit);
     font-size: clamp(2rem, 1.4rem + 2.2vw, 3.25rem);
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.05;
     letter-spacing: -0.025em;
     color: var(--bk-text);
@@ -387,25 +392,25 @@
     padding: 16px 22px;
     border-radius: 14px;
     border: 1px solid var(--bk-line);
-    background: rgb(255 255 255 / var(--bk-glass));
-    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(140%);
-    backdrop-filter: blur(var(--bk-blur)) saturate(140%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.7), 0 10px 28px -16px rgb(0 0 0 / 0.25);
+    background: rgb(var(--bk-glass-rgb) / var(--bk-glass));
+    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(130%);
+    backdrop-filter: blur(var(--bk-blur)) saturate(130%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.07), 0 14px 32px -18px rgb(0 0 0 / 0.6);
   }
   .bk-contact__badge strong {
     display: inline-flex;
     align-items: center;
     gap: 8px;
     font-size: 0.9375rem;
-    font-weight: 700;
+    font-weight: 600;
   }
   .bk-contact__badge strong::before {
     content: '';
-    width: 8px;
-    height: 8px;
+    width: 7px;
+    height: 7px;
     border-radius: 50%;
-    background: #16A34A;
-    box-shadow: 0 0 0 4px rgb(22 163 74 / 0.18);
+    background: var(--bk-highlight);
+    box-shadow: 0 0 0 4px color-mix(in srgb, var(--bk-highlight) 18%, transparent);
   }
   .bk-contact__badge span { font-size: 0.8125rem; color: var(--bk-muted); }
 
@@ -420,15 +425,15 @@
     padding: clamp(18px, 2vw, 28px);
     border-radius: calc(var(--bk-radius) + 4px);
     border: 1px solid var(--bk-line);
-    background: rgb(255 255 255 / var(--bk-glass));
-    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(150%);
-    backdrop-filter: blur(var(--bk-blur)) saturate(150%);
-    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.8), 0 24px 50px -24px rgb(0 0 0 / 0.25);
+    background: rgb(var(--bk-glass-rgb) / var(--bk-glass));
+    -webkit-backdrop-filter: blur(var(--bk-blur)) saturate(130%);
+    backdrop-filter: blur(var(--bk-blur)) saturate(130%);
+    box-shadow: inset 0 1px 0 rgb(255 255 255 / 0.08), 0 30px 60px -30px rgb(0 0 0 / 0.7);
   }
 
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .bk-contact--glass .bk-contact__panel,
-    .bk-contact__badge { background: var(--color-background, #ffffff); }
+    .bk-contact__badge { background: rgb(var(--bk-glass-rgb)); }
   }
 
   .bk-contact__panel-head {
@@ -443,7 +448,7 @@
     margin: 0;
     font-family: var(--font-heading--family, inherit);
     font-size: clamp(1.125rem, 1rem + 0.4vw, 1.375rem);
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.2;
     letter-spacing: -0.01em;
     color: var(--bk-text);
@@ -490,12 +495,12 @@
     align-items: baseline;
     gap: 4px;
     font-size: 0.875rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.3;
     color: var(--bk-text);
   }
 
-  .bk-field__req { color: var(--bk-danger); font-weight: 700; }
+  .bk-field__req { color: var(--bk-highlight); font-weight: 600; }
   .bk-field__opt { margin-left: 4px; font-size: 0.8125rem; font-weight: 400; color: var(--bk-muted); }
 
   .bk-contact .bk-field__input {
@@ -508,8 +513,8 @@
     font: inherit;
     font-size: 1rem; /* 16px stops iOS zooming into the field */
     line-height: 1.4;
-    color: var(--color-input-text, var(--bk-text));
-    background-color: color-mix(in srgb, var(--color-input-background, #ffffff) 85%, transparent);
+    color: var(--bk-text);
+    background-color: var(--bk-field-bg);
     border: 1px solid var(--bk-field-line);
     border-radius: max(10px, calc(var(--bk-radius) - 4px));
     box-shadow: none;
@@ -523,9 +528,13 @@
   .bk-contact .bk-field__input--select {
     padding-right: 42px;
     cursor: pointer;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23555' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23E8D5D9' stroke-width='2.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
     background-repeat: no-repeat;
     background-position: right 16px center;
+  }
+  .bk-contact .bk-field__input--select option {
+    color: var(--bk-text);
+    background-color: var(--bk-bg);
   }
 
   .bk-contact .bk-field__input--textarea {
@@ -537,20 +546,30 @@
   }
 
   .bk-contact .bk-field__input::placeholder {
-    color: color-mix(in srgb, var(--bk-text) 48%, transparent);
+    color: color-mix(in srgb, var(--bk-text) 42%, transparent);
     opacity: 1;
   }
 
   .bk-contact .bk-field__input:hover {
-    border-color: color-mix(in srgb, var(--bk-text) 40%, transparent);
+    border-color: color-mix(in srgb, var(--bk-text) 32%, transparent);
   }
 
   .bk-contact .bk-field__input:focus,
   .bk-contact .bk-field__input:focus-visible {
-    border-color: var(--bk-accent);
-    background-color: #ffffff;
-    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-accent) 18%, transparent);
+    border-color: var(--bk-highlight);
+    background-color: color-mix(in srgb, var(--bk-bg) 75%, transparent);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--bk-highlight) 20%, transparent);
     outline: none;
+  }
+
+  /* Keep browser autofill from painting fields white/yellow */
+  .bk-contact .bk-field__input:-webkit-autofill,
+  .bk-contact .bk-field__input:-webkit-autofill:hover,
+  .bk-contact .bk-field__input:-webkit-autofill:focus {
+    -webkit-text-fill-color: var(--bk-text);
+    caret-color: var(--bk-text);
+    box-shadow: inset 0 0 0 1000px color-mix(in srgb, var(--bk-bg) 85%, #000000);
+    transition: background-color 9999s ease 0s;
   }
 
   .bk-contact .bk-field__input[aria-invalid='true'] { border-color: var(--bk-danger); }
@@ -587,13 +606,13 @@
     padding: 12px 14px;
     font-size: 0.875rem;
     line-height: 1.45;
-    color: #912018;
-    background: #fef3f2;
-    border: 1px solid #fecdca;
+    color: #FBDADA;
+    background: color-mix(in srgb, var(--bk-danger) 10%, transparent);
+    border: 1px solid color-mix(in srgb, var(--bk-danger) 32%, transparent);
     border-radius: max(10px, calc(var(--bk-radius) - 4px));
   }
   .bk-contact__alert:focus { outline: none; }
-  .bk-contact__alert-icon { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 1px; }
+  .bk-contact__alert-icon { flex: 0 0 auto; width: 20px; height: 20px; margin-top: 1px; color: var(--bk-danger); }
   .bk-contact__alert-list { margin: 0; padding: 0; list-style: none; }
   .bk-contact__alert-list a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 
@@ -612,9 +631,9 @@
     place-items: center;
     width: 56px;
     height: 56px;
-    color: #067647;
-    background: #ecfdf3;
-    border: 1px solid #abefc6;
+    color: var(--bk-highlight);
+    background: color-mix(in srgb, var(--bk-highlight) 12%, transparent);
+    border: 1px solid color-mix(in srgb, var(--bk-highlight) 38%, transparent);
     border-radius: 50%;
   }
   .bk-contact__success-icon svg { width: 28px; height: 28px; }
@@ -622,7 +641,7 @@
     max-width: 40ch;
     margin: 0;
     font-size: 1.0625rem;
-    font-weight: 600;
+    font-weight: 500;
     line-height: 1.45;
     color: var(--bk-text);
   }
@@ -636,9 +655,9 @@
     font-weight: 600;
     color: var(--bk-text);
     text-decoration: none;
-    border: 1.5px solid var(--bk-text);
+    border: 1px solid color-mix(in srgb, var(--bk-text) 45%, transparent);
     border-radius: 12px;
-    transition: background-color 0.15s ease, color 0.15s ease;
+    transition: background-color 0.15s ease, color 0.15s ease, border-color 0.15s ease;
   }
   .bk-contact__success-link:hover { color: var(--bk-accent-text); background: var(--bk-accent); border-color: var(--bk-accent); }
 
@@ -657,25 +676,26 @@
     padding: 0 28px;
     font: inherit;
     font-size: 1rem;
-    font-weight: 700;
+    font-weight: 600;
     line-height: 1.2;
+    letter-spacing: 0.01em;
     white-space: nowrap;
     color: var(--bk-accent-text);
     cursor: pointer;
     background: var(--bk-accent);
     border: 1px solid var(--bk-accent);
     border-radius: max(10px, calc(var(--bk-radius) - 4px));
-    box-shadow: 0 10px 24px -12px rgb(0 0 0 / 0.5);
-    transition: opacity 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease;
+    box-shadow: 0 12px 26px -14px rgb(0 0 0 / 0.7);
+    transition: opacity 0.15s ease, transform 0.1s ease, box-shadow 0.15s ease, background-color 0.15s ease;
   }
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):hover {
-    opacity: 0.88;
-    box-shadow: 0 14px 28px -12px rgb(0 0 0 / 0.55);
+    background: #ffffff;
+    box-shadow: 0 16px 30px -14px rgb(0 0 0 / 0.75);
   }
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):active { transform: scale(0.98); }
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit']):focus-visible {
-    outline: 3px solid color-mix(in srgb, var(--bk-accent) 40%, transparent);
-    outline-offset: 2px;
+    outline: 2px solid var(--bk-highlight);
+    outline-offset: 3px;
   }
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[disabled],
   .bk-contact--styled-button .bk-contact__actions :is(button, .button, input[type='submit'])[aria-busy='true'] {
@@ -686,7 +706,7 @@
     content: '';
     width: 16px;
     height: 16px;
-    border: 2px solid color-mix(in srgb, var(--bk-accent-text) 45%, transparent);
+    border: 2px solid color-mix(in srgb, var(--bk-accent-text) 35%, transparent);
     border-top-color: var(--bk-accent-text);
     border-radius: 50%;
     animation: bk-contact-spin 0.7s linear infinite;
@@ -721,8 +741,6 @@
         this.form = this.querySelector('form');
         if (!this.form) return;
 
-        // Custom inline messages replace the browser's pop-up bubbles.
-        // Without JS the browser's own validation still applies.
         this.form.noValidate = true;
 
         this.onSubmit = (event) => {
@@ -748,7 +766,6 @@
         this.form.addEventListener('input', this.onInput);
         window.addEventListener('pageshow', this.onPageShow);
 
-        // After a server round-trip, move focus to the error or success message.
         var alertBox = this.querySelector('[data-bk-alert]');
         if (alertBox) alertBox.focus();
       }
@@ -811,7 +828,6 @@
         if (!button) return;
         if (busy) {
           button.setAttribute('aria-busy', 'true');
-          // Delay so the browser still submits the form before the button is locked.
           window.setTimeout(() => {
             button.disabled = true;
           }, 0);
@@ -851,19 +867,21 @@
     { "type": "text", "id": "success_link_label", "label": "Link text after sending", "info": "Leave empty to hide the link.", "default": "Send another message" },
 
     { "type": "header", "content": "Style" },
-    { "type": "color", "id": "accent_color", "label": "Accent / button colour", "default": "#12363C" },
-    { "type": "color", "id": "accent_text_color", "label": "Button text colour", "default": "#FFFFFF" },
+    { "type": "color", "id": "background_color", "label": "Background colour", "default": "#3D1018" },
+    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#F5ECEE" },
+    { "type": "color", "id": "highlight_color", "label": "Highlight colour", "info": "Eyebrow, focus ring, badge dot, required marks.", "default": "#D9A9B3" },
+    { "type": "color", "id": "accent_color", "label": "Button colour", "default": "#F3E6E8" },
+    { "type": "color", "id": "accent_text_color", "label": "Button text colour", "default": "#4A121A" },
     { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 4, "max": 24, "step": 2, "unit": "px", "default": 14 },
-    { "type": "color", "id": "text_color", "label": "Text colour", "default": "#0F172A" },
-    { "type": "color", "id": "background_color", "label": "Background colour", "default": "#F6F8FA" },
     { "type": "checkbox", "id": "style_submit", "label": "Style the submit button to match", "info": "Turn off to use the theme's own button style.", "default": true },
 
     { "type": "header", "content": "Glass effect" },
     { "type": "checkbox", "id": "show_card", "label": "Glass panel", "default": true },
-    { "type": "range", "id": "glass_opacity", "label": "Glass opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 60 },
+    { "type": "color", "id": "glass_color", "label": "Glass tint", "default": "#5A1827" },
+    { "type": "range", "id": "glass_opacity", "label": "Glass opacity", "min": 20, "max": 100, "step": 5, "unit": "%", "default": 45 },
     { "type": "range", "id": "glass_blur", "label": "Glass blur", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 18 },
-    { "type": "checkbox", "id": "soft_glow", "label": "Soft background glow", "info": "Gives the glass something to blur on plain backgrounds.", "default": true },
-    { "type": "color", "id": "glow_color", "label": "Glow colour", "default": "#CFE3E1" },
+    { "type": "checkbox", "id": "soft_glow", "label": "Soft background glow", "info": "Gives the glass something to blur.", "default": true },
+    { "type": "color", "id": "glow_color", "label": "Glow colour", "default": "#8C3B4E" },
 
     { "type": "header", "content": "Validation messages" },
     { "type": "text", "id": "error_required", "label": "Required field", "default": "This field is required." },

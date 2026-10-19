@@ -26,6 +26,7 @@
     --services-bottom: {{ section.settings.padding_bottom }}px;
     --services-columns: {{ section.settings.columns_desktop }};
     --services-edge: {{ section.settings.side_margin }}px;
+    --services-height: {{ section.settings.section_height }}vh;
     --services-image-fit: {{ section.settings.image_fit }};
     --services-image-pad: {{ section.settings.image_padding }}%;
     --services-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
@@ -403,6 +404,42 @@
 }
 .bk-services__empty { margin: 0; font-size: 12px; }
 
+/* Fixed section height (tablet/desktop) */
+@media screen and (min-width: 750px) {
+  .bk-services {
+    display: flex;
+    height: var(--services-height, 60vh);
+    min-height: 420px;
+  }
+  .bk-services__inner {
+    display: flex;
+    min-height: 0;
+  }
+  .bk-services__panel {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    min-height: 0;
+    width: 100%;
+  }
+  .bk-services__header { flex-shrink: 0; margin-bottom: 18px; padding-block: 14px; }
+  .bk-services__track {
+    flex: 1;
+    min-height: 0;
+    grid-template-rows: 100%;
+  }
+  .bk-services__card { height: 100%; min-height: 0; padding: 14px; }
+  .bk-services__media {
+    flex: 1;
+    min-height: 0;
+    aspect-ratio: auto;
+  }
+  .bk-services__content { flex: 0 0 auto; padding-top: 12px; }
+  .bk-services__content > :nth-last-child(2) { margin-bottom: 14px; }
+  .bk-services__btn { min-height: 48px; }
+  .bk-services__progress { flex-shrink: 0; margin-top: 12px; }
+}
+
 @media screen and (max-width: 1099px) {
   .bk-services__track { grid-auto-columns: calc((100% - var(--services-gap)) / 2); }
 }
@@ -527,6 +564,7 @@
     { "type": "checkbox", "id": "show_badge", "label": "Show icon badge", "default": true },
     { "type": "image_picker", "id": "badge_icon", "label": "Badge icon", "info": "Optional. Default grid icon is used if empty." },
     { "type": "range", "id": "columns_desktop", "label": "Cards visible on desktop", "min": 3, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "section_height", "label": "Section height (desktop)", "min": 40, "max": 100, "step": 5, "unit": "vh", "default": 60 },
     { "type": "select", "id": "image_fit", "label": "Image fit", "options": [ { "value": "contain", "label": "Fit (show full image)" }, { "value": "cover", "label": "Fill (crop)" } ], "default": "contain" },
     { "type": "range", "id": "image_padding", "label": "Image inner padding", "min": 0, "max": 20, "step": 2, "unit": "%", "default": 8 },
     { "type": "range", "id": "side_margin", "label": "Side margin", "min": 16, "max": 120, "step": 4, "unit": "px", "default": 24 },

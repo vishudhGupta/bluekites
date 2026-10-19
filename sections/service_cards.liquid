@@ -1,875 +1,568 @@
+{%- liquid
+  assign service_count = 0
+  for block in section.blocks
+    if block.type == 'service_card'
+      assign service_count = service_count | plus: 1
+    endif
+  endfor
+-%}
+
+<style>
+  {{ section.settings.heading_font | font_face: font_display: 'swap' }}
+</style>
+
 <section
-id="ServiceCards-{{ section.id }}"
-class="bk-services color-{{ section.settings.color_scheme }}"
-style="
---services-bg: {{ section.settings.section_background }};
---services-heading: {{ section.settings.heading_color }};
---services-text: {{ section.settings.text_color }};
---services-card-bg: {{ section.settings.card_background }};
---services-border: {{ section.settings.card_border }};
---services-gap: {{ section.settings.grid_gap }}px;
---services-radius: {{ section.settings.card_radius }}px;
---services-top: {{ section.settings.padding_top }}px;
---services-bottom: {{ section.settings.padding_bottom }}px;
---services-columns: {{ section.settings.columns_desktop }};
---services-edge: {{ section.settings.side_margin }}px;
---services-image-h: {{ section.settings.image_height }}px;
-"
+  id="ServiceCards-{{ section.id }}"
+  class="bk-services color-{{ section.settings.color_scheme }}"
+  style="
+    --services-bg: {{ section.settings.section_background }};
+    --services-heading: {{ section.settings.heading_color }};
+    --services-text: {{ section.settings.text_color }};
+    --services-card-bg: {{ section.settings.card_background }};
+    --services-border: {{ section.settings.card_border }};
+    --services-gap: {{ section.settings.grid_gap }}px;
+    --services-radius: {{ section.settings.card_radius }}px;
+    --services-top: {{ section.settings.padding_top }}px;
+    --services-bottom: {{ section.settings.padding_bottom }}px;
+    --services-columns: {{ section.settings.columns_desktop }};
+    --services-edge: {{ section.settings.side_margin }}px;
+    --services-image-h: {{ section.settings.image_height }}px;
+    --services-heading-font: {{ section.settings.heading_font.family }}, {{ section.settings.heading_font.fallback_families }};
+    --services-heading-weight: {{ section.settings.heading_font.weight }};
+  "
 >
-<div class="bk-services__inner">
-{% if section.settings.subheading != blank
-or section.settings.heading != blank
-or section.settings.description != blank
-%}
-<header class="bk-services__header">
-<div class="bk-services__intro">
-{% if section.settings.subheading != blank %}
-<p class="bk-services__eyebrow">
-{{ section.settings.subheading | escape }}
-</p>
-{% endif %}
-{% if section.settings.heading != blank %}
-<h2 class="bk-services__heading">
-{{ section.settings.heading | escape }}
-</h2>
-{% endif %}
-{% if section.settings.description != blank %}
-<p class="bk-services__description">
-{{ section.settings.description | escape }}
-</p>
-{% endif %}
-</div>
-</header>
-{% endif %}
-{% assign service_count = 0 %}
-{% for block in section.blocks %}
-{% if block.type == 'service_card' %}
-{% assign service_count = service_count | plus: 1 %}
-{% endif %}
-{% endfor %}
-{% if service_count > 0 %}
-<div class="bk-services__viewport">
-{% if section.blocks.size > 1 %}
-<div class="bk-services__controls">
-<button
-class="bk-services__arrow"
-type="button"
-data-services-prev
-aria-label="Previous services"
-aria-controls="ServicesTrack-{{ section.id }}"
->
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-<path d="M15 18 9 12l6-6"
-stroke="currentColor" stroke-width="1.7"
-stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</button>
-<button
-class="bk-services__arrow"
-type="button"
-data-services-next
-aria-label="Next services"
-aria-controls="ServicesTrack-{{ section.id }}"
->
-<svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-<path d="m9 18 6-6-6-6"
-stroke="currentColor" stroke-width="1.7"
-stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</button>
-</div>
-{% endif %}
-<div
-id="ServicesTrack-{{ section.id }}"
-class="bk-services__track"
-data-services-track
-role="list"
-aria-label="{{ section.settings.heading | default: 'Our services' | escape }}"
->
-{% for block in section.blocks %}
-{% if block.type == 'service_card' %}
-{% assign card_link = block.settings.custom_url %}
-{% if card_link == blank and block.settings.link_page != blank %}
-{% assign card_link = pages[block.settings.link_page].url %}
-{% endif %}
-<article
-class="bk-services__card"
-role="listitem"
-{{ block.shopify_attributes }}
->
-{% if card_link != blank %}
-<a
-class="bk-services__card-link"
-href="{{ card_link }}"
-{% if block.settings.open_in_new_tab %}
-target="_blank"
-rel="noopener noreferrer"
-{% endif %}
->
-{% else %}
-<div class="bk-services__card-link">
-{% endif %}
-<div class="bk-services__media">
-{% if block.settings.image != blank %}
-{{
-block.settings.image
-| image_url: width: 600
-| image_tag:
-widths: '240, 320, 400, 500, 600',
-sizes: '(max-width: 480px) 75vw, (max-width: 749px) 65vw, (max-width: 1099px) 40vw, 20vw',
-loading: 'lazy',
-class: 'bk-services__image',
-alt: block.settings.image.alt
-}}
-{% else %}
-{{
-'image'
-| placeholder_svg_tag: 'bk-services__image bk-services__placeholder'
-}}
-{% endif %}
-<span class="bk-services__image-overlay"></span>
-</div>
-<div class="bk-services__content">
-{% if block.settings.title != blank %}
-<h3 class="bk-services__title">
-{{ block.settings.title | escape }}
-</h3>
-{% endif %}
-{% if block.settings.description != blank %}
-<p class="bk-services__text">
-{{ block.settings.description | escape }}
-</p>
-{% endif %}
-{% if card_link != blank and block.settings.button_label != blank %}
-<span class="bk-services__cta">
-{{ block.settings.button_label | escape }}
-<svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-<path d="M4 10h12m-5-5 5 5-5 5"
-stroke="currentColor" stroke-width="1.5"
-stroke-linecap="round" stroke-linejoin="round"/>
-</svg>
-</span>
-{% endif %}
-</div>
-{% if card_link != blank %}
-</a>
-{% else %}
-</div>
-{% endif %}
-</article>
-{% endif %}
-{% endfor %}
-</div>
-</div>
-{% if service_count > 1 %}
-<div class="bk-services__footer">
-<div class="bk-services__progress" aria-hidden="true">
-<span data-services-progress></span>
-</div>
-<p class="bk-services__counter" aria-live="polite">
-<span data-services-current>01</span>
-<span class="bk-services__counter-divider">/</span>
-<span>
-{% if service_count < 10 %}0{% endif %}{{ service_count }}
-</span>
-</p>
-</div>
-{% endif %}
-{% else %}
-<p class="bk-services__empty">
-Add Service card blocks to display your services.
-</p>
-{% endif %}
-</div>
+  <div class="bk-services__inner">
+    <div class="bk-services__panel">
+
+      {%- if section.settings.heading != blank or service_count > 1 -%}
+        <header class="bk-services__header">
+          <div class="bk-services__intro">
+            {%- if section.settings.show_badge -%}
+              <span class="bk-services__badge" aria-hidden="true">
+                {%- if section.settings.badge_icon != blank -%}
+                  {{ section.settings.badge_icon | image_url: width: 80 | image_tag: loading: 'lazy', alt: '' }}
+                {%- else -%}
+                  <svg viewBox="0 0 24 24" fill="none">
+                    <rect x="4" y="4" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.7"/>
+                    <rect x="13" y="4" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.7"/>
+                    <rect x="4" y="13" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.7"/>
+                    <rect x="13" y="13" width="7" height="7" rx="2" stroke="currentColor" stroke-width="1.7"/>
+                  </svg>
+                {%- endif -%}
+              </span>
+            {%- endif -%}
+            <div class="bk-services__titles">
+              {%- if section.settings.subheading != blank -%}
+                <p class="bk-services__eyebrow">{{ section.settings.subheading | escape }}</p>
+              {%- endif -%}
+              {%- if section.settings.heading != blank -%}
+                <h2 class="bk-services__heading">{{ section.settings.heading | escape }}</h2>
+              {%- endif -%}
+              {%- if section.settings.description != blank -%}
+                <p class="bk-services__description">{{ section.settings.description | escape }}</p>
+              {%- endif -%}
+            </div>
+          </div>
+
+          {%- if service_count > 1 -%}
+            <div class="bk-services__controls">
+              <button class="bk-services__arrow" type="button" data-services-prev
+                aria-label="Previous services" aria-controls="ServicesTrack-{{ section.id }}">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="M15 18 9 12l6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+              <button class="bk-services__arrow" type="button" data-services-next
+                aria-label="Next services" aria-controls="ServicesTrack-{{ section.id }}">
+                <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                  <path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </button>
+            </div>
+          {%- endif -%}
+        </header>
+      {%- endif -%}
+
+      {%- if service_count > 0 -%}
+        <div
+          id="ServicesTrack-{{ section.id }}"
+          class="bk-services__track"
+          data-services-track
+          role="list"
+          aria-label="{{ section.settings.heading | default: 'Our services' | escape }}"
+        >
+          {%- for block in section.blocks -%}
+            {%- if block.type == 'service_card' -%}
+              {%- liquid
+                assign card_link = block.settings.custom_url
+                if card_link == blank and block.settings.link_page != blank
+                  assign card_link = pages[block.settings.link_page].url
+                endif
+              -%}
+              <article class="bk-services__card" role="listitem" {{ block.shopify_attributes }}>
+                <div class="bk-services__media">
+                  {%- if block.settings.image != blank -%}
+                    {{
+                      block.settings.image
+                      | image_url: width: 600
+                      | image_tag:
+                        widths: '240, 320, 400, 500, 600',
+                        sizes: '(max-width: 749px) 75vw, (max-width: 1099px) 45vw, 25vw',
+                        loading: 'lazy',
+                        class: 'bk-services__image',
+                        alt: block.settings.image.alt
+                    }}
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'bk-services__image bk-services__placeholder' }}
+                  {%- endif -%}
+                </div>
+
+                <div class="bk-services__content">
+                  {%- if block.settings.title != blank -%}
+                    <h3 class="bk-services__title">
+                      {%- if card_link != blank -%}
+                        <a href="{{ card_link }}" class="bk-services__title-link"
+                          {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                          {{- block.settings.title | escape -}}
+                        </a>
+                      {%- else -%}
+                        {{- block.settings.title | escape -}}
+                      {%- endif -%}
+                    </h3>
+                  {%- endif -%}
+
+                  {%- if block.settings.description != blank -%}
+                    <p class="bk-services__text">{{ block.settings.description | escape }}</p>
+                  {%- endif -%}
+
+                  {%- if card_link != blank and block.settings.button_label != blank -%}
+                    <a
+                      class="bk-services__btn"
+                      href="{{ card_link }}"
+                      tabindex="-1"
+                      aria-hidden="true"
+                      {% if block.settings.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
+                    >
+                      {{ block.settings.button_label | escape }}
+                    </a>
+                  {%- endif -%}
+                </div>
+              </article>
+            {%- endif -%}
+          {%- endfor -%}
+        </div>
+
+        {%- if service_count > 1 -%}
+          <div class="bk-services__progress" aria-hidden="true">
+            <span data-services-progress></span>
+          </div>
+        {%- endif -%}
+      {%- else -%}
+        <p class="bk-services__empty">Add Service card blocks to display your services.</p>
+      {%- endif -%}
+
+    </div>
+  </div>
 </section>
+
 {% stylesheet %}
 .bk-services {
   box-sizing: border-box;
-  position: relative;
   width: 100%;
   background: var(--services-bg);
   color: var(--services-text);
   padding-block: var(--services-top) var(--services-bottom);
   overflow: hidden;
 }
+.bk-services *,
+.bk-services *::before,
+.bk-services *::after { box-sizing: border-box; }
+
 .bk-services__inner {
-  box-sizing: border-box;
-  width: min(calc(100% - 2 * clamp(20px, 5vw, var(--services-edge))), 1640px);
-  min-width: 0;
+  width: min(calc(100% - 2 * clamp(16px, 3vw, var(--services-edge))), 1640px);
   margin-inline: auto;
 }
+
+/* Outer panel */
+.bk-services__panel {
+  position: relative;
+  padding: 18px 18px 20px;
+  border-radius: calc(var(--services-radius) * 2.4);
+  background:
+    radial-gradient(120% 140% at 0% 0%, color-mix(in srgb, var(--services-card-bg) 70%, transparent), transparent 60%),
+    color-mix(in srgb, var(--services-border) 45%, var(--services-bg));
+  box-shadow: 0 10px 30px rgb(28 39 64 / 7%);
+}
+
+/* Header bar */
 .bk-services__header {
-display: flex;
-align-items: flex-end;
-justify-content: space-between;
-gap: 16px;
-margin-bottom: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+  margin-bottom: 26px;
+  padding: 18px 26px;
+  border-radius: calc(var(--services-radius) * 1.8);
+  background: color-mix(in srgb, var(--services-card-bg) 62%, transparent);
+  -webkit-backdrop-filter: blur(14px) saturate(140%);
+  backdrop-filter: blur(14px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--services-card-bg) 85%, transparent);
+  box-shadow: inset 0 1px 0 rgb(255 255 255 / 70%);
 }
 .bk-services__intro {
-min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  min-width: 0;
 }
+.bk-services__badge {
+  display: grid;
+  flex-shrink: 0;
+  place-items: center;
+  width: 52px;
+  height: 52px;
+  color: var(--services-heading);
+  background: color-mix(in srgb, var(--services-heading) 10%, var(--services-card-bg));
+  border-radius: 14px;
+  box-shadow: 0 4px 12px rgb(28 39 64 / 10%), inset 0 1px 0 rgb(255 255 255 / 80%);
+}
+.bk-services__badge svg { width: 24px; height: 24px; }
+.bk-services__badge img { width: 28px; height: 28px; object-fit: contain; }
+.bk-services__titles { min-width: 0; }
 .bk-services__eyebrow {
-margin: 0 0 7px;
-color: var(--services-text);
-font-size: 10px;
-line-height: 1.3;
-font-weight: 650;
-letter-spacing: .15em;
-text-transform: uppercase;
+  margin: 0 0 4px;
+  font-size: 10px;
+  font-weight: 650;
+  letter-spacing: .15em;
+  text-transform: uppercase;
 }
 .bk-services__heading {
-margin: 0;
-color: var(--services-heading);
-font-size: clamp(24px, 2.5vw, 32px);
-line-height: 1.15;
-letter-spacing: -.035em;
+  margin: 0;
+  color: var(--services-heading);
+  font-family: var(--services-heading-font);
+  font-weight: var(--services-heading-weight);
+  font-size: clamp(26px, 3vw, 44px);
+  line-height: 1.1;
+  letter-spacing: -.02em;
 }
 .bk-services__description {
-max-width: 520px;
-margin: 7px 0 0;
-color: var(--services-text);
-font-size: 12px;
-line-height: 1.55;
+  max-width: 520px;
+  margin: 6px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
 }
+
+/* Arrows */
 .bk-services__controls {
-display: contents;
+  display: flex;
+  flex-shrink: 0;
+  gap: 12px;
 }
 .bk-services__arrow {
-display: grid;
-place-items: center;
-width: 40px;
-height: 40px;
-padding: 0;
-color: var(--services-heading);
-background: var(--services-card-bg);
-border: 1px solid var(--services-border);
-border-radius: 50%;
-box-shadow: 0 4px 14px rgb(23 35 57 / 14%);
-cursor: pointer;
-transition: color .2s ease, background .2s ease, border-color .2s ease, opacity .2s ease;
+  display: grid;
+  place-items: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  color: var(--services-heading);
+  background: color-mix(in srgb, var(--services-card-bg) 70%, transparent);
+  border: 1px solid color-mix(in srgb, var(--services-border) 60%, transparent);
+  border-radius: 50%;
+  cursor: pointer;
+  transition: color .2s ease, background .2s ease, opacity .2s ease;
 }
-.bk-services__arrow svg {
-width: 16px;
-height: 16px;
-}
+.bk-services__arrow svg { width: 18px; height: 18px; }
 .bk-services__arrow:hover:not(:disabled) {
-box-shadow: 0 6px 18px rgb(23 35 57 / 20%);
-color: #fff;
-background: var(--services-heading);
-border-color: var(--services-heading);
+  color: #fff;
+  background: var(--services-heading);
+  border-color: var(--services-heading);
 }
-.bk-services__arrow:disabled {
-opacity: .35;
-cursor: not-allowed;
-}
+.bk-services__arrow:disabled { opacity: .4; cursor: not-allowed; }
 .bk-services__arrow:focus-visible,
-.bk-services__card-link:focus-visible {
-outline: 2px solid var(--services-heading);
-outline-offset: 3px;
+.bk-services__btn:focus-visible,
+.bk-services__title-link:focus-visible {
+  outline: 2px solid var(--services-heading);
+  outline-offset: 3px;
 }
-.bk-services__viewport {
-position: relative;
-min-width: 0;
-overflow: visible;
-}
-/* Keep the carousel arrows at the far left and right edges of this section. */
-.bk-services__controls {
-display: contents;
-}
-/* Arrows sit in the side gutters, vertically centred on the image area. */
-.bk-services__arrow {
-position: absolute;
-z-index: 2;
-top: calc(var(--services-image-h) / 2 + 1px);
-transform: translateY(-50%);
-}
-.bk-services__arrow[data-services-prev] {
-left: calc(-1 * (var(--services-edge) / 2 + 20px));
-}
-.bk-services__arrow[data-services-next] {
-right: calc(-1 * (var(--services-edge) / 2 + 20px));
-}
+
+/* Track */
 .bk-services__track {
-display: grid;
-grid-auto-columns: calc(
-(100% - (var(--services-columns, 5) - 1) * var(--services-gap))
-/ var(--services-columns, 5)
-);
-grid-auto-flow: column;
-gap: var(--services-gap);
-overflow-x: auto;
-overscroll-behavior-inline: contain;
-scroll-snap-type: x mandatory;
-scroll-padding-inline: 1px;
-scrollbar-width: none;
--webkit-overflow-scrolling: touch;
-padding: 1px 1px 4px;
+  display: grid;
+  grid-auto-flow: column;
+  grid-auto-columns: calc((100% - (var(--services-columns, 4) - 1) * var(--services-gap)) / var(--services-columns, 4));
+  gap: var(--services-gap);
+  overflow-x: auto;
+  overscroll-behavior-inline: contain;
+  scroll-snap-type: x mandatory;
+  scrollbar-width: none;
+  -webkit-overflow-scrolling: touch;
+  padding: 4px 8px 12px;
 }
-.bk-services__track::-webkit-scrollbar {
-display: none;
-}
+.bk-services__track::-webkit-scrollbar { display: none; }
+
+/* Card */
 .bk-services__card {
-  box-sizing: border-box;
+  position: relative;
   display: flex;
   flex-direction: column;
-  height: 100%;
   min-width: 0;
-  overflow: hidden;
-  background: color-mix(in srgb, var(--services-card-bg) 76%, transparent);
-  -webkit-backdrop-filter: blur(16px) saturate(145%);
-  backdrop-filter: blur(16px) saturate(145%);
-  border: 1px solid color-mix(in srgb, var(--services-border) 68%, white 32%);
-  border-radius: var(--services-radius);
-  box-shadow: 0 8px 24px rgb(28 39 64 / 8%), inset 0 1px 0 rgb(255 255 255 / 72%);
+  padding: 16px;
+  background: color-mix(in srgb, var(--services-card-bg) 72%, transparent);
+  -webkit-backdrop-filter: blur(16px) saturate(140%);
+  backdrop-filter: blur(16px) saturate(140%);
+  border: 1px solid color-mix(in srgb, var(--services-card-bg) 90%, transparent);
+  border-radius: calc(var(--services-radius) * 2);
+  box-shadow: 0 8px 22px rgb(28 39 64 / 7%), inset 0 1px 0 rgb(255 255 255 / 75%);
   scroll-snap-align: start;
-  transition: transform .25s ease, box-shadow .25s ease, border-color .25s ease;
+  transition: transform .25s ease, box-shadow .25s ease;
 }
 .bk-services__card:hover {
   transform: translateY(-3px);
-  border-color: color-mix(in srgb, var(--services-heading) 24%, var(--services-border));
-  box-shadow: 0 14px 30px rgb(28 39 64 / 13%), inset 0 1px 0 rgb(255 255 255 / 82%);
-}
-.bk-services__card-link {
-display: flex;
-flex: 1;
-flex-direction: column;
-min-width: 0;
-color: inherit;
-text-decoration: none;
+  box-shadow: 0 14px 30px rgb(28 39 64 / 12%), inset 0 1px 0 rgb(255 255 255 / 85%);
 }
 .bk-services__media {
-position: relative;
-overflow: hidden;
-height: var(--services-image-h);
-background: #edf0f4;
+  overflow: hidden;
+  height: var(--services-image-h);
+  background: var(--services-card-bg);
+  border-radius: calc(var(--services-radius) * 1.6);
 }
 .bk-services__image {
-display: block;
-width: 100%;
-height: 100%;
-object-fit: cover;
-transition: transform .4s ease;
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .4s ease;
 }
-.bk-services__placeholder {
-color: #9ba5b5;
-background: #edf0f4;
-}
-.bk-services__image-overlay {
-position: absolute;
-inset: 0;
-pointer-events: none;
-background: linear-gradient(
-180deg,
-transparent 72%,
-rgb(10 24 43 / 8%)
-);
-}
-.bk-services__card:hover .bk-services__image {
-transform: scale(1.035);
-}
+.bk-services__card:hover .bk-services__image { transform: scale(1.04); }
+.bk-services__placeholder { color: #9ba5b5; background: #edf0f4; }
+
 .bk-services__content {
-display: flex;
-flex: 1;
-flex-direction: column;
-align-items: flex-start;
-padding: 11px 11px 12px;
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  padding-top: 16px;
 }
 .bk-services__title {
-margin: 0;
-color: var(--services-heading);
-font-size: 14px;
-font-weight: 600;
-line-height: 1.35;
-letter-spacing: -.02em;
+  margin: 0;
+  color: var(--services-heading);
+  font-size: 19px;
+  font-weight: 700;
+  line-height: 1.3;
 }
+.bk-services__title-link { color: inherit; text-decoration: none; }
+.bk-services__title-link::after { content: ""; position: absolute; inset: 0; border-radius: inherit; }
 .bk-services__text {
-display: -webkit-box;
-overflow: hidden;
-margin: 5px 0 0;
-color: var(--services-text);
-font-size: 11px;
-line-height: 1.5;
--webkit-box-orient: vertical;
--webkit-line-clamp: 2;
+  display: -webkit-box;
+  overflow: hidden;
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.5;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
 }
-.bk-services__cta {
-display: inline-flex;
-align-items: center;
-gap: 5px;
-margin-top: auto;
-padding-top: 10px;
-color: var(--services-heading);
-font-size: 10px;
-font-weight: 650;
-line-height: 1.4;
+.bk-services__btn {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 52px;
+  margin-top: auto;
+  padding: 0 16px;
+  color: #fff;
+  background: #000;
+  border-radius: 14px;
+  font-size: 16px;
+  font-weight: 700;
+  text-decoration: none;
+  transition: background .2s ease, transform .2s ease;
 }
-.bk-services__cta svg {
-width: 13px;
-height: 13px;
-transition: transform .2s ease;
-}
-.bk-services__card:hover .bk-services__cta svg {
-transform: translateX(3px);
-}
-.bk-services__footer {
-display: flex;
-align-items: center;
-justify-content: space-between;
-gap: 12px;
-margin-top: 11px;
-}
+.bk-services__content > :nth-last-child(2) { margin-bottom: 20px; }
+.bk-services__btn:hover { background: var(--services-heading); }
+
+/* Progress */
 .bk-services__progress {
-width: 100%;
-height: 2px;
-overflow: hidden;
-background: var(--services-border);
-border-radius: 10px;
+  height: 4px;
+  margin: 18px 8px 0;
+  overflow: hidden;
+  background: color-mix(in srgb, var(--services-border) 80%, transparent);
+  border-radius: 10px;
 }
 .bk-services__progress span {
-display: block;
-width: 0;
-height: 100%;
-background: var(--services-heading);
-transition: width .2s ease;
+  display: block;
+  width: 0;
+  height: 100%;
+  background: var(--services-heading);
+  border-radius: inherit;
+  transition: width .2s ease;
 }
-.bk-services__counter {
-display: flex;
-flex-shrink: 0;
-gap: 4px;
-margin: 0;
-color: var(--services-heading);
-font-size: 10px;
-font-variant-numeric: tabular-nums;
-}
-.bk-services__counter-divider {
-opacity: .45;
-}
-.bk-services__empty {
-margin: 0;
-color: var(--services-text);
-font-size: 12px;
-}
+.bk-services__empty { margin: 0; font-size: 12px; }
+
 @media screen and (max-width: 1099px) {
-.bk-services__track {
-grid-auto-columns: calc(
-(100% - var(--services-gap)) / 2
-);
+  .bk-services__track { grid-auto-columns: calc((100% - var(--services-gap)) / 2); }
 }
-}
+
 @media screen and (max-width: 749px) {
-.bk-services {
---services-edge: 20px;
+  .bk-services__inner { width: calc(100% - 24px); }
+  .bk-services__panel { padding: 10px 10px 14px; }
+  .bk-services__header { padding: 12px 14px; margin-bottom: 16px; gap: 10px; }
+  .bk-services__intro { gap: 10px; }
+  .bk-services__badge { width: 38px; height: 38px; border-radius: 10px; }
+  .bk-services__badge svg { width: 18px; height: 18px; }
+  .bk-services__heading { font-size: clamp(22px, 6.5vw, 28px); }
+  .bk-services__description { display: none; }
+  .bk-services__controls { gap: 6px; }
+  .bk-services__arrow { width: 34px; height: 34px; }
+  .bk-services__arrow svg { width: 14px; height: 14px; }
+  .bk-services__track { grid-auto-columns: minmax(0, 78%); gap: 10px; padding-inline: 4px; }
+  .bk-services__card { padding: 10px; }
+  .bk-services__media { height: calc(var(--services-image-h) * .85); }
+  .bk-services__content { padding-top: 12px; }
+  .bk-services__title { font-size: 16px; }
+  .bk-services__text { font-size: 12px; }
+  .bk-services__btn { min-height: 44px; font-size: 14px; border-radius: 12px; }
 }
-.bk-services__arrow {
-top: calc(var(--services-image-h) * .85 / 2 + 1px);
-}
-.bk-services__arrow[data-services-prev] {
-left: -12px;
-}
-.bk-services__arrow[data-services-next] {
-right: -12px;
-}
-.bk-services__header {
-gap: 10px;
-margin-bottom: 14px;
-}
-.bk-services__heading {
-font-size: clamp(23px, 6vw, 29px);
-}
-.bk-services__description {
-font-size: 11px;
-}
-.bk-services__controls {
-gap: 5px;
-}
-.bk-services__arrow {
-width: 34px;
-height: 34px;
-}
-.bk-services__track {
-grid-auto-columns: minmax(0, 82%);
-gap: 10px;
-padding-right: 12px;
-}
-.bk-services__media {
-height: calc(var(--services-image-h) * .85);
-}
-.bk-services__content {
-padding: 10px;
-}
-.bk-services__title {
-font-size: 13px;
-}
-.bk-services__text {
-font-size: 10.5px;
-}
-.bk-services__cta {
-padding-top: 9px;
-font-size: 10px;
-}
-.bk-services__footer {
-margin-top: 9px;
-}
-}
-@media screen and (min-width: 1100px) {
-  .bk-services__track {
-    grid-template-rows: minmax(0, 1fr);
-    align-items: stretch;
-  }
-}
-@media screen and (max-width: 1099px) {
-  .bk-services__inner {
-    width: calc(100% - 40px);
-  }
-}
+
 @media (prefers-reduced-motion: reduce) {
-.bk-services *,
-.bk-services *::before,
-.bk-services *::after {
-scroll-behavior: auto !important;
-transition-duration: .01ms !important;
-}
+  .bk-services *,
+  .bk-services *::before,
+  .bk-services *::after {
+    scroll-behavior: auto !important;
+    transition-duration: .01ms !important;
+  }
 }
 {% endstylesheet %}
+
 <script>
 (() => {
-const root = document.getElementById(
-'ServiceCards-{{ section.id }}'
-);
-if (!root || root.dataset.servicesInitialized === 'true') {
-return;
-}
-root.dataset.servicesInitialized = 'true';
-const track = root.querySelector('[data-services-track]');
-const previousButton = root.querySelector('[data-services-prev]');
-const nextButton = root.querySelector('[data-services-next]');
-const progress = root.querySelector('[data-services-progress]');
-const currentCounter = root.querySelector('[data-services-current]');
-if (!track) return;
-const cards = Array.from(
-track.querySelectorAll('.bk-services__card')
-);
-if (!cards.length) return;
-const formatNumber = (number) =>
-String(number).padStart(2, '0');
-const getScrollStep = () => {
-const cardWidth = cards[0].getBoundingClientRect().width;
-const gap = parseFloat(
-window.getComputedStyle(track).columnGap
-) || 0;
-return cardWidth + gap;
-};
-const updateControls = () => {
-const maxScroll = Math.max(
-0,
-track.scrollWidth - track.clientWidth
-);
-const scrollLeft = Math.max(0, track.scrollLeft);
-const canScroll = maxScroll > 2;
-if (previousButton) {
-previousButton.disabled =
-!canScroll || scrollLeft <= 2;
-}
-if (nextButton) {
-nextButton.disabled =
-!canScroll || scrollLeft >= maxScroll - 2;
-}
-if (progress) {
-const percentage = maxScroll > 0
-? Math.min(100, (scrollLeft / maxScroll) * 100)
-: 100;
-progress.style.width = String(percentage) + '%';
-}
-if (currentCounter) {
-const trackLeft = track.getBoundingClientRect().left;
-let nearestIndex = 0;
-let nearestDistance = Infinity;
-cards.forEach((card, index) => {
-const distance = Math.abs(
-card.getBoundingClientRect().left - trackLeft
-);
-if (distance < nearestDistance) {
-nearestDistance = distance;
-nearestIndex = index;
-}
-});
-currentCounter.textContent =
-formatNumber(nearestIndex + 1);
-}
-};
-const scroll = (direction) => {
-const reducedMotion = window.matchMedia(
-'(prefers-reduced-motion: reduce)'
-).matches;
-const trackRect = track.getBoundingClientRect();
-const currentIndex = cards.reduce((closestIndex, card, index) => {
-const currentDistance = Math.abs(
-cards[closestIndex].getBoundingClientRect().left - trackRect.left
-);
-const nextDistance = Math.abs(
-card.getBoundingClientRect().left - trackRect.left
-);
-return nextDistance < currentDistance ? index : closestIndex;
-}, 0);
-const targetIndex = Math.max(
-0,
-Math.min(cards.length - 1, currentIndex + direction)
-);
-const targetLeft = Math.max(
-0,
-Math.min(
-track.scrollWidth - track.clientWidth,
-cards[targetIndex].offsetLeft - cards[0].offsetLeft
-)
-);
-track.scrollTo({
-left: targetLeft,
-behavior: reducedMotion ? 'auto' : 'smooth'
-});
-};
-const handlePrevious = () => scroll(-1);
-const handleNext = () => scroll(1);
-previousButton?.addEventListener('click', handlePrevious);
-nextButton?.addEventListener('click', handleNext);
-let animationFrame = null;
-const handleScroll = () => {
-if (animationFrame !== null) {
-cancelAnimationFrame(animationFrame);
-}
-animationFrame = requestAnimationFrame(() => {
-updateControls();
-animationFrame = null;
-});
-};
-track.addEventListener('scroll', handleScroll, {
-passive: true
-});
-const resizeObserver = new ResizeObserver(updateControls);
-resizeObserver.observe(track);
-cards.forEach((card) => resizeObserver.observe(card));
-const handleSectionUnload = (event) => {
-if (event.target !== root.closest('.shopify-section')) {
-return;
-}
-resizeObserver.disconnect();
-previousButton?.removeEventListener(
-'click',
-handlePrevious
-);
-nextButton?.removeEventListener('click', handleNext);
-track.removeEventListener('scroll', handleScroll);
-if (animationFrame !== null) {
-cancelAnimationFrame(animationFrame);
-}
-root.dataset.servicesInitialized = 'false';
-document.removeEventListener(
-'shopify:section:unload',
-handleSectionUnload
-);
-};
-document.addEventListener(
-'shopify:section:unload',
-handleSectionUnload
-);
-updateControls();
+  const root = document.getElementById('ServiceCards-{{ section.id }}');
+  if (!root || root.dataset.servicesInitialized === 'true') return;
+  root.dataset.servicesInitialized = 'true';
+
+  const track = root.querySelector('[data-services-track]');
+  const prev = root.querySelector('[data-services-prev]');
+  const next = root.querySelector('[data-services-next]');
+  const progress = root.querySelector('[data-services-progress]');
+  if (!track) return;
+
+  const cards = Array.from(track.querySelectorAll('.bk-services__card'));
+  if (!cards.length) return;
+
+  const update = () => {
+    const max = Math.max(0, track.scrollWidth - track.clientWidth);
+    const left = Math.max(0, track.scrollLeft);
+    const canScroll = max > 2;
+    if (prev) prev.disabled = !canScroll || left <= 2;
+    if (next) next.disabled = !canScroll || left >= max - 2;
+    if (progress) progress.style.width = (max > 0 ? Math.min(100, (left / max) * 100) : 100) + '%';
+  };
+
+  const currentIndex = () => {
+    const trackLeft = track.getBoundingClientRect().left;
+    let best = 0, bestDist = Infinity;
+    cards.forEach((card, i) => {
+      const d = Math.abs(card.getBoundingClientRect().left - trackLeft);
+      if (d < bestDist) { bestDist = d; best = i; }
+    });
+    return best;
+  };
+
+  const scroll = (dir) => {
+    const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const target = Math.max(0, Math.min(cards.length - 1, currentIndex() + dir));
+    const left = Math.max(0, Math.min(
+      track.scrollWidth - track.clientWidth,
+      cards[target].offsetLeft - cards[0].offsetLeft
+    ));
+    track.scrollTo({ left, behavior: reduced ? 'auto' : 'smooth' });
+  };
+
+  const onPrev = () => scroll(-1);
+  const onNext = () => scroll(1);
+  prev?.addEventListener('click', onPrev);
+  next?.addEventListener('click', onNext);
+
+  let raf = null;
+  const onScroll = () => {
+    if (raf !== null) cancelAnimationFrame(raf);
+    raf = requestAnimationFrame(() => { update(); raf = null; });
+  };
+  track.addEventListener('scroll', onScroll, { passive: true });
+
+  const ro = new ResizeObserver(update);
+  ro.observe(track);
+
+  const onUnload = (e) => {
+    if (e.target !== root.closest('.shopify-section')) return;
+    ro.disconnect();
+    prev?.removeEventListener('click', onPrev);
+    next?.removeEventListener('click', onNext);
+    track.removeEventListener('scroll', onScroll);
+    if (raf !== null) cancelAnimationFrame(raf);
+    root.dataset.servicesInitialized = 'false';
+    document.removeEventListener('shopify:section:unload', onUnload);
+  };
+  document.addEventListener('shopify:section:unload', onUnload);
+
+  update();
 })();
 </script>
+
 {% schema %}
 {
-"name": "Service carousel",
-"tag": "section",
-"class": "section-wrapper",
-"settings": [
-{
-"type": "text",
-"id": "subheading",
-"label": "Eyebrow",
-"default": "OUR SERVICES"
-},
-{
-"type": "text",
-"id": "heading",
-"label": "Heading",
-"default": "What We Can Help You With"
-},
-{
-"type": "textarea",
-"id": "description",
-"label": "Description",
-"default": "Explore our services, designed to make everyday needs simpler."
-},
-{
-"type": "range",
-"id": "columns_desktop",
-"label": "Cards visible on desktop",
-"min": 3,
-"max": 5,
-"step": 1,
-"default": 4
-},
-{
-"type": "range",
-"id": "image_height",
-"label": "Image height",
-"min": 90,
-"max": 240,
-"step": 10,
-"unit": "px",
-"default": 140
-},
-{
-"type": "range",
-"id": "side_margin",
-"label": "Side margin (match other sections)",
-"min": 24,
-"max": 120,
-"step": 4,
-"unit": "px",
-"default": 80,
-"info": "Space left and right of the cards; the arrows sit inside it."
-},
-{
-"type": "range",
-"id": "grid_gap",
-"label": "Card spacing",
-"min": 8,
-"max": 24,
-"step": 2,
-"unit": "px",
-"default": 14
-},
-{
-"type": "range",
-"id": "card_radius",
-"label": "Card corner radius",
-"min": 0,
-"max": 20,
-"step": 2,
-"unit": "px",
-"default": 10
-},
-{
-"type": "range",
-"id": "padding_top",
-"label": "Top padding",
-"min": 0,
-"max": 80,
-"step": 4,
-"unit": "px",
-"default": 24
-},
-{
-"type": "range",
-"id": "padding_bottom",
-"label": "Bottom padding",
-"min": 0,
-"max": 80,
-"step": 4,
-"unit": "px",
-"default": 24
-},
-{
-"type": "color_scheme",
-"id": "color_scheme",
-"label": "Color scheme",
-"default": "scheme-1"
-},
-{
-"type": "header",
-"content": "Colors"
-},
-{
-"type": "color",
-"id": "section_background",
-"label": "Section background",
-"default": "#F8F7F4"
-},
-{
-"type": "color",
-"id": "heading_color",
-"label": "Heading and title color",
-"default": "#1C2740"
-},
-{
-"type": "color",
-"id": "text_color",
-"label": "Description color",
-"default": "#5C6478"
-},
-{
-"type": "color",
-"id": "card_background",
-"label": "Card background",
-"default": "#FFFFFF"
-},
-{
-"type": "color",
-"id": "card_border",
-"label": "Card border",
-"default": "#E5E8EE"
-}
-],
-"blocks": [
-{
-"type": "service_card",
-"name": "Service card",
-"settings": [
-{
-"type": "image_picker",
-"id": "image",
-"label": "Image"
-},
-{
-"type": "text",
-"id": "title",
-"label": "Title",
-"default": "Service title"
-},
-{
-"type": "textarea",
-"id": "description",
-"label": "Description",
-"default": "Discover how our service can help you."
-},
-{
-"type": "page",
-"id": "link_page",
-"label": "Link to page"
-},
-{
-"type": "url",
-"id": "custom_url",
-"label": "Custom URL",
-"info": "Overrides the selected page when provided."
-},
-{
-"type": "text",
-"id": "button_label",
-"label": "Link label",
-"default": "Explore service"
-},
-{
-"type": "checkbox",
-"id": "open_in_new_tab",
-"label": "Open link in a new tab",
-"default": false
-}
-]
-}
-],
-"max_blocks": 24,
-"presets": [
-{
-"name": "Service carousel",
-"blocks": [
-{ "type": "service_card" },
-{ "type": "service_card" },
-{ "type": "service_card" },
-{ "type": "service_card" },
-{ "type": "service_card" },
-{ "type": "service_card" }
-]
-}
-]
+  "name": "Service carousel",
+  "tag": "section",
+  "class": "section-wrapper",
+  "settings": [
+    { "type": "text", "id": "subheading", "label": "Eyebrow" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Services" },
+    { "type": "textarea", "id": "description", "label": "Description" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "playfair_display_n7" },
+    { "type": "checkbox", "id": "show_badge", "label": "Show icon badge", "default": true },
+    { "type": "image_picker", "id": "badge_icon", "label": "Badge icon", "info": "Optional. Default grid icon is used if empty." },
+    { "type": "range", "id": "columns_desktop", "label": "Cards visible on desktop", "min": 3, "max": 5, "step": 1, "default": 4 },
+    { "type": "range", "id": "image_height", "label": "Image height", "min": 120, "max": 320, "step": 10, "unit": "px", "default": 280 },
+    { "type": "range", "id": "side_margin", "label": "Side margin", "min": 16, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "grid_gap", "label": "Card spacing", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 26 },
+    { "type": "range", "id": "card_radius", "label": "Corner radius", "min": 0, "max": 20, "step": 2, "unit": "px", "default": 12 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 80, "step": 4, "unit": "px", "default": 24 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "section_background", "label": "Section background", "default": "#F8F7F4" },
+    { "type": "color", "id": "heading_color", "label": "Heading and title color", "default": "#1C2740" },
+    { "type": "color", "id": "text_color", "label": "Description color", "default": "#5C6478" },
+    { "type": "color", "id": "card_background", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "card_border", "label": "Card border", "default": "#E5E8EE" }
+  ],
+  "blocks": [
+    {
+      "type": "service_card",
+      "name": "Service card",
+      "settings": [
+        { "type": "image_picker", "id": "image", "label": "Image" },
+        { "type": "text", "id": "title", "label": "Title", "default": "Service title" },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Discover how our service can help you." },
+        { "type": "page", "id": "link_page", "label": "Link to page" },
+        { "type": "url", "id": "custom_url", "label": "Custom URL", "info": "Overrides the selected page when provided." },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore service" },
+        { "type": "checkbox", "id": "open_in_new_tab", "label": "Open link in a new tab", "default": false }
+      ]
+    }
+  ],
+  "max_blocks": 24,
+  "presets": [
+    {
+      "name": "Service carousel",
+      "blocks": [
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" }
+      ]
+    }
+  ]
 }
 {% endschema %}

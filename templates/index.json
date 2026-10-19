@@ -331,32 +331,6 @@
     "1791636496e088abd9": {
       "type": "_blocks",
       "blocks": {
-        "text_d3HqUf": {
-          "type": "text",
-          "name": "Message from Director",
-          "settings": {
-            "text": "<h2>A Message from the Director</h2><p><strong>Building Trust. Creating Value. Growing Together.</strong></p><p>At Bluekites, our journey began with a simple belief: every great business is built on trust, quality, and the promises it keeps.</p><p>From our roots in Ahmedabad to our growing vision of serving customers across markets, we strive to deliver more than products and services—we aim to deliver confidence, care, and lasting relationships.</p><p>In healthcare, we understand that quality is not just a standard; it is a responsibility. This commitment inspires us to continually improve, embrace new opportunities, and place our customers at the heart of everything we do.</p><p>As we grow, our purpose remains unchanged: to make a meaningful difference through integrity, reliability, and excellence.</p><p>Thank you for being part of the Bluekites journey. Our story is still unfolding, and we look forward to building a healthier, stronger, and more connected future—together.</p><p>Warm regards,<br/>Director<br/>Bluekites Services</p>",
-            "width": "100%",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "rte",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "normal",
-            "letter_spacing": "normal",
-            "case": "none",
-            "wrap": "pretty",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 24,
-            "padding-block-end": 24,
-            "padding-inline-start": 24,
-            "padding-inline-end": 24
-          },
-          "blocks": {}
-        },
         "ai_gen_block_9350791_kU89mq": {
           "type": "ai_gen_block_9350791",
           "settings": {
@@ -416,7 +390,6 @@
         }
       },
       "block_order": [
-        "text_d3HqUf",
         "ai_gen_block_9350791_kU89mq"
       ],
       "settings": {
@@ -512,27 +485,7 @@
       "blocks": {
         "text_8QTwfG": {
           "type": "text",
-          "settings": {
-            "text": "<p>We make things that work better and last longer.</p>",
-            "width": "fit-content",
-            "max_width": "normal",
-            "alignment": "left",
-            "type_preset": "custom",
-            "font": "var(--font-body--family)",
-            "font_size": "1rem",
-            "line_height": "tight",
-            "letter_spacing": "tight",
-            "case": "none",
-            "wrap": "nowrap",
-            "color": "var(--color-foreground)",
-            "background": false,
-            "background_color": "#00000026",
-            "corner_radius": 0,
-            "padding-block-start": 0,
-            "padding-block-end": 0,
-            "padding-inline-start": 0,
-            "padding-inline-end": 0
-          },
+          "settings": {},
           "blocks": {}
         }
       },
@@ -852,10 +805,17 @@
             }
           },
           "block_order": []
+        },
+        "text_F4MXkp": {
+          "type": "text",
+          "name": "Message from Director",
+          "settings": {},
+          "blocks": {}
         }
       },
       "block_order": [
-        "contact_form_mjLX3q"
+        "contact_form_mjLX3q",
+        "text_F4MXkp"
       ],
       "name": "t:names.contact_form",
       "settings": {

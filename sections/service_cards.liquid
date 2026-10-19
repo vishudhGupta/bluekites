@@ -327,7 +327,7 @@
   place-items: center;
   overflow: hidden;
   aspect-ratio: 1 / 1;
-  padding: var(--services-image-pad, 8%);
+  padding: min(var(--services-image-pad, 8%), 24px);
   background: color-mix(in srgb, var(--services-card-bg) 88%, transparent);
   border-radius: 18px;
 }
@@ -350,6 +350,7 @@
 .bk-services__title {
   margin: 0;
   color: var(--services-heading);
+  font-family: var(--font-body-family, inherit);
   font-size: 20px;
   font-weight: 700;
   line-height: 1.3;
@@ -378,6 +379,7 @@
   color: #fff;
   background: #000;
   border-radius: 16px;
+  font-family: var(--font-body-family, inherit);
   font-size: 18px;
   font-weight: 700;
   text-decoration: none;
@@ -404,40 +406,18 @@
 }
 .bk-services__empty { margin: 0; font-size: 12px; }
 
-/* Fixed section height (tablet/desktop) */
+/* Section height (tablet/desktop): image height absorbs the remaining space */
 @media screen and (min-width: 750px) {
-  .bk-services {
-    display: flex;
-    height: var(--services-height, 60vh);
-    min-height: 420px;
-  }
-  .bk-services__inner {
-    display: flex;
-    min-height: 0;
-  }
-  .bk-services__panel {
-    display: flex;
-    flex: 1;
-    flex-direction: column;
-    min-height: 0;
-    width: 100%;
-  }
-  .bk-services__header { flex-shrink: 0; margin-bottom: 18px; padding-block: 14px; }
-  .bk-services__track {
-    flex: 1;
-    min-height: 0;
-    grid-template-rows: 100%;
-  }
-  .bk-services__card { height: 100%; min-height: 0; padding: 14px; }
+  .bk-services__header { margin-bottom: 18px; padding-block: 14px; }
+  .bk-services__card { padding: 14px; }
   .bk-services__media {
-    flex: 1;
-    min-height: 0;
     aspect-ratio: auto;
+    height: clamp(160px, calc(var(--services-height, 60vh) - 380px), 420px);
   }
-  .bk-services__content { flex: 0 0 auto; padding-top: 12px; }
+  .bk-services__content { padding-top: 12px; }
   .bk-services__content > :nth-last-child(2) { margin-bottom: 14px; }
   .bk-services__btn { min-height: 48px; }
-  .bk-services__progress { flex-shrink: 0; margin-top: 12px; }
+  .bk-services__progress { margin-top: 12px; }
 }
 
 @media screen and (max-width: 1099px) {

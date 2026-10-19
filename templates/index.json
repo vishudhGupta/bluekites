@@ -331,6 +331,36 @@
     "1791636496e088abd9": {
       "type": "_blocks",
       "blocks": {
+        "text_cQ9aPV": {
+          "type": "text",
+          "name": "Director's message",
+          "settings": {
+            "eyebrow": "Message from the Director",
+            "quote": "We built this company on a simple promise: do the work properly, and stand behind it.",
+            "body": "<p>Since our first project, our focus has been on reliability, transparency and long-term relationships with the people we serve.</p><p>As we grow, those principles stay the same. Thank you for your continued trust.</p>",
+            "image_position": "left",
+            "name": "Director name",
+            "designation": "Managing Director",
+            "organisation": "",
+            "button_label": "",
+            "button_link": "",
+            "enable_read_more": true,
+            "collapsed_lines": 8,
+            "read_more_label": "Read full message",
+            "read_less_label": "Show less",
+            "image_radius": 8,
+            "side_margin": 40,
+            "padding_top": 80,
+            "padding_bottom": 80,
+            "color_scheme": "",
+            "section_background": "#F8F7F4",
+            "heading_color": "#1C2740",
+            "text_color": "#5C6478",
+            "accent_color": "#1C2740",
+            "border_color": "#E5E8EE"
+          },
+          "blocks": {}
+        },
         "ai_gen_block_9350791_kU89mq": {
           "type": "ai_gen_block_9350791",
           "settings": {
@@ -390,6 +420,7 @@
         }
       },
       "block_order": [
+        "text_cQ9aPV",
         "ai_gen_block_9350791_kU89mq"
       ],
       "settings": {
@@ -805,17 +836,10 @@
             }
           },
           "block_order": []
-        },
-        "text_F4MXkp": {
-          "type": "text",
-          "name": "Message from Director",
-          "settings": {},
-          "blocks": {}
         }
       },
       "block_order": [
-        "contact_form_mjLX3q",
-        "text_F4MXkp"
+        "contact_form_mjLX3q"
       ],
       "name": "t:names.contact_form",
       "settings": {

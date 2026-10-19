@@ -1,403 +1,428 @@
+{%- liquid
+  assign s = section.settings
+  assign collapse = false
+  if s.enable_read_more and s.body != blank
+    assign collapse = true
+  endif
+-%}
 
+<section
+  id="DirectorMessage-{{ section.id }}"
+  class="bk-director color-{{ s.color_scheme }}{% if s.image_position == 'right' %} bk-director--image-right{% endif %}"
+  style="
+    --dm-bg: {{ s.section_background }};
+    --dm-heading: {{ s.heading_color }};
+    --dm-text: {{ s.text_color }};
+    --dm-accent: {{ s.accent_color }};
+    --dm-border: {{ s.border_color }};
+    --dm-top: {{ s.padding_top }}px;
+    --dm-bottom: {{ s.padding_bottom }}px;
+    --dm-edge: {{ s.side_margin }}px;
+    --dm-radius: {{ s.image_radius }}px;
+    --dm-lines: {{ s.collapsed_lines }};
+  "
+>
+  <div class="bk-director__inner">
 
-{% render 'text', block: block %}
+    <figure class="bk-director__media">
+      <div class="bk-director__portrait">
+        {%- if s.image != blank -%}
+          {{
+            s.image
+            | image_url: width: 1200
+            | image_tag:
+              widths: '400, 600, 800, 1000, 1200',
+              sizes: '(max-width: 749px) 100vw, 40vw',
+              loading: 'lazy',
+              class: 'bk-director__image',
+              alt: s.image.alt | default: s.name
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'bk-director__image bk-director__placeholder' }}
+        {%- endif -%}
+      </div>
+      {%- if s.name != blank or s.designation != blank -%}
+        <figcaption class="bk-director__caption">
+          {%- if s.name != blank -%}<span class="bk-director__caption-name">{{ s.name | escape }}</span>{%- endif -%}
+          {%- if s.designation != blank -%}<span class="bk-director__caption-role">{{ s.designation | escape }}</span>{%- endif -%}
+        </figcaption>
+      {%- endif -%}
+    </figure>
+
+    <div class="bk-director__content">
+      {%- if s.eyebrow != blank -%}
+        <p class="bk-director__eyebrow">{{ s.eyebrow | escape }}</p>
+      {%- endif -%}
+
+      {%- if s.quote != blank -%}
+        <blockquote class="bk-director__quote">
+          <p>{{ s.quote | escape | newline_to_br }}</p>
+        </blockquote>
+      {%- endif -%}
+
+      {%- if s.body != blank -%}
+        <div
+          id="DirectorBody-{{ section.id }}"
+          class="bk-director__body{% if collapse %} is-collapsible is-collapsed{% endif %}"
+          data-dm-body
+        >
+          {{ s.body }}
+        </div>
+        {%- if collapse -%}
+          <button
+            type="button"
+            class="bk-director__toggle"
+            data-dm-toggle
+            aria-expanded="false"
+            aria-controls="DirectorBody-{{ section.id }}"
+            hidden
+          >
+            <span data-dm-label>{{ s.read_more_label | default: 'Read full message' | escape }}</span>
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        {%- endif -%}
+      {%- endif -%}
+
+      {%- if s.name != blank or s.signature != blank -%}
+        <footer class="bk-director__signoff">
+          {%- if s.signature != blank -%}
+            {{
+              s.signature
+              | image_url: width: 400
+              | image_tag: loading: 'lazy', class: 'bk-director__signature', alt: ''
+            }}
+          {%- endif -%}
+          <div class="bk-director__meta">
+            {%- if s.name != blank -%}<p class="bk-director__name">{{ s.name | escape }}</p>{%- endif -%}
+            {%- if s.designation != blank or s.organisation != blank -%}
+              <p class="bk-director__role">
+                {{- s.designation | escape -}}
+                {%- if s.designation != blank and s.organisation != blank %}, {% endif -%}
+                {{- s.organisation | escape -}}
+              </p>
+            {%- endif -%}
+          </div>
+          {%- if s.button_label != blank and s.button_link != blank -%}
+            <a href="{{ s.button_link }}" class="bk-director__cta">
+              {{ s.button_label | escape }}
+              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </a>
+          {%- endif -%}
+        </footer>
+      {%- endif -%}
+    </div>
+
+  </div>
+</section>
+
+{% stylesheet %}
+.bk-director {
+  background: var(--dm-bg);
+  color: var(--dm-text);
+  padding-block: var(--dm-top) var(--dm-bottom);
+}
+.bk-director *,
+.bk-director *::before,
+.bk-director *::after { box-sizing: border-box; }
+
+.bk-director__inner {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 96px);
+  align-items: start;
+  width: min(calc(100% - 2 * clamp(16px, 4vw, var(--dm-edge))), 1240px);
+  margin-inline: auto;
+}
+.bk-director--image-right .bk-director__media { order: 2; }
+
+/* Portrait */
+.bk-director__media {
+  position: sticky;
+  top: 96px;
+  margin: 0;
+}
+.bk-director__portrait {
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--dm-radius);
+  background: color-mix(in srgb, var(--dm-border) 50%, var(--dm-bg));
+}
+.bk-director__image {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.bk-director__placeholder { color: #9ba5b5; }
+.bk-director__caption {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--dm-border);
+  font-family: var(--font-body--family, inherit);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.bk-director__caption-name { font-weight: 600; color: var(--dm-heading); }
+.bk-director__caption-role { color: var(--dm-text); text-align: right; }
+
+/* Content */
+.bk-director__content {
+  min-width: 0;
+  max-width: 680px;
+  padding-top: clamp(0px, 2vw, 24px);
+}
+.bk-director__eyebrow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 0 0 24px;
+  font-family: var(--font-body--family, inherit);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--dm-accent);
+}
+.bk-director__eyebrow::before {
+  content: "";
+  width: 28px;
+  height: 1px;
+  background: currentColor;
+}
+.bk-director__quote {
+  margin: 0 0 32px;
+  padding: 0;
+  border: 0;
+}
+.bk-director__quote p {
+  margin: 0;
+  font-family: var(--font-heading--family, inherit);
+  font-weight: var(--font-heading--weight, 500);
+  font-size: clamp(26px, 2.6vw, 38px);
+  line-height: 1.22;
+  letter-spacing: -.015em;
+  color: var(--dm-heading);
+  text-wrap: balance;
+}
+
+.bk-director__body {
+  font-family: var(--font-body--family, inherit);
+  font-size: 16px;
+  line-height: 1.75;
+  color: var(--dm-text);
+}
+.bk-director__body > * { margin: 0 0 1.1em; }
+.bk-director__body > *:last-child { margin-bottom: 0; }
+.bk-director__body strong { color: var(--dm-heading); font-weight: 600; }
+.bk-director__body a { color: var(--dm-heading); text-underline-offset: 3px; }
+
+.bk-director__body.is-collapsed {
+  position: relative;
+  max-height: calc(var(--dm-lines, 6) * 1.75em);
+  overflow: hidden;
+}
+.bk-director__body.is-collapsed.has-overflow::after {
+  content: "";
+  position: absolute;
+  inset: auto 0 0;
+  height: 3.5em;
+  background: linear-gradient(to bottom, transparent, var(--dm-bg));
+  pointer-events: none;
+}
+
+.bk-director__toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 16px;
+  padding: 0;
+  font: 600 14px/1.4 var(--font-body--family, inherit);
+  color: var(--dm-heading);
+  background: none;
+  border: 0;
+  border-bottom: 1px solid currentColor;
+  cursor: pointer;
+}
+.bk-director__toggle svg { width: 16px; height: 16px; transition: transform .25s ease; }
+.bk-director__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
+.bk-director__toggle:focus-visible,
+.bk-director__cta:focus-visible {
+  outline: 2px solid var(--dm-heading);
+  outline-offset: 4px;
+}
+
+/* Sign-off */
+.bk-director__signoff {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px 32px;
+  margin-top: 40px;
+  padding-top: 28px;
+  border-top: 1px solid var(--dm-border);
+}
+.bk-director__signature {
+  display: block;
+  width: auto;
+  max-width: 160px;
+  height: 56px;
+  object-fit: contain;
+  object-position: left bottom;
+}
+.bk-director__meta { min-width: 0; }
+.bk-director__name {
+  margin: 0;
+  font-family: var(--font-body--family, inherit);
+  font-size: 17px;
+  font-weight: 600;
+  color: var(--dm-heading);
+}
+.bk-director__role {
+  margin: 4px 0 0;
+  font-size: 14px;
+  color: var(--dm-text);
+}
+.bk-director__cta {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+  padding: 12px 20px;
+  font: 600 14px/1 var(--font-body--family, inherit);
+  color: var(--dm-bg);
+  background: var(--dm-heading);
+  border-radius: 999px;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+.bk-director__cta:hover { opacity: .88; }
+.bk-director__cta svg { width: 16px; height: 16px; }
+
+/* Responsive */
+@media screen and (max-width: 989px) {
+  .bk-director__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; }
+}
+@media screen and (max-width: 749px) {
+  .bk-director__inner {
+    grid-template-columns: 1fr;
+    gap: 28px;
+    width: calc(100% - 32px);
+  }
+  .bk-director--image-right .bk-director__media { order: 0; }
+  .bk-director__media { position: static; }
+  .bk-director__portrait { aspect-ratio: 4 / 3; }
+  .bk-director__caption { display: none; }
+  .bk-director__content { padding-top: 0; }
+  .bk-director__eyebrow { margin-bottom: 16px; }
+  .bk-director__quote { margin-bottom: 24px; }
+  .bk-director__quote p { font-size: clamp(22px, 6.4vw, 28px); }
+  .bk-director__body { font-size: 15px; }
+  .bk-director__signoff { margin-top: 32px; padding-top: 22px; }
+  .bk-director__cta { margin-left: 0; width: 100%; justify-content: center; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-director * { transition-duration: .01ms !important; }
+}
+{% endstylesheet %}
+
+<script>
+(() => {
+  const root = document.getElementById('DirectorMessage-{{ section.id }}');
+  if (!root) return;
+  const body = root.querySelector('[data-dm-body]');
+  const toggle = root.querySelector('[data-dm-toggle]');
+  if (!body || !toggle) return;
+
+  const label = toggle.querySelector('[data-dm-label]');
+  const moreText = label.textContent.trim();
+  const lessText = {{ section.settings.read_less_label | default: 'Show less' | json }};
+
+  const check = () => {
+    if (!body.classList.contains('is-collapsed')) return;
+    const overflowing = body.scrollHeight > body.clientHeight + 4;
+    body.classList.toggle('has-overflow', overflowing);
+    toggle.hidden = !overflowing;
+  };
+
+  toggle.addEventListener('click', () => {
+    const expanded = toggle.getAttribute('aria-expanded') === 'true';
+    body.classList.toggle('is-collapsed', expanded);
+    toggle.setAttribute('aria-expanded', String(!expanded));
+    label.textContent = expanded ? moreText : lessText;
+    if (expanded) {
+      check();
+      const top = root.getBoundingClientRect().top;
+      if (top < 0) root.scrollIntoView({ block: 'start' });
+    }
+  });
+
+  if ('ResizeObserver' in window) new ResizeObserver(check).observe(body);
+  check();
+})();
+</script>
 
 {% schema %}
 {
-  "name": "t:names.text",
-  "tag": null,
+  "name": "Director's message",
+  "tag": "section",
+  "class": "section-wrapper",
   "settings": [
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Message from the Director" },
+    {
+      "type": "textarea",
+      "id": "quote",
+      "label": "Lead statement",
+      "info": "One or two sentences. Shown large.",
+      "default": "We built this company on a simple promise: do the work properly, and stand behind it."
+    },
     {
       "type": "richtext",
-      "id": "text",
-      "label": "t:settings.text"
+      "id": "body",
+      "label": "Message",
+      "default": "<p>Since our first project, our focus has been on reliability, transparency and long-term relationships with the people we serve.</p><p>As we grow, those principles stay the same. Thank you for your continued trust.</p>"
     },
-    {
-      "type": "header",
-      "content": "t:content.layout"
-    },
+    { "type": "image_picker", "id": "image", "label": "Portrait" },
     {
       "type": "select",
-      "id": "width",
-      "label": "t:settings.width",
+      "id": "image_position",
+      "label": "Portrait position",
       "options": [
-        {
-          "value": "fit-content",
-          "label": "t:options.fit"
-        },
-        {
-          "value": "100%",
-          "label": "t:options.fill"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
       ],
-      "default": "fit-content"
+      "default": "left"
     },
-    {
-      "type": "select",
-      "id": "max_width",
-      "label": "t:settings.max_width",
-      "options": [
-        {
-          "value": "narrow",
-          "label": "t:options.narrow"
-        },
-        {
-          "value": "normal",
-          "label": "t:options.normal"
-        },
-        {
-          "value": "none",
-          "label": "t:options.none"
-        }
-      ],
-      "default": "normal"
-    },
-    {
-      "type": "text_alignment",
-      "id": "alignment",
-      "label": "t:settings.alignment",
-      "default": "left",
-      "visible_if": "{{ block.settings.width == '100%' }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.typography"
-    },
-    {
-      "type": "select",
-      "id": "type_preset",
-      "label": "t:settings.preset",
-      "options": [
-        {
-          "value": "rte",
-          "label": "t:options.default"
-        },
-        {
-          "value": "paragraph",
-          "label": "t:options.paragraph"
-        },
-        {
-          "value": "h1",
-          "label": "t:options.h1"
-        },
-        {
-          "value": "h2",
-          "label": "t:options.h2"
-        },
-        {
-          "value": "h3",
-          "label": "t:options.h3"
-        },
-        {
-          "value": "h4",
-          "label": "t:options.h4"
-        },
-        {
-          "value": "h5",
-          "label": "t:options.h5"
-        },
-        {
-          "value": "h6",
-          "label": "t:options.h6"
-        },
-        {
-          "value": "custom",
-          "label": "t:options.custom"
-        }
-      ],
-      "default": "rte",
-      "info": "t:info.edit_presets_in_theme_settings"
-    },
-    {
-      "type": "select",
-      "id": "font",
-      "label": "t:settings.font",
-      "options": [
-        {
-          "value": "var(--font-body--family)",
-          "label": "t:options.body"
-        },
-        {
-          "value": "var(--font-subheading--family)",
-          "label": "t:options.subheading"
-        },
-        {
-          "value": "var(--font-heading--family)",
-          "label": "t:options.heading"
-        },
-        {
-          "value": "var(--font-accent--family)",
-          "label": "t:options.accent"
-        }
-      ],
-      "default": "var(--font-body--family)",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "font_size",
-      "label": "t:settings.size",
-      "options": [
-        {
-          "value": "",
-          "label": "t:options.default"
-        },
-        {
-          "value": "0.625rem",
-          "label": "10px"
-        },
-        {
-          "value": "0.75rem",
-          "label": "12px"
-        },
-        {
-          "value": "0.875rem",
-          "label": "14px"
-        },
-        {
-          "value": "1rem",
-          "label": "16px"
-        },
-        {
-          "value": "1.125rem",
-          "label": "18px"
-        },
-        {
-          "value": "1.25rem",
-          "label": "20px"
-        },
-        {
-          "value": "1.5rem",
-          "label": "24px"
-        },
-        {
-          "value": "2rem",
-          "label": "32px"
-        },
-        {
-          "value": "2.5rem",
-          "label": "40px"
-        },
-        {
-          "value": "3rem",
-          "label": "48px"
-        },
-        {
-          "value": "3.5rem",
-          "label": "56px"
-        },
-        {
-          "value": "4.5rem",
-          "label": "72px"
-        },
-        {
-          "value": "5.5rem",
-          "label": "88px"
-        },
-        {
-          "value": "7.5rem",
-          "label": "120px"
-        },
-        {
-          "value": "9.5rem",
-          "label": "152px"
-        },
-        {
-          "value": "11.5rem",
-          "label": "184px"
-        }
-      ],
-      "default": "1rem",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "line_height",
-      "label": "t:settings.line_height",
-      "options": [
-        {
-          "value": "tight",
-          "label": "t:options.tight"
-        },
-        {
-          "value": "normal",
-          "label": "t:options.normal"
-        },
-        {
-          "value": "loose",
-          "label": "t:options.loose"
-        }
-      ],
-      "default": "normal",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "letter_spacing",
-      "label": "t:settings.letter_spacing",
-      "options": [
-        {
-          "value": "tight",
-          "label": "t:options.tight"
-        },
-        {
-          "value": "normal",
-          "label": "t:options.normal"
-        },
-        {
-          "value": "loose",
-          "label": "t:options.loose"
-        }
-      ],
-      "default": "normal",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "case",
-      "label": "t:settings.case",
-      "options": [
-        {
-          "value": "none",
-          "label": "t:options.default"
-        },
-        {
-          "value": "uppercase",
-          "label": "t:options.uppercase"
-        }
-      ],
-      "default": "none",
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "wrap",
-      "label": "t:settings.wrap",
-      "options": [
-        {
-          "value": "pretty",
-          "label": "t:options.pretty"
-        },
-        {
-          "value": "balance",
-          "label": "t:options.balance"
-        },
-        {
-          "value": "nowrap",
-          "label": "t:options.none"
-        }
-      ],
-      "visible_if": "{{ block.settings.type_preset == 'custom' }}"
-    },
-    {
-      "type": "select",
-      "id": "color",
-      "label": "t:settings.color",
-      "options": [
-        {
-          "value": "var(--color-foreground)",
-          "label": "t:options.text"
-        },
-        {
-          "value": "var(--color-foreground-heading)",
-          "label": "t:options.heading"
-        },
-        {
-          "value": "var(--color-primary)",
-          "label": "t:options.link"
-        }
-      ],
-      "default": "var(--color-foreground)",
-      "visible_if": "{{ block.settings.type_preset != 'rte' }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.appearance"
-    },
-    {
-      "type": "checkbox",
-      "id": "background",
-      "label": "t:settings.background",
-      "default": false
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "t:settings.background_color",
-      "alpha": true,
-      "default": "#00000026",
-      "visible_if": "{{ block.settings.background }}"
-    },
-    {
-      "type": "range",
-      "id": "corner_radius",
-      "label": "t:settings.corner_radius",
-      "default": 0,
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "visible_if": "{{ block.settings.background }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-start",
-      "label": "t:settings.left",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-end",
-      "label": "t:settings.right",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    }
+    { "type": "header", "content": "Sign-off" },
+    { "type": "text", "id": "name", "label": "Name", "default": "Director name" },
+    { "type": "text", "id": "designation", "label": "Designation", "default": "Managing Director" },
+    { "type": "text", "id": "organisation", "label": "Organisation" },
+    { "type": "image_picker", "id": "signature", "label": "Signature image", "info": "Transparent PNG works best." },
+    { "type": "text", "id": "button_label", "label": "Button label" },
+    { "type": "url", "id": "button_link", "label": "Button link" },
+    { "type": "header", "content": "Long messages" },
+    { "type": "checkbox", "id": "enable_read_more", "label": "Collapse long messages", "default": true },
+    { "type": "range", "id": "collapsed_lines", "label": "Lines shown before collapse", "min": 4, "max": 16, "step": 1, "default": 8 },
+    { "type": "text", "id": "read_more_label", "label": "Expand label", "default": "Read full message" },
+    { "type": "text", "id": "read_less_label", "label": "Collapse label", "default": "Show less" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "image_radius", "label": "Portrait corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
+    { "type": "range", "id": "side_margin", "label": "Side margin", "min": 16, "max": 120, "step": 4, "unit": "px", "default": 40 },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
+    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Colors" },
+    { "type": "color", "id": "section_background", "label": "Background", "default": "#F8F7F4" },
+    { "type": "color", "id": "heading_color", "label": "Heading color", "default": "#1C2740" },
+    { "type": "color", "id": "text_color", "label": "Text color", "default": "#5C6478" },
+    { "type": "color", "id": "accent_color", "label": "Eyebrow color", "default": "#1C2740" },
+    { "type": "color", "id": "border_color", "label": "Divider color", "default": "#E5E8EE" }
   ],
   "presets": [
-    {
-      "name": "t:names.text",
-      "category": "t:categories.basic",
-      "settings": {
-        "text": "t:html_defaults.make_things_better_extended"
-      }
-    },
-    {
-      "name": "t:names.heading",
-      "category": "t:categories.basic",
-      "settings": {
-        "text": "t:html_defaults.new_arrivals_h2"
-      }
-    }
+    { "name": "Director's message" }
   ]
 }
 {% endschema %}

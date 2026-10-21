@@ -1,184 +1,440 @@
-
-
-{% liquid
+{%- liquid
   assign product = closest.product
+  assign s = block.settings
+  assign variant = product.selected_or_first_available_variant
+
+  assign on_sale = false
+  if product.compare_at_price > product.price
+    assign on_sale = true
+    assign discount = product.compare_at_price | minus: product.price | times: 100 | divided_by: product.compare_at_price
+  endif
+
+  assign rating = product.metafields.reviews.rating.value
+  assign rating_count = product.metafields.reviews.rating_count.value
 -%}
 
-{% capture children %}
-  {% content_for 'blocks', closest.product: product %}
-{% endcapture %}
+<article
+  class="bkc{% unless s.inherit_color_scheme %} color-{{ s.color_scheme }}{% endunless %}"
+  style="--bkc-radius: {{ s.border_radius }}px; --bkc-accent: {{ s.accent_color }};"
+  {{ block.shopify_attributes }}
+>
+  <div class="bkc__media" data-bkc-zoom>
+    {%- if on_sale -%}
+      <span class="bkc__badge">-{{ discount }}%</span>
+    {%- elsif product.available == false -%}
+      <span class="bkc__badge bkc__badge--muted">Sold out</span>
+    {%- elsif s.badge_text != blank -%}
+      <span class="bkc__badge">{{ s.badge_text | escape }}</span>
+    {%- endif -%}
 
-{% render 'product-card', children: children, product: product %}
-{% render 'buy-buttons-styles' %}
-{% render 'gift-card-recipient-form-styles' %}
-{% render 'quick-add-styles' %}
-{% render 'quick-add-modal-styles' %}
-{% render 'product-badges-styles' %}
+    {%- if s.show_wishlist -%}
+      <button type="button" class="bkc__wish" aria-label="Add to wishlist" aria-pressed="false" data-bkc-wish="{{ product.id }}">
+        <svg viewBox="0 0 24 24" stroke-width="2"><path d="M12 20s-7-4.4-7-10a4 4 0 0 1 7-2.6A4 4 0 0 1 19 10c0 5.6-7 10-7 10z"/></svg>
+      </button>
+    {%- endif -%}
+
+    <a href="{{ product.url }}" class="bkc__media-link" tabindex="-1" aria-hidden="true">
+      {%- if product.featured_media -%}
+        {{
+          product.featured_media
+          | image_url: width: 1000
+          | image_tag:
+            widths: '300, 400, 600, 800, 1000',
+            sizes: '(max-width: 749px) 50vw, 25vw',
+            loading: 'lazy',
+            class: 'bkc__img',
+            alt: product.featured_media.alt | default: product.title,
+            data-zoom-src: product.featured_media | image_url: width: 1800
+        }}
+      {%- else -%}
+        {{ 'product-1' | placeholder_svg_tag: 'bkc__img bkc__img--placeholder' }}
+      {%- endif -%}
+    </a>
+  </div>
+
+  <div class="bkc__body">
+    {%- if s.show_vendor and product.vendor != blank -%}
+      <span class="bkc__brand">{{ product.vendor | escape }}</span>
+    {%- endif -%}
+
+    <h3 class="bkc__title">
+      <a href="{{ product.url }}">{{ product.title | escape }}</a>
+    </h3>
+
+    {%- if s.show_rating and rating != blank -%}
+      <div class="bkc__rating">
+        <span class="bkc__rating-pill">
+          {{ rating.rating | round: 1 }}
+          <svg viewBox="0 0 24 24" aria-hidden="true"><path d="m12 2 3 7 7 .6-5.3 4.7L18.2 22 12 18l-6.2 4 1.5-7.7L2 9.6 9 9z"/></svg>
+        </span>
+        {%- if rating_count != blank -%}<span>({{ rating_count }})</span>{%- endif -%}
+      </div>
+    {%- endif -%}
+
+    <div class="bkc__price">
+      <span class="bkc__price-now">
+        {%- if product.price_varies -%}From {% endif -%}{{ product.price | money }}
+      </span>
+      {%- if on_sale -%}
+        <span class="bkc__price-mrp">{{ product.compare_at_price | money }}</span>
+        <span class="bkc__price-off">{{ discount }}% off</span>
+      {%- endif -%}
+    </div>
+
+    {%- if product.available -%}
+      {%- if product.has_only_default_variant -%}
+        <form action="{{ routes.cart_add_url }}" method="post" class="bkc__form" data-bkc-add>
+          <input type="hidden" name="id" value="{{ variant.id }}">
+          <input type="hidden" name="quantity" value="1">
+          <button type="submit" class="bkc__btn">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="9" cy="20" r="1.5"/><circle cx="18" cy="20" r="1.5"/><path d="M3 4h2l2.4 11h11L21 8H6.2"/></svg>
+            <span data-bkc-label>Add to cart</span>
+          </button>
+        </form>
+      {%- else -%}
+        <a href="{{ product.url }}" class="bkc__btn">Choose options</a>
+      {%- endif -%}
+    {%- else -%}
+      <button type="button" class="bkc__btn" disabled>Sold out</button>
+    {%- endif -%}
+  </div>
+</article>
+
+{% stylesheet %}
+.bkc {
+  --bkc-text: var(--color-foreground, #141821);
+  --bkc-muted: rgb(var(--color-foreground-rgb, 20 24 33) / .6);
+  --bkc-line: rgb(var(--color-foreground-rgb, 20 24 33) / .1);
+  --bkc-green: #15803d;
+
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: var(--color-background, #fff);
+  color: var(--bkc-text);
+  border: 1px solid var(--bkc-line);
+  border-radius: var(--bkc-radius);
+  transition: transform .3s ease, box-shadow .3s ease, border-color .3s ease;
+}
+.bkc:hover {
+  z-index: 10;
+  transform: translateY(-4px);
+  border-color: transparent;
+  box-shadow: 0 18px 40px -18px rgba(20, 24, 33, .28);
+}
+
+/* Media + zoom */
+.bkc__media {
+  position: relative;
+  aspect-ratio: 1 / 1;
+  background: #fff;
+  border-radius: var(--bkc-radius) var(--bkc-radius) 0 0;
+  overflow: hidden;
+  cursor: crosshair;
+}
+.bkc__media-link { display: block; width: 100%; height: 100%; }
+.bkc__img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.bkc__img--placeholder { padding: 15%; opacity: .5; }
+
+.bkc__lens {
+  position: absolute;
+  top: 0;
+  left: 0;
+  z-index: 1;
+  width: 40%;
+  height: 40%;
+  border: 1px solid color-mix(in srgb, var(--bkc-accent) 45%, transparent);
+  background: color-mix(in srgb, var(--bkc-accent) 8%, transparent);
+  border-radius: 6px;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .2s ease;
+}
+.bkc__pane {
+  position: absolute;
+  top: 0;
+  left: calc(100% + 14px);
+  z-index: 20;
+  width: 140%;
+  aspect-ratio: 1 / 1;
+  background: #fff no-repeat;
+  border: 1px solid var(--bkc-line);
+  border-radius: var(--bkc-radius);
+  box-shadow: 0 24px 60px -20px rgba(20, 24, 33, .35);
+  pointer-events: none;
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(.97);
+  transition: opacity .2s ease, transform .2s ease, visibility .2s;
+}
+.bkc__pane.is-left { left: auto; right: calc(100% + 14px); }
+.bkc.is-zooming .bkc__lens { opacity: 1; }
+.bkc.is-zooming .bkc__pane { opacity: 1; visibility: visible; transform: scale(1); }
+
+.bkc__badge {
+  position: absolute;
+  top: 12px;
+  left: 12px;
+  z-index: 2;
+  padding: 4px 9px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .02em;
+  color: #fff;
+  background: var(--bkc-accent);
+  border-radius: 999px;
+}
+.bkc__badge--muted { background: #6b7280; }
+
+.bkc__wish {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  z-index: 2;
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .92);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, .08);
+  cursor: pointer;
+  transition: transform .2s ease;
+}
+.bkc__wish:hover { transform: scale(1.08); }
+.bkc__wish svg { width: 17px; height: 17px; stroke: #141821; fill: none; transition: .2s; }
+.bkc__wish[aria-pressed="true"] svg { stroke: #e11d48; fill: #e11d48; }
+
+/* Body */
+.bkc__body {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex: 1;
+  padding: 14px 16px 16px;
+  border-top: 1px solid var(--bkc-line);
+}
+.bkc__brand {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: var(--bkc-muted);
+}
+.bkc__title {
+  margin: 0;
+  font-family: var(--font-body--family, inherit);
+  font-size: 15px;
+  font-weight: 500;
+  line-height: 1.4;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bkc__title a { color: inherit; text-decoration: none; }
+.bkc__title a:hover { color: var(--bkc-accent); }
+
+.bkc__rating { display: flex; align-items: center; gap: 6px; font-size: 12px; color: var(--bkc-muted); }
+.bkc__rating-pill {
+  display: inline-flex;
+  align-items: center;
+  gap: 3px;
+  padding: 2px 7px;
+  font-weight: 600;
+  color: #fff;
+  background: var(--bkc-green);
+  border-radius: 6px;
+}
+.bkc__rating-pill svg { width: 10px; height: 10px; fill: #fff; }
+
+.bkc__price { display: flex; align-items: baseline; flex-wrap: wrap; gap: 8px; margin-top: auto; }
+.bkc__price-now { font-size: 19px; font-weight: 700; }
+.bkc__price-mrp { font-size: 13px; color: var(--bkc-muted); text-decoration: line-through; }
+.bkc__price-off { font-size: 13px; font-weight: 600; color: var(--bkc-green); }
+
+.bkc__form { margin: 0; }
+.bkc__btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  width: 100%;
+  margin-top: 6px;
+  padding: 11px 14px;
+  font: 600 14px/1 var(--font-body--family, inherit);
+  color: var(--bkc-accent);
+  background: color-mix(in srgb, var(--bkc-accent) 9%, #fff);
+  border: 0;
+  border-radius: 10px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background .25s ease, color .25s ease;
+}
+.bkc__btn svg { width: 16px; height: 16px; }
+.bkc:hover .bkc__btn:not(:disabled),
+.bkc__btn:focus-visible { background: var(--bkc-accent); color: #fff; }
+.bkc__btn.is-added { background: var(--bkc-green); color: #fff; }
+.bkc__btn:disabled { color: var(--bkc-muted); background: var(--bkc-line); cursor: not-allowed; }
+.bkc__btn:focus-visible,
+.bkc__wish:focus-visible { outline: 2px solid var(--bkc-accent); outline-offset: 2px; }
+
+@media (max-width: 749px) {
+  .bkc__body { padding: 12px; }
+  .bkc__title { font-size: 13px; }
+  .bkc__price-now { font-size: 16px; }
+  .bkc__lens, .bkc__pane { display: none; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bkc, .bkc * { transition: none !important; }
+}
+{% endstylesheet %}
+
+{% javascript %}
+(() => {
+  if (window.__bkcInit) return;
+  window.__bkcInit = true;
+
+  const canZoom = window.matchMedia('(hover: hover) and (min-width: 750px)');
+
+  const setup = (media) => {
+    if (media.__bkc) return media.__bkc;
+    const card = media.closest('.bkc');
+    const img = media.querySelector('.bkc__img');
+    const lens = document.createElement('div');
+    lens.className = 'bkc__lens';
+    media.appendChild(lens);
+    const pane = document.createElement('div');
+    pane.className = 'bkc__pane';
+    card.appendChild(pane);
+    if (img && img.tagName === 'IMG') {
+      pane.style.backgroundImage = `url("${img.dataset.zoomSrc || img.currentSrc || img.src}")`;
+    }
+    return (media.__bkc = { card, lens, pane });
+  };
+
+  // Zoom (event delegation, works for cards loaded later)
+  document.addEventListener('mouseover', (e) => {
+    const media = e.target.closest('[data-bkc-zoom]');
+    if (!media || !canZoom.matches || media.contains(e.relatedTarget)) return;
+    if (!media.querySelector('img.bkc__img')) return;
+    const { card, pane } = setup(media);
+    const r = card.getBoundingClientRect();
+    pane.classList.toggle('is-left', r.right + r.width * 1.4 + 20 > window.innerWidth);
+    card.classList.add('is-zooming');
+  });
+
+  document.addEventListener('mouseout', (e) => {
+    const media = e.target.closest('[data-bkc-zoom]');
+    if (!media || media.contains(e.relatedTarget)) return;
+    media.closest('.bkc').classList.remove('is-zooming');
+  });
+
+  document.addEventListener('mousemove', (e) => {
+    const media = e.target.closest('[data-bkc-zoom]');
+    if (!media || !media.__bkc || !canZoom.matches) return;
+    const { lens, pane } = media.__bkc;
+    const r = media.getBoundingClientRect();
+    const lw = lens.offsetWidth, lh = lens.offsetHeight;
+    let x = Math.max(0, Math.min(e.clientX - r.left - lw / 2, r.width - lw));
+    let y = Math.max(0, Math.min(e.clientY - r.top - lh / 2, r.height - lh));
+    lens.style.transform = `translate(${x}px, ${y}px)`;
+    const zoom = r.width / lw;
+    pane.style.backgroundSize = `${zoom * 100}% ${zoom * 100}%`;
+    pane.style.backgroundPosition = `${(x / (r.width - lw)) * 100 || 0}% ${(y / (r.height - lh)) * 100 || 0}%`;
+  });
+
+  // Wishlist (saved in this browser)
+  const KEY = 'bkc-wishlist';
+  const read = () => { try { return JSON.parse(localStorage.getItem(KEY)) || []; } catch { return []; } };
+  const write = (list) => { try { localStorage.setItem(KEY, JSON.stringify(list)); } catch {} };
+  const syncWish = () => {
+    const list = read();
+    document.querySelectorAll('[data-bkc-wish]').forEach((b) =>
+      b.setAttribute('aria-pressed', String(list.includes(b.dataset.bkcWish)))
+    );
+  };
+  document.addEventListener('click', (e) => {
+    const btn = e.target.closest('[data-bkc-wish]');
+    if (!btn) return;
+    e.preventDefault();
+    let list = read();
+    const id = btn.dataset.bkcWish;
+    list = list.includes(id) ? list.filter((x) => x !== id) : [...list, id];
+    write(list);
+    syncWish();
+  });
+  document.addEventListener('DOMContentLoaded', syncWish);
+  syncWish();
+
+  // Add to cart without leaving the page
+  document.addEventListener('submit', async (e) => {
+    const form = e.target.closest('[data-bkc-add]');
+    if (!form) return;
+    e.preventDefault();
+    const btn = form.querySelector('.bkc__btn');
+    const label = form.querySelector('[data-bkc-label]');
+    const original = label.textContent;
+    btn.disabled = true;
+    try {
+      const res = await fetch(form.action.replace(/\/?$/, '.js'), {
+        method: 'POST',
+        headers: { Accept: 'application/json' },
+        body: new FormData(form),
+      });
+      if (!res.ok) throw new Error();
+      btn.classList.add('is-added');
+      label.textContent = 'Added';
+      document.dispatchEvent(new CustomEvent('cart:refresh', { bubbles: true }));
+    } catch {
+      label.textContent = 'Try again';
+    }
+    setTimeout(() => {
+      btn.disabled = false;
+      btn.classList.remove('is-added');
+      label.textContent = original;
+    }, 1600);
+  });
+})();
+{% endjavascript %}
 
 {% schema %}
 {
   "name": "t:names.product_card",
   "blocks": [
-    {
-      "type": "_product-card-group"
-    },
-    {
-      "type": "text"
-    },
-    {
-      "type": "image"
-    },
-    {
-      "type": "buy-buttons"
-    },
-    {
-      "type": "price"
-    },
-    {
-      "type": "review"
-    },
-    {
-      "type": "sku"
-    },
-    {
-      "type": "swatches"
-    },
-    {
-      "type": "_product-card-gallery"
-    },
-    {
-      "type": "product-title"
-    },
-    {
-      "type": "custom-liquid"
-    },
-    {
-      "type": "@app"
-    }
+    { "type": "_product-card-group" },
+    { "type": "text" },
+    { "type": "image" },
+    { "type": "buy-buttons" },
+    { "type": "price" },
+    { "type": "review" },
+    { "type": "sku" },
+    { "type": "swatches" },
+    { "type": "_product-card-gallery" },
+    { "type": "product-title" },
+    { "type": "custom-liquid" },
+    { "type": "@app" }
   ],
   "tag": null,
   "settings": [
-    {
-      "type": "paragraph",
-      "content": "t:content.resource_reference_product_card"
-    },
-    {
-      "type": "range",
-      "id": "product_card_gap",
-      "label": "t:settings.vertical_gap",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 16
-    },
-    {
-      "type": "checkbox",
-      "id": "inherit_color_scheme",
-      "label": "t:settings.inherit_color_scheme",
-      "default": true
-    },
+    { "type": "paragraph", "content": "t:content.resource_reference_product_card" },
+    { "type": "header", "content": "Card" },
+    { "type": "text", "id": "badge_text", "label": "Default badge text", "info": "Shown when the product isn't on sale. Leave empty to hide." },
+    { "type": "checkbox", "id": "show_vendor", "label": "Show brand / vendor", "default": true },
+    { "type": "checkbox", "id": "show_rating", "label": "Show rating", "default": true },
+    { "type": "checkbox", "id": "show_wishlist", "label": "Show wishlist button", "default": true },
+    { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#7a1f24" },
+    { "type": "range", "id": "border_radius", "label": "t:settings.border_radius", "min": 0, "max": 32, "step": 1, "unit": "px", "default": 14 },
+    { "type": "checkbox", "id": "inherit_color_scheme", "label": "t:settings.inherit_color_scheme", "default": true },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:settings.color_scheme",
       "default": "scheme-1",
       "visible_if": "{{ block.settings.inherit_color_scheme == false }}"
-    },
-    {
-      "type": "header",
-      "content": "t:content.borders"
-    },
-    {
-      "type": "select",
-      "id": "border",
-      "label": "t:settings.style",
-      "options": [
-        {
-          "value": "none",
-          "label": "t:options.none"
-        },
-        {
-          "value": "solid",
-          "label": "t:options.solid"
-        }
-      ],
-      "default": "none"
-    },
-    {
-      "type": "range",
-      "id": "border_width",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "px",
-      "label": "t:settings.thickness",
-      "default": 1,
-      "visible_if": "{{ block.settings.border != 'none' }}"
-    },
-    {
-      "type": "range",
-      "id": "border_opacity",
-      "min": 0,
-      "max": 100,
-      "step": 1,
-      "unit": "%",
-      "label": "t:settings.opacity",
-      "default": 100,
-      "visible_if": "{{ block.settings.border != 'none' }}"
-    },
-    {
-      "type": "range",
-      "id": "border_radius",
-      "label": "t:settings.border_radius",
-      "min": 0,
-      "max": 32,
-      "step": 1,
-      "default": 0
-    },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
-    {
-      "type": "range",
-      "id": "padding-block-start",
-      "label": "t:settings.top",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-block-end",
-      "label": "t:settings.bottom",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-start",
-      "label": "t:settings.left",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 0
-    },
-    {
-      "type": "range",
-      "id": "padding-inline-end",
-      "label": "t:settings.right",
-      "min": 0,
-      "max": 50,
-      "step": 1,
-      "unit": "px",
-      "default": 0
     }
   ]
 }

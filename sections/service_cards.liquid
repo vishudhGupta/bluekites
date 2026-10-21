@@ -9,309 +9,332 @@
 
 <section
   id="Services-{{ section.id }}"
-  class="bk-svc color-{{ s.color_scheme }}"
+  class="bk-svc"
   style="
-    --svc-bg: {{ s.section_background }};
-    --svc-heading: {{ s.heading_color }};
-    --svc-text: {{ s.text_color }};
+    --svc-page-bg: {{ s.section_background }};
+    --svc-bar: {{ s.header_color }};
+    --svc-bar-text: {{ s.header_text_color }};
+    --svc-body: {{ s.panel_background }};
     --svc-card: {{ s.card_background }};
-    --svc-border: {{ s.card_border }};
-    --svc-accent: {{ s.accent_color }};
-    --svc-accent-2: {{ s.accent_color_2 }};
-    --svc-gap: {{ s.grid_gap }}px;
-    --svc-radius: {{ s.card_radius }}px;
+    --svc-title: {{ s.title_color }};
+    --svc-text: {{ s.text_color }};
+    --svc-btn: {{ s.button_color }};
+    --svc-btn-text: {{ s.button_text_color }};
+    --svc-cols: {{ s.columns_desktop }};
     --svc-top: {{ s.padding_top }}px;
     --svc-bottom: {{ s.padding_bottom }}px;
-    --svc-cols: {{ s.columns_desktop }};
+    --svc-max: {{ s.max_width }}px;
+    --svc-ratio: {{ s.image_ratio }};
     --svc-heading-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
     --svc-heading-weight: {{ s.heading_font.weight }};
   "
 >
-  <div class="bk-svc__inner">
+  <div class="bk-svc__panel">
 
-    {%- if s.subheading != blank or s.heading != blank or s.description != blank -%}
-      <header class="bk-svc__head">
-        {%- if s.subheading != blank -%}
-          <p class="bk-svc__eyebrow">{{ s.subheading | escape }}</p>
-        {%- endif -%}
-        {%- if s.heading != blank -%}
-          <h2 class="bk-svc__title">{{ s.heading | escape }}</h2>
-        {%- endif -%}
-        {%- if s.description != blank -%}
-          <p class="bk-svc__desc">{{ s.description | escape }}</p>
+    {%- if s.heading != blank or s.subheading != blank -%}
+      <header class="bk-svc__bar">
+        <div class="bk-svc__bar-text">
+          {%- if s.heading != blank -%}
+            <h2 class="bk-svc__heading">{{ s.heading | escape }}</h2>
+          {%- endif -%}
+          {%- if s.subheading != blank -%}
+            <p class="bk-svc__sub">{{ s.subheading | escape }}</p>
+          {%- endif -%}
+        </div>
+        {%- if s.view_all_label != blank and s.view_all_link != blank -%}
+          <a href="{{ s.view_all_link }}" class="bk-svc__view-all">
+            {{ s.view_all_label | escape }}
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M7 4l6 6-6 6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </a>
         {%- endif -%}
       </header>
     {%- endif -%}
 
-    {%- if service_count > 0 -%}
-      <ul class="bk-svc__grid" role="list">
-        {%- assign num = 0 -%}
-        {%- for block in section.blocks -%}
-          {%- liquid
-            assign b = block.settings
-            assign card_link = b.custom_url
-            if card_link == blank and b.link_page != blank
-              assign card_link = pages[b.link_page].url
-            endif
-            assign is_cta = false
-            if block.type == 'cta_card'
-              assign is_cta = true
-            else
-              assign num = num | plus: 1
-            endif
-          -%}
-          <li {{ block.shopify_attributes }}>
-            {%- if card_link != blank -%}
-              <a
-                class="bk-svc__card{% if is_cta %} bk-svc__card--cta{% endif %}"
-                href="{{ card_link }}"
-                {% if b.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}
-              >
-            {%- else -%}
-              <div class="bk-svc__card{% if is_cta %} bk-svc__card--cta{% endif %}">
-            {%- endif -%}
+    <div class="bk-svc__body">
+      {%- if service_count > 0 -%}
+        <ul class="bk-svc__grid" role="list">
+          {%- for block in section.blocks -%}
+            {%- liquid
+              assign b = block.settings
+              assign card_link = b.custom_url
+              if card_link == blank and b.link_page != blank
+                assign card_link = pages[b.link_page].url
+              endif
+              assign is_cta = false
+              if block.type == 'cta_card'
+                assign is_cta = true
+              endif
+            -%}
+            <li class="bk-svc__item" {{ block.shopify_attributes }}>
+              <article class="bk-svc__card{% if is_cta %} bk-svc__card--cta{% endif %}">
 
-              {%- if s.show_numbers and is_cta == false -%}
-                <span class="bk-svc__num">{% if num < 10 %}0{% endif %}{{ num }}</span>
-              {%- endif -%}
+                <div class="bk-svc__media">
+                  {%- if b.badge != blank -%}
+                    <span class="bk-svc__badge">{{ b.badge | escape }}</span>
+                  {%- endif -%}
+                  {%- if b.image != blank -%}
+                    {{
+                      b.image
+                      | image_url: width: 800
+                      | image_tag:
+                        widths: '300, 400, 600, 800',
+                        sizes: '(max-width: 749px) 45vw, (max-width: 1099px) 30vw, 16vw',
+                        loading: 'lazy',
+                        class: 'bk-svc__img',
+                        alt: b.title
+                    }}
+                  {%- elsif is_cta -%}
+                    <span class="bk-svc__cta-icon" aria-hidden="true">
+                      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/><path d="M8 9h8M8 13h5"/></svg>
+                    </span>
+                  {%- else -%}
+                    {{ 'image' | placeholder_svg_tag: 'bk-svc__img bk-svc__img--placeholder' }}
+                  {%- endif -%}
+                </div>
 
-              <span class="bk-svc__icon" aria-hidden="true">
-                {%- if b.image != blank -%}
-                  {{ b.image | image_url: width: 160 | image_tag: loading: 'lazy', alt: '' }}
-                {%- elsif is_cta -%}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>
-                {%- else -%}
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="4" width="7" height="7" rx="2"/><rect x="13" y="4" width="7" height="7" rx="2"/><rect x="4" y="13" width="7" height="7" rx="2"/><rect x="13" y="13" width="7" height="7" rx="2"/></svg>
-                {%- endif -%}
-              </span>
+                <div class="bk-svc__content">
+                  {%- if b.title != blank -%}
+                    <h3 class="bk-svc__title">
+                      {%- if card_link != blank -%}
+                        <a href="{{ card_link }}" class="bk-svc__title-link" {% if b.open_in_new_tab %}target="_blank" rel="noopener noreferrer"{% endif %}>
+                          {{- b.title | escape -}}
+                        </a>
+                      {%- else -%}
+                        {{- b.title | escape -}}
+                      {%- endif -%}
+                    </h3>
+                  {%- endif -%}
 
-              {%- if b.title != blank -%}
-                <h3 class="bk-svc__card-title">{{ b.title | escape }}</h3>
-              {%- endif -%}
+                  {%- if b.description != blank -%}
+                    <p class="bk-svc__text">{{ b.description | escape }}</p>
+                  {%- endif -%}
 
-              {%- if b.description != blank -%}
-                <p class="bk-svc__text">{{ b.description | escape }}</p>
-              {%- endif -%}
+                  {%- if card_link != blank and b.button_label != blank -%}
+                    <span class="bk-svc__btn" aria-hidden="true">{{ b.button_label | escape }}</span>
+                  {%- endif -%}
+                </div>
 
-              {%- if card_link != blank and b.button_label != blank -%}
-                <span class="bk-svc__link">
-                  {{ b.button_label | escape }}
-                  <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-                </span>
-              {%- endif -%}
-
-            {%- if card_link != blank -%}
-              </a>
-            {%- else -%}
-              </div>
-            {%- endif -%}
-          </li>
-        {%- endfor -%}
-      </ul>
-    {%- else -%}
-      <p class="bk-svc__empty">Add Service card blocks to display your services.</p>
-    {%- endif -%}
+              </article>
+            </li>
+          {%- endfor -%}
+        </ul>
+      {%- else -%}
+        <p class="bk-svc__empty">Add Service card blocks to display your services.</p>
+      {%- endif -%}
+    </div>
 
   </div>
 </section>
 
 {% stylesheet %}
 .bk-svc {
-  width: 100%;
-  background: var(--svc-bg);
-  color: var(--svc-heading);
+  background: var(--svc-page-bg);
   padding-block: var(--svc-top) var(--svc-bottom);
 }
 .bk-svc *,
 .bk-svc *::before,
 .bk-svc *::after { box-sizing: border-box; }
 
-.bk-svc__inner {
-  width: min(calc(100% - 32px), 1240px);
+/* Panel: same frame as Featured Products */
+.bk-svc__panel {
+  width: min(calc(100% - 32px), var(--svc-max));
   margin-inline: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: var(--svc-body);
 }
 
-/* Header */
-.bk-svc__head {
-  max-width: 640px;
-  margin: 0 auto clamp(36px, 5vw, 56px);
-  text-align: center;
-}
-.bk-svc__eyebrow {
-  display: inline-flex;
+/* Header bar */
+.bk-svc__bar {
+  display: flex;
   align-items: center;
-  gap: 10px;
-  margin: 0 0 14px;
-  font-size: 13px;
-  font-weight: 600;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  color: var(--svc-accent);
+  justify-content: space-between;
+  gap: 16px;
+  padding: 10px 14px 8px;
+  background: var(--svc-bar);
+  color: var(--svc-bar-text);
 }
-.bk-svc__eyebrow::before,
-.bk-svc__eyebrow::after {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-  opacity: .6;
-}
-.bk-svc__title {
+.bk-svc__bar-text { min-width: 0; }
+.bk-svc__heading {
   margin: 0;
-  color: var(--svc-heading);
+  color: var(--svc-bar-text);
   font-family: var(--svc-heading-font);
   font-weight: var(--svc-heading-weight);
-  font-size: clamp(28px, 4vw, 44px);
-  line-height: 1.15;
-  letter-spacing: -.02em;
+  font-size: clamp(18px, 1.6vw, 22px);
+  line-height: 1.2;
 }
-.bk-svc__desc {
-  margin: 14px 0 0;
-  font-size: 15px;
-  line-height: 1.6;
-  color: var(--svc-text);
+.bk-svc__sub {
+  margin: 2px 0 0;
+  font-size: 11px;
+  line-height: 1.4;
+  opacity: .9;
 }
+.bk-svc__view-all {
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  gap: 4px;
+  padding: 7px 12px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--svc-bar);
+  background: var(--svc-bar-text);
+  border-radius: 6px;
+  text-decoration: none;
+  transition: opacity .2s ease;
+}
+.bk-svc__view-all:hover { opacity: .88; }
+.bk-svc__view-all svg { width: 14px; height: 14px; }
 
-/* Grid */
+/* Body + grid */
+.bk-svc__body { padding: 10px; }
 .bk-svc__grid {
   display: grid;
-  grid-template-columns: repeat(var(--svc-cols, 4), minmax(0, 1fr));
-  gap: var(--svc-gap);
+  grid-template-columns: repeat(var(--svc-cols, 6), minmax(0, 1fr));
+  gap: 10px;
   margin: 0;
   padding: 0;
   list-style: none;
 }
-.bk-svc__grid > li { min-width: 0; }
+.bk-svc__item { min-width: 0; }
 
 /* Card */
 .bk-svc__card {
   position: relative;
   display: flex;
   flex-direction: column;
-  gap: 14px;
   height: 100%;
-  padding: 28px 24px 24px;
+  padding: 6px;
   background: var(--svc-card);
-  border: 1px solid var(--svc-border);
-  border-radius: var(--svc-radius);
-  color: var(--svc-heading);
-  text-decoration: none;
-  overflow: hidden;
-  isolation: isolate;
-  transition: transform .35s ease, box-shadow .35s ease, border-color .35s ease, color .35s ease;
+  border-radius: 6px;
+  box-shadow: 0 1px 2px rgba(16, 24, 40, .06);
+  transition: transform .25s ease, box-shadow .25s ease;
 }
-.bk-svc__card::before {
-  content: "";
-  position: absolute;
-  inset: 0;
-  z-index: -1;
-  background: linear-gradient(160deg, color-mix(in srgb, var(--svc-accent) 85%, #fff), var(--svc-accent) 60%, color-mix(in srgb, var(--svc-accent) 75%, #000));
-  transform: translateY(101%);
-  transition: transform .45s cubic-bezier(.2, .7, .2, 1);
+.bk-svc__card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 12px 28px -12px rgba(16, 24, 40, .28);
 }
-.bk-svc__card:hover,
-.bk-svc__card:focus-visible {
-  transform: translateY(-6px);
-  border-color: transparent;
-  box-shadow: 0 24px 48px -24px color-mix(in srgb, var(--svc-accent) 70%, transparent);
-  color: #fff;
-}
-.bk-svc__card:hover::before,
-.bk-svc__card:focus-visible::before { transform: translateY(0); }
-.bk-svc__card:focus-visible { outline: 2px solid var(--svc-accent-2); outline-offset: 3px; }
 
-.bk-svc__num {
-  position: absolute;
-  top: 20px;
-  right: 22px;
-  font-size: 13px;
-  font-weight: 600;
-  color: var(--svc-text);
-  opacity: .5;
-  transition: color .35s ease, opacity .35s ease;
-}
-.bk-svc__card:hover .bk-svc__num { color: var(--svc-accent-2); opacity: 1; }
-
-.bk-svc__icon {
+.bk-svc__media {
+  position: relative;
   display: grid;
   place-items: center;
-  width: 60px;
-  height: 60px;
-  color: var(--svc-accent);
-  background: color-mix(in srgb, var(--svc-accent) 8%, #fff);
-  border-radius: 16px;
-  transition: background .35s ease, transform .35s ease;
+  aspect-ratio: var(--svc-ratio, 1 / 1);
+  overflow: hidden;
+  background: #f3f4f6;
+  border-radius: 4px;
 }
-.bk-svc__icon img { width: 36px; height: 36px; object-fit: contain; }
-.bk-svc__icon svg { width: 26px; height: 26px; }
-.bk-svc__card:hover .bk-svc__icon { background: #fff; transform: rotate(-6deg) scale(1.05); }
+.bk-svc__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .5s ease;
+}
+.bk-svc__card:hover .bk-svc__img { transform: scale(1.06); }
+.bk-svc__img--placeholder { padding: 18%; opacity: .45; object-fit: contain; }
 
-.bk-svc__card-title {
-  margin: 6px 0 0;
-  color: inherit;
-  font-family: var(--font-body--family, inherit);
-  font-size: 19px;
+.bk-svc__badge {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 1;
+  padding: 2px 6px;
+  font-size: 9px;
   font-weight: 600;
-  line-height: 1.3;
+  color: #fff;
+  background: #2b2b2b;
+  border-radius: 4px;
 }
+
+.bk-svc__content {
+  display: flex;
+  flex: 1;
+  flex-direction: column;
+  gap: 4px;
+  padding: 8px 2px 2px;
+}
+.bk-svc__title {
+  margin: 0;
+  color: var(--svc-title);
+  font-family: var(--font-body--family, inherit);
+  font-size: 13px;
+  font-weight: 700;
+  line-height: 1.35;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.bk-svc__title-link { color: inherit; text-decoration: none; }
+.bk-svc__title-link::after { content: ""; position: absolute; inset: 0; z-index: 2; }
+.bk-svc__title-link:focus-visible { outline: none; }
+.bk-svc__card:has(.bk-svc__title-link:focus-visible) { outline: 2px solid var(--svc-btn); outline-offset: 2px; }
+
 .bk-svc__text {
   margin: 0;
-  font-size: 14px;
-  line-height: 1.65;
   color: var(--svc-text);
-  transition: color .35s ease;
+  font-size: 11px;
+  line-height: 1.45;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
-.bk-svc__card:hover .bk-svc__text { color: rgba(255, 255, 255, .82); }
 
-.bk-svc__link {
-  display: inline-flex;
+.bk-svc__btn {
+  display: flex;
   align-items: center;
-  gap: 8px;
-  margin-top: auto;
-  padding-top: 6px;
-  font-size: 14px;
-  font-weight: 600;
-  color: var(--svc-accent);
-  transition: color .35s ease, gap .35s ease;
-}
-.bk-svc__link svg { width: 16px; height: 16px; }
-.bk-svc__card:hover .bk-svc__link { color: var(--svc-accent-2); gap: 12px; }
-
-/* CTA card */
-.bk-svc__card--cta {
   justify-content: center;
-  background: var(--svc-accent);
-  border-color: var(--svc-accent);
-  color: #fff;
+  min-height: 32px;
+  margin-top: auto;
+  padding: 0 10px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--svc-btn-text);
+  background: var(--svc-btn);
+  border-radius: 4px;
+  transition: filter .2s ease;
 }
-.bk-svc__card--cta::before { background: linear-gradient(160deg, color-mix(in srgb, var(--svc-accent-2) 70%, #000), var(--svc-accent-2)); }
-.bk-svc__card--cta .bk-svc__icon { color: #fff; background: rgba(255, 255, 255, .14); }
-.bk-svc__card--cta .bk-svc__text { color: rgba(255, 255, 255, .8); }
-.bk-svc__card--cta .bk-svc__link { color: var(--svc-accent-2); }
-.bk-svc__card--cta:hover { color: var(--svc-heading); }
-.bk-svc__card--cta:hover .bk-svc__icon { color: var(--svc-accent); }
-.bk-svc__card--cta:hover .bk-svc__text { color: color-mix(in srgb, var(--svc-heading) 75%, transparent); }
-.bk-svc__card--cta:hover .bk-svc__link { color: var(--svc-heading); }
+.bk-svc__content > .bk-svc__btn { margin-top: auto; }
+.bk-svc__content > :nth-last-child(2) { margin-bottom: 6px; }
+.bk-svc__card:hover .bk-svc__btn { filter: brightness(1.25); }
 
-.bk-svc__empty { margin: 0; text-align: center; font-size: 14px; color: var(--svc-text); }
+/* Contact / CTA tile */
+.bk-svc__card--cta .bk-svc__media { background: color-mix(in srgb, var(--svc-bar) 10%, #fff); }
+.bk-svc__cta-icon { display: grid; place-items: center; width: 44%; color: var(--svc-bar); }
+.bk-svc__cta-icon svg { width: 100%; height: auto; }
+.bk-svc__card--cta .bk-svc__btn { background: var(--svc-bar); }
 
-/* Responsive */
-@media screen and (max-width: 1080px) {
-  .bk-svc__grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.bk-svc__empty { margin: 0; padding: 24px; text-align: center; font-size: 13px; color: var(--svc-text); }
+
+/* Tablet */
+@media screen and (max-width: 1099px) {
+  .bk-svc__grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
 }
-@media screen and (max-width: 760px) {
-  .bk-svc__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 14px; }
-  .bk-svc__card { padding: 22px 18px 18px; }
-  .bk-svc__card-title { font-size: 16px; }
-  .bk-svc__text { font-size: 13px; }
+
+/* Mobile: Flipkart-style swipe row */
+@media screen and (max-width: 749px) {
+  .bk-svc__panel { width: calc(100% - 24px); }
+  .bk-svc__bar { padding: 10px 12px 8px; }
+  .bk-svc__view-all { padding: 6px 10px; font-size: 11px; }
+  .bk-svc__body { padding: 8px 0 8px 8px; }
+  .bk-svc__grid {
+    grid-template-columns: none;
+    grid-auto-flow: column;
+    grid-auto-columns: 42%;
+    gap: 8px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-right: 8px;
+  }
+  .bk-svc__grid::-webkit-scrollbar { display: none; }
+  .bk-svc__item { scroll-snap-align: start; }
 }
-@media screen and (max-width: 460px) {
-  .bk-svc__grid { grid-template-columns: 1fr; }
-}
+
 @media (prefers-reduced-motion: reduce) {
-  .bk-svc__card,
-  .bk-svc__card *,
-  .bk-svc__card::before { transition: none !important; }
+  .bk-svc__card, .bk-svc__img, .bk-svc__btn { transition: none !important; }
 }
 {% endstylesheet %}
 
@@ -321,40 +344,51 @@
   "tag": "section",
   "class": "section-wrapper",
   "settings": [
-    { "type": "header", "content": "Header" },
-    { "type": "text", "id": "subheading", "label": "Eyebrow", "default": "Our Services" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "What We Can Help You With" },
-    { "type": "textarea", "id": "description", "label": "Description" },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "poppins_n6" },
-    { "type": "header", "content": "Cards" },
-    { "type": "range", "id": "columns_desktop", "label": "Columns on desktop", "min": 2, "max": 5, "step": 1, "default": 4 },
-    { "type": "checkbox", "id": "show_numbers", "label": "Show card numbers", "default": true },
-    { "type": "range", "id": "grid_gap", "label": "Card spacing", "min": 8, "max": 40, "step": 2, "unit": "px", "default": 20 },
-    { "type": "range", "id": "card_radius", "label": "Corner radius", "min": 0, "max": 32, "step": 2, "unit": "px", "default": 18 },
-    { "type": "header", "content": "Spacing" },
-    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
-    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 160, "step": 4, "unit": "px", "default": 80 },
-    { "type": "color_scheme", "id": "color_scheme", "label": "Color scheme", "default": "scheme-1" },
+    { "type": "header", "content": "Header bar" },
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Services" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "What We Can Help You With" },
+    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "playfair_display_n7" },
+    { "type": "text", "id": "view_all_label", "label": "View all label", "info": "Optional button on the right of the bar." },
+    { "type": "url", "id": "view_all_link", "label": "View all link" },
+    { "type": "header", "content": "Layout" },
+    { "type": "range", "id": "columns_desktop", "label": "Cards per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 6 },
+    {
+      "type": "select",
+      "id": "image_ratio",
+      "label": "Image shape",
+      "options": [
+        { "value": "1 / 1", "label": "Square" },
+        { "value": "4 / 3", "label": "Landscape" },
+        { "value": "4 / 5", "label": "Portrait" }
+      ],
+      "default": "1 / 1"
+    },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1200, "info": "Match the width of your Featured Products section." },
+    { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
+    { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "section_background", "label": "Section background", "default": "#FAF8F6" },
-    { "type": "color", "id": "heading_color", "label": "Heading and title color", "default": "#1A1416" },
-    { "type": "color", "id": "text_color", "label": "Description color", "default": "#6B6466" },
+    { "type": "color", "id": "section_background", "label": "Page background", "default": "#FFFFFF" },
+    { "type": "color", "id": "header_color", "label": "Header bar", "default": "#800000" },
+    { "type": "color", "id": "header_text_color", "label": "Header text", "default": "#FFFFFF" },
+    { "type": "color", "id": "panel_background", "label": "Panel background", "default": "#EEF4FB" },
     { "type": "color", "id": "card_background", "label": "Card background", "default": "#FFFFFF" },
-    { "type": "color", "id": "card_border", "label": "Card border", "default": "#ECE6E3" },
-    { "type": "color", "id": "accent_color", "label": "Accent (hover fill)", "default": "#7A1F24" },
-    { "type": "color", "id": "accent_color_2", "label": "Highlight (gold)", "default": "#D9B77E" }
+    { "type": "color", "id": "title_color", "label": "Card title", "default": "#111111" },
+    { "type": "color", "id": "text_color", "label": "Card description", "default": "#6B7280" },
+    { "type": "color", "id": "button_color", "label": "Button", "default": "#13294B" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#FFFFFF" }
   ],
   "blocks": [
     {
       "type": "service_card",
       "name": "Service card",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Icon", "info": "Small square icon, transparent PNG works best." },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Square photo, at least 800×800px." },
+        { "type": "text", "id": "badge", "label": "Badge", "info": "Optional, e.g. New or Popular." },
         { "type": "text", "id": "title", "label": "Title", "default": "Service title" },
-        { "type": "textarea", "id": "description", "label": "Description", "default": "Discover how our service can help you." },
+        { "type": "textarea", "id": "description", "label": "Description" },
         { "type": "page", "id": "link_page", "label": "Link to page" },
         { "type": "url", "id": "custom_url", "label": "Custom URL", "info": "Overrides the selected page when provided." },
-        { "type": "text", "id": "button_label", "label": "Link label", "default": "Explore" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Explore" },
         { "type": "checkbox", "id": "open_in_new_tab", "label": "Open link in a new tab", "default": false }
       ]
     },
@@ -362,12 +396,13 @@
       "type": "cta_card",
       "name": "Contact card",
       "settings": [
-        { "type": "image_picker", "id": "image", "label": "Icon" },
+        { "type": "image_picker", "id": "image", "label": "Image", "info": "Optional. A chat icon is shown if empty." },
+        { "type": "text", "id": "badge", "label": "Badge" },
         { "type": "text", "id": "title", "label": "Title", "default": "Need something else?" },
-        { "type": "textarea", "id": "description", "label": "Description", "default": "Tell us what you're looking for and our team will get back to you." },
+        { "type": "textarea", "id": "description", "label": "Description", "default": "Tell us what you need and our team will get back to you." },
         { "type": "page", "id": "link_page", "label": "Link to page" },
         { "type": "url", "id": "custom_url", "label": "Custom URL", "info": "Overrides the selected page when provided." },
-        { "type": "text", "id": "button_label", "label": "Link label", "default": "Contact us" },
+        { "type": "text", "id": "button_label", "label": "Button label", "default": "Contact us" },
         { "type": "checkbox", "id": "open_in_new_tab", "label": "Open link in a new tab", "default": false }
       ]
     }
@@ -377,14 +412,12 @@
     {
       "name": "Services grid",
       "blocks": [
-        { "type": "service_card", "settings": { "title": "Surgical Products", "description": "Reliable surgical supplies and consumables for hospitals, clinics and healthcare professionals." } },
-        { "type": "service_card", "settings": { "title": "Handrub & Disinfectants", "description": "Hospital-grade hand rubs and surface disinfectants for effective infection control." } },
-        { "type": "service_card", "settings": { "title": "Healthcare", "description": "Quality healthcare essentials that support better care, safety and everyday wellbeing." } },
-        { "type": "service_card", "settings": { "title": "Cosmetics", "description": "Trusted personal care and beauty products, carefully selected for quality." } },
-        { "type": "service_card", "settings": { "title": "Food & Gourmet", "description": "Fine food and gourmet selections, sourced with the same care we bring to everything." } },
-        { "type": "service_card", "settings": { "title": "Tours & Travels", "description": "Well-planned travel and tour packages for comfortable, hassle-free journeys." } },
-        { "type": "service_card", "settings": { "title": "IT Services", "description": "Practical technology solutions that help businesses work smarter and grow faster." } },
-        { "type": "cta_card" }
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" },
+        { "type": "service_card" }
       ]
     }
   ]

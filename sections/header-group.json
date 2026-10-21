@@ -129,8 +129,10 @@
         "ai_gen_block_b4a6b1d_jBJTFz": {
           "type": "ai_gen_block_b4a6b1d",
           "settings": {
-            "menu": "",
-            "desktop_width_percent": 100
+            "placeholder": "Search for products",
+            "desktop_width_percent": 100,
+            "product_limit": 5,
+            "min_characters": 2
           },
           "blocks": {}
         }

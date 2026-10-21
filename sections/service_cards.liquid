@@ -4,14 +4,14 @@
 -%}
 
 <style>
-  {{ s.heading_font | font_face: font_display: 'swap' }}
+  {{ s.bar_font | font_face: font_display: 'swap' }}
 </style>
 
 <section
   id="Services-{{ section.id }}"
   class="bk-svc"
   style="
-    --svc-page-bg: {{ s.section_background }};
+    --svc-page-bg: {{ s.page_bg }};
     --svc-bar: {{ s.header_color }};
     --svc-bar-text: {{ s.header_text_color }};
     --svc-body: {{ s.panel_background }};
@@ -20,25 +20,26 @@
     --svc-text: {{ s.text_color }};
     --svc-btn: {{ s.button_color }};
     --svc-btn-text: {{ s.button_text_color }};
-    --svc-cols: {{ s.columns_desktop }};
+    --svc-cols: {{ s.per_row }};
     --svc-top: {{ s.padding_top }}px;
     --svc-bottom: {{ s.padding_bottom }}px;
     --svc-max: {{ s.max_width }}px;
     --svc-ratio: {{ s.image_ratio }};
-    --svc-heading-font: {{ s.heading_font.family }}, {{ s.heading_font.fallback_families }};
-    --svc-heading-weight: {{ s.heading_font.weight }};
+    --svc-heading-font: {{ s.bar_font.family }}, {{ s.bar_font.fallback_families }};
+    --svc-heading-weight: {{ s.bar_font.weight }};
   "
 >
+  <div class="bk-svc__wrap{% if s.match_page_width %} section section--page-width{% endif %}">
   <div class="bk-svc__panel">
 
-    {%- if s.heading != blank or s.subheading != blank -%}
+    {%- if s.bar_heading != blank or s.bar_subheading != blank -%}
       <header class="bk-svc__bar">
         <div class="bk-svc__bar-text">
-          {%- if s.heading != blank -%}
-            <h2 class="bk-svc__heading">{{ s.heading | escape }}</h2>
+          {%- if s.bar_heading != blank -%}
+            <h2 class="bk-svc__heading">{{ s.bar_heading | escape }}</h2>
           {%- endif -%}
-          {%- if s.subheading != blank -%}
-            <p class="bk-svc__sub">{{ s.subheading | escape }}</p>
+          {%- if s.bar_subheading != blank -%}
+            <p class="bk-svc__sub">{{ s.bar_subheading | escape }}</p>
           {%- endif -%}
         </div>
         {%- if s.view_all_label != blank and s.view_all_link != blank -%}
@@ -124,6 +125,7 @@
     </div>
 
   </div>
+  </div>
 </section>
 
 {% stylesheet %}
@@ -139,6 +141,7 @@
 .bk-svc__panel {
   width: min(calc(100% - 32px), var(--svc-max));
   margin-inline: auto;
+  grid-column: 2;
   border-radius: 10px;
   overflow: hidden;
   background: var(--svc-body);
@@ -187,6 +190,9 @@
 .bk-svc__view-all svg { width: 14px; height: 14px; }
 
 /* Body + grid */
+/* Match theme page width (same column as Featured Products) */
+.bk-svc__wrap.section .bk-svc__panel { width: 100%; max-width: none; }
+
 .bk-svc__body { padding: 10px; }
 .bk-svc__grid {
   display: grid;
@@ -345,13 +351,13 @@
   "class": "section-wrapper",
   "settings": [
     { "type": "header", "content": "Header bar" },
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Our Services" },
-    { "type": "text", "id": "subheading", "label": "Subheading", "default": "What We Can Help You With" },
-    { "type": "font_picker", "id": "heading_font", "label": "Heading font", "default": "playfair_display_n7" },
+    { "type": "text", "id": "bar_heading", "label": "Heading", "default": "Our Services" },
+    { "type": "text", "id": "bar_subheading", "label": "Subheading", "default": "What We Can Help You With" },
+    { "type": "font_picker", "id": "bar_font", "label": "Heading font", "default": "playfair_display_n7" },
     { "type": "text", "id": "view_all_label", "label": "View all label", "info": "Optional button on the right of the bar." },
     { "type": "url", "id": "view_all_link", "label": "View all link" },
     { "type": "header", "content": "Layout" },
-    { "type": "range", "id": "columns_desktop", "label": "Cards per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 6 },
+    { "type": "range", "id": "per_row", "label": "Cards per row (desktop)", "min": 3, "max": 6, "step": 1, "default": 6 },
     {
       "type": "select",
       "id": "image_ratio",
@@ -363,11 +369,12 @@
       ],
       "default": "1 / 1"
     },
-    { "type": "range", "id": "max_width", "label": "Max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1200, "info": "Match the width of your Featured Products section." },
+    { "type": "checkbox", "id": "match_page_width", "label": "Match theme page width", "default": true, "info": "Lines up with Featured Products. Turn off to use Max width." },
+    { "type": "range", "id": "max_width", "label": "Max width", "min": 900, "max": 1600, "step": 20, "unit": "px", "default": 1200, "visible_if": "{{ section.settings.match_page_width == false }}" },
     { "type": "range", "id": "padding_top", "label": "Top padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
     { "type": "range", "id": "padding_bottom", "label": "Bottom padding", "min": 0, "max": 120, "step": 4, "unit": "px", "default": 24 },
     { "type": "header", "content": "Colors" },
-    { "type": "color", "id": "section_background", "label": "Page background", "default": "#FFFFFF" },
+    { "type": "color", "id": "page_bg", "label": "Page background", "default": "#FFFFFF" },
     { "type": "color", "id": "header_color", "label": "Header bar", "default": "#800000" },
     { "type": "color", "id": "header_text_color", "label": "Header text", "default": "#FFFFFF" },
     { "type": "color", "id": "panel_background", "label": "Panel background", "default": "#EEF4FB" },

@@ -1,56 +1,162 @@
-
-
 <div class="section-background color-{{ section.settings.color_scheme }}"></div>
 <div class="section page-width-content color-{{ section.settings.color_scheme }}">
   <div
-    class="
-      spacing-style
-      layout-panel-flex
-      layout-panel-flex--column
-      section-content-wrapper
-      mobile-column
-    "
+    class="spacing-style section-content-wrapper pd-wrap{% if section.settings.portrait_position == 'right' %} pd-wrap--right{% endif %}"
     style="
-      {% render 'layout-panel-style', settings: section.settings %}
       {% render 'spacing-style', settings: section.settings %}
+      --pd-gap: {{ section.settings.gap }}px;
+      --pd-radius: {{ section.settings.portrait_radius }}px;
     "
   >
-    {% content_for 'blocks' %}
+    <figure class="pd-portrait">
+      <div class="pd-portrait__frame">
+        {%- if section.settings.portrait != blank -%}
+          {{
+            section.settings.portrait
+            | image_url: width: 1200
+            | image_tag:
+              widths: '400, 600, 800, 1000, 1200',
+              sizes: '(max-width: 749px) 100vw, 40vw',
+              loading: 'lazy',
+              class: 'pd-portrait__img',
+              alt: section.settings.portrait.alt | default: section.settings.portrait_name
+          }}
+        {%- else -%}
+          {{ 'image' | placeholder_svg_tag: 'pd-portrait__img pd-portrait__placeholder' }}
+        {%- endif -%}
+      </div>
+      {%- if section.settings.portrait_name != blank or section.settings.portrait_role != blank -%}
+        <figcaption class="pd-portrait__caption">
+          {%- if section.settings.portrait_name != blank -%}
+            <span class="pd-portrait__name">{{ section.settings.portrait_name | escape }}</span>
+          {%- endif -%}
+          {%- if section.settings.portrait_role != blank -%}
+            <span class="pd-portrait__role">{{ section.settings.portrait_role | escape }}</span>
+          {%- endif -%}
+        </figcaption>
+      {%- endif -%}
+    </figure>
+
+    <div class="pd-content layout-panel-flex layout-panel-flex--column">
+      {% content_for 'blocks' %}
+    </div>
   </div>
 </div>
 
+{% stylesheet %}
+.pd-wrap {
+  display: grid;
+  grid-template-columns: minmax(0, 5fr) minmax(0, 7fr);
+  gap: clamp(32px, 6vw, 88px);
+  align-items: start;
+}
+.pd-wrap--right .pd-portrait { order: 2; }
+
+.pd-portrait {
+  position: sticky;
+  top: 96px;
+  margin: 0;
+}
+.pd-portrait__frame {
+  position: relative;
+  overflow: hidden;
+  aspect-ratio: 4 / 5;
+  border-radius: var(--pd-radius);
+  background: rgb(var(--color-foreground-rgb, 0 0 0) / .06);
+}
+.pd-portrait__frame::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 0 1px rgb(var(--color-foreground-rgb, 0 0 0) / .08);
+  pointer-events: none;
+}
+.pd-portrait__img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform .8s cubic-bezier(.2, .7, .2, 1);
+}
+.pd-portrait:hover .pd-portrait__img { transform: scale(1.025); }
+.pd-portrait__placeholder { opacity: .4; }
+
+.pd-portrait__caption {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 12px;
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid rgb(var(--color-foreground-rgb, 0 0 0) / .12);
+  font-size: 13px;
+  line-height: 1.4;
+}
+.pd-portrait__name { font-weight: 600; }
+.pd-portrait__role { opacity: .65; text-align: right; }
+
+.pd-content {
+  min-width: 0;
+  max-width: 680px;
+  gap: var(--pd-gap);
+  padding-top: clamp(0px, 2vw, 24px);
+}
+
+@media screen and (max-width: 989px) {
+  .pd-wrap { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; }
+}
+@media screen and (max-width: 749px) {
+  .pd-wrap { grid-template-columns: 1fr; gap: 28px; }
+  .pd-wrap--right .pd-portrait { order: 0; }
+  .pd-portrait { position: static; }
+  .pd-portrait__frame { aspect-ratio: 4 / 3; }
+  .pd-content { padding-top: 0; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .pd-portrait__img { transition: none; }
+  .pd-portrait:hover .pd-portrait__img { transform: none; }
+}
+{% endstylesheet %}
+
 {% schema %}
 {
-  "name": "t:names.page",
+  "name": "Page with portrait",
   "class": "section-wrapper",
   "blocks": [
-    {
-      "type": "@theme"
-    },
-    {
-      "type": "@app"
-    },
-    {
-      "type": "_divider"
-    }
+    { "type": "@theme" },
+    { "type": "@app" },
+    { "type": "_divider" }
   ],
   "disabled_on": {
     "groups": ["header"]
   },
   "settings": [
+    { "type": "header", "content": "Portrait" },
+    { "type": "image_picker", "id": "portrait", "label": "Portrait image" },
     {
       "type": "select",
-      "id": "content_direction",
-      "label": "t:settings.direction",
+      "id": "portrait_position",
+      "label": "Portrait position",
       "options": [
-        {
-          "value": "column",
-          "label": "t:options.vertical"
-        }
+        { "value": "left", "label": "Left" },
+        { "value": "right", "label": "Right" }
       ],
-      "default": "column",
-      "visible_if": "{{ section.settings.gap < 0 }}"
+      "default": "left"
     },
+    { "type": "text", "id": "portrait_name", "label": "Caption name", "default": "Director" },
+    { "type": "text", "id": "portrait_role", "label": "Caption role", "default": "Bluekites Services" },
+    {
+      "type": "range",
+      "id": "portrait_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 32,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    },
+    { "type": "header", "content": "Layout" },
     {
       "type": "range",
       "id": "gap",
@@ -59,7 +165,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 12
+      "default": 16
     },
     {
       "type": "color_scheme",
@@ -67,10 +173,7 @@
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
     },
-    {
-      "type": "header",
-      "content": "t:content.padding"
-    },
+    { "type": "header", "content": "t:content.padding" },
     {
       "type": "range",
       "id": "padding-block-start",
@@ -79,7 +182,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 64
     },
     {
       "type": "range",
@@ -89,8 +192,11 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 64
     }
+  ],
+  "presets": [
+    { "name": "Page with portrait" }
   ]
 }
 {% endschema %}

@@ -22,7 +22,11 @@
         "page-content"
       ],
       "settings": {
-        "content_direction": "column",
+        "portrait": "shopify://shop_images/businessman-working-computer-modern-office-headshot-male-entrepreneur-company-director-workplace-business-concept-147377886.webp",
+        "portrait_position": "left",
+        "portrait_name": "Director",
+        "portrait_role": "Bluekites Services",
+        "portrait_radius": 8,
         "gap": 32,
         "color_scheme": "",
         "padding-block-start": 40,

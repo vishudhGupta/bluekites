@@ -834,26 +834,6 @@
         "padding-block-end": 0
       }
     },
-    "director_message_EKAmGm": {
-      "type": "director_message",
-      "name": "Director's message",
-      "settings": {
-        "image": "shopify://shop_images/businessman-working-computer-modern-office-headshot-male-entrepreneur-company-director-workplace-business-concept-147377886.webp",
-        "image_position": "left",
-        "enable_read_more": false,
-        "collapsed_lines": 8,
-        "image_radius": 8,
-        "side_margin": 16,
-        "padding_top": 80,
-        "padding_bottom": 80,
-        "color_scheme": "",
-        "section_background": "#f8f7f4",
-        "heading_color": "#1c2740",
-        "text_color": "#5c6478",
-        "accent_color": "#1c2740",
-        "border_color": "#e5e8ee"
-      }
-    },
     "17925602496ca3a8a6": {
       "type": "_blocks",
       "blocks": {
@@ -956,7 +936,6 @@
     "service_cards_9R7Aax",
     "whyus_XEjggw",
     "section_UeE3JB",
-    "director_message_EKAmGm",
     "17925602496ca3a8a6",
     "1792560664e1ffc3e5"
   ]

@@ -1,9 +1,6 @@
 {%- liquid
   assign s = section.settings
-  assign collapse = false
-  if s.enable_read_more and s.body != blank
-    assign collapse = true
-  endif
+  assign collapse = s.enable_read_more
 -%}
 
 <section
@@ -35,81 +32,64 @@
               sizes: '(max-width: 749px) 100vw, 40vw',
               loading: 'lazy',
               class: 'bk-director__image',
-              alt: s.image.alt | default: s.name
+              alt: 'Director, Bluekites Services'
           }}
         {%- else -%}
           {{ 'image' | placeholder_svg_tag: 'bk-director__image bk-director__placeholder' }}
         {%- endif -%}
       </div>
-      {%- if s.name != blank or s.designation != blank -%}
-        <figcaption class="bk-director__caption">
-          {%- if s.name != blank -%}<span class="bk-director__caption-name">{{ s.name | escape }}</span>{%- endif -%}
-          {%- if s.designation != blank -%}<span class="bk-director__caption-role">{{ s.designation | escape }}</span>{%- endif -%}
-        </figcaption>
-      {%- endif -%}
+      <figcaption class="bk-director__caption">
+        <span class="bk-director__caption-name">Director</span>
+        <span class="bk-director__caption-role">Bluekites Services</span>
+      </figcaption>
     </figure>
 
     <div class="bk-director__content">
-      {%- if s.eyebrow != blank -%}
-        <p class="bk-director__eyebrow">{{ s.eyebrow | escape }}</p>
-      {%- endif -%}
+      <p class="bk-director__eyebrow">A Message from the Director</p>
 
-      {%- if s.quote != blank -%}
-        <blockquote class="bk-director__quote">
-          <p>{{ s.quote | escape | newline_to_br }}</p>
-        </blockquote>
-      {%- endif -%}
+      <blockquote class="bk-director__quote">
+        <p>Building Trust. Creating Value. Growing Together.</p>
+      </blockquote>
 
-      {%- if s.body != blank -%}
-        <div
-          id="DirectorBody-{{ section.id }}"
-          class="bk-director__body{% if collapse %} is-collapsible is-collapsed{% endif %}"
-          data-dm-body
+      <div
+        id="DirectorBody-{{ section.id }}"
+        class="bk-director__body{% if collapse %} is-collapsible is-collapsed{% endif %}"
+        data-dm-body
+      >
+        <p>At Bluekites, our journey began with a simple belief: every great business is built on trust, quality, and the promises it keeps.</p>
+        <p>From our roots in Ahmedabad to our growing vision of serving customers across markets, we strive to deliver more than products and services—we aim to deliver confidence, care, and lasting relationships.</p>
+        <p>In healthcare, we understand that quality is not just a standard; it is a responsibility. This commitment inspires us to continually improve, embrace new opportunities, and place our customers at the heart of everything we do.</p>
+        <p>As we grow, our purpose remains unchanged: to make a meaningful difference through integrity, reliability, and excellence.</p>
+        <p>Thank you for being part of the Bluekites journey. Our story is still unfolding, and we look forward to building a healthier, stronger, and more connected future—together.</p>
+      </div>
+      {%- if collapse -%}
+        <button
+          type="button"
+          class="bk-director__toggle"
+          data-dm-toggle
+          aria-expanded="false"
+          aria-controls="DirectorBody-{{ section.id }}"
+          hidden
         >
-          {{ s.body }}
-        </div>
-        {%- if collapse -%}
-          <button
-            type="button"
-            class="bk-director__toggle"
-            data-dm-toggle
-            aria-expanded="false"
-            aria-controls="DirectorBody-{{ section.id }}"
-            hidden
-          >
-            <span data-dm-label>{{ s.read_more_label | default: 'Read full message' | escape }}</span>
-            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        {%- endif -%}
+          <span data-dm-label>Read full message</span>
+          <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="m5 8 5 5 5-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
       {%- endif -%}
 
-      {%- if s.name != blank or s.signature != blank -%}
-        <footer class="bk-director__signoff">
-          {%- if s.signature != blank -%}
-            {{
-              s.signature
-              | image_url: width: 400
-              | image_tag: loading: 'lazy', class: 'bk-director__signature', alt: ''
-            }}
-          {%- endif -%}
-          <div class="bk-director__meta">
-            {%- if s.name != blank -%}<p class="bk-director__name">{{ s.name | escape }}</p>{%- endif -%}
-            {%- if s.designation != blank or s.organisation != blank -%}
-              <p class="bk-director__role">
-                {{- s.designation | escape -}}
-                {%- if s.designation != blank and s.organisation != blank %}, {% endif -%}
-                {{- s.organisation | escape -}}
-              </p>
-            {%- endif -%}
-          </div>
-          {%- if s.button_label != blank and s.button_link != blank -%}
-            <a href="{{ s.button_link }}" class="bk-director__cta">
-              {{ s.button_label | escape }}
-              <svg viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
-            </a>
-          {%- endif -%}
-        </footer>
-      {%- endif -%}
+      <footer class="bk-director__signoff">
+        {%- if s.signature != blank -%}
+          {{
+            s.signature
+            | image_url: width: 400
+            | image_tag: loading: 'lazy', class: 'bk-director__signature', alt: ''
+          }}
+        {%- endif -%}
+        <div class="bk-director__meta">
+          <p class="bk-director__regards">Warm regards,</p>
+          <p class="bk-director__name">Director</p>
+          <p class="bk-director__role">Bluekites Services</p>
+        </div>
+      </footer>
     </div>
 
   </div>
@@ -135,24 +115,14 @@
 }
 .bk-director--image-right .bk-director__media { order: 2; }
 
-/* Portrait */
-.bk-director__media {
-  position: sticky;
-  top: 96px;
-  margin: 0;
-}
+.bk-director__media { position: sticky; top: 96px; margin: 0; }
 .bk-director__portrait {
   overflow: hidden;
   aspect-ratio: 4 / 5;
   border-radius: var(--dm-radius);
   background: color-mix(in srgb, var(--dm-border) 50%, var(--dm-bg));
 }
-.bk-director__image {
-  display: block;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
+.bk-director__image { display: block; width: 100%; height: 100%; object-fit: cover; }
 .bk-director__placeholder { color: #9ba5b5; }
 .bk-director__caption {
   display: flex;
@@ -168,12 +138,7 @@
 .bk-director__caption-name { font-weight: 600; color: var(--dm-heading); }
 .bk-director__caption-role { color: var(--dm-text); text-align: right; }
 
-/* Content */
-.bk-director__content {
-  min-width: 0;
-  max-width: 680px;
-  padding-top: clamp(0px, 2vw, 24px);
-}
+.bk-director__content { min-width: 0; max-width: 680px; padding-top: clamp(0px, 2vw, 24px); }
 .bk-director__eyebrow {
   display: flex;
   align-items: center;
@@ -186,17 +151,8 @@
   text-transform: uppercase;
   color: var(--dm-accent);
 }
-.bk-director__eyebrow::before {
-  content: "";
-  width: 28px;
-  height: 1px;
-  background: currentColor;
-}
-.bk-director__quote {
-  margin: 0 0 32px;
-  padding: 0;
-  border: 0;
-}
+.bk-director__eyebrow::before { content: ""; width: 28px; height: 1px; background: currentColor; }
+.bk-director__quote { margin: 0 0 32px; padding: 0; border: 0; }
 .bk-director__quote p {
   margin: 0;
   font-family: var(--font-heading--family, inherit);
@@ -216,8 +172,6 @@
 }
 .bk-director__body > * { margin: 0 0 1.1em; }
 .bk-director__body > *:last-child { margin-bottom: 0; }
-.bk-director__body strong { color: var(--dm-heading); font-weight: 600; }
-.bk-director__body a { color: var(--dm-heading); text-underline-offset: 3px; }
 
 .bk-director__body.is-collapsed {
   position: relative;
@@ -248,13 +202,8 @@
 }
 .bk-director__toggle svg { width: 16px; height: 16px; transition: transform .25s ease; }
 .bk-director__toggle[aria-expanded="true"] svg { transform: rotate(180deg); }
-.bk-director__toggle:focus-visible,
-.bk-director__cta:focus-visible {
-  outline: 2px solid var(--dm-heading);
-  outline-offset: 4px;
-}
+.bk-director__toggle:focus-visible { outline: 2px solid var(--dm-heading); outline-offset: 4px; }
 
-/* Sign-off */
 .bk-director__signoff {
   display: flex;
   flex-wrap: wrap;
@@ -273,6 +222,13 @@
   object-position: left bottom;
 }
 .bk-director__meta { min-width: 0; }
+.bk-director__regards {
+  margin: 0 0 6px;
+  font-family: var(--font-body--family, inherit);
+  font-size: 15px;
+  font-style: italic;
+  color: var(--dm-text);
+}
 .bk-director__name {
   margin: 0;
   font-family: var(--font-body--family, inherit);
@@ -280,37 +236,13 @@
   font-weight: 600;
   color: var(--dm-heading);
 }
-.bk-director__role {
-  margin: 4px 0 0;
-  font-size: 14px;
-  color: var(--dm-text);
-}
-.bk-director__cta {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-left: auto;
-  padding: 12px 20px;
-  font: 600 14px/1 var(--font-body--family, inherit);
-  color: var(--dm-bg);
-  background: var(--dm-heading);
-  border-radius: 999px;
-  text-decoration: none;
-  transition: opacity .2s ease;
-}
-.bk-director__cta:hover { opacity: .88; }
-.bk-director__cta svg { width: 16px; height: 16px; }
+.bk-director__role { margin: 4px 0 0; font-size: 14px; color: var(--dm-text); }
 
-/* Responsive */
 @media screen and (max-width: 989px) {
   .bk-director__inner { grid-template-columns: minmax(0, 1fr) minmax(0, 1.4fr); gap: 40px; }
 }
 @media screen and (max-width: 749px) {
-  .bk-director__inner {
-    grid-template-columns: 1fr;
-    gap: 28px;
-    width: calc(100% - 32px);
-  }
+  .bk-director__inner { grid-template-columns: 1fr; gap: 28px; width: calc(100% - 32px); }
   .bk-director--image-right .bk-director__media { order: 0; }
   .bk-director__media { position: static; }
   .bk-director__portrait { aspect-ratio: 4 / 3; }
@@ -321,7 +253,6 @@
   .bk-director__quote p { font-size: clamp(22px, 6.4vw, 28px); }
   .bk-director__body { font-size: 15px; }
   .bk-director__signoff { margin-top: 32px; padding-top: 22px; }
-  .bk-director__cta { margin-left: 0; width: 100%; justify-content: center; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bk-director * { transition-duration: .01ms !important; }
@@ -337,8 +268,8 @@
   if (!body || !toggle) return;
 
   const label = toggle.querySelector('[data-dm-label]');
-  const moreText = label.textContent.trim();
-  const lessText = {{ section.settings.read_less_label | default: 'Show less' | json }};
+  const moreText = 'Read full message';
+  const lessText = 'Show less';
 
   const check = () => {
     if (!body.classList.contains('is-collapsed')) return;
@@ -354,8 +285,7 @@
     label.textContent = expanded ? moreText : lessText;
     if (expanded) {
       check();
-      const top = root.getBoundingClientRect().top;
-      if (top < 0) root.scrollIntoView({ block: 'start' });
+      if (root.getBoundingClientRect().top < 0) root.scrollIntoView({ block: 'start' });
     }
   });
 
@@ -370,21 +300,7 @@
   "tag": "section",
   "class": "section-wrapper",
   "settings": [
-    { "type": "header", "content": "Content" },
-    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "Message from the Director" },
-    {
-      "type": "textarea",
-      "id": "quote",
-      "label": "Lead statement",
-      "info": "One or two sentences. Shown large.",
-      "default": "We built this company on a simple promise: do the work properly, and stand behind it."
-    },
-    {
-      "type": "richtext",
-      "id": "body",
-      "label": "Message",
-      "default": "<p>Since our first project, our focus has been on reliability, transparency and long-term relationships with the people we serve.</p><p>As we grow, those principles stay the same. Thank you for your continued trust.</p>"
-    },
+    { "type": "header", "content": "Images" },
     { "type": "image_picker", "id": "image", "label": "Portrait" },
     {
       "type": "select",
@@ -396,18 +312,10 @@
       ],
       "default": "left"
     },
-    { "type": "header", "content": "Sign-off" },
-    { "type": "text", "id": "name", "label": "Name", "default": "Director name" },
-    { "type": "text", "id": "designation", "label": "Designation", "default": "Managing Director" },
-    { "type": "text", "id": "organisation", "label": "Organisation" },
     { "type": "image_picker", "id": "signature", "label": "Signature image", "info": "Transparent PNG works best." },
-    { "type": "text", "id": "button_label", "label": "Button label" },
-    { "type": "url", "id": "button_link", "label": "Button link" },
-    { "type": "header", "content": "Long messages" },
-    { "type": "checkbox", "id": "enable_read_more", "label": "Collapse long messages", "default": true },
+    { "type": "header", "content": "Long message" },
+    { "type": "checkbox", "id": "enable_read_more", "label": "Collapse long message", "default": false },
     { "type": "range", "id": "collapsed_lines", "label": "Lines shown before collapse", "min": 4, "max": 16, "step": 1, "default": 8 },
-    { "type": "text", "id": "read_more_label", "label": "Expand label", "default": "Read full message" },
-    { "type": "text", "id": "read_less_label", "label": "Collapse label", "default": "Show less" },
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "image_radius", "label": "Portrait corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 8 },
     { "type": "range", "id": "side_margin", "label": "Side margin", "min": 16, "max": 120, "step": 4, "unit": "px", "default": 40 },

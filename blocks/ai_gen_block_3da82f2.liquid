@@ -1,0 +1,149 @@
+{% doc %}
+  @prompt
+    please create aabout us section 
+    
+    # About Us
+    
+    ## Welcome to Bluekites
+    
+    At *Bluekites*, we are committed to providing a diverse range of pharmaceutical, Ayurvedic, healthcare, wellness, and personal care products to meet evolving consumer needs. Our product portfolio brings together modern healthcare formulations and traditional wellness products, offering a broad selection across multiple categories.
+    
+    With a focus on product variety and service excellence, we aim to build lasting relationships with our customers, distributors, and business partners through a commitment to quality, reliability, and customer satisfaction.
+    
+    ## Our Product Portfolio
+    
+    Bluekites offers products across a wide range of categories, including:
+    
+    •⁠  ⁠*Allopathic Medicines:* Tablets, capsules, syrups, creams, gels, drops, and injectable formulations.
+    •⁠  ⁠*Ayurvedic Products:* Traditional wellness formulations, herbal products, oils, and other Ayurvedic preparations.
+    •⁠  ⁠*Health Supplements:* Nutritional powders, glucose products, vitamins, minerals, and wellness supplements.
+    •⁠  ⁠*Personal Care Products:* Hair oils, shampoos, rose water, glycerin, and other personal care essentials.
+    
+    Our diverse portfolio reflects our aim to serve different healthcare and wellness requirements through a comprehensive product range.
+    
+    ## Our Commitment
+    
+    At Bluekites, we believe that trust is built through consistency, responsible business practices, and a customer-focused approach. We strive to support our business partners with a varied product selection and dependable service while continually working towards stronger relationships and sustainable growth.
+    
+    ## Our Vision
+    
+    To establish Bluekites as a trusted name in the pharmaceutical, healthcare, and wellness industry by expanding our product portfolio, strengthening partnerships, and maintaining a strong focus on customer needs.
+    
+    ## Our Mission
+    
+    Our mission is to make a diverse range of healthcare and wellness products accessible through responsible business practices, reliable service, and a commitment to continuous improvement.
+    
+    ## Building Trust Through Products and Service
+    
+    At Bluekites, our journey is driven by the goal of creating value for our customers and business partners. We look forward to building lasting partnerships and contributing to the evolving healthcare and wellness landscape through our products and services.
+    
+    *Bluekites — Excellence in Products and Services.*
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-about-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    margin-inline: auto;
+    padding: clamp(28px, 5vw, 64px) clamp(20px, 5vw, 72px);
+    color: {{ block.settings.text_color }};
+    background: {{ block.settings.background_color }};
+    border-radius: {{ block.settings.corner_radius }}px;
+  }
+
+  .ai-about-{{ ai_gen_id }}__inner { max-width: 980px; margin-inline: auto; }
+  .ai-about-{{ ai_gen_id }}__eyebrow { margin: 0 0 10px; color: {{ block.settings.accent_color }}; font-size: 13px; font-weight: 700; letter-spacing: .12em; text-transform: uppercase; }
+  .ai-about-{{ ai_gen_id }}__title { margin: 0 0 28px; color: {{ block.settings.heading_color }}; font-size: clamp(34px, 5vw, 58px); line-height: 1.08; }
+  .ai-about-{{ ai_gen_id }}__intro { padding-bottom: 30px; border-bottom: 1px solid {{ block.settings.border_color }}; }
+  .ai-about-{{ ai_gen_id }}__content p { margin: 0 0 16px; line-height: 1.75; }
+  .ai-about-{{ ai_gen_id }}__content p:last-child { margin-bottom: 0; }
+  .ai-about-{{ ai_gen_id }}__sections { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; margin-top: 28px; }
+  .ai-about-{{ ai_gen_id }}__card { padding: 24px; border: 1px solid {{ block.settings.border_color }}; border-radius: 12px; background: {{ block.settings.card_color }}; }
+  .ai-about-{{ ai_gen_id }}__card--wide { grid-column: 1 / -1; }
+  .ai-about-{{ ai_gen_id }}__heading { margin: 0 0 12px; color: {{ block.settings.heading_color }}; font-size: 22px; line-height: 1.3; }
+  .ai-about-{{ ai_gen_id }}__portfolio { margin: 0; padding-left: 21px; }
+  .ai-about-{{ ai_gen_id }}__portfolio li { padding-left: 4px; margin: 0 0 10px; line-height: 1.65; }
+  .ai-about-{{ ai_gen_id }}__portfolio li:last-child { margin-bottom: 0; }
+  .ai-about-{{ ai_gen_id }}__closing { margin-top: 24px; padding: 24px; border-left: 4px solid {{ block.settings.accent_color }}; background: {{ block.settings.card_color }}; }
+  .ai-about-{{ ai_gen_id }}__tagline { display: block; margin-top: 16px; color: {{ block.settings.heading_color }}; font-weight: 700; }
+  @media screen and (max-width: 749px) {
+    .ai-about-{{ ai_gen_id }} { width: 100%; padding: 30px 20px; }
+    .ai-about-{{ ai_gen_id }}__sections { grid-template-columns: 1fr; }
+    .ai-about-{{ ai_gen_id }}__card--wide { grid-column: auto; }
+  }
+{% endstyle %}
+
+<section class="ai-about-{{ ai_gen_id }}" style="width: {{ block.settings.desktop_width_percent }}%;" {{ block.shopify_attributes }}>
+  <div class="ai-about-{{ ai_gen_id }}__inner">
+    <p class="ai-about-{{ ai_gen_id }}__eyebrow">{{ block.settings.eyebrow | escape }}</p>
+    <h2 class="ai-about-{{ ai_gen_id }}__title">{{ block.settings.title | escape }}</h2>
+    <div class="ai-about-{{ ai_gen_id }}__content ai-about-{{ ai_gen_id }}__intro">{{ block.settings.intro }}</div>
+    <div class="ai-about-{{ ai_gen_id }}__sections">
+      <div class="ai-about-{{ ai_gen_id }}__card ai-about-{{ ai_gen_id }}__card--wide">
+        <h3 class="ai-about-{{ ai_gen_id }}__heading">{{ block.settings.portfolio_heading | escape }}</h3>
+        <div class="ai-about-{{ ai_gen_id }}__content">{{ block.settings.portfolio_intro }}</div>
+        <ul class="ai-about-{{ ai_gen_id }}__portfolio">
+          <li><strong>Allopathic medicines:</strong> Tablets, capsules, syrups, creams, gels, drops, and injectable formulations.</li>
+          <li><strong>Ayurvedic products:</strong> Traditional wellness formulations, herbal products, oils, and other Ayurvedic preparations.</li>
+          <li><strong>Health supplements:</strong> Nutritional powders, glucose products, vitamins, minerals, and wellness supplements.</li>
+          <li><strong>Personal care products:</strong> Hair oils, shampoos, rose water, glycerin, and other personal care essentials.</li>
+        </ul>
+        <p class="ai-about-{{ ai_gen_id }}__content" style="margin-top: 14px;">{{ block.settings.portfolio_closing | escape }}</p>
+      </div>
+      <div class="ai-about-{{ ai_gen_id }}__card">
+        <h3 class="ai-about-{{ ai_gen_id }}__heading">{{ block.settings.commitment_heading | escape }}</h3>
+        <div class="ai-about-{{ ai_gen_id }}__content">{{ block.settings.commitment }}</div>
+      </div>
+      <div class="ai-about-{{ ai_gen_id }}__card">
+        <h3 class="ai-about-{{ ai_gen_id }}__heading">{{ block.settings.vision_heading | escape }}</h3>
+        <div class="ai-about-{{ ai_gen_id }}__content">{{ block.settings.vision }}</div>
+      </div>
+      <div class="ai-about-{{ ai_gen_id }}__card ai-about-{{ ai_gen_id }}__card--wide">
+        <h3 class="ai-about-{{ ai_gen_id }}__heading">{{ block.settings.mission_heading | escape }}</h3>
+        <div class="ai-about-{{ ai_gen_id }}__content">{{ block.settings.mission }}</div>
+      </div>
+    </div>
+    <div class="ai-about-{{ ai_gen_id }}__closing ai-about-{{ ai_gen_id }}__content">
+      <h3 class="ai-about-{{ ai_gen_id }}__heading">{{ block.settings.closing_heading | escape }}</h3>
+      {{ block.settings.closing_text }}
+      <span class="ai-about-{{ ai_gen_id }}__tagline">{{ block.settings.tagline | escape }}</span>
+    </div>
+  </div>
+</section>
+
+{% schema %}
+{
+  "name": "About us",
+  "settings": [
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "text", "id": "eyebrow", "label": "Eyebrow", "default": "About us" },
+    { "type": "text", "id": "title", "label": "Title", "default": "Welcome to Bluekites" },
+    { "type": "richtext", "id": "intro", "label": "Introduction", "default": "<p>At Bluekites, we are committed to providing a diverse range of pharmaceutical, Ayurvedic, healthcare, wellness, and personal care products to meet evolving consumer needs. Our portfolio brings together modern healthcare formulations and traditional wellness products across multiple categories.</p><p>With a focus on product variety and service excellence, we aim to build lasting relationships with our customers, distributors, and business partners through quality, reliability, and customer satisfaction.</p>" },
+    { "type": "text", "id": "portfolio_heading", "label": "Portfolio heading", "default": "Our product portfolio" },
+    { "type": "richtext", "id": "portfolio_intro", "label": "Portfolio introduction", "default": "<p>Bluekites offers products across a wide range of categories, including:</p>" },
+    { "type": "text", "id": "portfolio_closing", "label": "Portfolio closing text", "default": "Our diverse portfolio reflects our aim to serve different healthcare and wellness requirements through a comprehensive product range." },
+    { "type": "text", "id": "commitment_heading", "label": "Commitment heading", "default": "Our commitment" },
+    { "type": "richtext", "id": "commitment", "label": "Commitment text", "default": "<p>We believe trust is built through consistency, responsible business practices, and a customer-focused approach. We strive to support our business partners with varied products and dependable service while working towards stronger relationships and sustainable growth.</p>" },
+    { "type": "text", "id": "vision_heading", "label": "Vision heading", "default": "Our vision" },
+    { "type": "richtext", "id": "vision", "label": "Vision text", "default": "<p>To establish Bluekites as a trusted name in the pharmaceutical, healthcare, and wellness industry by expanding our portfolio, strengthening partnerships, and maintaining a strong focus on customer needs.</p>" },
+    { "type": "text", "id": "mission_heading", "label": "Mission heading", "default": "Our mission" },
+    { "type": "richtext", "id": "mission", "label": "Mission text", "default": "<p>To make a diverse range of healthcare and wellness products accessible through responsible business practices, reliable service, and a commitment to continuous improvement.</p>" },
+    { "type": "text", "id": "closing_heading", "label": "Closing heading", "default": "Building trust through products and service" },
+    { "type": "richtext", "id": "closing_text", "label": "Closing text", "default": "<p>Our journey is driven by the goal of creating value for our customers and business partners. We look forward to building lasting partnerships and contributing to the evolving healthcare and wellness landscape through our products and services.</p>" },
+    { "type": "text", "id": "tagline", "label": "Tagline", "default": "Bluekites — Excellence in Products and Services." },
+    { "type": "header", "content": "Colors and style" },
+    { "type": "color", "id": "background_color", "label": "Background", "default": "#FAF9F1" },
+    { "type": "color", "id": "card_color", "label": "Card background", "default": "#FFFFFF" },
+    { "type": "color", "id": "heading_color", "label": "Headings", "default": "#000000" },
+    { "type": "color", "id": "text_color", "label": "Text", "default": "#202020" },
+    { "type": "color", "id": "accent_color", "label": "Accent", "default": "#536330" },
+    { "type": "color", "id": "border_color", "label": "Borders", "default": "#D8D8D0" },
+    { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 40, "step": 2, "unit": "px", "default": 8 }
+  ],
+  "presets": [{ "name": "About us" }],
+  "tag": null,
+  "class": "about-us-block"
+}
+{% endschema %}

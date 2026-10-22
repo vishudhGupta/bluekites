@@ -12,13 +12,6 @@
     "main": {
       "type": "main-page",
       "blocks": {
-        "ai_gen_block_d769fd7_GUnTtE": {
-          "type": "ai_gen_block_d769fd7",
-          "settings": {
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        },
         "page-content": {
           "type": "page-content",
           "settings": {},
@@ -26,7 +19,6 @@
         }
       },
       "block_order": [
-        "ai_gen_block_d769fd7_GUnTtE",
         "page-content"
       ],
       "settings": {
@@ -40,9 +32,74 @@
         "padding-block-start": 40,
         "padding-block-end": 80
       }
+    },
+    "17926464363bb1e623": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_3da82f2_erhGVf": {
+          "type": "ai_gen_block_3da82f2",
+          "settings": {
+            "desktop_width_percent": 100,
+            "eyebrow": "About us",
+            "title": "Welcome to Bluekites",
+            "intro": "<p>At Bluekites, we are committed to providing a diverse range of pharmaceutical, Ayurvedic, healthcare, wellness, and personal care products to meet evolving consumer needs. Our portfolio brings together modern healthcare formulations and traditional wellness products across multiple categories.</p><p>With a focus on product variety and service excellence, we aim to build lasting relationships with our customers, distributors, and business partners through quality, reliability, and customer satisfaction.</p>",
+            "portfolio_heading": "Our product portfolio",
+            "portfolio_intro": "<p>Bluekites offers products across a wide range of categories, including:</p>",
+            "portfolio_closing": "Our diverse portfolio reflects our aim to serve different healthcare and wellness requirements through a comprehensive product range.",
+            "commitment_heading": "Our commitment",
+            "commitment": "<p>We believe trust is built through consistency, responsible business practices, and a customer-focused approach. We strive to support our business partners with varied products and dependable service while working towards stronger relationships and sustainable growth.</p>",
+            "vision_heading": "Our vision",
+            "vision": "<p>To establish Bluekites as a trusted name in the pharmaceutical, healthcare, and wellness industry by expanding our portfolio, strengthening partnerships, and maintaining a strong focus on customer needs.</p>",
+            "mission_heading": "Our mission",
+            "mission": "<p>To make a diverse range of healthcare and wellness products accessible through responsible business practices, reliable service, and a commitment to continuous improvement.</p>",
+            "closing_heading": "Building trust through products and service",
+            "closing_text": "<p>Our journey is driven by the goal of creating value for our customers and business partners. We look forward to building lasting partnerships and contributing to the evolving healthcare and wellness landscape through our products and services.</p>",
+            "tagline": "Bluekites — Excellence in Products and Services.",
+            "background_color": "#FAF9F1",
+            "card_color": "#FFFFFF",
+            "heading_color": "#000000",
+            "text_color": "#202020",
+            "accent_color": "#536330",
+            "border_color": "#D8D8D0",
+            "corner_radius": 8
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_3da82f2_erhGVf"
+      ],
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
     }
   },
   "order": [
+    "17926464363bb1e623",
     "main"
   ]
 }

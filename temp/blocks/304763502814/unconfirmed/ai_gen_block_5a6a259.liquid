@@ -1,0 +1,209 @@
+{% doc %}
+  @prompt
+    a functinal full width search bar
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-search-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    font-family: inherit;
+  }
+
+  .ai-search-{{ ai_gen_id }}__form {
+    display: flex;
+    width: 100%;
+    min-height: 52px;
+    overflow: hidden;
+    background: {{ block.settings.input_background }};
+    border: 1px solid {{ block.settings.border_color }};
+    border-radius: {{ block.settings.border_radius }}px;
+  }
+
+  .ai-search-{{ ai_gen_id }}__input {
+    flex: 1 1 auto;
+    min-width: 0;
+    padding: 12px 16px;
+    border: 0;
+    outline: none;
+    background: transparent;
+    color: {{ block.settings.text_color }};
+    font: inherit;
+    font-size: 16px;
+  }
+
+  .ai-search-{{ ai_gen_id }}__input::placeholder {
+    color: {{ block.settings.placeholder_color }};
+    opacity: 1;
+  }
+
+  .ai-search-{{ ai_gen_id }}__input:focus-visible {
+    box-shadow: inset 0 0 0 2px {{ block.settings.button_color }};
+  }
+
+  .ai-search-{{ ai_gen_id }}__button {
+    display: inline-flex;
+    flex: 0 0 auto;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    min-width: 56px;
+    padding: 12px 20px;
+    border: 0;
+    background: {{ block.settings.button_color }};
+    color: {{ block.settings.button_text_color }};
+    font: inherit;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .ai-search-{{ ai_gen_id }}__button:hover {
+    background: {{ block.settings.button_hover_color }};
+  }
+
+  .ai-search-{{ ai_gen_id }}__button:focus-visible {
+    outline: 3px solid {{ block.settings.text_color }};
+    outline-offset: -4px;
+  }
+
+  .ai-search-{{ ai_gen_id }}__button svg {
+    display: block;
+    width: 20px;
+    height: 20px;
+    flex: 0 0 auto;
+  }
+
+  @media screen and (max-width: 480px) {
+    .ai-search-{{ ai_gen_id }}__button {
+      padding-right: 16px;
+      padding-left: 16px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-search-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  <form action="{{ routes.search_url }}" method="get" role="search" class="ai-search-{{ ai_gen_id }}__form">
+    <label class="visually-hidden" for="SearchInput-{{ ai_gen_id }}">{{ block.settings.accessible_label | escape }}</label>
+    <input
+      id="SearchInput-{{ ai_gen_id }}"
+      class="ai-search-{{ ai_gen_id }}__input"
+      type="search"
+      name="q"
+      value="{{ search.terms | escape }}"
+      placeholder="{{ block.settings.placeholder | escape }}"
+      autocomplete="off"
+      aria-label="{{ block.settings.accessible_label | escape }}"
+    >
+    <input type="hidden" name="options[prefix]" value="last">
+    <button class="ai-search-{{ ai_gen_id }}__button" type="submit" aria-label="{{ block.settings.button_label | escape }}">
+      <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" aria-hidden="true" focusable="false">
+        <circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="2"></circle>
+        <path d="m16 16 4.5 4.5" stroke="currentColor" stroke-width="2" stroke-linecap="round"></path>
+      </svg>
+      {% if block.settings.show_button_text %}<span>{{ block.settings.button_label | escape }}</span>{% endif %}
+    </button>
+  </form>
+</div>
+
+{% schema %}
+{
+  "name": "Full-width search",
+  "settings": [
+    {
+      "type": "text",
+      "id": "placeholder",
+      "label": "Placeholder",
+      "default": "Search products"
+    },
+    {
+      "type": "text",
+      "id": "accessible_label",
+      "label": "Accessible label",
+      "default": "Search the store"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_button_text",
+      "label": "Show button text",
+      "default": true
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button label",
+      "default": "Search"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "color",
+      "id": "input_background",
+      "label": "Input background",
+      "default": "#FFFFFF"
+    },
+    {
+      "type": "color",
+      "id": "text_color",
+      "label": "Text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "placeholder_color",
+      "label": "Placeholder text",
+      "default": "#595959"
+    },
+    {
+      "type": "color",
+      "id": "border_color",
+      "label": "Border",
+      "default": "#767676"
+    },
+    {
+      "type": "color",
+      "id": "button_color",
+      "label": "Button background",
+      "default": "#C3CCA6"
+    },
+    {
+      "type": "color",
+      "id": "button_text_color",
+      "label": "Button text",
+      "default": "#000000"
+    },
+    {
+      "type": "color",
+      "id": "button_hover_color",
+      "label": "Button hover background",
+      "default": "#AEBB85"
+    },
+    {
+      "type": "range",
+      "id": "border_radius",
+      "label": "Corner radius",
+      "min": 0,
+      "max": 40,
+      "step": 2,
+      "unit": "px",
+      "default": 8
+    }
+  ],
+  "presets": [
+    {
+      "name": "Full-width search"
+    }
+  ],
+  "tag": null,
+  "class": "full-width-search-block"
+}
+{% endschema %}

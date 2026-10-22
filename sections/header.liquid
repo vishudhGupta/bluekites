@@ -1351,6 +1351,17 @@
     filter: brightness(0) invert(1);
   }
   */
+  /* ---------- Stacking: header (and its More / mega menu panels) always above page content ---------- */
+  .header-section,
+  .header-section:has(> #header-component[sticky='always']),
+  .header-section:has(> #header-component[sticky='scroll-up'][data-sticky-state='active']) {
+    z-index: 1000 !important;
+  }
+
+  #header-component .menu-list__submenu,
+  #header-component .overflow-menu::part(overflow) {
+    z-index: 1001;
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}

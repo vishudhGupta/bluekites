@@ -340,6 +340,7 @@
             "show_categories": true,
             "categories": [],
             "full_width": true,
+            "content_width": 0,
             "padding": 14,
             "bg_start": "#5e0f12",
             "bg_end": "#800000",
@@ -378,7 +379,7 @@
         "overlay_color": "#00000026",
         "overlay_style": "solid",
         "gradient_direction": "to top",
-        "padding-block-start": 20,
+        "padding-block-start": 0,
         "padding-block-end": 0
       }
     },

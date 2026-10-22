@@ -70,6 +70,13 @@
   </div>
 </div>
 
+{% style %}
+  #BkFooter-{{ section.id }} { --bk-legal-label: {{ section.settings.legal_heading | default: 'Legal' | json }}; }
+  @media screen and (min-width: 1100px) {
+    #BkFooter-{{ section.id }} .bk-footer__content > :nth-child(2) li:nth-child(-n+{{ section.settings.quick_links_count }}) { grid-column: 1; }
+  }
+{% endstyle %}
+
 {% stylesheet %}
   /* Full-bleed footer background; keep all existing Shopify content blocks intact. */
   .section.bk-footer {
@@ -117,9 +124,9 @@
   /* ---------- Back to top ---------- */
   .bk-footer__top {
     position: absolute;
-    top: -22px;
+    top: 28px;
     right: max(20px, calc((100% - var(--bk-footer-max)) / 2));
-    z-index: 2;
+    z-index: 3;
     display: grid;
     place-items: center;
     width: 44px;
@@ -165,16 +172,33 @@
     .bk-footer .bk-footer__content > :nth-child(4) { grid-column: 1; grid-row: 2; }       /* Social icons */
     .bk-footer .bk-footer__content > :nth-child(n+5) { grid-column: 1; }                  /* Extra blocks */
 
-    /* Long Quick Links list flows into 2 columns to keep the footer short */
+    /* Quick Links block split into two columns: Quick Links | Legal */
+    .bk-footer .bk-footer__content > :nth-child(2) { position: relative; }
     .bk-footer .bk-footer__content > :nth-child(2) ul,
     .bk-footer .bk-footer__content > :nth-child(2) ol {
-      display: block;
-      column-count: 2;
-      column-gap: 32px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      grid-auto-flow: row dense;
+      column-gap: 40px;
+      row-gap: 8px;
     }
-    .bk-footer .bk-footer__content > :nth-child(2) li {
-      break-inside: avoid;
-      margin-bottom: 8px;
+    .bk-footer .bk-footer__content > :nth-child(2) li { grid-column: 2; }
+
+    /* "Legal" heading over the second column, styled like the other headings */
+    .bk-footer .bk-footer__content > :nth-child(2)::after {
+      content: var(--bk-legal-label);
+      position: absolute;
+      top: 0;
+      left: calc(50% + 20px);
+      padding: 0 0 8px;
+      color: var(--bk-footer-heading);
+      font-family: var(--font-body--family, inherit);
+      font-size: 13px;
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      background: linear-gradient(var(--bk-footer-accent), var(--bk-footer-accent)) left bottom / 24px 2px no-repeat;
     }
   }
 
@@ -450,6 +474,9 @@
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
     },
+    { "type": "header", "content": "Quick Links / Legal" },
+    { "type": "text", "id": "legal_heading", "label": "Second column heading", "default": "Legal" },
+    { "type": "range", "id": "quick_links_count", "label": "Links kept under Quick Links", "min": 1, "max": 10, "step": 1, "default": 2, "info": "The rest of the Quick Links menu moves under the Legal heading (desktop)." },
     { "type": "header", "content": "Bottom bar" },
     { "type": "text", "id": "copyright_name", "label": "Copyright name", "default": "Bluekites Services" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },

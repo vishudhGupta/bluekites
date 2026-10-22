@@ -1362,6 +1362,12 @@
   #header-component .overflow-menu::part(overflow) {
     z-index: 1001;
   }
+  /* "More" dropdown: max 55% of the screen height, scrolls inside if longer */
+  #header-component .overflow-menu::part(overflow-list) {
+    max-height: 55vh !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
 {% endstylesheet %}
 
 {% unless request.design_mode %}

@@ -344,7 +344,7 @@
             "slide_1_button_link": "",
             "slide_2_image": "shopify://shop_images/WhatsApp_Image_2026-10-21_at_21.14.21.jpg",
             "slide_2_mobile_image": "shopify://shop_images/bluekites-slide-2-explore-more-mobile.jpg",
-            "slide_2_show_text": true,
+            "slide_2_show_text": false,
             "slide_2_badge": "Explore more",
             "slide_2_heading": "Find something made for you",
             "slide_2_subtitle": "Explore a considered range of everyday essentials.",

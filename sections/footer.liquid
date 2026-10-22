@@ -414,7 +414,17 @@
 
 <script>
   (() => {
-    const btn = document.querySelector('#BkFooter-{{ section.id }} [data-bk-top]');
+    const root = document.querySelector('#BkFooter-{{ section.id }}');
+    if (!root) return;
+
+    const list = root.querySelector('.bk-footer__content > :nth-child(2) ul');
+    const keep = {{ section.settings.quick_links_count }};
+    if (list && !list.dataset.bkMoved && list.children.length > keep) {
+      list.insertBefore(list.lastElementChild, list.children[keep - 1]);
+      list.dataset.bkMoved = 'true';
+    }
+
+    const btn = root.querySelector('[data-bk-top]');
     if (!btn || btn.dataset.ready) return;
     btn.dataset.ready = 'true';
     btn.addEventListener('click', () => {

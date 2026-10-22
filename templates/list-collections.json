@@ -9,6 +9,25 @@
  */
 {
   "sections": {
+    "ai_smart_XrCMCe": {
+      "type": "ai_smart",
+      "name": "Search bar",
+      "settings": {
+        "placeholder": "Search for hand rubs, gloves, healthcare products…",
+        "button_label": "Search",
+        "product_limit": 6,
+        "show_categories": true,
+        "categories": [],
+        "full_width": true,
+        "content_width": 0,
+        "padding": 14,
+        "bg_start": "#5E0F12",
+        "bg_end": "#800000",
+        "accent": "#D4AB55",
+        "button_text_color": "#5E0F12",
+        "brand_color": "#800000"
+      }
+    },
     "collection_list_KreTXe": {
       "type": "main-collection-list",
       "blocks": {
@@ -144,6 +163,7 @@
     }
   },
   "order": [
+    "ai_smart_XrCMCe",
     "collection_list_KreTXe",
     "blocks_VgV9xt"
   ]

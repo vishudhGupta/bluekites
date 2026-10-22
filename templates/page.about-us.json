@@ -12,6 +12,13 @@
     "main": {
       "type": "main-page",
       "blocks": {
+        "ai_gen_block_d769fd7_GUnTtE": {
+          "type": "ai_gen_block_d769fd7",
+          "settings": {
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        },
         "page-content": {
           "type": "page-content",
           "settings": {},
@@ -19,6 +26,7 @@
         }
       },
       "block_order": [
+        "ai_gen_block_d769fd7_GUnTtE",
         "page-content"
       ],
       "settings": {

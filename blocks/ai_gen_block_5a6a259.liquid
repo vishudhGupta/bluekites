@@ -13,7 +13,6 @@
 <div
   class="bk-search{% unless s.full_width == false %} bk-search--full{% endunless %}"
   id="BkSearch-{{ uid }}"
-  {% unless s.sticky == false %}data-bks-sticky{% endunless %}
   {% if block %}{{ block.shopify_attributes }}{% endif %}
   style="
     --bks-bg-1: {{ s.bg_start | default: "#5E0F12" }};
@@ -345,23 +344,6 @@
 
 .bk-search__empty { margin: 0; padding: 18px 12px; text-align: center; font-size: 14px; color: #6b6466; }
 
-
-/* ---------- Sticky ---------- */
-.bk-search.is-stuck {
-  position: fixed !important;
-  top: var(--bks-top, 0px) !important;
-  left: var(--bks-stuck-left, 0px) !important;
-  width: var(--bks-stuck-w, 100vw) !important;
-  margin: 0 !important;
-  z-index: 90 !important;
-  padding-block: 8px !important;
-  box-shadow: 0 10px 24px -14px rgba(0, 0, 0, .55);
-  animation: bks-drop .22s ease;
-}
-.bk-search.is-stuck .bk-search__form { height: 46px; }
-@keyframes bks-drop { from { transform: translateY(-100%); } to { transform: none; } }
-.bk-search__spacer { display: block; width: 100%; height: 0; }
-
 /* Mobile */
 @media screen and (max-width: 749px) {
   .bk-search { padding: 10px 12px; }
@@ -606,7 +588,6 @@
   const fit = () => {
     const vw = document.documentElement.clientWidth;
     document.querySelectorAll('.bk-search--full').forEach((el) => {
-      if (el.classList.contains('is-stuck')) return;
       el.style.setProperty('--bks-full-x', '0px');
       el.style.setProperty('--bks-full-w', vw + 'px');
       const left = el.getBoundingClientRect().left;
@@ -620,66 +601,7 @@
   document.addEventListener('shopify:section:load', queueFit);
   if ('ResizeObserver' in window) new ResizeObserver(queueFit).observe(document.documentElement);
 
-
-  // ---------- Sticky: pins below the theme header while scrolling ----------
-  const headerBottom = () => {
-    const h = document.querySelector('#header-component, header-component, .header-wrapper, .shopify-section-group-header-group header, header.header, header');
-    if (!h) return 0;
-    const pos = getComputedStyle(h).position;
-    const r = h.getBoundingClientRect();
-    if ((pos === 'sticky' || pos === 'fixed') && r.bottom > 0) return Math.round(r.bottom);
-    // Theme may make the header's parent sticky instead
-    const wrap = h.closest('.shopify-section, .header-section, sticky-header');
-    if (wrap && ['sticky', 'fixed'].includes(getComputedStyle(wrap).position)) {
-      const wr = wrap.getBoundingClientRect();
-      if (wr.bottom > 0) return Math.round(wr.bottom);
-    }
-    return 0;
-  };
-
-  const stickies = [];
-  const setupSticky = (el) => {
-    if (el.dataset.bksStickyReady) return;
-    el.dataset.bksStickyReady = 'true';
-    const spacer = document.createElement('div');
-    spacer.className = 'bk-search__spacer';
-    spacer.setAttribute('aria-hidden', 'true');
-    el.parentNode.insertBefore(spacer, el);
-    stickies.push({ el, spacer });
-  };
-
-  const updateSticky = () => {
-    const top = headerBottom();
-    const vw = document.documentElement.clientWidth;
-    stickies.forEach(({ el, spacer }) => {
-      if (!el.isConnected) return;
-      const anchor = spacer.getBoundingClientRect();
-      const stuck = el.classList.contains('is-stuck');
-      if (!stuck && anchor.top <= top) {
-        spacer.style.height = el.offsetHeight + 'px';
-        el.classList.add('is-stuck');
-      } else if (stuck && anchor.top > top) {
-        el.classList.remove('is-stuck');
-        spacer.style.height = '0px';
-        fit();
-      }
-      if (el.classList.contains('is-stuck')) {
-        el.style.setProperty('--bks-top', top + 'px');
-        const full = el.classList.contains('bk-search--full');
-        el.style.setProperty('--bks-stuck-left', full ? '0px' : anchor.left + 'px');
-        el.style.setProperty('--bks-stuck-w', (full ? vw : anchor.width) + 'px');
-      }
-    });
-  };
-  window.addEventListener('scroll', updateSticky, { passive: true });
-  window.addEventListener('resize', updateSticky);
-
-  const boot = () => {
-    document.querySelectorAll('[data-bks-form]').forEach(init);
-    fit();
-    document.querySelectorAll('[data-bks-sticky]').forEach(setupSticky);
-    updateSticky();
-  };
+  const boot = () => { document.querySelectorAll('[data-bks-form]').forEach(init); fit(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
   document.addEventListener('shopify:section:load', boot);
@@ -702,7 +624,6 @@
     { "type": "collection_list", "id": "categories", "label": "Categories", "limit": 12 },
     { "type": "header", "content": "Style" },
     { "type": "checkbox", "id": "full_width", "label": "Full width (edge to edge)", "default": true },
-    { "type": "checkbox", "id": "sticky", "label": "Sticky while scrolling", "default": true, "info": "Pins the search bar under the header when the page scrolls." },
     { "type": "range", "id": "content_width", "label": "Search box max width", "min": 0, "max": 1600, "step": 20, "unit": "px", "default": 0, "info": "0 = box stretches the full width too." },
     { "type": "range", "id": "padding", "label": "Vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 14 },
     { "type": "color", "id": "bg_start", "label": "Background start", "default": "#5E0F12" },

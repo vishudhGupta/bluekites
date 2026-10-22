@@ -1,19 +1,26 @@
 {%- liquid
-  assign s = section.settings
-  assign uid = section.id
-  assign placeholder = s.placeholder | default: 'Search for products, brands and more…'
+  # Works both as a theme block (blocks/) and as a section (sections/)
+  if block
+    assign s = block.settings
+    assign uid = block.id | replace: '_', '' | replace: '-', ''
+  else
+    assign s = section.settings
+    assign uid = section.id
+  endif
+  assign placeholder = s.placeholder | default: 'Search for hand rubs, gloves, healthcare products…'
 -%}
 
 <div
-  class="bk-search{% if s.full_width %} bk-search--full{% endif %}"
+  class="bk-search{% unless s.full_width == false %} bk-search--full{% endunless %}"
   id="BkSearch-{{ uid }}"
+  {% if block %}{{ block.shopify_attributes }}{% endif %}
   style="
-    --bks-bg-1: {{ s.bg_start }};
-    --bks-bg-2: {{ s.bg_end }};
-    --bks-accent: {{ s.accent }};
-    --bks-btn-text: {{ s.button_text_color }};
-    --bks-brand: {{ s.brand_color }};
-    --bks-pad: {{ s.padding }}px;
+    --bks-bg-1: {{ s.bg_start | default: "#5E0F12" }};
+    --bks-bg-2: {{ s.bg_end | default: "#800000" }};
+    --bks-accent: {{ s.accent | default: "#D4AB55" }};
+    --bks-btn-text: {{ s.button_text_color | default: "#5E0F12" }};
+    --bks-brand: {{ s.brand_color | default: "#800000" }};
+    --bks-pad: {{ s.padding | default: 14 }}px;
     {% if s.content_width > 0 %}--bks-max: {{ s.content_width }}px;{% endif %}
   "
 >
@@ -25,7 +32,7 @@
     autocomplete="off"
     data-bks-form
     data-suggest-url="{{ routes.predictive_search_url }}.json"
-    data-limit="{{ s.product_limit }}"
+    data-limit="{{ s.product_limit | default: 6 }}"
     data-money="{{ shop.money_format | strip_html | escape }}"
   >
     <input type="hidden" name="options[prefix]" value="last">
@@ -68,7 +75,7 @@
 
     <button class="bk-search__btn" type="submit">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <span>{{ s.button_label | escape }}</span>
+      <span>{{ s.button_label | default: 'Search' | escape }}</span>
     </button>
 
     <div class="bk-search__panel" id="BkSearchResults-{{ uid }}" role="listbox" aria-label="Search suggestions" data-bks-panel hidden></div>

@@ -28,40 +28,6 @@
     </button>
   {%- endif -%}
 
-  {%- if s.show_newsletter -%}
-    <div class="bk-footer__news">
-      <div class="bk-footer__news-text">
-        {%- if s.newsletter_heading != blank -%}
-          <h3 class="bk-footer__news-title">{{ s.newsletter_heading | escape }}</h3>
-        {%- endif -%}
-        {%- if s.newsletter_text != blank -%}
-          <p class="bk-footer__news-sub">{{ s.newsletter_text | escape }}</p>
-        {%- endif -%}
-      </div>
-
-      {%- form 'customer', id: 'BkFooterNewsletter', class: 'bk-footer__form' -%}
-        <input type="hidden" name="contact[tags]" value="newsletter">
-        {%- if form.posted_successfully? -%}
-          <p class="bk-footer__form-msg" role="status">Thanks for subscribing!</p>
-        {%- else -%}
-          <label for="BkFooterEmail" class="bk-footer__sr">Email address</label>
-          <input
-            id="BkFooterEmail"
-            type="email"
-            name="contact[email]"
-            placeholder="Enter your email"
-            autocomplete="email"
-            required
-          >
-          <button type="submit">{{ s.newsletter_button | default: 'Subscribe' | escape }}</button>
-        {%- endif -%}
-        {%- if form.errors -%}
-          <p class="bk-footer__form-msg bk-footer__form-msg--error" role="alert">{{ form.errors.translated_fields.email | capitalize }} {{ form.errors.messages.email }}</p>
-        {%- endif -%}
-      {%- endform -%}
-    </div>
-  {%- endif -%}
-
   <div
     class="
       footer-content
@@ -170,78 +136,16 @@
   .bk-footer__top:hover { transform: translateY(-3px); background: var(--bk-footer-accent-hover); }
   .bk-footer__top svg { width: 18px; height: 18px; }
 
-  /* ---------- Newsletter strip ---------- */
-  .bk-footer__news {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: 24px;
-    width: min(100% - 40px, var(--bk-footer-max));
-    margin-inline: auto;
-    padding: 40px 0 36px;
-    border-bottom: 1px solid var(--bk-footer-line);
-  }
-  .bk-footer__news-title {
-    margin: 0 0 4px;
-    color: var(--bk-footer-heading);
-    font-family: var(--font-heading--family, inherit);
-    font-size: clamp(20px, 2.2vw, 26px);
-    font-weight: 600;
-    line-height: 1.25;
-  }
-  .bk-footer__news-sub { margin: 0; color: var(--bk-footer-muted); font-size: 13px; line-height: 1.6; }
-
-  .bk-footer__form {
-    position: relative;
-    display: flex;
-    flex-wrap: wrap;
-    width: min(440px, 100%);
-    padding: 5px;
-    background: var(--bk-footer-glass);
-    border: 1px solid var(--bk-footer-line);
-    border-radius: 999px;
-    transition: border-color .2s ease;
-  }
-  .bk-footer__form:focus-within { border-color: var(--bk-footer-accent); }
-  .bk-footer__form input[type='email'] {
-    flex: 1;
-    min-width: 0;
-    min-height: 44px;
-    padding: 0 16px;
-    font: inherit;
-    font-size: 14px;
-    color: var(--bk-footer-heading);
-    background: transparent;
-    border: 0;
-    outline: none;
-    box-shadow: none;
-  }
-  .bk-footer__form input::placeholder { color: rgba(255, 255, 255, .45); }
-  .bk-footer__form button {
-    padding: 0 22px;
-    min-height: 44px;
-    font: 600 13px/1 var(--font-body--family, inherit);
-    color: #fff;
-    background: var(--bk-footer-accent);
-    border: 0;
-    border-radius: 999px;
-    cursor: pointer;
-    transition: background .2s ease, transform .2s ease;
-  }
-  .bk-footer__form button:hover { background: var(--bk-footer-accent-hover); transform: translateY(-1px); }
-  .bk-footer__form-msg { width: 100%; margin: 0; padding: 10px 16px; font-size: 13px; color: var(--bk-footer-heading); }
-  .bk-footer__form-msg--error { position: absolute; top: 100%; left: 0; padding: 6px 16px 0; color: #ffb4a8; }
-
-  /* ---------- Main grid ---------- */
+  /* ---------- Main grid (compact) ---------- */
   .bk-footer .bk-footer__content {
     display: grid;
-    grid-template-columns: minmax(250px, 1.4fr) minmax(160px, .8fr) minmax(160px, .8fr) minmax(240px, 1.1fr);
+    grid-template-columns: auto minmax(0, 2fr) minmax(0, 1fr);
     align-items: start;
-    gap: clamp(30px, 4vw, 64px);
+    gap: 24px clamp(32px, 5vw, 72px);
     width: min(100% - 40px, var(--bk-footer-max));
     max-width: var(--bk-footer-max);
     margin-inline: auto;
-    padding: clamp(48px, 5vw, 72px) 0 clamp(40px, 4vw, 60px);
+    padding: 36px 0 28px !important;
     contain: none;
     content-visibility: visible;
   }
@@ -252,18 +156,26 @@
     justify-self: stretch;
   }
 
-  /* Desktop: logo + social stacked in column 1 */
+  /* Desktop: logo + social in column 1, Quick Links (2 columns) + Services beside */
   @media screen and (min-width: 1100px) {
-    .bk-footer .bk-footer__content {
-      grid-template-rows: auto auto 1fr;
-      row-gap: 22px;
-    }
+    .bk-footer .bk-footer__content { grid-template-rows: auto 1fr; row-gap: 16px; }
     .bk-footer .bk-footer__content > :nth-child(1) { grid-column: 1; grid-row: 1; }       /* Logo */
     .bk-footer .bk-footer__content > :nth-child(2) { grid-column: 2; grid-row: 1 / -1; }  /* Quick Links */
     .bk-footer .bk-footer__content > :nth-child(3) { grid-column: 3; grid-row: 1 / -1; }  /* Services */
-    .bk-footer .bk-footer__content > :nth-child(4) { grid-column: 4; grid-row: 1 / -1; }  /* Contact Us */
-    .bk-footer .bk-footer__content > :nth-child(5) { grid-column: 1; grid-row: 2; }       /* Social icons */
-    .bk-footer .bk-footer__content > :nth-child(6) { grid-column: 1; grid-row: 3; }       /* Any extra block */
+    .bk-footer .bk-footer__content > :nth-child(4) { grid-column: 1; grid-row: 2; }       /* Social icons */
+    .bk-footer .bk-footer__content > :nth-child(n+5) { grid-column: 1; }                  /* Extra blocks */
+
+    /* Long Quick Links list flows into 2 columns to keep the footer short */
+    .bk-footer .bk-footer__content > :nth-child(2) ul,
+    .bk-footer .bk-footer__content > :nth-child(2) ol {
+      display: block;
+      column-count: 2;
+      column-gap: 32px;
+    }
+    .bk-footer .bk-footer__content > :nth-child(2) li {
+      break-inside: avoid;
+      margin-bottom: 8px;
+    }
   }
 
   /* Headings with accent underline */
@@ -273,8 +185,8 @@
   .bk-footer .bk-footer__content .menu__heading,
   .bk-footer .bk-footer__content .menu__heading__default {
     position: relative;
-    margin: 0 0 20px;
-    padding: 0 0 10px;
+    margin: 0 0 14px;
+    padding: 0 0 8px;
     color: var(--bk-footer-heading) !important;
     font-family: var(--font-body--family, inherit);
     font-size: 13px !important;
@@ -330,7 +242,7 @@
   .bk-footer .bk-footer__content ul,
   .bk-footer .bk-footer__content ol {
     display: grid;
-    gap: 11px;
+    gap: 8px;
     margin: 0;
     padding: 0;
     list-style: none;
@@ -340,7 +252,7 @@
     margin: 0;
     color: var(--bk-footer-text);
     font-size: 13px;
-    line-height: 1.6;
+    line-height: 1.45;
   }
 
   /* Keep the theme's logo size, just prevent overflow */
@@ -395,8 +307,8 @@
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: 38px;
-    height: 38px;
+    width: 34px;
+    height: 34px;
     color: var(--bk-footer-heading) !important;
     background: var(--bk-footer-glass);
     border: 1px solid var(--bk-footer-line);
@@ -422,7 +334,7 @@
     gap: 14px 28px;
     width: 100%;
     margin: 0;
-    padding: 20px max(20px, calc((100% - var(--bk-footer-max)) / 2));
+    padding: 14px max(20px, calc((100% - var(--bk-footer-max)) / 2));
     background: rgba(0, 0, 0, .18);
     border-top: 1px solid var(--bk-footer-line);
   }
@@ -445,19 +357,17 @@
   /* ---------- Responsive ---------- */
   @media screen and (min-width: 750px) and (max-width: 1099px) {
     .bk-footer .bk-footer__content {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 40px 48px;
-      padding-block: 48px 40px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 28px 40px;
+      padding-block: 32px 24px !important;
     }
   }
 
   @media screen and (max-width: 749px) {
-    .bk-footer__news { grid-template-columns: 1fr; padding: 36px 0 30px; }
-    .bk-footer__form { width: 100%; }
     .bk-footer .bk-footer__content {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 34px 24px;
-      padding-block: 38px 32px;
+      gap: 24px 20px;
+      padding-block: 28px 20px !important;
     }
     .bk-footer__bottom { flex-direction: column; justify-content: center; text-align: center; padding: 20px; }
     .bk-footer__legal,
@@ -540,11 +450,6 @@
       "label": "t:settings.color_scheme",
       "default": "scheme-1"
     },
-    { "type": "header", "content": "Newsletter strip" },
-    { "type": "checkbox", "id": "show_newsletter", "label": "Show newsletter strip", "default": true },
-    { "type": "text", "id": "newsletter_heading", "label": "Heading", "default": "Stay in the loop" },
-    { "type": "text", "id": "newsletter_text", "label": "Text", "default": "New products, offers and updates from Bluekites — straight to your inbox." },
-    { "type": "text", "id": "newsletter_button", "label": "Button label", "default": "Subscribe" },
     { "type": "header", "content": "Bottom bar" },
     { "type": "text", "id": "copyright_name", "label": "Copyright name", "default": "Bluekites Services" },
     { "type": "checkbox", "id": "show_payment_icons", "label": "Show payment icons", "default": true },

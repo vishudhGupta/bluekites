@@ -1,10 +1,11 @@
 {%- liquid
   assign s = section.settings
   assign uid = section.id
+  assign placeholder = s.placeholder | default: 'Search for products, brands and more…'
 -%}
 
 <div
-  class="bk-search"
+  class="bk-search{% if s.full_width %} bk-search--full{% endif %}"
   id="BkSearch-{{ uid }}"
   style="
     --bks-bg-1: {{ s.bg_start }};
@@ -43,14 +44,14 @@
 
     <div class="bk-search__field">
       <svg class="bk-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
-      <label for="BkSearchInput-{{ uid }}" class="bk-search__sr">{{ s.placeholder | escape }}</label>
+      <label for="BkSearchInput-{{ uid }}" class="bk-search__sr">{{ placeholder | escape }}</label>
       <input
         id="BkSearchInput-{{ uid }}"
         class="bk-search__input"
         type="search"
         name="q"
         value="{{ search.terms | escape }}"
-        placeholder="{{ s.placeholder | escape }}"
+        placeholder="{{ placeholder | escape }}"
         role="combobox"
         aria-expanded="false"
         aria-controls="BkSearchResults-{{ uid }}"
@@ -74,16 +75,29 @@
   </form>
 </div>
 
-{% stylesheet %}
+<style>
+/* Lift this section above the next one so the dropdown is never hidden behind the banner */
+.shopify-section:has(.bk-search),
+.section-wrapper:has(> .bk-search) {
+  position: relative;
+  z-index: 60 !important;
+  overflow: visible !important;
+}
 .bk-search {
   position: relative;
-  z-index: 30;
+  z-index: 60;
   width: 100%;
   padding: var(--bks-pad) clamp(12px, 3vw, 40px);
   background: linear-gradient(90deg, var(--bks-bg-1), var(--bks-bg-2));
   font-family: var(--font-body--family, inherit);
 }
 .bk-search *, .bk-search *::before, .bk-search *::after { box-sizing: border-box; }
+/* Full-bleed: edge to edge even inside a page-width container */
+.bk-search--full {
+  width: 100vw !important;
+  max-width: 100vw !important;
+  margin-inline: calc(50% - 50vw) !important;
+}
 .bk-search__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
 
 .bk-search__form {
@@ -144,7 +158,7 @@
   outline: none;
   box-shadow: none;
 }
-.bk-search__input::placeholder { color: #8a8285; }
+.bk-search__input::placeholder { color: #8a8285 !important; opacity: 1 !important; }
 .bk-search__input::-webkit-search-cancel-button,
 .bk-search__input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
 
@@ -189,15 +203,19 @@
   margin: 4px;
   padding: 0 26px;
   font: 600 14px/1 var(--font-body--family, inherit);
-  color: var(--bks-btn-text);
-  background: linear-gradient(180deg, color-mix(in srgb, var(--bks-accent) 80%, #fff), var(--bks-accent));
-  border: 0;
-  border-radius: 9px;
+  color: var(--bks-btn-text) !important;
+  background: var(--bks-accent) !important;
+  background-image: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0)) !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  min-width: auto;
+  height: auto;
   cursor: pointer;
   transition: filter .2s ease, transform .2s ease;
 }
 .bk-search__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
 .bk-search__btn svg { width: 18px; height: 18px; }
+.bk-search__btn span { display: inline !important; }
 .bk-search__btn:focus-visible,
 .bk-search__cat select:focus-visible,
 .bk-search__clear:focus-visible { outline: 2px solid var(--bks-brand); outline-offset: 2px; }
@@ -316,16 +334,17 @@
   .bk-search__input { font-size: 16px; padding-left: 42px; }
   .bk-search__icon { left: 14px; width: 18px; height: 18px; }
   .bk-search__btn { padding: 0 14px; border-radius: 7px; }
-  .bk-search__btn span { display: none; }
+  .bk-search__btn span { display: none !important; }
   .bk-search__panel { max-height: 65vh; }
   .bk-search__thumb { width: 44px; height: 44px; }
 }
 @media (prefers-reduced-motion: reduce) {
   .bk-search *, .bk-search__panel { transition: none !important; animation: none !important; }
 }
-{% endstylesheet %}
+</style>
 
-{% javascript %}
+<script>
+{% raw %}
 (() => {
   if (window.__bkSearchInit) return;
   window.__bkSearchInit = true;
@@ -552,7 +571,8 @@
   else boot();
   document.addEventListener('shopify:section:load', boot);
 })();
-{% endjavascript %}
+{% endraw %}
+</script>
 
 {% schema %}
 {
@@ -568,6 +588,7 @@
     { "type": "checkbox", "id": "show_categories", "label": "Show category dropdown", "default": true, "info": "Choosing a category and pressing Search with an empty box opens that category." },
     { "type": "collection_list", "id": "categories", "label": "Categories", "limit": 12 },
     { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "full_width", "label": "Full width (edge to edge)", "default": true },
     { "type": "range", "id": "padding", "label": "Vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 14 },
     { "type": "color", "id": "bg_start", "label": "Background start", "default": "#5E0F12" },
     { "type": "color", "id": "bg_end", "label": "Background end", "default": "#800000" },

@@ -14,6 +14,7 @@
     --bks-btn-text: {{ s.button_text_color }};
     --bks-brand: {{ s.brand_color }};
     --bks-pad: {{ s.padding }}px;
+    {% if s.content_width > 0 %}--bks-max: {{ s.content_width }}px;{% endif %}
   "
 >
   <form
@@ -84,6 +85,7 @@
   overflow: visible !important;
 }
 .bk-search {
+  box-sizing: border-box;
   position: relative;
   z-index: 60;
   width: 100%;
@@ -94,10 +96,19 @@
 .bk-search *, .bk-search *::before, .bk-search *::after { box-sizing: border-box; }
 /* Full-bleed: edge to edge even inside a page-width container */
 .bk-search--full {
-  width: 100vw !important;
-  max-width: 100vw !important;
-  margin-inline: calc(50% - 50vw) !important;
+  width: var(--bks-full-w, 100vw) !important;
+  max-width: none !important;
+  margin-left: var(--bks-full-x, calc(50% - 50vw)) !important;
+  margin-right: 0 !important;
+  border-radius: 0 !important;
 }
+/* Let the bar break out of its parent containers */
+*:has(> .bk-search--full),
+*:has(> * > .bk-search--full) {
+  overflow: visible !important;
+  max-width: none !important;
+}
+.bk-search__form { max-width: var(--bks-max, none); margin-inline: auto !important; }
 .bk-search__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
 
 .bk-search__form {
@@ -106,7 +117,7 @@
   align-items: stretch;
   width: 100%;
   height: 52px;
-  margin: 0;
+  margin: 0 auto;
   background: #fff;
   border: 2px solid transparent;
   border-radius: 12px;
@@ -566,7 +577,24 @@
     if (input.value) form.classList.add('has-value');
   };
 
-  const boot = () => document.querySelectorAll('[data-bks-form]').forEach(init);
+  // Full width: stretch the strip to the exact viewport width from wherever it sits
+  const fit = () => {
+    const vw = document.documentElement.clientWidth;
+    document.querySelectorAll('.bk-search--full').forEach((el) => {
+      el.style.setProperty('--bks-full-x', '0px');
+      el.style.setProperty('--bks-full-w', vw + 'px');
+      const left = el.getBoundingClientRect().left;
+      el.style.setProperty('--bks-full-x', (-left) + 'px');
+    });
+  };
+  let fitRaf;
+  const queueFit = () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(fit); };
+  window.addEventListener('resize', queueFit);
+  window.addEventListener('load', queueFit);
+  document.addEventListener('shopify:section:load', queueFit);
+  if ('ResizeObserver' in window) new ResizeObserver(queueFit).observe(document.documentElement);
+
+  const boot = () => { document.querySelectorAll('[data-bks-form]').forEach(init); fit(); };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
   else boot();
   document.addEventListener('shopify:section:load', boot);
@@ -589,6 +617,7 @@
     { "type": "collection_list", "id": "categories", "label": "Categories", "limit": 12 },
     { "type": "header", "content": "Style" },
     { "type": "checkbox", "id": "full_width", "label": "Full width (edge to edge)", "default": true },
+    { "type": "range", "id": "content_width", "label": "Search box max width", "min": 0, "max": 1600, "step": 20, "unit": "px", "default": 0, "info": "0 = box stretches the full width too." },
     { "type": "range", "id": "padding", "label": "Vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 14 },
     { "type": "color", "id": "bg_start", "label": "Background start", "default": "#5E0F12" },
     { "type": "color", "id": "bg_end", "label": "Background end", "default": "#800000" },

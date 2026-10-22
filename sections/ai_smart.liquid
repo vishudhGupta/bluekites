@@ -1,554 +1,637 @@
-{% liquid
-  assign product_one = section.settings.product_one
-  assign product_two = section.settings.product_two
-  assign product_three = section.settings.product_three
-  assign visible_products = 0
+{%- liquid
+  # Works both as a theme block (blocks/) and as a section (sections/)
+  if block
+    assign s = block.settings
+    assign uid = block.id | replace: '_', '' | replace: '-', ''
+  else
+    assign s = section.settings
+    assign uid = section.id
+  endif
+  assign placeholder = s.placeholder | default: 'Search for hand rubs, gloves, healthcare products…'
+-%}
 
-  if product_one != blank
-    assign visible_products = visible_products | plus: 1
-  endif
-  if product_two != blank
-    assign visible_products = visible_products | plus: 1
-  endif
-  if product_three != blank
-    assign visible_products = visible_products | plus: 1
-  endif
-%}
-
-<section
-  id="LastSearched-{{ section.id }}"
-  class="bk-last-products color-{{ section.settings.color_scheme }}"
+<div
+  class="bk-search{% unless s.full_width == false %} bk-search--full{% endunless %}"
+  id="BkSearch-{{ uid }}"
+  {% if block %}{{ block.shopify_attributes }}{% endif %}
   style="
-    --blp-bg: {{ section.settings.background_color }};
-    --blp-heading: {{ section.settings.heading_color }};
-    --blp-text: {{ section.settings.text_color }};
-    --blp-card-bg: {{ section.settings.card_background }};
-    --blp-border: {{ section.settings.card_border }};
-    --blp-radius: {{ section.settings.card_radius }}px;
-    --blp-gap: {{ section.settings.grid_gap }}px;
-    --blp-top: {{ section.settings.padding_top }}px;
-    --blp-bottom: {{ section.settings.padding_bottom }}px;
+    --bks-bg-1: {{ s.bg_start | default: "#5E0F12" }};
+    --bks-bg-2: {{ s.bg_end | default: "#800000" }};
+    --bks-accent: {{ s.accent | default: "#D4AB55" }};
+    --bks-btn-text: {{ s.button_text_color | default: "#5E0F12" }};
+    --bks-brand: {{ s.brand_color | default: "#800000" }};
+    --bks-pad: {{ s.padding | default: 14 }}px;
+    {% if s.content_width > 0 %}--bks-max: {{ s.content_width }}px;{% endif %}
   "
 >
-  <div class="bk-last-products__inner">
-    {% if section.settings.heading != blank or section.settings.subheading != blank %}
-      <header class="bk-last-products__header">
-        {% if section.settings.heading != blank %}
-          <h2 class="bk-last-products__heading">{{ section.settings.heading | escape }}</h2>
-        {% endif %}
-        {% if section.settings.subheading != blank %}
-          <p class="bk-last-products__subheading">{{ section.settings.subheading | escape }}</p>
-        {% endif %}
-        <span class="bk-last-products__rule" aria-hidden="true"></span>
-      </header>
-    {% endif %}
+  <form
+    class="bk-search__form"
+    action="{{ routes.search_url }}"
+    method="get"
+    role="search"
+    autocomplete="off"
+    data-bks-form
+    data-suggest-url="{{ routes.predictive_search_url }}.json"
+    data-limit="{{ s.product_limit | default: 6 }}"
+    data-money="{{ shop.money_format | strip_html | escape }}"
+  >
+    <input type="hidden" name="options[prefix]" value="last">
 
-    {% if visible_products > 0 %}
-      <div class="bk-last-products__grid" role="list" aria-label="{{ section.settings.heading | default: 'Selected products' | escape }}">
-        {% for slot in (1..3) %}
-          {% liquid
-            case slot
-              when 1
-                assign product_item = product_one
-              when 2
-                assign product_item = product_two
-              when 3
-                assign product_item = product_three
-            endcase
-          %}
-
-          {% if product_item != blank %}
-            <article class="bk-last-products__card" role="listitem">
-              <a class="bk-last-products__product-link" href="{{ product_item.url }}" aria-label="View {{ product_item.title | escape }}">
-                <div class="bk-last-products__media">
-                  {% if product_item.featured_media != blank %}
-                    {% assign product_alt = product_item.featured_media.alt | default: product_item.title %}
-                    {{
-                      product_item.featured_media
-                      | image_url: width: 700
-                      | image_tag:
-                        widths: '240, 320, 420, 560, 700',
-                        sizes: '(max-width: 549px) 42vw, (max-width: 749px) 38vw, 230px',
-                        loading: 'lazy',
-                        class: 'bk-last-products__image',
-                        alt: product_alt
-                    }}
-                  {% else %}
-                    {{ 'product-1' | placeholder_svg_tag: 'bk-last-products__placeholder' }}
-                  {% endif %}
-                  {% if product_item.compare_at_price > product_item.price %}
-                    <span class="bk-last-products__badge">{{ section.settings.sale_label | escape }}</span>
-                  {% endif %}
-                </div>
-                <div class="bk-last-products__details">
-                  <h3 class="bk-last-products__title">{{ product_item.title | escape }}</h3>
-                  <div class="bk-last-products__prices">
-                    <span class="bk-last-products__price">{{ product_item.price | money }}</span>
-                    {% if product_item.compare_at_price > product_item.price %}
-                      <s class="bk-last-products__compare-price">{{ product_item.compare_at_price | money }}</s>
-                    {% endif %}
-                  </div>
-                </div>
-              </a>
-              <a class="bk-last-products__button" href="{{ product_item.url }}">
-                {{ section.settings.button_label | escape }}
-                <svg viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                  <path d="M3.75 10h12.5M10 3.75 16.25 10 10 16.25" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
-                </svg>
-              </a>
-            </article>
-          {% endif %}
-        {% endfor %}
+    {%- if s.show_categories and s.categories.size > 0 -%}
+      <div class="bk-search__cat">
+        <label for="BkSearchCat-{{ uid }}" class="bk-search__sr">Category</label>
+        <select id="BkSearchCat-{{ uid }}" data-bks-cat>
+          <option value="">All Categories</option>
+          {%- for c in s.categories -%}
+            <option value="{{ c.url }}">{{ c.title | escape }}</option>
+          {%- endfor -%}
+        </select>
+        <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m5 8 5 5 5-5"/></svg>
       </div>
-    {% else %}
-      <div class="bk-last-products__empty">
-        <p>Choose up to three products in this section’s settings to display them here.</p>
-      </div>
-    {% endif %}
-  </div>
-</section>
+    {%- endif -%}
 
-{% stylesheet %}
-  .bk-last-products {
-    width: 100%;
-    padding-block: var(--blp-top) var(--blp-bottom);
-    overflow: hidden;
-    background: var(--blp-bg);
-  }
+    <div class="bk-search__field">
+      <svg class="bk-search__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <label for="BkSearchInput-{{ uid }}" class="bk-search__sr">{{ placeholder | escape }}</label>
+      <input
+        id="BkSearchInput-{{ uid }}"
+        class="bk-search__input"
+        type="search"
+        name="q"
+        value="{{ search.terms | escape }}"
+        placeholder="{{ placeholder | escape }}"
+        role="combobox"
+        aria-expanded="false"
+        aria-controls="BkSearchResults-{{ uid }}"
+        aria-autocomplete="list"
+        aria-haspopup="listbox"
+        data-bks-input
+      >
+      <span class="bk-search__spinner" aria-hidden="true"></span>
+      <button class="bk-search__clear" type="button" aria-label="Clear search" data-bks-clear>
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6 6 18"/></svg>
+      </button>
+    </div>
 
-  .bk-last-products,
-  .bk-last-products * {
-    box-sizing: border-box;
-  }
+    <button class="bk-search__btn" type="submit">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+      <span>{{ s.button_label | default: 'Search' | escape }}</span>
+    </button>
 
-  /* Match the horizontal gutter used by the other Bluekites homepage sections. */
-  .bk-last-products__inner {
-    width: calc(100% - 96px);
-    max-width: 1640px;
-    margin-inline: auto;
-  }
+    <div class="bk-search__panel" id="BkSearchResults-{{ uid }}" role="listbox" aria-label="Search suggestions" data-bks-panel hidden></div>
+    <p class="bk-search__sr" role="status" aria-live="polite" data-bks-status></p>
+  </form>
+</div>
 
-  .bk-last-products__header {
-    margin: 0 0 20px;
-  }
+<style>
+/* Lift this section above the next one so the dropdown is never hidden behind the banner */
+.shopify-section:has(.bk-search),
+.section-wrapper:has(> .bk-search) {
+  position: relative;
+  z-index: 60 !important;
+  overflow: visible !important;
+}
+.bk-search {
+  box-sizing: border-box;
+  position: relative;
+  z-index: 60;
+  width: 100%;
+  padding: var(--bks-pad) clamp(12px, 3vw, 40px);
+  background: linear-gradient(90deg, var(--bks-bg-1), var(--bks-bg-2));
+  font-family: var(--font-body--family, inherit);
+}
+.bk-search *, .bk-search *::before, .bk-search *::after { box-sizing: border-box; }
+/* Full-bleed: edge to edge even inside a page-width container */
+.bk-search--full {
+  width: var(--bks-full-w, 100vw) !important;
+  max-width: none !important;
+  margin-left: var(--bks-full-x, calc(50% - 50vw)) !important;
+  margin-right: 0 !important;
+  border-radius: 0 !important;
+}
+/* Let the bar break out of its parent containers */
+*:has(> .bk-search--full),
+*:has(> * > .bk-search--full) {
+  overflow: visible !important;
+  max-width: none !important;
+}
+.bk-search__form { max-width: var(--bks-max, none); margin-inline: auto !important; }
+.bk-search__sr { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap; margin: 0; }
 
-  .bk-last-products__heading {
-    margin: 0;
-    color: var(--blp-heading);
-    font-family: inherit;
-    font-size: clamp(25px, 2.2vw, 32px);
-    font-weight: 500;
-    line-height: 1.18;
-    letter-spacing: -0.035em;
-    text-wrap: balance;
-  }
+.bk-search__form {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+  width: 100%;
+  height: 52px;
+  margin: 0 auto;
+  background: #fff;
+  border: 2px solid transparent;
+  border-radius: 12px;
+  box-shadow: 0 8px 24px -12px rgba(0, 0, 0, .45);
+  transition: border-color .2s ease, box-shadow .2s ease;
+}
+.bk-search__form:focus-within {
+  border-color: var(--bks-accent);
+  box-shadow: 0 0 0 4px color-mix(in srgb, var(--bks-accent) 28%, transparent), 0 8px 24px -12px rgba(0, 0, 0, .45);
+}
 
-  .bk-last-products__subheading {
-    margin: 6px 0 0;
-    color: var(--blp-text);
-    font-size: 13px;
-    line-height: 1.5;
-  }
+/* Category */
+.bk-search__cat {
+  position: relative;
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  max-width: 220px;
+  background: #faf8f7;
+  border-right: 1px solid #e7e2df;
+  border-radius: 10px 0 0 10px;
+}
+.bk-search__cat select {
+  width: 100%;
+  height: 100%;
+  padding: 0 34px 0 16px;
+  font: 500 13px/1 var(--font-body--family, inherit);
+  color: #1a1416;
+  background: transparent;
+  border: 0;
+  outline: none;
+  appearance: none;
+  cursor: pointer;
+  text-overflow: ellipsis;
+}
+.bk-search__cat svg { position: absolute; right: 12px; width: 14px; height: 14px; color: #8a8285; pointer-events: none; }
 
-  .bk-last-products__rule {
-    display: block;
-    width: 34px;
-    height: 2px;
-    margin-top: 10px;
-    border-radius: 99px;
-    background: var(--blp-heading);
-    opacity: .65;
-  }
+/* Field */
+.bk-search__field { position: relative; flex: 1; display: flex; align-items: center; min-width: 0; }
+.bk-search__icon { position: absolute; left: 16px; width: 20px; height: 20px; color: #8a8285; pointer-events: none; }
+.bk-search__input {
+  width: 100%;
+  height: 100%;
+  padding: 0 72px 0 48px;
+  font: 400 15px/1 var(--font-body--family, inherit);
+  color: #1a1416;
+  background: transparent;
+  border: 0;
+  outline: none;
+  box-shadow: none;
+}
+.bk-search__input::placeholder { color: #8a8285 !important; opacity: 1 !important; }
+.bk-search__input::-webkit-search-cancel-button,
+.bk-search__input::-webkit-search-decoration { -webkit-appearance: none; display: none; }
 
-  .bk-last-products__grid {
-    display: grid;
-    grid-template-columns: repeat(3, minmax(0, 232px));
-    align-items: stretch;
-    gap: var(--blp-gap);
-  }
+.bk-search__clear {
+  position: absolute;
+  right: 8px;
+  display: none;
+  place-items: center;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: #6b6466;
+  background: #f1eeec;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+.bk-search__clear svg { width: 14px; height: 14px; }
+.bk-search__form.has-value .bk-search__clear { display: grid; }
 
-  .bk-last-products__card {
-    display: flex;
-    min-width: 0;
-    flex-direction: column;
-    padding: 9px;
-    overflow: hidden;
-    border: 1px solid var(--blp-border);
-    border-radius: var(--blp-radius);
-    background: var(--blp-card-bg);
-    box-shadow: 0 2px 8px rgb(58 30 37 / 3%);
-    transition: border-color .2s ease, box-shadow .2s ease, transform .2s ease;
-  }
+.bk-search__spinner {
+  position: absolute;
+  right: 44px;
+  width: 18px;
+  height: 18px;
+  border: 2px solid #e7e2df;
+  border-top-color: var(--bks-brand);
+  border-radius: 50%;
+  opacity: 0;
+  animation: bks-spin .7s linear infinite;
+  transition: opacity .15s ease;
+}
+.bk-search__form.is-loading .bk-search__spinner { opacity: 1; }
+@keyframes bks-spin { to { transform: rotate(360deg); } }
 
-  .bk-last-products__card:hover {
-    transform: translateY(-2px);
-    border-color: color-mix(in srgb, var(--blp-heading) 30%, var(--blp-border));
-    box-shadow: 0 7px 18px rgb(58 30 37 / 7%);
-  }
+/* Button */
+.bk-search__btn {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  margin: 4px;
+  padding: 0 26px;
+  font: 600 14px/1 var(--font-body--family, inherit);
+  color: var(--bks-btn-text) !important;
+  background: var(--bks-accent) !important;
+  background-image: linear-gradient(180deg, rgba(255,255,255,.22), rgba(255,255,255,0)) !important;
+  border: 0 !important;
+  border-radius: 9px !important;
+  min-width: auto;
+  height: auto;
+  cursor: pointer;
+  transition: filter .2s ease, transform .2s ease;
+}
+.bk-search__btn:hover { filter: brightness(1.06); transform: translateY(-1px); }
+.bk-search__btn svg { width: 18px; height: 18px; }
+.bk-search__btn span { display: inline !important; }
+.bk-search__btn:focus-visible,
+.bk-search__cat select:focus-visible,
+.bk-search__clear:focus-visible { outline: 2px solid var(--bks-brand); outline-offset: 2px; }
 
-  .bk-last-products__product-link {
-    display: block;
-    min-width: 0;
-    color: inherit;
-    text-decoration: none;
-  }
+/* Results panel */
+.bk-search__panel {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  z-index: 40;
+  max-height: min(70vh, 560px);
+  overflow-y: auto;
+  padding: 8px;
+  background: #fff;
+  border: 1px solid #ece7e4;
+  border-radius: 14px;
+  box-shadow: 0 24px 48px -18px rgba(0, 0, 0, .35);
+  animation: bks-in .16s ease;
+}
+.bk-search__panel[hidden] { display: none; }
+@keyframes bks-in { from { opacity: 0; transform: translateY(-4px); } to { opacity: 1; transform: none; } }
 
-  .bk-last-products__product-link:focus-visible,
-  .bk-last-products__button:focus-visible {
-    outline: 2px solid var(--blp-heading);
-    outline-offset: 3px;
-  }
+.bk-search__group + .bk-search__group { margin-top: 6px; padding-top: 6px; border-top: 1px solid #f1eeec; }
+.bk-search__label {
+  margin: 0;
+  padding: 8px 10px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: #8a8285;
+}
+.bk-search__list { margin: 0; padding: 0; list-style: none; }
 
-  .bk-last-products__media {
-    position: relative;
-    display: grid;
-    place-items: center;
-    aspect-ratio: 1.08 / 1;
-    overflow: hidden;
-    border-radius: max(3px, calc(var(--blp-radius) - 5px));
-    background: #F8F7F4;
-  }
+.bk-search__opt {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 8px 10px;
+  color: #1a1416;
+  text-decoration: none;
+  border-radius: 10px;
+  transition: background .15s ease;
+}
+.bk-search__opt:hover,
+.bk-search__opt.is-active { background: #f7f1ea; }
+.bk-search__opt mark { background: none; color: var(--bks-brand); font-weight: 600; }
 
-  .bk-last-products__image,
-  .bk-last-products__placeholder {
-    display: block;
-    width: 100%;
-    height: 100%;
-    object-fit: contain;
-    transition: transform .3s ease;
-  }
+.bk-search__q { font-size: 14px; }
+.bk-search__q svg { flex-shrink: 0; width: 16px; height: 16px; color: #8a8285; }
 
-  .bk-last-products__card:hover .bk-last-products__image {
-    transform: scale(1.035);
-  }
+.bk-search__thumb {
+  flex-shrink: 0;
+  width: 52px;
+  height: 52px;
+  overflow: hidden;
+  background: #f5f3f2;
+  border-radius: 8px;
+}
+.bk-search__thumb img { width: 100%; height: 100%; object-fit: contain; }
+.bk-search__info { flex: 1; min-width: 0; }
+.bk-search__title {
+  display: -webkit-box;
+  overflow: hidden;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.35;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+}
+.bk-search__vendor { margin-top: 2px; font-size: 11px; letter-spacing: .04em; text-transform: uppercase; color: #8a8285; }
+.bk-search__price { flex-shrink: 0; text-align: right; font-size: 14px; font-weight: 600; white-space: nowrap; }
+.bk-search__price s { display: block; font-size: 12px; font-weight: 400; color: #8a8285; }
+.bk-search__soldout { display: block; font-size: 11px; font-weight: 500; color: #b42318; }
 
-  .bk-last-products__badge {
-    position: absolute;
-    top: 7px;
-    right: 7px;
-    padding: 4px 7px;
-    border-radius: 4px;
-    background: var(--blp-heading);
-    color: #fff;
-    font-size: 10px;
-    font-weight: 600;
-    line-height: 1.1;
-  }
+.bk-search__chips { display: flex; flex-wrap: wrap; gap: 8px; padding: 2px 10px 8px; }
+.bk-search__chip {
+  padding: 6px 12px;
+  font-size: 13px;
+  color: #1a1416;
+  text-decoration: none;
+  background: #f7f5f3;
+  border: 1px solid #ece7e4;
+  border-radius: 999px;
+  transition: background .15s ease, border-color .15s ease;
+}
+.bk-search__chip:hover,
+.bk-search__chip.is-active { background: #f7f1ea; border-color: var(--bks-accent); }
 
-  .bk-last-products__details {
-    display: grid;
-    gap: 6px;
-    padding: 10px 2px 11px;
-  }
+.bk-search__all {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 6px;
+  padding: 12px 14px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--bks-brand);
+  text-decoration: none;
+  background: #faf6f1;
+  border-radius: 10px;
+}
+.bk-search__all:hover,
+.bk-search__all.is-active { background: #f3e9dc; }
+.bk-search__all svg { width: 16px; height: 16px; }
 
-  .bk-last-products__title {
-    display: -webkit-box;
-    overflow: hidden;
-    margin: 0;
-    color: var(--blp-heading);
-    font-size: 13px;
-    font-weight: 600;
-    line-height: 1.4;
-    letter-spacing: -.01em;
-    -webkit-box-orient: vertical;
-    -webkit-line-clamp: 2;
-  }
+.bk-search__empty { margin: 0; padding: 18px 12px; text-align: center; font-size: 14px; color: #6b6466; }
 
-  .bk-last-products__prices {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: baseline;
-    gap: 6px;
-  }
+/* Mobile */
+@media screen and (max-width: 749px) {
+  .bk-search { padding: 10px 12px; }
+  .bk-search__form { height: 46px; border-radius: 10px; }
+  .bk-search__cat { display: none; }
+  .bk-search__input { font-size: 16px; padding-left: 42px; }
+  .bk-search__icon { left: 14px; width: 18px; height: 18px; }
+  .bk-search__btn { padding: 0 14px; border-radius: 7px; }
+  .bk-search__btn span { display: none !important; }
+  .bk-search__panel { max-height: 65vh; }
+  .bk-search__thumb { width: 44px; height: 44px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .bk-search *, .bk-search__panel { transition: none !important; animation: none !important; }
+}
+</style>
 
-  .bk-last-products__price {
-    color: var(--blp-heading);
-    font-size: 13px;
-    font-weight: 700;
-    line-height: 1.3;
-  }
+<script>
+{% raw %}
+(() => {
+  if (window.__bkSearchInit) return;
+  window.__bkSearchInit = true;
 
-  .bk-last-products__compare-price {
-    color: var(--blp-text);
-    font-size: 11px;
-    opacity: .65;
-  }
+  const esc = (s) => String(s ?? '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+  const highlight = (text, q) => {
+    const t = String(text ?? '');
+    const i = t.toLowerCase().indexOf(q.toLowerCase());
+    if (!q || i < 0) return esc(t);
+    return esc(t.slice(0, i)) + '<mark>' + esc(t.slice(i, i + q.length)) + '</mark>' + esc(t.slice(i + q.length));
+  };
 
-  .bk-last-products__button {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 7px;
-    min-height: 35px;
-    width: 100%;
-    margin-top: auto;
-    padding: 8px 10px;
-    border: 1px solid var(--blp-heading);
-    border-radius: max(3px, calc(var(--blp-radius) - 5px));
-    background: var(--blp-heading);
-    color: #fff;
-    font-size: 11px;
-    font-weight: 600;
-    line-height: 1.2;
-    text-align: center;
-    text-decoration: none;
-    transition: background .2s ease, color .2s ease;
-  }
+  // Format a decimal price string using the shop's money format, e.g. "Rs. {{amount}}"
+  const money = (value, format) => {
+    const n = parseFloat(value);
+    if (isNaN(n)) return '';
+    const fmt = (dec, sep, ths) => {
+      const [i, d] = n.toFixed(dec).split('.');
+      return i.replace(/\B(?=(\d{3})+(?!\d))/g, ths) + (d ? sep + d : '');
+    };
+    return (format || '{{amount}}').replace(/\{\{\s*(\w+)\s*\}\}/, (_, k) => ({
+      amount: fmt(2, '.', ','),
+      amount_no_decimals: fmt(0, '.', ','),
+      amount_with_comma_separator: fmt(2, ',', '.'),
+      amount_no_decimals_with_comma_separator: fmt(0, ',', '.'),
+      amount_with_apostrophe_separator: fmt(2, '.', "'"),
+      amount_with_space_separator: fmt(2, ',', ' ')
+    }[k] ?? fmt(2, '.', ',')));
+  };
 
-  .bk-last-products__button:hover {
-    background: transparent;
-    color: var(--blp-heading);
-  }
+  const ICON_Q = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>';
+  const ICON_ARROW = '<svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 10h12m-5-5 5 5-5 5"/></svg>';
 
-  .bk-last-products__button svg {
-    width: 14px;
-    height: 14px;
-    flex: 0 0 auto;
-  }
+  const init = (form) => {
+    if (form.dataset.bksReady) return;
+    form.dataset.bksReady = 'true';
 
-  .bk-last-products__empty {
-    max-width: 700px;
-    padding: 18px 20px;
-    border: 1px dashed var(--blp-border);
-    border-radius: var(--blp-radius);
-    color: var(--blp-text);
-    font-size: 13px;
-  }
+    const input = form.querySelector('[data-bks-input]');
+    const panel = form.querySelector('[data-bks-panel]');
+    const clear = form.querySelector('[data-bks-clear]');
+    const status = form.querySelector('[data-bks-status]');
+    const cat = form.querySelector('[data-bks-cat]');
+    const url = form.dataset.suggestUrl;
+    const limit = form.dataset.limit || 6;
+    const moneyFormat = form.dataset.money;
+    const searchUrl = form.getAttribute('action');
 
-  .bk-last-products__empty p {
-    margin: 0;
-  }
+    const cache = new Map();
+    let controller = null;
+    let timer = null;
+    let active = -1;
+    let lastQuery = '';
 
-  @media screen and (max-width: 749px) {
-    .bk-last-products__inner {
-      width: calc(100% - 48px);
-    }
+    const options = () => [...panel.querySelectorAll('[data-bks-opt]')];
 
-    .bk-last-products__header {
-      margin-bottom: 15px;
-    }
+    const setActive = (i) => {
+      const opts = options();
+      active = opts.length ? (i + opts.length) % opts.length : -1;
+      opts.forEach((o, idx) => {
+        o.classList.toggle('is-active', idx === active);
+        o.setAttribute('aria-selected', idx === active ? 'true' : 'false');
+      });
+      if (active > -1) {
+        input.setAttribute('aria-activedescendant', opts[active].id);
+        opts[active].scrollIntoView({ block: 'nearest' });
+      } else {
+        input.removeAttribute('aria-activedescendant');
+      }
+    };
 
-    .bk-last-products__heading {
-      font-size: clamp(23px, 5.8vw, 28px);
-    }
+    const open = () => { panel.hidden = false; input.setAttribute('aria-expanded', 'true'); };
+    const close = () => {
+      panel.hidden = true;
+      input.setAttribute('aria-expanded', 'false');
+      input.removeAttribute('aria-activedescendant');
+      active = -1;
+    };
 
-    .bk-last-products__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 9px;
-    }
+    const allLink = (q) => `${searchUrl}?q=${encodeURIComponent(q)}&options%5Bprefix%5D=last`;
 
-    .bk-last-products__card {
-      padding: 6px;
-      border-radius: max(6px, calc(var(--blp-radius) - 2px));
-    }
+    const render = (q, data) => {
+      const r = (data && data.resources && data.resources.results) || {};
+      const products = r.products || [];
+      const queries = (r.queries || []).filter((x) => x.text.toLowerCase() !== q.toLowerCase()).slice(0, 4);
+      const collections = (r.collections || []).slice(0, 6);
+      let n = 0;
+      const id = () => `${input.id}-opt-${n++}`;
+      let html = '';
 
-    .bk-last-products__media {
-      aspect-ratio: .82 / 1;
-    }
+      if (queries.length) {
+        html += `<div class="bk-search__group"><p class="bk-search__label">Suggestions</p><ul class="bk-search__list" role="presentation">`;
+        html += queries.map((x) => `<li role="presentation"><a class="bk-search__opt bk-search__q" id="${id()}" role="option" data-bks-opt href="${esc(x.url)}">${ICON_Q}<span>${highlight(x.text, q)}</span></a></li>`).join('');
+        html += `</ul></div>`;
+      }
 
-    .bk-last-products__details {
-      gap: 5px;
-      padding: 8px 1px;
-    }
+      if (products.length) {
+        html += `<div class="bk-search__group"><p class="bk-search__label">Products</p><ul class="bk-search__list" role="presentation">`;
+        html += products.map((p) => {
+          const img = p.featured_image && p.featured_image.url
+            ? `<img src="${esc(p.featured_image.url)}${p.featured_image.url.includes('?') ? '&' : '?'}width=120" alt="" loading="lazy" width="52" height="52">`
+            : '';
+          const compare = parseFloat(p.compare_at_price_max) > parseFloat(p.price) ? `<s>${esc(money(p.compare_at_price_max, moneyFormat))}</s>` : '';
+          const from = parseFloat(p.price_max) > parseFloat(p.price_min) ? 'From ' : '';
+          const sold = p.available === false ? '<span class="bk-search__soldout">Sold out</span>' : '';
+          return `<li role="presentation"><a class="bk-search__opt" id="${id()}" role="option" data-bks-opt href="${esc(p.url)}">
+            <span class="bk-search__thumb">${img}</span>
+            <span class="bk-search__info">
+              <span class="bk-search__title">${highlight(p.title, q)}</span>
+              ${p.vendor ? `<span class="bk-search__vendor">${esc(p.vendor)}</span>` : ''}
+            </span>
+            <span class="bk-search__price">${from}${esc(money(p.price, moneyFormat))}${compare}${sold}</span>
+          </a></li>`;
+        }).join('');
+        html += `</ul></div>`;
+      }
 
-    .bk-last-products__title {
-      font-size: 11px;
-      line-height: 1.35;
-    }
+      if (collections.length) {
+        html += `<div class="bk-search__group"><p class="bk-search__label">Categories</p><div class="bk-search__chips">`;
+        html += collections.map((c) => `<a class="bk-search__chip" id="${id()}" role="option" data-bks-opt href="${esc(c.url)}">${highlight(c.title, q)}</a>`).join('');
+        html += `</div></div>`;
+      }
 
-    .bk-last-products__price {
-      font-size: 11px;
-    }
+      if (!products.length && !queries.length && !collections.length) {
+        html = `<p class="bk-search__empty">No results for “${esc(q)}”. Try a different word.</p>`;
+        status.textContent = `No results for ${q}`;
+      } else {
+        status.textContent = `${products.length} products found`;
+      }
 
-    .bk-last-products__compare-price {
-      font-size: 9px;
-    }
+      html += `<a class="bk-search__all" id="${id()}" role="option" data-bks-opt href="${allLink(q)}"><span>View all results for “${esc(q)}”</span>${ICON_ARROW}</a>`;
 
-    .bk-last-products__button {
-      min-height: 31px;
-      gap: 4px;
-      padding: 6px 3px;
-      font-size: 10px;
-    }
+      panel.innerHTML = html;
+      active = -1;
+      open();
+    };
 
-    .bk-last-products__button svg {
-      width: 12px;
-      height: 12px;
-    }
+    const fetchResults = async (q) => {
+      if (cache.has(q)) return render(q, cache.get(q));
+      if (controller) controller.abort();
+      controller = new AbortController();
+      form.classList.add('is-loading');
+      try {
+        const params = new URLSearchParams({
+          q,
+          'resources[type]': 'product,collection,query',
+          'resources[limit]': limit,
+          'resources[limit_scope]': 'each',
+          'resources[options][unavailable_products]': 'last',
+          'resources[options][fields]': 'title,product_type,variants.title,variants.sku,vendor,tag'
+        });
+        const res = await fetch(`${url}?${params}`, { signal: controller.signal, headers: { Accept: 'application/json' } });
+        if (!res.ok) throw new Error(res.status);
+        const data = await res.json();
+        cache.set(q, data);
+        if (input.value.trim() === q) render(q, data);
+      } catch (err) {
+        if (err.name !== 'AbortError') {
+          panel.innerHTML = `<p class="bk-search__empty">Couldn’t load suggestions. Press Enter to search.</p>`;
+          open();
+        }
+      } finally {
+        form.classList.remove('is-loading');
+      }
+    };
 
-    .bk-last-products__badge {
-      top: 4px;
-      right: 4px;
-      padding: 3px 4px;
-      font-size: 8px;
-    }
-  }
+    input.addEventListener('input', () => {
+      const q = input.value.trim();
+      form.classList.toggle('has-value', input.value.length > 0);
+      clearTimeout(timer);
+      if (q.length < 2) { lastQuery = ''; if (controller) controller.abort(); form.classList.remove('is-loading'); close(); return; }
+      if (q === lastQuery) return;
+      lastQuery = q;
+      timer = setTimeout(() => fetchResults(q), 220);
+    });
 
-  @media screen and (max-width: 390px) {
-    .bk-last-products__inner {
-      width: calc(100% - 32px);
-    }
+    input.addEventListener('focus', () => {
+      const q = input.value.trim();
+      if (q.length >= 2 && panel.innerHTML) open();
+    });
 
-    .bk-last-products__grid {
-      gap: 6px;
-    }
+    input.addEventListener('keydown', (e) => {
+      if (panel.hidden) {
+        if (e.key === 'ArrowDown' && input.value.trim().length >= 2) { open(); setActive(0); e.preventDefault(); }
+        return;
+      }
+      if (e.key === 'ArrowDown') { e.preventDefault(); setActive(active + 1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); setActive(active - 1); }
+      else if (e.key === 'Enter' && active > -1) { e.preventDefault(); options()[active].click(); }
+      else if (e.key === 'Escape') { e.preventDefault(); close(); }
+    });
 
-    .bk-last-products__card {
-      padding: 5px;
-    }
+    panel.addEventListener('mousemove', (e) => {
+      const opt = e.target.closest('[data-bks-opt]');
+      if (opt) setActive(options().indexOf(opt));
+    });
 
-    .bk-last-products__title {
-      font-size: 10px;
-    }
+    clear.addEventListener('click', () => {
+      input.value = '';
+      lastQuery = '';
+      form.classList.remove('has-value');
+      close();
+      input.focus();
+    });
 
-    .bk-last-products__button {
-      font-size: 9px;
-    }
-  }
+    document.addEventListener('click', (e) => { if (!form.contains(e.target)) close(); });
+    form.addEventListener('focusout', (e) => { if (!form.contains(e.relatedTarget)) setTimeout(() => { if (!form.contains(document.activeElement)) close(); }, 0); });
 
-  @media (prefers-reduced-motion: reduce) {
-    .bk-last-products__card,
-    .bk-last-products__image,
-    .bk-last-products__button {
-      transition: none;
-    }
-  }
-{% endstylesheet %}
+    // Category: empty query goes to the chosen category page
+    form.addEventListener('submit', (e) => {
+      const q = input.value.trim();
+      const catUrl = cat ? cat.value : '';
+      if (!q) {
+        e.preventDefault();
+        if (catUrl) window.location.href = catUrl;
+        else input.focus();
+      }
+    });
+
+    if (input.value) form.classList.add('has-value');
+  };
+
+  // Full width: stretch the strip to the exact viewport width from wherever it sits
+  const fit = () => {
+    const vw = document.documentElement.clientWidth;
+    document.querySelectorAll('.bk-search--full').forEach((el) => {
+      el.style.setProperty('--bks-full-x', '0px');
+      el.style.setProperty('--bks-full-w', vw + 'px');
+      const left = el.getBoundingClientRect().left;
+      el.style.setProperty('--bks-full-x', (-left) + 'px');
+    });
+  };
+  let fitRaf;
+  const queueFit = () => { cancelAnimationFrame(fitRaf); fitRaf = requestAnimationFrame(fit); };
+  window.addEventListener('resize', queueFit);
+  window.addEventListener('load', queueFit);
+  document.addEventListener('shopify:section:load', queueFit);
+  if ('ResizeObserver' in window) new ResizeObserver(queueFit).observe(document.documentElement);
+
+  const boot = () => { document.querySelectorAll('[data-bks-form]').forEach(init); fit(); };
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+  document.addEventListener('shopify:section:load', boot);
+})();
+{% endraw %}
+</script>
 
 {% schema %}
 {
-  "name": "Last searched products",
+  "name": "Search bar",
   "tag": "section",
   "class": "section-wrapper",
   "settings": [
-    {
-      "type": "text",
-      "id": "heading",
-      "label": "Heading",
-      "default": "Last Searched Product"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Pick up where you left off."
-    },
-    {
-      "type": "product",
-      "id": "product_one",
-      "label": "Product 1"
-    },
-    {
-      "type": "product",
-      "id": "product_two",
-      "label": "Product 2"
-    },
-    {
-      "type": "product",
-      "id": "product_three",
-      "label": "Product 3"
-    },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button label",
-      "default": "Shop now"
-    },
-    {
-      "type": "text",
-      "id": "sale_label",
-      "label": "Sale badge label",
-      "default": "Sale"
-    },
-    {
-      "type": "color_scheme",
-      "id": "color_scheme",
-      "label": "Color scheme",
-      "default": "scheme-1"
-    },
-    {
-      "type": "header",
-      "content": "Colors"
-    },
-    {
-      "type": "color",
-      "id": "background_color",
-      "label": "Section background",
-      "default": "#FCFBFA"
-    },
-    {
-      "type": "color",
-      "id": "heading_color",
-      "label": "Heading and price color",
-      "default": "#3A1E25"
-    },
-    {
-      "type": "color",
-      "id": "text_color",
-      "label": "Supporting text color",
-      "default": "#5C454A"
-    },
-    {
-      "type": "color",
-      "id": "card_background",
-      "label": "Product card background",
-      "default": "#FFFFFF"
-    },
-    {
-      "type": "color",
-      "id": "card_border",
-      "label": "Product card border",
-      "default": "#E7DFE0"
-    },
-    {
-      "type": "header",
-      "content": "Layout"
-    },
-    {
-      "type": "range",
-      "id": "grid_gap",
-      "label": "Space between cards",
-      "min": 8,
-      "max": 24,
-      "step": 2,
-      "unit": "px",
-      "default": 14
-    },
-    {
-      "type": "range",
-      "id": "card_radius",
-      "label": "Card corner radius",
-      "min": 4,
-      "max": 20,
-      "step": 2,
-      "unit": "px",
-      "default": 12
-    },
-    {
-      "type": "range",
-      "id": "padding_top",
-      "label": "Top padding",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 28
-    },
-    {
-      "type": "range",
-      "id": "padding_bottom",
-      "label": "Bottom padding",
-      "min": 0,
-      "max": 100,
-      "step": 4,
-      "unit": "px",
-      "default": 28
-    }
+    { "type": "header", "content": "Content" },
+    { "type": "text", "id": "placeholder", "label": "Placeholder", "default": "Search for hand rubs, gloves, healthcare products…" },
+    { "type": "text", "id": "button_label", "label": "Button label", "default": "Search" },
+    { "type": "range", "id": "product_limit", "label": "Products in dropdown", "min": 3, "max": 10, "step": 1, "default": 6 },
+    { "type": "header", "content": "Category dropdown" },
+    { "type": "checkbox", "id": "show_categories", "label": "Show category dropdown", "default": true, "info": "Choosing a category and pressing Search with an empty box opens that category." },
+    { "type": "collection_list", "id": "categories", "label": "Categories", "limit": 12 },
+    { "type": "header", "content": "Style" },
+    { "type": "checkbox", "id": "full_width", "label": "Full width (edge to edge)", "default": true },
+    { "type": "range", "id": "content_width", "label": "Search box max width", "min": 0, "max": 1600, "step": 20, "unit": "px", "default": 0, "info": "0 = box stretches the full width too." },
+    { "type": "range", "id": "padding", "label": "Vertical padding", "min": 4, "max": 40, "step": 2, "unit": "px", "default": 14 },
+    { "type": "color", "id": "bg_start", "label": "Background start", "default": "#5E0F12" },
+    { "type": "color", "id": "bg_end", "label": "Background end", "default": "#800000" },
+    { "type": "color", "id": "accent", "label": "Button and focus color", "default": "#D4AB55" },
+    { "type": "color", "id": "button_text_color", "label": "Button text", "default": "#5E0F12" },
+    { "type": "color", "id": "brand_color", "label": "Highlight color", "default": "#800000" }
   ],
-  "presets": [
-    {
-      "name": "Last searched products"
-    }
-  ]
+  "presets": [{ "name": "Search bar" }]
 }
 {% endschema %}

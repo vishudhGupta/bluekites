@@ -176,15 +176,15 @@
     /* Quick Links block split into two columns: Quick Links | Legal */
     .bk-footer .bk-footer__content > :nth-child(2) { position: relative; }
     .bk-footer .bk-footer__content > :nth-child(2) ul,
-    .bk-footer .bk-footer__content > :nth-child(2) ol {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      grid-auto-flow: row dense;
-      column-gap: 40px;
-      row-gap: 8px;
-    }
-    .bk-footer .bk-footer__content > :nth-child(2) li { grid-column: 2; }
-
+.bk-footer .bk-footer__content > :nth-child(2) ol {
+  display: block;
+  column-count: 2;
+  column-gap: 40px;
+}
+.bk-footer .bk-footer__content > :nth-child(2) li {
+  break-inside: avoid;
+  margin-bottom: 8px;
+}
     /* "Legal" heading over the second column, styled like the other headings */
     .bk-footer .bk-footer__content > :nth-child(2)::after {
       content: var(--bk-legal-label);

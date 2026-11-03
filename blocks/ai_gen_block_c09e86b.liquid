@@ -15,6 +15,7 @@
     --glass-bg-strong: rgba(255, 255, 255, 0.55);
     --glass-border: rgba(255, 255, 255, 0.65);
     --glass-blur: 16px;
+    --glass-maroon: 128, 0, 0;
     --ease: cubic-bezier(0.22, 1, 0.36, 1);
     --card-w: 180px;
     --gap: 14px;
@@ -201,21 +202,60 @@
   .ai-deals-{{ ai_gen_id }} .ai-deals__price { color: var(--lime-deep); font-size: 16px; line-height: 1.2; font-weight: 800; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__compare { color: #57534e; font-size: 11px; text-decoration: line-through; }
   .ai-deals-{{ ai_gen_id }} .ai-deals__form { margin: 0; margin-top: auto; }
+
+  /* Glassmorphism maroon button */
   .ai-deals-{{ ai_gen_id }} .ai-deals__button {
+    position: relative;
     display: block; width: 100%;
     min-height: 34px; padding: 8px 6px;
-    border: 0; border-radius: 10px;
-    background: {{ block.settings.button_background }};
-    color: {{ block.settings.button_text }};
+    color: #fff;
     text-align: center; text-decoration: none;
-    font: inherit; font-size: 12px; line-height: 1.2; font-weight: 700;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+    font: inherit; font-size: 12px; line-height: 1.2; font-weight: 700; letter-spacing: .02em;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), .92) 0%,
+      rgba(var(--glass-maroon), .78) 100%
+    );
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgba(255, 255, 255, .35);
+    border-radius: 10px;
+    box-shadow:
+      0 4px 14px rgba(var(--glass-maroon), .35),
+      inset 0 1px 0 rgba(255, 255, 255, .35);
     cursor: pointer;
-    box-shadow: 0 4px 12px -4px rgba(77, 124, 15, .6);
-    transition: transform .2s var(--ease), filter .2s, box-shadow .2s;
+    transition: transform .2s var(--ease), box-shadow .2s, background .2s;
   }
-  .ai-deals-{{ ai_gen_id }} a.ai-deals__button { margin-top: auto; opacity: .55; box-shadow: none; }
-  .ai-deals-{{ ai_gen_id }} .ai-deals__button:hover { filter: brightness(1.1); box-shadow: 0 6px 16px -4px rgba(77, 124, 15, .7); }
+  .ai-deals-{{ ai_gen_id }} .ai-deals__button:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 1) 0%,
+      rgba(var(--glass-maroon), .88) 100%
+    );
+    box-shadow:
+      0 6px 18px rgba(var(--glass-maroon), .5),
+      inset 0 1px 0 rgba(255, 255, 255, .45);
+    transform: translateY(-1px);
+  }
   .ai-deals-{{ ai_gen_id }} .ai-deals__button:active { transform: scale(.97); }
+
+  /* Sold out: neutral, no glass */
+  .ai-deals-{{ ai_gen_id }} a.ai-deals__button {
+    margin-top: auto;
+    color: #57534e;
+    text-shadow: none;
+    background: rgba(255, 255, 255, .6);
+    border-color: rgba(87, 83, 78, .25);
+    box-shadow: none;
+    cursor: default;
+  }
+  .ai-deals-{{ ai_gen_id }} a.ai-deals__button:hover {
+    background: rgba(255, 255, 255, .6);
+    box-shadow: none;
+    transform: none;
+  }
+
   .ai-deals-{{ ai_gen_id }} .ai-deals__button:focus-visible,
   .ai-deals-{{ ai_gen_id }} .ai-deals__arrow:focus-visible,
   .ai-deals-{{ ai_gen_id }} .ai-deals__products:focus-visible { outline: 3px solid var(--lime-deep); outline-offset: 2px; }
@@ -253,6 +293,7 @@
   @supports not ((backdrop-filter: blur(1px)) or (-webkit-backdrop-filter: blur(1px))) {
     .ai-deals-{{ ai_gen_id }} .ai-deals__card,
     .ai-deals-{{ ai_gen_id }} .ai-deals__header { background: rgba(255,255,255,.85); }
+    .ai-deals-{{ ai_gen_id }} .ai-deals__button { background: rgb(var(--glass-maroon)); }
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -260,7 +301,8 @@
     .ai-deals-{{ ai_gen_id }}::after { animation: none; }
     .ai-deals-{{ ai_gen_id }} .ai-deals__products { scroll-behavior: auto; }
     .ai-deals-{{ ai_gen_id }} .ai-deals__card,
-    .ai-deals-{{ ai_gen_id }} .ai-deals__media img { transition: none; transform: none !important; }
+    .ai-deals-{{ ai_gen_id }} .ai-deals__media img,
+    .ai-deals-{{ ai_gen_id }} .ai-deals__button { transition: none; transform: none !important; }
   }
 {% endstyle %}
 

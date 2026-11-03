@@ -288,7 +288,10 @@
   overflow: hidden;
 }
 
+/* Glassmorphism maroon button */
 .bk-svc__btn {
+  --glass-maroon: 128, 0, 0;
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -296,21 +299,42 @@
   margin-top: auto;
   padding: 0 10px;
   font-size: 12px;
-  font-weight: 600;
-  color: var(--svc-btn-text);
-  background: var(--svc-btn);
-  border-radius: 4px;
-  transition: filter .2s ease;
+  font-weight: 700;
+  letter-spacing: .02em;
+  color: #fff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, .45);
+  background: linear-gradient(
+    135deg,
+    rgba(var(--glass-maroon), .92) 0%,
+    rgba(var(--glass-maroon), .78) 100%
+  );
+  -webkit-backdrop-filter: blur(10px) saturate(160%);
+  backdrop-filter: blur(10px) saturate(160%);
+  border: 1px solid rgba(255, 255, 255, .35);
+  border-radius: 6px;
+  box-shadow:
+    0 4px 14px rgba(var(--glass-maroon), .35),
+    inset 0 1px 0 rgba(255, 255, 255, .35);
+  transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
 }
 .bk-svc__content > .bk-svc__btn { margin-top: auto; }
 .bk-svc__content > :nth-last-child(2) { margin-bottom: 6px; }
-.bk-svc__card:hover .bk-svc__btn { filter: brightness(1.25); }
+.bk-svc__card:hover .bk-svc__btn {
+  background: linear-gradient(
+    135deg,
+    rgba(var(--glass-maroon), 1) 0%,
+    rgba(var(--glass-maroon), .88) 100%
+  );
+  box-shadow:
+    0 6px 18px rgba(var(--glass-maroon), .5),
+    inset 0 1px 0 rgba(255, 255, 255, .45);
+  transform: translateY(-1px);
+}
 
 /* Contact / CTA tile */
 .bk-svc__card--cta .bk-svc__media { background: color-mix(in srgb, var(--svc-bar) 10%, #fff); }
 .bk-svc__cta-icon { display: grid; place-items: center; width: 44%; color: var(--svc-bar); }
 .bk-svc__cta-icon svg { width: 100%; height: auto; }
-.bk-svc__card--cta .bk-svc__btn { background: var(--svc-bar); }
 
 .bk-svc__empty { margin: 0; padding: 24px; text-align: center; font-size: 13px; color: var(--svc-text); }
 

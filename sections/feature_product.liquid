@@ -602,7 +602,10 @@
     margin: 0;
   }
 
+  /* ---------- Glassmorphism maroon buttons ---------- */
   .fp-card__btn {
+    --glass-maroon: 128, 0, 0;
+    position: relative;
     display: block;
     width: 100%;
     min-height: 36px;
@@ -610,19 +613,38 @@
     font: inherit;
     font-size: 0.75rem;
     font-weight: 700;
+    letter-spacing: 0.02em;
     line-height: 1.2;
-    color: var(--fp-btn-text, #fff);
+    color: #fff;
     text-align: center;
     text-decoration: none;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
     cursor: pointer;
-    background: var(--fp-btn-bg, #000);
-    border: 1px solid var(--fp-btn-bg, #000);
-    border-radius: 5px;
-    transition: filter 0.15s ease, transform 0.1s ease;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 0.92) 0%,
+      rgba(var(--glass-maroon), 0.78) 100%
+    );
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 6px;
+    box-shadow:
+      0 4px 14px rgba(var(--glass-maroon), 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
+    transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
   }
 
   .fp-card__btn:hover {
-    filter: brightness(0.92);
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 1) 0%,
+      rgba(var(--glass-maroon), 0.88) 100%
+    );
+    box-shadow:
+      0 6px 18px rgba(var(--glass-maroon), 0.5),
+      inset 0 1px 0 rgb(255 255 255 / 0.45);
+    transform: translateY(-1px);
   }
 
   .fp-card__btn:active {
@@ -634,26 +656,48 @@
     outline-offset: 2px;
   }
 
+  /* Outline: light glass, maroon text; fills on hover */
   .fp-card__btn--outline {
-    color: var(--fp-btn-bg, #000);
-    background: transparent;
+    color: rgb(128 0 0);
+    text-shadow: none;
+    background: linear-gradient(
+      135deg,
+      rgb(128 0 0 / 0.1) 0%,
+      rgb(128 0 0 / 0.04) 100%
+    );
+    border: 1px solid rgb(128 0 0 / 0.55);
+    box-shadow:
+      0 2px 8px rgb(128 0 0 / 0.12),
+      inset 0 1px 0 rgb(255 255 255 / 0.6);
   }
 
   .fp-card__btn--outline:hover {
-    filter: none;
-    color: var(--fp-btn-text, #fff);
-    background: var(--fp-btn-bg, #000);
+    color: #fff;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 1) 0%,
+      rgba(var(--glass-maroon), 0.88) 100%
+    );
+    border-color: rgb(255 255 255 / 0.35);
   }
 
+  /* Sold out: neutral, no glass */
   .fp-card__btn--muted {
     color: #686868;
+    text-shadow: none;
     cursor: default;
     background: #ececec;
     border-color: #ececec;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
   }
 
   .fp-card__btn--muted:hover {
-    filter: none;
+    background: #ececec;
+    box-shadow: none;
+    transform: none;
   }
 
   /* ---------- Mobile ---------- */

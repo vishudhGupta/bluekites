@@ -1,10 +1,21 @@
 {% doc %}
   @prompt
-    Stylish, modern full-width category page banner slider for Bluekites Global. Exactly 35vh on desktop and mobile, compact content, elegant blue gradient with optional background image, small New Arrivals badge, bold custom category headline (falls back to the collection title), short subtitle, prominent Shop Now button. Fully customizable via theme settings. No invented discounts or promotional claims. Up to 5 slides with autoplay, arrows, dots, swipe and pause.
+    Full-width category page banner slider for Bluekites Global. Aspect ratio 2400 x 600 on desktop. Mobile uses 1000 x 700 only when a mobile image is uploaded. Up to 5 slides with autoplay, arrows, dots, swipe and pause. Text overlay is optional because banner images already contain text.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 {% assign scrim_alpha = block.settings.scrim_strength | divided_by: 100.0 %}
 {% assign scrim_alpha_mid = scrim_alpha | times: 0.55 %}
+
+{%- liquid
+  assign mobile_ratio = '2400 / 600'
+  for i in (1..5)
+    assign mobile_key = 'slide_' | append: i | append: '_mobile_image'
+    if block.settings[mobile_key] != blank
+      assign mobile_ratio = '1000 / 700'
+      break
+    endif
+  endfor
+-%}
 
 {% style %}
   .ai-cat-banner-{{ ai_gen_id }} {
@@ -13,6 +24,7 @@
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
     height: auto;
+    aspect-ratio: 2400 / 600;
     margin: 0 auto;
     border-radius: {{ block.settings.corner_radius }}px;
     overflow: hidden;
@@ -43,7 +55,11 @@
     width: 100%;
     height: 100%;
   }
-  .ai-cat-banner-{{ ai_gen_id }}__media img { object-fit: cover; object-position: {{ block.settings.image_focus }}; }
+  .ai-cat-banner-{{ ai_gen_id }}__media img {
+    object-fit: cover;
+    object-position: {{ block.settings.image_focus }};
+    max-width: none;
+  }
   .ai-cat-banner-{{ ai_gen_id }}__placeholder {
     overflow: hidden;
     background:
@@ -92,7 +108,7 @@
     overflow: hidden;
     color: {{ block.settings.text_color }};
     font-family: {{ settings.type_heading_font.family }}, {{ settings.type_heading_font.fallback_families }};
-    font-size: clamp(22px, min(3.6vw, 6.4vh), 48px);
+    font-size: clamp(20px, 3vw, 44px);
     font-weight: 700;
     line-height: 1.1;
     letter-spacing: -.03em;
@@ -108,7 +124,7 @@
     overflow: hidden;
     color: {{ block.settings.text_color }};
     font-family: {{ settings.type_body_font.family }}, {{ settings.type_body_font.fallback_families }};
-    font-size: clamp(12px, min(1.3vw, 2.3vh), 16px);
+    font-size: clamp(12px, 1.2vw, 16px);
     line-height: 1.45;
     opacity: .92;
     text-shadow: 0 1px 8px rgba(0,0,0,.25);
@@ -180,7 +196,7 @@
     position: absolute;
     z-index: 3;
     left: 50%;
-    bottom: 10px;
+    bottom: 8px;
     display: flex;
     align-items: center;
     gap: 2px;
@@ -233,22 +249,20 @@
   .ai-cat-banner-{{ ai_gen_id }}__toggle[aria-pressed="true"] .icon-pause { display: none; }
 
   @media screen and (max-width: 749px) {
-    .ai-cat-banner-{{ ai_gen_id }} { width: 100%; }
+    .ai-cat-banner-{{ ai_gen_id }} { width: 100%; aspect-ratio: {{ mobile_ratio }}; }
     .ai-cat-banner-{{ ai_gen_id }}__arrow { display: none; }
     .ai-cat-banner-{{ ai_gen_id }}__scrim {
       background: linear-gradient(90deg,
         {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha }} 0%,
         {{ block.settings.gradient_start | color_modify: 'alpha', scrim_alpha_mid }} 100%);
     }
-    .ai-cat-banner-{{ ai_gen_id }}__content { width: 100%; padding: 12px 18px 40px; }
+    .ai-cat-banner-{{ ai_gen_id }}__content { width: 100%; padding: 12px 18px 36px; }
     .ai-cat-banner-{{ ai_gen_id }}__badge { margin-bottom: 6px; padding: 4px 9px; font-size: 10px; }
-    .ai-cat-banner-{{ ai_gen_id }}__heading { font-size: clamp(22px, 6.6vw, 30px); }
+    .ai-cat-banner-{{ ai_gen_id }}__heading { font-size: clamp(20px, 6vw, 28px); }
     .ai-cat-banner-{{ ai_gen_id }}__subtitle { margin-top: 6px; font-size: 12px; -webkit-line-clamp: 1; }
-    .ai-cat-banner-{{ ai_gen_id }}__button { min-height: 40px; margin-top: 10px; padding: 7px 22px; font-size: 13px; }
-    .ai-cat-banner-{{ ai_gen_id }}__controls { bottom: 6px; }
-  }
-  @media screen and (max-width: 749px) and (max-height: 680px) {
-    .ai-cat-banner-{{ ai_gen_id }}__subtitle { display: none; }
+    .ai-cat-banner-{{ ai_gen_id }}__button { min-height: 38px; margin-top: 10px; padding: 7px 20px; font-size: 13px; }
+    .ai-cat-banner-{{ ai_gen_id }}__controls { bottom: 4px; }
+    .ai-cat-banner-{{ ai_gen_id }}__dot { width: 20px; height: 20px; }
   }
   @media (prefers-reduced-motion: reduce) {
     .ai-cat-banner-{{ ai_gen_id }}__slide,
@@ -308,7 +322,7 @@
       {% assign has_button = false %}
       {% if has_text and slide_label != blank %}{% assign has_button = true %}{% endif %}
       {% assign img_alt = slide_image.alt %}
-      {% if img_alt == blank and has_text == false %}{% assign img_alt = slide_heading %}{% endif %}
+      {% if img_alt == blank %}{% assign img_alt = slide_heading %}{% endif %}
       <div class="ai-cat-banner-{{ ai_gen_id }}__slide{% if slide_count == 1 %} is-active{% endif %}" data-slide aria-hidden="{% if slide_count == 1 %}false{% else %}true{% endif %}" role="group" aria-roledescription="slide" aria-label="Slide {{ slide_count }}">
         {% if slide_image != blank %}
           <div class="ai-cat-banner-{{ ai_gen_id }}__media">
@@ -460,10 +474,10 @@
   "name": "Bluekites category banner",
   "settings": [
     { "type": "header", "content": "Slide 1" },
-    { "type": "image_picker", "id": "slide_1_image", "label": "Desktop image", "info": "Recommended 2400 x 700 px" },
+    { "type": "image_picker", "id": "slide_1_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
     { "type": "image_picker", "id": "slide_1_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
-    { "type": "checkbox", "id": "use_collection_image", "label": "Use collection image if no image is set", "default": true },
-    { "type": "checkbox", "id": "slide_1_show_text", "label": "Show text and button over image", "info": "Turn off if your banner image already contains text", "default": true },
+    { "type": "checkbox", "id": "use_collection_image", "label": "Use collection image if no image is set", "default": false },
+    { "type": "checkbox", "id": "slide_1_show_text", "label": "Show text and button over image", "info": "Turn on only if your banner image has no text", "default": false },
     { "type": "text", "id": "slide_1_badge", "label": "Badge", "default": "New arrivals" },
     { "type": "text", "id": "slide_1_heading", "label": "Category headline", "info": "Leave empty to show the collection title" },
     { "type": "text", "id": "slide_1_subtitle", "label": "Subtitle", "default": "Explore our latest picks in this category." },
@@ -471,9 +485,9 @@
     { "type": "url", "id": "slide_1_button_link", "label": "Link (whole banner is clickable)", "info": "If empty, uses the default button target below" },
 
     { "type": "header", "content": "Slide 2 (optional)" },
-    { "type": "image_picker", "id": "slide_2_image", "label": "Desktop image", "info": "Recommended 2400 x 700 px" },
+    { "type": "image_picker", "id": "slide_2_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
     { "type": "image_picker", "id": "slide_2_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
-    { "type": "checkbox", "id": "slide_2_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "checkbox", "id": "slide_2_show_text", "label": "Show text and button over image", "default": false },
     { "type": "text", "id": "slide_2_badge", "label": "Badge", "default": "New arrivals" },
     { "type": "text", "id": "slide_2_heading", "label": "Category headline" },
     { "type": "text", "id": "slide_2_subtitle", "label": "Subtitle" },
@@ -481,9 +495,9 @@
     { "type": "url", "id": "slide_2_button_link", "label": "Link (whole banner is clickable)" },
 
     { "type": "header", "content": "Slide 3 (optional)" },
-    { "type": "image_picker", "id": "slide_3_image", "label": "Desktop image", "info": "Recommended 2400 x 700 px" },
+    { "type": "image_picker", "id": "slide_3_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
     { "type": "image_picker", "id": "slide_3_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
-    { "type": "checkbox", "id": "slide_3_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "checkbox", "id": "slide_3_show_text", "label": "Show text and button over image", "default": false },
     { "type": "text", "id": "slide_3_badge", "label": "Badge" },
     { "type": "text", "id": "slide_3_heading", "label": "Category headline" },
     { "type": "text", "id": "slide_3_subtitle", "label": "Subtitle" },
@@ -491,9 +505,9 @@
     { "type": "url", "id": "slide_3_button_link", "label": "Link (whole banner is clickable)" },
 
     { "type": "header", "content": "Slide 4 (optional)" },
-    { "type": "image_picker", "id": "slide_4_image", "label": "Desktop image", "info": "Recommended 2400 x 700 px" },
+    { "type": "image_picker", "id": "slide_4_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
     { "type": "image_picker", "id": "slide_4_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
-    { "type": "checkbox", "id": "slide_4_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "checkbox", "id": "slide_4_show_text", "label": "Show text and button over image", "default": false },
     { "type": "text", "id": "slide_4_badge", "label": "Badge" },
     { "type": "text", "id": "slide_4_heading", "label": "Category headline" },
     { "type": "text", "id": "slide_4_subtitle", "label": "Subtitle" },
@@ -501,9 +515,9 @@
     { "type": "url", "id": "slide_4_button_link", "label": "Link (whole banner is clickable)" },
 
     { "type": "header", "content": "Slide 5 (optional)" },
-    { "type": "image_picker", "id": "slide_5_image", "label": "Desktop image", "info": "Recommended 2400 x 700 px" },
+    { "type": "image_picker", "id": "slide_5_image", "label": "Desktop image", "info": "Recommended 2400 x 600 px" },
     { "type": "image_picker", "id": "slide_5_mobile_image", "label": "Mobile image (optional)", "info": "Recommended 1000 x 700 px" },
-    { "type": "checkbox", "id": "slide_5_show_text", "label": "Show text and button over image", "default": true },
+    { "type": "checkbox", "id": "slide_5_show_text", "label": "Show text and button over image", "default": false },
     { "type": "text", "id": "slide_5_badge", "label": "Badge" },
     { "type": "text", "id": "slide_5_heading", "label": "Category headline" },
     { "type": "text", "id": "slide_5_subtitle", "label": "Subtitle" },

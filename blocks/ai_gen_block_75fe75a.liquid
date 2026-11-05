@@ -19,20 +19,24 @@
 
 {% style %}
   .ai-cat-banner-{{ ai_gen_id }} {
-    display: block;
-    position: relative;
-    width: {{ block.settings.desktop_width_percent }}%;
-    max-width: 100%;
-    height: auto;
-    aspect-ratio: 2400 / 600;
-    margin: 0 auto;
-    border-radius: {{ block.settings.corner_radius }}px;
-    overflow: hidden;
-    isolation: isolate;
-    background: linear-gradient(115deg, {{ block.settings.gradient_start }} 0%, {{ block.settings.gradient_end }} 100%);
-    color: {{ block.settings.text_color }};
-    touch-action: pan-y;
-  }
+  display: block;
+  position: relative;
+  width: {{ block.settings.desktop_width_percent }}%;
+  max-width: 100%;
+  height: auto;
+  aspect-ratio: 2400 / 600;
+  margin: 24px auto;
+  border-radius: {{ block.settings.corner_radius }}px;
+  overflow: hidden;
+  isolation: isolate;
+  background: linear-gradient(
+    115deg,
+    {{ block.settings.gradient_start }} 0%,
+    {{ block.settings.gradient_end }} 100%
+  );
+  color: {{ block.settings.text_color }};
+  touch-action: pan-y;
+}
   .ai-cat-banner-{{ ai_gen_id }} * { box-sizing: border-box; }
   .ai-cat-banner-{{ ai_gen_id }}__slide {
     position: absolute;

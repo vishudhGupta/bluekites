@@ -1,10 +1,9 @@
+
 {% doc %}
-  @prompt
-    Add product category segments above Our Services
-    Create segments in the same style as Our Services for Surgical Products, Hand Rub &
-    Disinfectants, Health Care, and Cosmetics, placed above the Our Services section. Use
-    glassmorphism for their Add to Cart buttons and other suitable elements.
+  Product Category Segments
+  Four configurable product categories with collection navigation.
 {% enddoc %}
+
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
@@ -12,164 +11,365 @@
     display: block;
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
-    margin-inline: auto;
-    padding: 36px 24px;
-    color: #1b1b1b;
+    margin: auto;
+    padding: 40px 24px;
+    color: #37181d;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__heading {
-    margin: 0 0 24px;
     text-align: center;
-    font-family: var(--font-heading--family, inherit);
-    font-size: clamp(26px, 3vw, 40px);
-    line-height: 1.15;
+    font-size: clamp(26px, 3vw, 38px);
+    margin: 0 0 30px;
+    line-height: 1.2;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__grid {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 18px;
+    gap: 20px;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__category {
     min-width: 0;
-    padding: 18px;
-    border: 1px solid rgba(55, 24, 29, 0.14);
-    border-radius: 16px;
-    background: #faf9f7;
+    overflow: hidden;
+    border: 1px solid rgba(55, 24, 29, 0.12);
+    border-radius: 18px;
+    background: #fff;
+    box-shadow: 0 5px 20px rgba(55, 24, 29, 0.05);
+    transition: transform .3s ease, box-shadow .3s ease;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__category:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 28px rgba(55, 24, 29, 0.10);
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__category-header {
+    padding: 18px 16px;
+    background: #f8f4f1;
+    border-bottom: 1px solid rgba(55, 24, 29, .10);
   }
 
   .ai-category-segments-{{ ai_gen_id }}__category-title {
-    margin: 0 0 14px;
-    font-size: 20px;
-    line-height: 1.25;
+    margin: 0;
+    font-size: 19px;
+    line-height: 1.3;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__category-title a {
+    color: inherit;
+    text-decoration: none;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__products {
+    padding: 16px;
     display: grid;
-    gap: 14px;
+    gap: 20px;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__product {
-    padding-top: 12px;
-    border-top: 1px solid rgba(55, 24, 29, 0.14);
+    min-width: 0;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__product-image-link {
+    display: block;
+    overflow: hidden;
+    border-radius: 12px;
+    background: #f5f3f1;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__product-image {
     display: block;
     width: 100%;
     aspect-ratio: 4 / 3;
-    object-fit: cover;
-    border-radius: 10px;
-    margin-bottom: 10px;
+    object-fit: contain;
+    padding: 8px;
+    transition: transform .35s ease;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__product:hover
+  .ai-category-segments-{{ ai_gen_id }}__product-image {
+    transform: scale(1.04);
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__image-placeholder {
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    display: grid;
+    place-items: center;
+    background: #f5f3f1;
+    color: #8c7778;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__image-placeholder svg {
+    width: 55%;
+    max-height: 120px;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__product-name {
-    margin: 0 0 5px;
     font-size: 15px;
-    line-height: 1.35;
+    line-height: 1.4;
+    margin: 12px 0 5px;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__product-name a {
-    color: inherit;
+    color: #37181d;
     text-decoration: none;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__product-name a:hover {
+    text-decoration: underline;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__price {
-    margin-bottom: 10px;
     font-size: 14px;
+    font-weight: 600;
+    margin-bottom: 12px;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__button {
-    display: inline-flex;
     width: 100%;
     min-height: 42px;
-    justify-content: center;
+    display: inline-flex;
     align-items: center;
-    padding: 9px 14px;
-    border: 1px solid rgba(255,255,255,.9);
-    border-radius: 999px;
+    justify-content: center;
+    padding: 10px 14px;
+    border: 1px solid rgba(255,255,255,.7);
+    border-radius: 30px;
     background: rgba(55, 24, 29, .88);
     color: #fff;
     font: inherit;
-    font-size: 14px;
+    font-size: 13px;
     font-weight: 600;
     text-decoration: none;
-    text-align: center;
     cursor: pointer;
-    box-shadow: 0 4px 14px rgba(34, 17, 19, .16);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    box-shadow: 0 4px 14px rgba(55, 24, 29, .14);
+    transition: background .25s ease, transform .25s ease;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__button:hover {
-    background: rgba(38, 14, 18, .96);
+    background: rgba(38, 14, 18, .98);
+    color: #fff;
+    transform: translateY(-2px);
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__explore {
+    margin: 0 16px 18px;
+    width: calc(100% - 32px);
+    background: rgba(255,255,255,.72);
+    border: 1px solid rgba(55,24,29,.25);
+    color: #37181d;
+    box-shadow: 0 4px 14px rgba(55,24,29,.06);
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__explore:hover {
+    background: #37181d;
+    color: #fff;
+  }
+
+  .ai-category-segments-{{ ai_gen_id }}__empty {
+    padding: 20px 16px;
+    font-size: 13px;
+    color: #76696a;
   }
 
   .ai-category-segments-{{ ai_gen_id }}__button:focus-visible,
-  .ai-category-segments-{{ ai_gen_id }}__product-name a:focus-visible {
+  .ai-category-segments-{{ ai_gen_id }} a:focus-visible {
     outline: 3px solid #c3cca6;
     outline-offset: 3px;
   }
 
-  .ai-category-segments-{{ ai_gen_id }}__empty {
-    margin: 0;
-    color: #555;
-    font-size: 14px;
-    line-height: 1.5;
-  }
-
   @media screen and (max-width: 900px) {
-    .ai-category-segments-{{ ai_gen_id }}__grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    .ai-category-segments-{{ ai_gen_id }}__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
   }
 
   @media screen and (max-width: 560px) {
-    .ai-category-segments-{{ ai_gen_id }} { padding: 28px 16px; }
-    .ai-category-segments-{{ ai_gen_id }}__grid { grid-template-columns: 1fr; gap: 12px; }
-    .ai-category-segments-{{ ai_gen_id }}__category { padding: 16px; }
+    .ai-category-segments-{{ ai_gen_id }} {
+      padding: 28px 16px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__category-header {
+      padding: 13px 11px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__category-title {
+      font-size: 15px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__products {
+      padding: 10px;
+      gap: 15px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__product-name {
+      font-size: 13px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__button {
+      font-size: 12px;
+      padding: 9px 6px;
+    }
+
+    .ai-category-segments-{{ ai_gen_id }}__explore {
+      margin: 0 10px 12px;
+      width: calc(100% - 20px);
+    }
   }
 {% endstyle %}
 
-<category-segments-{{ ai_gen_id }} class="ai-category-segments-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
-  {% if block.settings.heading != blank %}<h2 class="ai-category-segments-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>{% endif %}
+<category-segments-{{ ai_gen_id }}
+  class="ai-category-segments-{{ ai_gen_id }}"
+  {{ block.shopify_attributes }}
+>
+  {% if block.settings.heading != blank %}
+    <h2 class="ai-category-segments-{{ ai_gen_id }}__heading">
+      {{ block.settings.heading | escape }}
+    </h2>
+  {% endif %}
+
   <div class="ai-category-segments-{{ ai_gen_id }}__grid">
+
     {% for i in (1..4) %}
       {% liquid
         assign title_key = 'category_' | append: i | append: '_title'
         assign collection_key = 'category_' | append: i | append: '_collection'
+
         assign category_title = block.settings[title_key]
         assign category_collection = block.settings[collection_key]
       %}
-      <section class="ai-category-segments-{{ ai_gen_id }}__category" aria-label="{{ category_title | escape }}">
-        <h3 class="ai-category-segments-{{ ai_gen_id }}__category-title">{{ category_title | escape }}</h3>
+
+      <section class="ai-category-segments-{{ ai_gen_id }}__category">
+
+        <div class="ai-category-segments-{{ ai_gen_id }}__category-header">
+          <h3 class="ai-category-segments-{{ ai_gen_id }}__category-title">
+            {% if category_collection != blank %}
+              <a href="{{ category_collection.url }}">
+                {{ category_title | escape }}
+              </a>
+            {% else %}
+              {{ category_title | escape }}
+            {% endif %}
+          </h3>
+        </div>
+
         {% if category_collection != blank and category_collection.products.size > 0 %}
+
           <div class="ai-category-segments-{{ ai_gen_id }}__products">
+
             {% for product in category_collection.products limit: 2 %}
+
               <article class="ai-category-segments-{{ ai_gen_id }}__product">
-                {% if product.featured_image %}<a href="{{ product.url }}" aria-label="{{ product.title | escape }}"><img class="ai-category-segments-{{ ai_gen_id }}__product-image" src="{{ product.featured_image | image_url: width: 600 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="600" height="450"></a>{% endif %}
-                <h4 class="ai-category-segments-{{ ai_gen_id }}__product-name"><a href="{{ product.url }}">{{ product.title | escape }}</a></h4>
-                <div class="ai-category-segments-{{ ai_gen_id }}__price">{{ product.price | money }}</div>
-                {% if product.available %}
-                  {% if product.has_only_default_variant %}
-                    <form method="post" action="{{ routes.cart_add_url }}">
-                      <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
-                      <input type="hidden" name="quantity" value="1">
-                      <button class="ai-category-segments-{{ ai_gen_id }}__button" type="submit">Add to cart</button>
-                    </form>
+
+                <a
+                  href="{{ product.url }}"
+                  class="ai-category-segments-{{ ai_gen_id }}__product-image-link"
+                  aria-label="View {{ product.title | escape }}"
+                >
+                  {% if product.featured_image %}
+                    <img
+                      class="ai-category-segments-{{ ai_gen_id }}__product-image"
+                      src="{{ product.featured_image | image_url: width: 600 }}"
+                      srcset="
+                        {{ product.featured_image | image_url: width: 300 }} 300w,
+                        {{ product.featured_image | image_url: width: 600 }} 600w
+                      "
+                      sizes="(max-width: 560px) 45vw, 25vw"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      loading="lazy"
+                      width="600"
+                      height="450"
+                    >
                   {% else %}
-                    <a class="ai-category-segments-{{ ai_gen_id }}__button" href="{{ product.url }}">Choose options</a>
+                    <div class="ai-category-segments-{{ ai_gen_id }}__image-placeholder">
+                      {{ 'product-1' | placeholder_svg_tag }}
+                    </div>
                   {% endif %}
+                </a>
+
+                <h4 class="ai-category-segments-{{ ai_gen_id }}__product-name">
+                  <a href="{{ product.url }}">
+                    {{ product.title | escape }}
+                  </a>
+                </h4>
+
+                <div class="ai-category-segments-{{ ai_gen_id }}__price">
+                  {% if product.price_varies %}
+                    From {{ product.price_min | money }}
+                  {% else %}
+                    {{ product.price | money }}
+                  {% endif %}
+                </div>
+
+                {% if product.available %}
+
+                  {% if product.has_only_default_variant %}
+                    {% form 'product', product %}
+                      <input
+                        type="hidden"
+                        name="id"
+                        value="{{ product.selected_or_first_available_variant.id }}"
+                      >
+                      <input type="hidden" name="quantity" value="1">
+
+                      <button
+                        class="ai-category-segments-{{ ai_gen_id }}__button"
+                        type="submit"
+                      >
+                        Add to Cart
+                      </button>
+                    {% endform %}
+                  {% else %}
+                    <a
+                      href="{{ product.url }}"
+                      class="ai-category-segments-{{ ai_gen_id }}__button"
+                    >
+                      Choose Options
+                    </a>
+                  {% endif %}
+
                 {% else %}
-                  <button class="ai-category-segments-{{ ai_gen_id }}__button" type="button" disabled aria-disabled="true">Sold out</button>
+                  <button
+                    class="ai-category-segments-{{ ai_gen_id }}__button"
+                    type="button"
+                    disabled
+                  >
+                    Sold Out
+                  </button>
                 {% endif %}
+
               </article>
+
             {% endfor %}
+
           </div>
+
+          <a
+            href="{{ category_collection.url }}"
+            class="ai-category-segments-{{ ai_gen_id }}__button ai-category-segments-{{ ai_gen_id }}__explore"
+          >
+            Explore Collection →
+          </a>
+
         {% else %}
-          <p class="ai-category-segments-{{ ai_gen_id }}__empty">Choose a collection for this category in the theme editor.</p>
+
+          <p class="ai-category-segments-{{ ai_gen_id }}__empty">
+            Select a collection from the theme editor.
+          </p>
+
         {% endif %}
+
       </section>
     {% endfor %}
+
   </div>
 </category-segments-{{ ai_gen_id }}>
 
@@ -177,22 +377,88 @@
 {
   "name": "Product categories",
   "settings": [
-    { "type": "text", "id": "heading", "label": "Heading", "default": "Shop by category" },
-    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
-    { "type": "header", "content": "Category 1" },
-    { "type": "text", "id": "category_1_title", "label": "Title", "default": "Surgical Products" },
-    { "type": "collection", "id": "category_1_collection", "label": "Collection" },
-    { "type": "header", "content": "Category 2" },
-    { "type": "text", "id": "category_2_title", "label": "Title", "default": "Hand Rub & Disinfectants" },
-    { "type": "collection", "id": "category_2_collection", "label": "Collection" },
-    { "type": "header", "content": "Category 3" },
-    { "type": "text", "id": "category_3_title", "label": "Title", "default": "Health Care" },
-    { "type": "collection", "id": "category_3_collection", "label": "Collection" },
-    { "type": "header", "content": "Category 4" },
-    { "type": "text", "id": "category_4_title", "label": "Title", "default": "Cosmetics" },
-    { "type": "collection", "id": "category_4_collection", "label": "Collection" }
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "Shop by Category"
+    },
+    {
+      "type": "range",
+      "id": "desktop_width_percent",
+      "label": "Desktop width",
+      "min": 50,
+      "max": 100,
+      "step": 5,
+      "unit": "%",
+      "default": 100
+    },
+    {
+      "type": "header",
+      "content": "Category 1"
+    },
+    {
+      "type": "text",
+      "id": "category_1_title",
+      "label": "Title",
+      "default": "Surgical Products"
+    },
+    {
+      "type": "collection",
+      "id": "category_1_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Category 2"
+    },
+    {
+      "type": "text",
+      "id": "category_2_title",
+      "label": "Title",
+      "default": "Hand Rub & Disinfectants"
+    },
+    {
+      "type": "collection",
+      "id": "category_2_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Category 3"
+    },
+    {
+      "type": "text",
+      "id": "category_3_title",
+      "label": "Title",
+      "default": "Health Care"
+    },
+    {
+      "type": "collection",
+      "id": "category_3_collection",
+      "label": "Collection"
+    },
+    {
+      "type": "header",
+      "content": "Category 4"
+    },
+    {
+      "type": "text",
+      "id": "category_4_title",
+      "label": "Title",
+      "default": "Cosmetics"
+    },
+    {
+      "type": "collection",
+      "id": "category_4_collection",
+      "label": "Collection"
+    }
   ],
-  "presets": [{ "name": "Product categories" }],
+  "presets": [
+    {
+      "name": "Product categories"
+    }
+  ],
   "tag": null,
   "class": "product-category-segments"
 }

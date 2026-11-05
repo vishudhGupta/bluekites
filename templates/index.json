@@ -608,13 +608,13 @@
             "heading": "Shop by category",
             "desktop_width_percent": 100,
             "category_1_title": "Surgical Products",
-            "category_1_collection": "",
-            "category_2_title": "Hand Rub & Disinfectants",
-            "category_2_collection": "",
+            "category_1_collection": "7-87mm-x-5-52inch-x-3-74inch",
+            "category_2_title": "Hand Rub & Disinfectants{{ closest.collection.metafields[\"app--3026047\"].conversation_starters | metafield_text: field: 'label' }}",
+            "category_2_collection": "allopathy-syrup",
             "category_3_title": "Health Care",
-            "category_3_collection": "",
+            "category_3_collection": "31-89inch-x-13-78inch-x-9-06",
             "category_4_title": "Cosmetics",
-            "category_4_collection": ""
+            "category_4_collection": "7-87mm-x-5-52inch-x-3-74inch"
           },
           "blocks": {}
         }

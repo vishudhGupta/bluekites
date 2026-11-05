@@ -12,6 +12,62 @@
     "17938946271f489a34": {
       "type": "_blocks",
       "blocks": {
+        "ai_gen_block_75fe75a_VRbccw": {
+          "type": "ai_gen_block_75fe75a",
+          "name": "Bluekites category banner",
+          "settings": {
+            "slide_1_image": "shopify://shop_images/cosmetics_2400x600_9c278a98-63a8-4217-8834-9460e064b426.jpg",
+            "use_collection_image": false,
+            "slide_1_show_text": false,
+            "slide_1_badge": "New arrivals",
+            "slide_1_heading": "",
+            "slide_1_subtitle": "Explore our latest picks in this category.",
+            "slide_1_button_label": "Shop Now",
+            "slide_1_button_link": "",
+            "slide_2_show_text": false,
+            "slide_2_badge": "New arrivals",
+            "slide_2_heading": "",
+            "slide_2_subtitle": "",
+            "slide_2_button_label": "Shop Now",
+            "slide_2_button_link": "",
+            "slide_3_show_text": false,
+            "slide_3_badge": "",
+            "slide_3_heading": "",
+            "slide_3_subtitle": "",
+            "slide_3_button_label": "Shop Now",
+            "slide_3_button_link": "",
+            "slide_4_show_text": false,
+            "slide_4_badge": "",
+            "slide_4_heading": "",
+            "slide_4_subtitle": "",
+            "slide_4_button_label": "Shop Now",
+            "slide_4_button_link": "",
+            "slide_5_show_text": false,
+            "slide_5_badge": "",
+            "slide_5_heading": "",
+            "slide_5_subtitle": "",
+            "slide_5_button_label": "Shop Now",
+            "slide_5_button_link": "",
+            "default_target": "#ProductGridContainer",
+            "heading_as_h1": false,
+            "autoplay": true,
+            "autoplay_interval": 5,
+            "image_focus": "center center",
+            "scrim_strength": 60,
+            "gradient_start": "#102A56",
+            "gradient_end": "#1769AA",
+            "text_color": "#FFFFFF",
+            "badge_background": "#F4C95D",
+            "badge_text_color": "#17243A",
+            "button_background": "#FFFFFF",
+            "button_text_color": "#102A56",
+            "button_hover_background": "#F4C95D",
+            "button_hover_text_color": "#17243A",
+            "corner_radius": 12,
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        },
         "ai_gen_block_a103878_t8fbH9": {
           "type": "ai_gen_block_a103878",
           "settings": {
@@ -32,6 +88,7 @@
         }
       },
       "block_order": [
+        "ai_gen_block_75fe75a_VRbccw",
         "ai_gen_block_a103878_t8fbH9"
       ],
       "settings": {

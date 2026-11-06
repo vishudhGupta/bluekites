@@ -679,6 +679,217 @@
         "padding-block-end": 0
       }
     },
+    "blocks_gMUwJV": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8714476_ti7Hmb": {
+          "type": "ai_gen_block_8714476",
+          "settings": {
+            "heading": "Handrub and Disinfectants",
+            "subheading": "Discover products selected for you.",
+            "products": [
+              "microshield®-handrub",
+              "microshield®-blue-handrub",
+              "bactorub-pink",
+              "glutihyde-2-and-glutihyde-2-45",
+              "linotox",
+              "korso-plus"
+            ],
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8714476_ti7Hmb"
+      ],
+      "name": "Catogories",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_GCznkH": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8714476_xXqyga": {
+          "type": "ai_gen_block_8714476",
+          "settings": {
+            "heading": "Healthcare",
+            "subheading": "Discover products selected for you.",
+            "products": [
+              "bluekites-gynosyl-syp-200ml-200-ml-pack-of-3",
+              "bluekites-glycold-plus-tab-01x10-pack-of-3",
+              "bluekites-glycef-tab-01x10-pack-of-3",
+              "bluekites-dr-lom-tablet-01x10-pack-of-3",
+              "bluekites-healthcare-services-healthcare-care-giver-package-1",
+              "bluekites-healthcare-services-healthcare-lab-test-service-visit-home-package-6"
+            ],
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8714476_xXqyga"
+      ],
+      "name": "Catogories",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_3kXXww": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8714476_DAxay8": {
+          "type": "ai_gen_block_8714476",
+          "settings": {
+            "heading": "Cosmetics",
+            "subheading": "Discover products selected for you.",
+            "products": [
+              "bluekites-cutaster-natural-ingredient-hair-oil-100ml-pack-of-3",
+              "bluekites-handmade-camphor-soap-pack-of-3-75gx3-all-natural-ingredient-paraben-free",
+              "bluekites-handmade-charcoal-soap-pack-of-3-75gx3-all-natural-ingredient-paraben-free",
+              "bluekites-handmade-lemon-soap-pack-of-3-75gx3-all-natural-ingredient-paraben-free",
+              "bluekites-handmade-neem-soap-pack-of-3-75gx3-all-natural-ingredient-paraben-free",
+              "bluekites-handmade-rice-soap-pack-of-3-75gx3-all-natural-ingredient-paraben-free"
+            ],
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8714476_DAxay8"
+      ],
+      "name": "Catogories",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
+    "blocks_dhyLKm": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8714476_ymC8QU": {
+          "type": "ai_gen_block_8714476",
+          "settings": {
+            "heading": "Surgical Products",
+            "subheading": "Discover products selected for you.",
+            "products": [
+              "bacto-bath-wipes",
+              "bactoprep",
+              "bactorinse",
+              "bactorub-blue",
+              "bactorub-pink"
+            ],
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8714476_ymC8QU"
+      ],
+      "name": "Catogories",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "custom_liquid_jQ3gmw": {
       "type": "custom-liquid",
       "name": "t:names.custom_liquid",
@@ -983,6 +1194,10 @@
     "17916347311e31a935",
     "feature_product_bLRpkG",
     "179398877116e974b8",
+    "blocks_gMUwJV",
+    "blocks_GCznkH",
+    "blocks_3kXXww",
+    "blocks_dhyLKm",
     "custom_liquid_jQ3gmw",
     "service_cards_9R7Aax",
     "whyus_XEjggw",

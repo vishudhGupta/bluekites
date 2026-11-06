@@ -3,10 +3,11 @@
   @prompt
     Reusable category products section with customizable heading,
     subheading and product selection. Styled to match the Our Services
-    section, including responsive product cards and a maroon header bar.
+    section and Feature Products card buttons.
 {% enddoc %}
 
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+{% assign add_label = 'Add to cart' %}
 
 {% style %}
   .ai-category-products-{{ ai_gen_id }} {
@@ -43,7 +44,7 @@
     background: var(--svc-body);
   }
 
-  /* Header bar */
+  /* Header */
   .ai-category-products-{{ ai_gen_id }}__header {
     display: flex;
     align-items: center;
@@ -111,6 +112,12 @@
   }
 
   /* Product image */
+  .ai-category-products-{{ ai_gen_id }}__image-link {
+    display: block;
+    color: inherit;
+    text-decoration: none;
+  }
+
   .ai-category-products-{{ ai_gen_id }}__image-wrap {
     position: relative;
     display: grid;
@@ -127,10 +134,12 @@
     display: block;
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain;
   }
 
   .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+    padding: 6px;
+    mix-blend-mode: multiply;
     transition: transform 0.5s ease;
   }
 
@@ -164,6 +173,7 @@
 
   .ai-category-products-{{ ai_gen_id }}__title {
     display: -webkit-box;
+    min-height: calc(1.35em * 2);
     margin: 0;
     overflow: hidden;
     color: var(--svc-title);
@@ -175,13 +185,149 @@
     -webkit-line-clamp: 2;
   }
 
+  .ai-category-products-{{ ai_gen_id }}__title a {
+    color: inherit;
+    text-decoration: none;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__title a:hover {
+    text-decoration: underline;
+  }
+
   .ai-category-products-{{ ai_gen_id }}__price {
     margin-top: auto;
     padding-top: 4px;
     color: var(--svc-text);
     font-family: inherit;
-    font-size: 11px;
+    font-size: 12px;
     line-height: 1.4;
+  }
+
+  /* Add to cart action */
+  .ai-category-products-{{ ai_gen_id }}__action {
+    margin-top: auto;
+    padding-top: 8px;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__form {
+    margin: 0;
+  }
+
+  /* Glassmorphism maroon button */
+  .ai-category-products-{{ ai_gen_id }}__btn {
+    --glass-maroon: 128, 0, 0;
+
+    position: relative;
+    display: block;
+    width: 100%;
+    min-height: 36px;
+    padding: 8px 6px;
+    font: inherit;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    line-height: 1.2;
+    color: #ffffff;
+    text-align: center;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+    cursor: pointer;
+
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 0.92) 0%,
+      rgba(var(--glass-maroon), 0.78) 100%
+    );
+
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 6px;
+
+    box-shadow:
+      0 4px 14px rgba(var(--glass-maroon), 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
+
+    transition:
+      transform 0.2s ease,
+      box-shadow 0.2s ease,
+      background 0.2s ease;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__btn:hover {
+    color: #ffffff;
+
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 1) 0%,
+      rgba(var(--glass-maroon), 0.88) 100%
+    );
+
+    box-shadow:
+      0 6px 18px rgba(var(--glass-maroon), 0.5),
+      inset 0 1px 0 rgb(255 255 255 / 0.45);
+
+    transform: translateY(-1px);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__btn:active {
+    transform: scale(0.98);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__btn:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 2px;
+  }
+
+  /* Choose options: outlined glass button */
+  .ai-category-products-{{ ai_gen_id }}__btn--outline {
+    color: rgb(128 0 0);
+    text-shadow: none;
+
+    background: linear-gradient(
+      135deg,
+      rgb(128 0 0 / 0.1) 0%,
+      rgb(128 0 0 / 0.04) 100%
+    );
+
+    border: 1px solid rgb(128 0 0 / 0.55);
+
+    box-shadow:
+      0 2px 8px rgb(128 0 0 / 0.12),
+      inset 0 1px 0 rgb(255 255 255 / 0.6);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__btn--outline:hover {
+    color: #ffffff;
+    text-shadow: 0 1px 2px rgb(0 0 0 / 0.45);
+
+    background: linear-gradient(
+      135deg,
+      rgba(128, 0, 0, 1) 0%,
+      rgba(128, 0, 0, 0.88) 100%
+    );
+
+    border-color: rgb(255 255 255 / 0.35);
+  }
+
+  /* Sold out button */
+  .ai-category-products-{{ ai_gen_id }}__btn--muted {
+    color: #686868;
+    text-shadow: none;
+    cursor: not-allowed;
+    background: #ececec;
+    border-color: #ececec;
+    box-shadow: none;
+    -webkit-backdrop-filter: none;
+    backdrop-filter: none;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__btn--muted:hover {
+    color: #686868;
+    background: #ececec;
+    box-shadow: none;
+    transform: none;
   }
 
   /* Empty state */
@@ -196,9 +342,9 @@
     text-align: center;
   }
 
-  /* Keyboard accessibility */
-  .ai-category-products-{{ ai_gen_id }}__card:focus-visible {
-    outline: 2px solid var(--svc-bar);
+  /* Accessibility */
+  .ai-category-products-{{ ai_gen_id }}__card a:focus-visible {
+    outline: 2px solid #1d4ed8;
     outline-offset: 3px;
   }
 
@@ -268,6 +414,12 @@
     .ai-category-products-{{ ai_gen_id }}__price {
       font-size: 11px;
     }
+
+    .ai-category-products-{{ ai_gen_id }}__btn {
+      min-height: 34px;
+      padding: 7px 4px;
+      font-size: 11px;
+    }
   }
 
   /* Very small phones */
@@ -304,7 +456,8 @@
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .ai-category-products-{{ ai_gen_id }}__card,
-    .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+    .ai-category-products-{{ ai_gen_id }}__image-wrap img,
+    .ai-category-products-{{ ai_gen_id }}__btn {
       transition: none !important;
     }
   }
@@ -317,10 +470,7 @@
       <header class="ai-category-products-{{ ai_gen_id }}__header">
         <div class="ai-category-products-{{ ai_gen_id }}__header-content">
           {% if block.settings.heading != blank %}
-            <h2
-              class="ai-category-products-{{ ai_gen_id }}__heading"
-              id="ai-category-heading-{{ ai_gen_id }}"
-            >
+            <h2 class="ai-category-products-{{ ai_gen_id }}__heading">
               {{ block.settings.heading | escape }}
             </h2>
           {% endif %}
@@ -339,38 +489,101 @@
 
         {% if block.settings.products != blank %}
           {% for product in block.settings.products limit: 6 %}
-            <a
-              class="ai-category-products-{{ ai_gen_id }}__card"
-              href="{{ product.url }}"
-              aria-label="{{ product.title | escape }}"
-            >
-              <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
-                {% if product.featured_image %}
-                  <img
-                    src="{{ product.featured_image | image_url: width: 700 }}"
-                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                    loading="lazy"
-                    width="{{ product.featured_image.width }}"
-                    height="{{ product.featured_image.height }}"
-                  >
-                {% else %}
-                  <div class="ai-category-products-{{ ai_gen_id }}__placeholder">
-                    {{ 'product-apparel-1' | placeholder_svg_tag }}
-                  </div>
-                {% endif %}
-              </div>
+            {% assign variant = product.selected_or_first_available_variant %}
+
+            <article class="ai-category-products-{{ ai_gen_id }}__card">
+
+              <a
+                class="ai-category-products-{{ ai_gen_id }}__image-link"
+                href="{{ product.url }}"
+                aria-label="{{ product.title | escape }}"
+              >
+                <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
+                  {% if product.featured_image %}
+                    <img
+                      src="{{ product.featured_image | image_url: width: 700 }}"
+                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                      loading="lazy"
+                      width="{{ product.featured_image.width }}"
+                      height="{{ product.featured_image.height }}"
+                    >
+                  {% else %}
+                    <div class="ai-category-products-{{ ai_gen_id }}__placeholder">
+                      {{ 'product-apparel-1' | placeholder_svg_tag }}
+                    </div>
+                  {% endif %}
+                </div>
+              </a>
 
               <div class="ai-category-products-{{ ai_gen_id }}__content">
                 <h3 class="ai-category-products-{{ ai_gen_id }}__title">
-                  {{ product.title | escape }}
+                  <a href="{{ product.url }}">
+                    {{ product.title | escape }}
+                  </a>
                 </h3>
 
                 <span class="ai-category-products-{{ ai_gen_id }}__price">
+                  {% if product.price_varies %}
+                    From
+                  {% endif %}
                   {{ product.price | money }}
                 </span>
+
+                <div class="ai-category-products-{{ ai_gen_id }}__action">
+                  {% if product.available == false %}
+
+                    <span
+                      class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--muted"
+                      aria-disabled="true"
+                    >
+                      Sold out
+                    </span>
+
+                  {% elsif product.variants.size > 1 %}
+
+                    <a
+                      class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--outline"
+                      href="{{ product.url }}"
+                    >
+                      Choose options
+                    </a>
+
+                  {% else %}
+
+                    <form
+                      class="ai-category-products-{{ ai_gen_id }}__form"
+                      method="post"
+                      action="{{ routes.cart_add_url }}"
+                      accept-charset="UTF-8"
+                    >
+                      <input
+                        type="hidden"
+                        name="id"
+                        value="{{ variant.id }}"
+                      >
+
+                      <input
+                        type="hidden"
+                        name="quantity"
+                        value="1"
+                      >
+
+                      <button
+                        class="ai-category-products-{{ ai_gen_id }}__btn"
+                        type="submit"
+                        aria-label="{{ add_label | escape }}: {{ product.title | escape }}"
+                      >
+                        {{ add_label | escape }}
+                      </button>
+                    </form>
+
+                  {% endif %}
+                </div>
               </div>
-            </a>
+
+            </article>
           {% endfor %}
+
         {% else %}
           <div class="ai-category-products-{{ ai_gen_id }}__empty">
             Choose up to 6 products in this block’s settings to display them here.

@@ -254,7 +254,7 @@
 
 <hero-slider-{{ ai_gen_id }} class="ai-hero-slider-{{ ai_gen_id }}" data-autoplay="{{ block.settings.autoplay }}" data-interval="{{ block.settings.autoplay_interval | times: 1000 }}" role="region" aria-roledescription="carousel" aria-label="Homepage highlights" {{ block.shopify_attributes }}>
   {% assign slide_count = 0 %}
-  {% for i in (1..5) %}
+  {% for i in (1..8) %}
     {% liquid
       assign image_key = 'slide_' | append: i | append: '_image'
       assign mobile_key = 'slide_' | append: i | append: '_mobile_image'

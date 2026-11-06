@@ -1,62 +1,125 @@
+
 {% doc %}
   @prompt
-    ok now i want to have separate 5 category sections , in each section i want to add products of my own choice , so please write a new section so that i can use it again in other places, the heading subheading and product listing should be customisable.  the styling shoudl be just like the Our services, there shoudl be 5 - 6 products listed
+    Reusable category products section with customizable heading,
+    subheading and product selection. Styled to match the Our Services
+    section, including responsive product cards and a maroon header bar.
 {% enddoc %}
+
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 
 {% style %}
   .ai-category-products-{{ ai_gen_id }} {
+    --svc-page-bg: #ffffff;
+    --svc-bar: #800000;
+    --svc-bar-text: #ffffff;
+    --svc-body: #eef4fb;
+    --svc-card: #ffffff;
+    --svc-title: #111111;
+    --svc-text: #6b7280;
+    --svc-max: 1440px;
+    --svc-gutter: 32px;
+
     display: block;
     width: {{ block.settings.desktop_width_percent }}%;
     max-width: 100%;
-    padding: 40px 24px;
+    margin-inline: auto;
+    padding-block: 24px;
+    background: var(--svc-page-bg);
     color: #000000;
-    background: #ffffff;
+  }
+
+  .ai-category-products-{{ ai_gen_id }} *,
+  .ai-category-products-{{ ai_gen_id }} *::before,
+  .ai-category-products-{{ ai_gen_id }} *::after {
+    box-sizing: border-box;
   }
 
   .ai-category-products-{{ ai_gen_id }}__inner {
-    width: 100%;
-    max-width: 1400px;
-    margin: 0 auto;
+    width: min(calc(100% - var(--svc-gutter)), var(--svc-max));
+    margin-inline: auto;
+    overflow: hidden;
+    border-radius: 12px;
+    background: var(--svc-body);
+  }
+
+  /* Header bar */
+  .ai-category-products-{{ ai_gen_id }}__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 16px;
+    padding: 14px 20px 12px;
+    background: var(--svc-bar);
+    color: var(--svc-bar-text);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__header-content {
+    min-width: 0;
   }
 
   .ai-category-products-{{ ai_gen_id }}__heading {
     margin: 0;
-    font-family: var(--font-heading--family, 'Almarai', sans-serif);
-    font-size: clamp(26px, 3vw, 40px);
+    color: var(--svc-bar-text);
+    font-family: inherit;
+    font-size: clamp(20px, 2vw, 28px);
+    font-weight: 700;
     line-height: 1.2;
-    font-weight: 600;
-    color: #000000;
   }
 
   .ai-category-products-{{ ai_gen_id }}__subheading {
-    margin: 10px 0 26px;
-    max-width: 720px;
-    font-family: var(--font-body--family, 'Poppins', sans-serif);
-    font-size: 15px;
-    line-height: 1.6;
-    color: #333333;
+    margin: 2px 0 0;
+    color: var(--svc-bar-text);
+    font-family: inherit;
+    font-size: 13px;
+    line-height: 1.4;
+    opacity: 0.95;
+  }
+
+  /* Product grid */
+  .ai-category-products-{{ ai_gen_id }}__body {
+    padding: 16px;
   }
 
   .ai-category-products-{{ ai_gen_id }}__grid {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 18px;
+    grid-template-columns: repeat(6, minmax(0, 1fr));
+    gap: 8px;
+    margin: 0;
+    padding: 0;
   }
 
+  /* Product card */
   .ai-category-products-{{ ai_gen_id }}__card {
+    position: relative;
+    display: flex;
+    flex-direction: column;
     min-width: 0;
-    color: #000000;
+    height: 100%;
+    padding: 6px;
+    border-radius: 6px;
+    background: var(--svc-card);
+    color: var(--svc-title);
     text-decoration: none;
-    display: block;
+    box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
+  .ai-category-products-{{ ai_gen_id }}__card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 12px 28px -12px rgba(16, 24, 40, 0.28);
+  }
+
+  /* Product image */
   .ai-category-products-{{ ai_gen_id }}__image-wrap {
     position: relative;
-    overflow: hidden;
+    display: grid;
+    place-items: center;
+    width: 100%;
     aspect-ratio: 1 / 1;
-    border-radius: 10px;
-    background: #f5f5f5;
+    overflow: hidden;
+    border-radius: 4px;
+    background: #f3f4f6;
   }
 
   .ai-category-products-{{ ai_gen_id }}__image-wrap img,
@@ -67,87 +130,256 @@
     object-fit: cover;
   }
 
+  .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+    transition: transform 0.5s ease;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__card:hover
+  .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+    transform: scale(1.06);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__placeholder {
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    color: #9ca3af;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__placeholder svg {
+    width: 36%;
+    height: auto;
+    opacity: 0.55;
+  }
+
+  /* Product information */
+  .ai-category-products-{{ ai_gen_id }}__content {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    gap: 4px;
+    padding: 8px 2px 2px;
+  }
+
   .ai-category-products-{{ ai_gen_id }}__title {
-    margin: 12px 0 6px;
-    font-family: var(--font-body--family, 'Poppins', sans-serif);
-    font-size: 15px;
-    line-height: 1.4;
-    font-weight: 500;
+    display: -webkit-box;
+    margin: 0;
+    overflow: hidden;
+    color: var(--svc-title);
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 700;
+    line-height: 1.35;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
   }
 
   .ai-category-products-{{ ai_gen_id }}__price {
-    font-family: var(--font-body--family, 'Poppins', sans-serif);
-    font-size: 14px;
-    color: #333333;
+    margin-top: auto;
+    padding-top: 4px;
+    color: var(--svc-text);
+    font-family: inherit;
+    font-size: 11px;
+    line-height: 1.4;
   }
 
+  /* Empty state */
   .ai-category-products-{{ ai_gen_id }}__empty {
     grid-column: 1 / -1;
     padding: 28px;
+    border-radius: 6px;
+    background: #ffffff;
+    color: #6b7280;
+    font-size: 13px;
+    line-height: 1.5;
     text-align: center;
-    background: #f7f7f7;
-    border-radius: 10px;
-    color: #333333;
-    font-size: 14px;
   }
 
+  /* Keyboard accessibility */
   .ai-category-products-{{ ai_gen_id }}__card:focus-visible {
-    outline: 2px solid #000000;
-    outline-offset: 4px;
-    border-radius: 10px;
+    outline: 2px solid var(--svc-bar);
+    outline-offset: 3px;
   }
 
-  @media screen and (max-width: 989px) {
+  /* Tablets */
+  @media screen and (max-width: 1099px) {
     .ai-category-products-{{ ai_gen_id }}__grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 14px;
+      gap: 12px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__body {
+      padding: 12px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__title {
+      font-size: 14px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__price {
+      font-size: 12px;
     }
   }
 
-  @media screen and (max-width: 600px) {
+  /* Mobile */
+  @media screen and (max-width: 749px) {
     .ai-category-products-{{ ai_gen_id }} {
-      padding: 30px 16px;
+      padding-block: 14px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__inner {
+      width: calc(100% - 24px);
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__header {
+      padding: 10px 12px 8px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__heading {
+      font-size: 18px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__subheading {
+      font-size: 11px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__body {
+      padding: 8px;
     }
 
     .ai-category-products-{{ ai_gen_id }}__grid {
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 16px 12px;
+      gap: 8px;
     }
 
-    .ai-category-products-{{ ai_gen_id }}__subheading {
-      margin-bottom: 20px;
+    .ai-category-products-{{ ai_gen_id }}__card {
+      padding: 5px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__content {
+      padding: 7px 2px 2px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__title {
+      font-size: 13px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__price {
+      font-size: 11px;
+    }
+  }
+
+  /* Very small phones */
+  @media screen and (max-width: 359px) {
+    .ai-category-products-{{ ai_gen_id }}__inner {
+      width: calc(100% - 16px);
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__grid {
+      gap: 6px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__title {
+      font-size: 12px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__price {
+      font-size: 10.5px;
+    }
+  }
+
+  /* Touch devices */
+  @media (hover: none) {
+    .ai-category-products-{{ ai_gen_id }}__card:hover {
+      transform: none;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__card:hover
+    .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+      transform: none;
+    }
+  }
+
+  /* Reduced motion */
+  @media (prefers-reduced-motion: reduce) {
+    .ai-category-products-{{ ai_gen_id }}__card,
+    .ai-category-products-{{ ai_gen_id }}__image-wrap img {
+      transition: none !important;
     }
   }
 {% endstyle %}
 
 <div class="ai-category-products-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-category-products-{{ ai_gen_id }}__inner">
-    {% if block.settings.heading != blank %}
-      <h2 class="ai-category-products-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>
-    {% endif %}
-    {% if block.settings.subheading != blank %}
-      <p class="ai-category-products-{{ ai_gen_id }}__subheading">{{ block.settings.subheading | escape }}</p>
+
+    {% if block.settings.heading != blank or block.settings.subheading != blank %}
+      <header class="ai-category-products-{{ ai_gen_id }}__header">
+        <div class="ai-category-products-{{ ai_gen_id }}__header-content">
+          {% if block.settings.heading != blank %}
+            <h2
+              class="ai-category-products-{{ ai_gen_id }}__heading"
+              id="ai-category-heading-{{ ai_gen_id }}"
+            >
+              {{ block.settings.heading | escape }}
+            </h2>
+          {% endif %}
+
+          {% if block.settings.subheading != blank %}
+            <p class="ai-category-products-{{ ai_gen_id }}__subheading">
+              {{ block.settings.subheading | escape }}
+            </p>
+          {% endif %}
+        </div>
+      </header>
     {% endif %}
 
-    <div class="ai-category-products-{{ ai_gen_id }}__grid">
-      {% if block.settings.products != blank %}
-        {% for product in block.settings.products limit: 6 %}
-          <a class="ai-category-products-{{ ai_gen_id }}__card" href="{{ product.url }}" aria-label="{{ product.title | escape }}">
-            <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
-              {% if product.featured_image %}
-                <img src="{{ product.featured_image | image_url: width: 700 }}" alt="{{ product.featured_image.alt | default: product.title | escape }}" loading="lazy" width="{{ product.featured_image.width }}" height="{{ product.featured_image.height }}">
-              {% else %}
-                <div class="ai-category-products-{{ ai_gen_id }}__placeholder">{{ 'product-apparel-1' | placeholder_svg_tag }}</div>
-              {% endif %}
-            </div>
-            <h3 class="ai-category-products-{{ ai_gen_id }}__title">{{ product.title | escape }}</h3>
-            <span class="ai-category-products-{{ ai_gen_id }}__price">{{ product.price | money }}</span>
-          </a>
-        {% endfor %}
-      {% else %}
-        <div class="ai-category-products-{{ ai_gen_id }}__empty">Choose up to 6 products in this block’s settings to display them here.</div>
-      {% endif %}
+    <div class="ai-category-products-{{ ai_gen_id }}__body">
+      <div class="ai-category-products-{{ ai_gen_id }}__grid">
+
+        {% if block.settings.products != blank %}
+          {% for product in block.settings.products limit: 6 %}
+            <a
+              class="ai-category-products-{{ ai_gen_id }}__card"
+              href="{{ product.url }}"
+              aria-label="{{ product.title | escape }}"
+            >
+              <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
+                {% if product.featured_image %}
+                  <img
+                    src="{{ product.featured_image | image_url: width: 700 }}"
+                    alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                    loading="lazy"
+                    width="{{ product.featured_image.width }}"
+                    height="{{ product.featured_image.height }}"
+                  >
+                {% else %}
+                  <div class="ai-category-products-{{ ai_gen_id }}__placeholder">
+                    {{ 'product-apparel-1' | placeholder_svg_tag }}
+                  </div>
+                {% endif %}
+              </div>
+
+              <div class="ai-category-products-{{ ai_gen_id }}__content">
+                <h3 class="ai-category-products-{{ ai_gen_id }}__title">
+                  {{ product.title | escape }}
+                </h3>
+
+                <span class="ai-category-products-{{ ai_gen_id }}__price">
+                  {{ product.price | money }}
+                </span>
+              </div>
+            </a>
+          {% endfor %}
+        {% else %}
+          <div class="ai-category-products-{{ ai_gen_id }}__empty">
+            Choose up to 6 products in this block’s settings to display them here.
+          </div>
+        {% endif %}
+
+      </div>
     </div>
+
   </div>
 </div>
 

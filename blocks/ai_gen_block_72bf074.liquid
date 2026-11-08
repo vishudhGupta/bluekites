@@ -1,0 +1,157 @@
+{% doc %}
+  @prompt
+    create me a section in which the use can select and display the collections we wants to set for this.
+{% enddoc %}
+{% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
+
+{% style %}
+  .ai-collection-showcase-{{ ai_gen_id }} {
+    display: block;
+    width: {{ block.settings.desktop_width_percent }}%;
+    max-width: 100%;
+    color: #000000;
+    font-family: inherit;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__heading {
+    margin: 0 0 24px;
+    color: #000000;
+    font-family: var(--font-heading--family, inherit);
+    font-size: 32px;
+    line-height: 1.2;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__grid {
+    display: grid;
+    grid-template-columns: repeat({{ block.settings.columns_desktop }}, minmax(0, 1fr));
+    gap: {{ block.settings.card_gap }}px;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__card {
+    display: block;
+    color: #000000;
+    text-decoration: none;
+    border-radius: 10px;
+    overflow: hidden;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__media,
+  .ai-collection-showcase-{{ ai_gen_id }}__placeholder {
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 3;
+    overflow: hidden;
+    background: #f1f1f1;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__media img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__placeholder svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+    color: #555555;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__details {
+    padding: 14px 2px 4px;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__title {
+    margin: 0;
+    color: #000000;
+    font-size: 18px;
+    line-height: 1.35;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__description {
+    margin: 7px 0 0;
+    color: #333333;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+
+  .ai-collection-showcase-{{ ai_gen_id }}__card:focus-visible {
+    outline: 2px solid #000f9f;
+    outline-offset: 4px;
+  }
+
+  @media screen and (max-width: 749px) {
+    .ai-collection-showcase-{{ ai_gen_id }} {
+      width: 100%;
+    }
+
+    .ai-collection-showcase-{{ ai_gen_id }}__grid {
+      grid-template-columns: repeat({{ block.settings.columns_mobile }}, minmax(0, 1fr));
+    }
+
+    .ai-collection-showcase-{{ ai_gen_id }}__heading {
+      font-size: 26px;
+    }
+  }
+{% endstyle %}
+
+<div class="ai-collection-showcase-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+  {% if block.settings.heading != blank %}
+    <h2 class="ai-collection-showcase-{{ ai_gen_id }}__heading">{{ block.settings.heading | escape }}</h2>
+  {% endif %}
+  {% assign chosen_collections = block.settings.collections %}
+  {% if chosen_collections != blank %}
+    <div class="ai-collection-showcase-{{ ai_gen_id }}__grid">
+      {% for collection in chosen_collections %}
+        <a class="ai-collection-showcase-{{ ai_gen_id }}__card" href="{{ collection.url }}" aria-label="{{ collection.title | escape }}">
+          {% if collection.featured_image %}
+            <span class="ai-collection-showcase-{{ ai_gen_id }}__media">
+              {{ collection.featured_image | image_url: width: 900 | image_tag: loading: 'lazy', widths: '360, 540, 720, 900', alt: collection.featured_image.alt | default: collection.title }}
+            </span>
+          {% else %}
+            <span class="ai-collection-showcase-{{ ai_gen_id }}__placeholder">
+              {{ 'collection-apparel-1' | placeholder_svg_tag }}
+            </span>
+          {% endif %}
+          <span class="ai-collection-showcase-{{ ai_gen_id }}__details">
+            <span class="ai-collection-showcase-{{ ai_gen_id }}__title">{{ collection.title | escape }}</span>
+            {% if block.settings.show_description and collection.description != blank %}
+              <span class="ai-collection-showcase-{{ ai_gen_id }}__description">{{ collection.description | strip_html | truncate: 110 | escape }}</span>
+            {% endif %}
+          </span>
+        </a>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="ai-collection-showcase-{{ ai_gen_id }}__grid">
+      <div class="ai-collection-showcase-{{ ai_gen_id }}__placeholder">
+        {{ 'collection-apparel-1' | placeholder_svg_tag }}
+      </div>
+    </div>
+  {% endif %}
+</div>
+
+{% schema %}
+{
+  "name": "Collection showcase",
+  "settings": [
+    { "type": "text", "id": "heading", "label": "Heading", "default": "Explore our collections" },
+    { "type": "collection_list", "id": "collections", "label": "Collections", "limit": 12 },
+    { "type": "checkbox", "id": "show_description", "label": "Show descriptions", "default": false },
+    { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
+    { "type": "select", "id": "columns_desktop", "label": "Columns on desktop", "options": [
+      { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }
+    ], "default": "3" },
+    { "type": "select", "id": "columns_mobile", "label": "Columns on mobile", "options": [
+      { "value": "1", "label": "1" }, { "value": "2", "label": "2" }
+    ], "default": "2" },
+    { "type": "range", "id": "card_gap", "label": "Card spacing", "min": 8, "max": 40, "step": 4, "unit": "px", "default": 20 }
+  ],
+  "presets": [
+    { "name": "Collection showcase" }
+  ],
+  "tag": null,
+  "class": "collection-showcase-block"
+}
+{% endschema %}

@@ -249,6 +249,7 @@
       "block_order": [
         "ai_gen_block_72bf074_cdcAdV"
       ],
+      "name": "Collection Showcase",
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,

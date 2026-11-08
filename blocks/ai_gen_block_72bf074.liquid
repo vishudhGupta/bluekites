@@ -2,10 +2,13 @@
   @prompt
     create me a section in which the use can select and display the collections we wants to set for this.
     Restyled to match the Categories panel design (maroon header bar, light panel, white cards,
-    hover lift) with a glassmorphism "Explore" button on every card.
+    hover lift) with a glassmorphism "Explore" button on every card. Maximum 6 items per row.
 {% enddoc %}
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 {% assign s = block.settings %}
+{% assign cols_desktop = s.columns_desktop | plus: 0 | at_most: 6 %}
+{% assign cols_tablet = s.columns_tablet | plus: 0 | at_most: 6 %}
+{% assign cols_mobile = s.columns_mobile | plus: 0 | at_most: 6 %}
 
 {% style %}
   .ai-collection-showcase-{{ ai_gen_id }} {
@@ -22,7 +25,7 @@
     --cs-btn-shadow: {{ s.button_color | color_modify: 'alpha', 0.35 }};
     --cs-btn-shadow-hover: {{ s.button_color | color_modify: 'alpha', 0.5 }};
     --cs-ratio: {{ s.image_ratio }};
-    --cs-cols: {{ s.columns_desktop }};
+    --cs-cols: {{ cols_desktop }};
 
     display: block;
     width: {{ s.desktop_width_percent }}%;
@@ -60,7 +63,7 @@
     opacity: .95;
   }
 
-  /* Grid */
+  /* Grid: never more than 6 per row */
   .ai-collection-showcase-{{ ai_gen_id }}__body { padding: 10px; }
   .ai-collection-showcase-{{ ai_gen_id }}__grid {
     display: grid;
@@ -180,9 +183,9 @@
     transform: translateY(-1px);
   }
 
-  /* Tablet: columns from settings (default 6), tighter */
+  /* Tablet */
   @media screen and (max-width: 1099px) {
-    .ai-collection-showcase-{{ ai_gen_id }} { --cs-cols: {{ s.columns_tablet }}; }
+    .ai-collection-showcase-{{ ai_gen_id }} { --cs-cols: {{ cols_tablet }}; }
     .ai-collection-showcase-{{ ai_gen_id }}__body { padding: 8px; }
     .ai-collection-showcase-{{ ai_gen_id }}__grid { gap: 5px; }
     .ai-collection-showcase-{{ ai_gen_id }}__card { padding: 4px; }
@@ -191,9 +194,9 @@
     .ai-collection-showcase-{{ ai_gen_id }}__button { min-height: 26px; font-size: 10.5px; }
   }
 
-  /* Phones: columns from settings (default 3) */
+  /* Phones */
   @media screen and (max-width: 749px) {
-    .ai-collection-showcase-{{ ai_gen_id }} { --cs-cols: {{ s.columns_mobile }}; width: 100%; }
+    .ai-collection-showcase-{{ ai_gen_id }} { --cs-cols: {{ cols_mobile }}; width: 100%; }
     .ai-collection-showcase-{{ ai_gen_id }}__bar { padding: 8px 12px 6px; }
     .ai-collection-showcase-{{ ai_gen_id }}__heading { font-size: 16px; }
     .ai-collection-showcase-{{ ai_gen_id }}__subheading { font-size: 10.5px; }
@@ -294,16 +297,16 @@
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "Categories" },
     { "type": "text", "id": "subheading", "label": "Subheading", "default": "Everything we offer, all in one place" },
-    { "type": "collection_list", "id": "collections", "label": "Collections", "info": "Pick the collections to display, up to 12.", "limit": 12 },
+    { "type": "collection_list", "id": "collections", "label": "Collections", "info": "Pick the collections to display, up to 12. Each row shows a maximum of 6.", "limit": 12 },
     { "type": "text", "id": "button_label", "label": "Button label", "info": "Shown on every card. Leave empty to hide the button.", "default": "Explore" },
     { "type": "checkbox", "id": "show_description", "label": "Show descriptions", "default": false },
 
     { "type": "header", "content": "Layout" },
     { "type": "range", "id": "desktop_width_percent", "label": "Desktop width", "min": 50, "max": 100, "step": 5, "unit": "%", "default": 100 },
-    { "type": "select", "id": "columns_desktop", "label": "Columns on desktop", "options": [
+    { "type": "select", "id": "columns_desktop", "label": "Columns on desktop (max 6)", "options": [
       { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }, { "value": "5", "label": "5" }, { "value": "6", "label": "6" }
     ], "default": "6" },
-    { "type": "select", "id": "columns_tablet", "label": "Columns on tablet", "options": [
+    { "type": "select", "id": "columns_tablet", "label": "Columns on tablet (max 6)", "options": [
       { "value": "2", "label": "2" }, { "value": "3", "label": "3" }, { "value": "4", "label": "4" }, { "value": "5", "label": "5" }, { "value": "6", "label": "6" }
     ], "default": "6" },
     { "type": "select", "id": "columns_mobile", "label": "Columns on mobile", "options": [

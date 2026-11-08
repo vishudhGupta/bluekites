@@ -223,6 +223,7 @@
           "type": "ai_gen_block_72bf074",
           "settings": {
             "heading": "Explore our collections",
+            "subheading": "Everything we offer, all in one place",
             "collections": [
               "airway-management",
               "tapes-and-bandages",
@@ -237,11 +238,21 @@
               "hospital-garments",
               "incontinence-continence-care"
             ],
+            "button_label": "Explore",
             "show_description": true,
             "desktop_width_percent": 100,
-            "columns_desktop": "3",
+            "columns_desktop": "6",
+            "columns_tablet": "6",
             "columns_mobile": "2",
-            "card_gap": 20
+            "image_ratio": "5 / 4",
+            "card_gap": 20,
+            "header_color": "#800000",
+            "header_text_color": "#ffffff",
+            "panel_background": "#eef4fb",
+            "card_background": "#ffffff",
+            "title_color": "#111111",
+            "text_color": "#6b7280",
+            "button_color": "#800000"
           },
           "blocks": {}
         }
@@ -258,9 +269,9 @@
         "align_baseline": false,
         "horizontal_alignment_flex_direction_column": "flex-start",
         "vertical_alignment_flex_direction_column": "center",
-        "gap": 12,
+        "gap": 15,
         "section_width": "page-width",
-        "section_height": "",
+        "section_height": "medium",
         "section_height_custom": 50,
         "color_scheme": "",
         "background_media": "none",

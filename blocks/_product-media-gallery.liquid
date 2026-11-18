@@ -9,25 +9,69 @@
 %}
 
 <style>
-  /* Product gallery sizing */
-  .product-media-container {
-    max-width: 550px;
+  /* =====================================
+     PRODUCT MEDIA GALLERY
+  ===================================== */
+
+  #shopify-section-{{ section.id }} media-gallery {
+    display: block;
+    padding-top: 40px;
+  }
+
+  #shopify-section-{{ section.id }} .product-media-container {
+    width: 100%;
+    max-width: 560px;
     margin-inline: auto;
   }
 
-  .product-media-container img {
-    max-height: 550px;
+  /* Product image sizing */
+  #shopify-section-{{ section.id }} .product-media-container img,
+  #shopify-section-{{ section.id }} media-gallery img {
+    max-height: 560px;
     width: 100%;
+    height: auto;
+    object-fit: contain;
+    object-position: center;
+    display: block;
+    margin-inline: auto;
+  }
+
+  /* Keep video and 3D media within bounds */
+  #shopify-section-{{ section.id }} media-gallery video,
+  #shopify-section-{{ section.id }} media-gallery model-viewer {
+    max-height: 560px;
     object-fit: contain;
   }
 
+  /* Desktop */
+  @media screen and (min-width: 750px) {
+    #shopify-section-{{ section.id }} media-gallery {
+      padding-top: 40px;
+    }
+
+    #shopify-section-{{ section.id }} .product-media-container {
+      max-width: 560px;
+    }
+  }
+
+  /* Mobile */
   @media screen and (max-width: 749px) {
-    .product-media-container {
+    #shopify-section-{{ section.id }} media-gallery {
+      padding-top: 20px;
+    }
+
+    #shopify-section-{{ section.id }} .product-media-container {
       max-width: 100%;
     }
 
-    .product-media-container img {
-      max-height: 400px;
+    #shopify-section-{{ section.id }} .product-media-container img,
+    #shopify-section-{{ section.id }} media-gallery img {
+      max-height: 420px;
+    }
+
+    #shopify-section-{{ section.id }} media-gallery video,
+    #shopify-section-{{ section.id }} media-gallery model-viewer {
+      max-height: 420px;
     }
   }
 </style>
@@ -313,7 +357,7 @@
       "max": 100,
       "step": 1,
       "unit": "px",
-      "default": 0
+      "default": 40
     },
     {
       "type": "range",

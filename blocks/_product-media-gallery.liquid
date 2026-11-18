@@ -8,6 +8,30 @@
   section: section
 %}
 
+<style>
+  /* Product gallery sizing */
+  .product-media-container {
+    max-width: 550px;
+    margin-inline: auto;
+  }
+
+  .product-media-container img {
+    max-height: 550px;
+    width: 100%;
+    object-fit: contain;
+  }
+
+  @media screen and (max-width: 749px) {
+    .product-media-container {
+      max-width: 100%;
+    }
+
+    .product-media-container img {
+      max-height: 400px;
+    }
+  }
+</style>
+
 {% # theme-check-disable ValidVisibleIf %}
 {% schema %}
 {
@@ -217,7 +241,7 @@
           "label": "t:options.landscape"
         }
       ],
-      "default": "adapt"
+      "default": "1"
     },
     {
       "type": "checkbox",
@@ -239,7 +263,7 @@
           "label": "t:options.contain"
         }
       ],
-      "default": "cover",
+      "default": "contain",
       "visible_if": "{{ block.settings.aspect_ratio == 'adapt' and block.settings.constrain_to_viewport == true }}"
     },
     {

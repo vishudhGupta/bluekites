@@ -227,16 +227,16 @@
             "collections": [
               "airway-management",
               "tapes-and-bandages",
-              "catheters-drainage",
               "dental-care",
+              "dialyzers",
               "diagnostic-monitoring-devices",
-              "dialysis-renal-care",
               "disinfection-antiseptics",
-              "feeding-nutrition",
               "home-patient-care",
               "hospital-equipment-supplies",
-              "hospital-garments",
-              "incontinence-continence-care"
+              "incontinence-continence-care",
+              "lab-products",
+              "ophthalmology",
+              "ortho-care"
             ],
             "button_label": "Explore",
             "show_description": true,

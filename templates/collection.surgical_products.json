@@ -236,7 +236,14 @@
               "incontinence-continence-care",
               "lab-products",
               "ophthalmology",
-              "ortho-care"
+              "ortho-care",
+              "pharmaceuticals-medications",
+              "protective-equipment-ppe",
+              "protein-powder-supplements",
+              "respiratory-care",
+              "surgical-supplies",
+              "syringes-and-needles",
+              "wound-care"
             ],
             "button_label": "Explore",
             "show_description": true,

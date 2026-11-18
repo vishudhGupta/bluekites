@@ -5,6 +5,7 @@
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 {% assign scope = '.ai-product-info-' | append: ai_gen_id %}
 
+{% assign info_share = 100 | minus: block.settings.gallery_width_percent %}
 {% assign accent = block.settings.accent_color %}
 {% if accent == blank %}{% assign accent = '#000f9f' %}{% endif %}
 {% assign accent_brightness = accent | color_brightness %}
@@ -38,7 +39,7 @@
 /* Layout */
 {{ scope }} .pi-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr);
+  grid-template-columns: minmax(0, {{ block.settings.gallery_width_percent }}fr) minmax(0, {{ info_share }}fr);
   gap: {{ block.settings.column_gap }}px;
   align-items: start;
 }
@@ -409,7 +410,7 @@
                 <img
                   src="{{ media.preview_image | image_url: width: 1200 }}"
                   srcset="{{ media.preview_image | image_url: width: 480 }} 480w, {{ media.preview_image | image_url: width: 800 }} 800w, {{ media.preview_image | image_url: width: 1200 }} 1200w"
-                  sizes="(min-width: 750px) 55vw, 100vw"
+                  sizes="(min-width: 750px) 40vw, 100vw"
                   alt="{{ media.alt | default: product.title | escape }}"
                   width="{{ media.preview_image.width }}"
                   height="{{ media.preview_image.height }}"
@@ -799,6 +800,7 @@
     { "type": "range", "id": "corner_radius", "label": "Corner radius", "min": 0, "max": 24, "step": 2, "unit": "px", "default": 12 },
     { "type": "color", "id": "accent_color", "label": "Accent color", "default": "#000f9f" },
     { "type": "header", "content": "Gallery" },
+    { "type": "range", "id": "gallery_width_percent", "label": "Gallery width (share of content, desktop)", "min": 25, "max": 60, "step": 1, "unit": "%", "default": 34 },
     { "type": "checkbox", "id": "sticky_gallery", "label": "Keep gallery in view while scrolling (desktop)", "default": true },
     {
       "type": "select",
@@ -821,7 +823,7 @@
       "id": "variant_style",
       "label": "Variant style",
       "options": [
-       { "value": "auto", "label": "Auto (buttons up to 6, else dropdown)" },
+        { "value": "auto", "label": "Auto (buttons up to 6, else dropdown)" },
         { "value": "buttons", "label": "Buttons" },
         { "value": "dropdown", "label": "Dropdown" }
       ],

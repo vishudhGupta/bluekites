@@ -103,29 +103,6 @@
     },
     "17938946271f489a34": {
       "type": "_blocks",
-      "blocks": {
-        "ai_gen_block_a103878_t8fbH9": {
-          "type": "ai_gen_block_a103878",
-          "settings": {
-            "heading": "Explore cosmetics",
-            "intro": "Browse beauty categories, discover specialist collections, and shop your favourites.",
-            "category_label": "Shop by category",
-            "categories": [
-              "handmade-cosmetics"
-            ],
-            "subcategory_label": "Explore subcategories",
-            "subcategories": [
-              "skin-care"
-            ],
-            "products_per_collection": 4,
-            "desktop_width_percent": 100
-          },
-          "blocks": {}
-        }
-      },
-      "block_order": [
-        "ai_gen_block_a103878_t8fbH9"
-      ],
       "settings": {
         "content_direction": "column",
         "vertical_on_mobile": true,
@@ -163,15 +140,11 @@
             "heading": "Explore Our Collections",
             "subheading": "Everything we offer, all in one place",
             "collections": [
-              "hair-care",
               "body-care",
-              "skin-care",
-              "baby-care",
-              "men-s-care",
-              "eye-care",
+              "hair-care",
               "lip-care",
-              "makeup",
-              "fragrance"
+              "men-s-care",
+              "skin-care"
             ],
             "button_label": "Explore",
             "show_description": false,
@@ -182,11 +155,11 @@
             "image_ratio": "5 / 4",
             "card_gap": 6,
             "header_color": "#800000",
-            "header_text_color": "#FFFFFF",
-            "panel_background": "#EEF4FB",
-            "card_background": "#FFFFFF",
+            "header_text_color": "#ffffff",
+            "panel_background": "#eef4fb",
+            "card_background": "#ffffff",
             "title_color": "#111111",
-            "text_color": "#6B7280",
+            "text_color": "#6b7280",
             "button_color": "#800000"
           },
           "blocks": {}

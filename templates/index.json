@@ -581,7 +581,7 @@
         "product_McQMJX": {
           "type": "product",
           "settings": {
-            "product": "bluekites-prodex-powder-choco-pack-of-3",
+            "product": "3m-tegaderm-film-dressing",
             "badge_text": "New"
           }
         },
@@ -616,7 +616,7 @@
       "name": "Feature product strip",
       "settings": {
         "heading": "Featured Products",
-        "subheading": "Premium products curated by our AI engine, tailored to global market demands and quality standards.",
+        "subheading": "Popular picks from our healthcare, hygiene, personal care and food range",
         "view_all_url": "",
         "view_all_label": "View all",
         "show_timer": false,

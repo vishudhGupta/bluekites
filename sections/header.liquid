@@ -1368,6 +1368,63 @@
     overflow-y: auto !important;
     overscroll-behavior: contain;
   }
+
+  /* ---------- Mobile hamburger drawer: dark, readable text ---------- */
+#header-component .menu-drawer,
+body .menu-drawer {
+  --bk-drawer-text: #2b0000;       /* near-black maroon */
+  --bk-drawer-text-muted: #5a2a2a;
+  background: #faf3ea;             /* light surface so dark text always contrasts */
+  color: var(--bk-drawer-text);
+}
+
+#header-component .menu-drawer a,
+#header-component .menu-drawer button,
+#header-component .menu-drawer summary,
+#header-component .menu-drawer .menu-drawer__menu-item,
+#header-component .menu-drawer .menu-drawer__menu-item span,
+#header-component .menu-drawer .menu-drawer__back-button,
+#header-component .menu-drawer .menu-drawer__close-button,
+body .menu-drawer a,
+body .menu-drawer button,
+body .menu-drawer summary,
+body .menu-drawer .menu-drawer__menu-item,
+body .menu-drawer .menu-drawer__menu-item span {
+  color: var(--bk-drawer-text) !important;
+}
+
+/* Icons / arrows inside the drawer */
+#header-component .menu-drawer svg,
+body .menu-drawer svg {
+  color: var(--bk-drawer-text) !important;
+  stroke: currentColor;
+}
+
+/* Hover / focus / active: maroon (gold would be unreadable on a light bg) */
+#header-component .menu-drawer a:hover,
+#header-component .menu-drawer button:hover,
+#header-component .menu-drawer .menu-drawer__menu-item:hover,
+#header-component .menu-drawer a:focus-visible,
+#header-component .menu-drawer button:focus-visible,
+body .menu-drawer a:hover,
+body .menu-drawer button:hover,
+body .menu-drawer .menu-drawer__menu-item:hover {
+  color: #550000 !important;
+  background-color: rgb(85 0 0 / 8%);
+}
+
+/* Secondary text in the drawer (localization, account links, etc.) */
+#header-component .menu-drawer .dropdown-localization__button,
+#header-component .menu-drawer .language-selector,
+body .menu-drawer .language-selector {
+  color: var(--bk-drawer-text-muted) !important;
+}
+
+/* Keep the hamburger icon itself cream on the maroon header bar */
+#header-component .header__icon--menu,
+#header-component .header__icon--menu svg {
+  color: var(--bk-cream) !important;
+}
 {% endstylesheet %}
 
 {% unless request.design_mode %}

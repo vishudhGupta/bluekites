@@ -578,40 +578,96 @@
     "feature_product_bLRpkG": {
       "type": "feature_product",
       "blocks": {
-        "product_McQMJX": {
+        "product_cBEFiR": {
           "type": "product",
           "settings": {
-            "product": "3m-tegaderm-film-dressing",
-            "badge_text": "New"
+            "product": "bluekites-faceshield-pack-of-5-flexible-material",
+            "badge_text": ""
           }
         },
-        "product_LDEQQ6": {
+        "product_eFC44i": {
           "type": "product",
           "settings": {
-            "product": "bluekites-dr-lom-hair-oil-100ml-pack-of-3",
-            "badge_text": "New"
+            "product": "aero-comfort-nebulizer-machine-for-adults-kids-nebulizer-machine-with-mouthpiece-for-home-use",
+            "badge_text": ""
           }
         },
-        "product_4dkpUL": {
+        "product_BzYRde": {
           "type": "product",
           "settings": {
-            "product": "bluekites-glimcee-z-tablet-30-nos-pack-of-3",
-            "badge_text": "New"
+            "product": "bluekites-ip-aloe-vera-handrub-sanitizer-100ml-pack-of-5",
+            "badge_text": ""
           }
         },
-        "product_bApnFY": {
+        "product_tYFeJG": {
           "type": "product",
           "settings": {
-            "product": "bluekites-madhusudha-powder-100gm-pack-of-3",
-            "badge_text": "New"
+            "product": "bacillo-floor-disinfectant",
+            "badge_text": ""
+          }
+        },
+        "product_hEBTeQ": {
+          "type": "product",
+          "settings": {
+            "product": "bluekites-pill-box-weekly-pill-organizer",
+            "badge_text": ""
+          }
+        },
+        "product_LfnEfW": {
+          "type": "product",
+          "settings": {
+            "product": "transparent-hot-water-bag-for-pain-relief-multi-color",
+            "badge_text": ""
+          }
+        },
+        "product_cfgNib": {
+          "type": "product",
+          "settings": {
+            "product": "bella-neem-aloe-vera-soap-75-gm-pack-of-4",
+            "badge_text": ""
+          }
+        },
+        "product_wJiBa3": {
+          "type": "product",
+          "settings": {
+            "product": "khadi-noyona-herbal-mehndi",
+            "badge_text": ""
+          }
+        },
+        "product_RpPnnc": {
+          "type": "product",
+          "settings": {
+            "product": "bluekites-honey-250g",
+            "badge_text": ""
+          }
+        },
+        "product_FegtQd": {
+          "type": "product",
+          "settings": {
+            "product": "bluekites-evergreen-pure-light-loose-green-tea-instant-tea-zero-calories-improves-metabolism-400gm-powder",
+            "badge_text": ""
+          }
+        },
+        "product_qVJ7Kr": {
+          "type": "product",
+          "settings": {
+            "product": "bluekites-imats-urinal-screen",
+            "badge_text": ""
           }
         }
       },
       "block_order": [
-        "product_McQMJX",
-        "product_LDEQQ6",
-        "product_4dkpUL",
-        "product_bApnFY"
+        "product_cBEFiR",
+        "product_eFC44i",
+        "product_BzYRde",
+        "product_tYFeJG",
+        "product_hEBTeQ",
+        "product_LfnEfW",
+        "product_cfgNib",
+        "product_wJiBa3",
+        "product_RpPnnc",
+        "product_FegtQd",
+        "product_qVJ7Kr"
       ],
       "name": "Feature product strip",
       "settings": {

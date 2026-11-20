@@ -277,7 +277,7 @@
   }
 
   .ai-deals-{{ ai_gen_id }} .ai-deals__empty { display: flex; align-items: center; justify-content: center; min-height: 200px; padding: 16px; text-align: center; }
-
+  .ai-deals-{{ ai_gen_id }} .ai-deals__timer-wrap[hidden] { display: none; }
   @media (max-width: 600px) {
     .ai-deals-{{ ai_gen_id }} { width: 100%; --card-w: 150px; --gap: 10px; border-radius: 16px; }
     .ai-deals-{{ ai_gen_id }} .ai-deals__header { margin: 10px 10px 0; padding: 10px 12px; }
@@ -308,7 +308,10 @@
 
 <deals-of-day-{{ ai_gen_id }}
   class="ai-deals-{{ ai_gen_id }}"
+  data-mode="{{ block.settings.timer_mode | default: 'daily' }}"
   data-end="{{ block.settings.end_time | escape }}"
+  data-has-products="{% if block.settings.products != blank %}true{% else %}false{% endif %}"
+  data-hide-block="{{ block.settings.hide_block_when_ended }}"
   data-autoplay="{{ block.settings.autoplay }}"
   data-speed="{{ block.settings.autoplay_speed | times: 1000 }}"
   {{ block.shopify_attributes }}
@@ -318,14 +321,14 @@
       <span class="ai-deals__bolt" aria-hidden="true">⚡</span>
       <h2 class="ai-deals__title">{{ block.settings.heading | escape }}</h2>
     </div>
-    <div class="ai-deals__timer-wrap">
-      <span>{{ block.settings.timer_label | escape }}</span>
-      <div class="ai-deals__timer" role="timer" aria-live="off">
-        <span class="ai-deals__unit" data-hours>00</span><span aria-hidden="true">:</span>
-        <span class="ai-deals__unit" data-minutes>00</span><span aria-hidden="true">:</span>
-        <span class="ai-deals__unit" data-seconds>00</span>
-      </div>
-    </div>
+    <div class="ai-deals__timer-wrap" data-timer-wrap hidden>
+  <span>{{ block.settings.timer_label | escape }}</span>
+  <div class="ai-deals__timer" role="timer" aria-live="off">
+    <span class="ai-deals__unit" data-hours>00</span><span aria-hidden="true">:</span>
+    <span class="ai-deals__unit" data-minutes>00</span><span aria-hidden="true">:</span>
+    <span class="ai-deals__unit" data-seconds>00</span>
+  </div>
+</div>
     {% if block.settings.products != blank %}
       <div class="ai-deals__controls">
         <button class="ai-deals__arrow" type="button" data-prev aria-label="Previous deals">

@@ -488,7 +488,7 @@
       <div class="ai-category-products-{{ ai_gen_id }}__grid">
 
         {% if block.settings.products != blank %}
-          {% for product in block.settings.products limit: 6 %}
+          {% for product in block.settings.products limit: 20 %}
             {% assign variant = product.selected_or_first_available_variant %}
 
             <article class="ai-category-products-{{ ai_gen_id }}__card">
@@ -616,7 +616,7 @@
       "type": "product_list",
       "id": "products",
       "label": "Products",
-      "limit": 6
+      "limit": 20
     },
     {
       "type": "range",

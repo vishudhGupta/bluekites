@@ -36,6 +36,7 @@
           "type": "ai_gen_block_75fe75a",
           "settings": {
             "slide_1_image": "shopify://shop_images/surgical-products_2400x600_3a1edcb2-2556-4821-916c-801258a1b14b.jpg",
+            "slide_1_mobile_image": "shopify://shop_images/bluekites-mobile-banner-1080x1350.png",
             "use_collection_image": true,
             "slide_1_show_text": false,
             "slide_1_badge": "New arrivals",

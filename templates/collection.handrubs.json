@@ -189,6 +189,7 @@
           ]
         }
       },
+      "disabled": true,
       "custom_css": [],
       "name": "t:names.collections_carousel",
       "settings": {
@@ -522,9 +523,9 @@
   "order": [
     "ai_smart_xEDNbL",
     "blocks_rjMP8y",
+    "blocks_f6jXay",
     "collection_list_7ptcU9",
     "main",
-    "blocks_f6jXay",
     "blocks_gRGkbH"
   ]
 }

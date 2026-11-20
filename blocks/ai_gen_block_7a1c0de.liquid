@@ -285,8 +285,9 @@
 {{ scope }} .pi-rich td { padding: 10px 12px; vertical-align: top; border-bottom: 1px solid var(--pi-border); text-align: start; }
 {{ scope }} .pi-rich th { font-weight: 600; }
 
-/* Details accordion */
-{{ scope }} .pi-accordion { margin-top: 28px; border-block: 1px solid var(--pi-border); }
+/* Accordions (Details, Shipping, Returns) */
+{{ scope }} .pi-accordions { margin-top: 28px; border-top: 1px solid var(--pi-border); }
+{{ scope }} .pi-accordion { border-bottom: 1px solid var(--pi-border); }
 {{ scope }} .pi-acc-heading { margin: 0; font-size: inherit; }
 {{ scope }} .pi-acc-btn {
   display: flex;
@@ -533,25 +534,49 @@
         </section>
       {% endif %}
 
-      <div class="pi-accordion" data-accordion hidden>
-        <h2 class="pi-acc-heading">
-          <button
-            type="button"
-            class="pi-acc-btn"
-            id="pi-acc-btn-{{ ai_gen_id }}"
-            aria-expanded="false"
-            aria-controls="pi-acc-panel-{{ ai_gen_id }}"
-            data-accordion-button
-          >
-            <span>{{ block.settings.details_label | escape }}</span>
-            <svg class="pi-acc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          </button>
-        </h2>
-        <div class="pi-panel" id="pi-acc-panel-{{ ai_gen_id }}" role="region" aria-labelledby="pi-acc-btn-{{ ai_gen_id }}" data-panel>
-          <div class="pi-panel-inner">
-            <div class="pi-rich pi-spec" data-spec-content></div>
-          </div>
-        </div>
+      {% assign acc_keys = 'details,shipping,returns' | split: ',' %}
+      <div class="pi-accordions" data-accordions>
+        {% for key in acc_keys %}
+          {% assign acc_label = '' %}
+          {% assign acc_content = '' %}
+          {% case key %}
+            {% when 'details' %}
+              {% assign acc_label = block.settings.details_label | default: 'Details' %}
+              {% assign acc_content = 'details' %}
+            {% when 'shipping' %}
+              {% assign acc_label = block.settings.shipping_label | default: 'Shipping' %}
+              {% assign acc_content = block.settings.shipping_content %}
+            {% when 'returns' %}
+              {% assign acc_label = block.settings.returns_label | default: 'Returns' %}
+              {% assign acc_content = block.settings.returns_content %}
+          {% endcase %}
+          {% if acc_content != blank %}
+            <div class="pi-accordion" data-accordion="{{ key }}"{% if key == 'details' %} hidden{% endif %}>
+              <h2 class="pi-acc-heading">
+                <button
+                  type="button"
+                  class="pi-acc-btn"
+                  id="pi-acc-btn-{{ ai_gen_id }}-{{ key }}"
+                  aria-expanded="false"
+                  aria-controls="pi-acc-panel-{{ ai_gen_id }}-{{ key }}"
+                  data-accordion-button
+                >
+                  <span>{{ acc_label | escape }}</span>
+                  <svg class="pi-acc-icon" viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M5 7.5l5 5 5-5" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                </button>
+              </h2>
+              <div class="pi-panel" id="pi-acc-panel-{{ ai_gen_id }}-{{ key }}" role="region" aria-labelledby="pi-acc-btn-{{ ai_gen_id }}-{{ key }}" data-panel>
+                <div class="pi-panel-inner">
+                  {% if key == 'details' %}
+                    <div class="pi-rich pi-spec" data-spec-content></div>
+                  {% else %}
+                    <div class="pi-rich" data-acc-content>{{ acc_content }}</div>
+                  {% endif %}
+                </div>
+              </div>
+            </div>
+          {% endif %}
+        {% endfor %}
       </div>
     </div>
   </div>
@@ -591,7 +616,7 @@
     /* Move the "Specification(s)" section out of the visible description into the Details accordion.
        Works on the rendered DOM only; the saved product description is never modified. */
     setupDescription() {
-      const accordion = this.querySelector('[data-accordion]');
+      const accordion = this.querySelector('[data-accordion="details"]');
       if (!accordion) return;
       const section = this.querySelector('[data-description-section]');
       const body = this.querySelector('[data-description]');
@@ -626,7 +651,7 @@
     /* Wrap tables so they scroll horizontally on narrow screens, and make the scroller keyboard-reachable only when it overflows. */
     setupTables() {
       const label = this.dataset.tableLabel || 'Scrollable table';
-      this.querySelectorAll('[data-description] table, [data-spec-content] table').forEach((table) => {
+      this.querySelectorAll('[data-description] table, [data-spec-content] table, [data-acc-content] table').forEach((table) => {
         table.querySelectorAll('tr').forEach((row) => {
           const cells = Array.from(row.children);
           if (
@@ -665,15 +690,25 @@
     }
 
     setupAccordion() {
-      const button = this.querySelector('[data-accordion-button]');
-      const panel = this.querySelector('[data-panel]');
-      if (!button || !panel) return;
-      const setOpen = (open) => {
-        button.setAttribute('aria-expanded', String(open));
-        panel.toggleAttribute('data-open', open);
-      };
-      button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
-      if (this.dataset.openDetails === 'true') setOpen(true);
+      const group = this.querySelector('[data-accordions]');
+      if (!group) return;
+      // Nothing left to show (no specs, no shipping, no returns): drop the empty group and its borders.
+      if (!group.querySelector('[data-accordion]')) {
+        group.remove();
+        return;
+      }
+      // Each item toggles independently, so several can be open at once.
+      group.querySelectorAll('[data-accordion]').forEach((item) => {
+        const button = item.querySelector('[data-accordion-button]');
+        const panel = item.querySelector('[data-panel]');
+        if (!button || !panel) return;
+        const setOpen = (open) => {
+          button.setAttribute('aria-expanded', String(open));
+          panel.toggleAttribute('data-open', open);
+        };
+        button.addEventListener('click', () => setOpen(button.getAttribute('aria-expanded') !== 'true'));
+        if (item.dataset.accordion === 'details' && this.dataset.openDetails === 'true') setOpen(true);
+      });
     }
 
     setupGallery() {
@@ -839,6 +874,12 @@
     { "type": "text", "id": "description_label", "label": "Description heading (leave blank to hide)", "default": "Description" },
     { "type": "text", "id": "details_label", "label": "Accordion label", "default": "Details" },
     { "type": "checkbox", "id": "open_details", "label": "Open Details by default", "default": false },
+    { "type": "header", "content": "Shipping and returns accordions" },
+    { "type": "paragraph", "content": "Each accordion appears only when its content is filled in. The same text shows on every product." },
+    { "type": "text", "id": "shipping_label", "label": "Shipping accordion label", "default": "Shipping" },
+    { "type": "richtext", "id": "shipping_content", "label": "Shipping content" },
+    { "type": "text", "id": "returns_label", "label": "Returns accordion label", "default": "Returns" },
+    { "type": "richtext", "id": "returns_content", "label": "Returns content" },
     { "type": "text", "id": "table_label", "label": "Scrollable table accessible label", "default": "Scrollable table" }
   ],
   "presets": [

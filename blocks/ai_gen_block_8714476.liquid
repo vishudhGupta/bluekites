@@ -1,13 +1,15 @@
-
 {% doc %}
   @prompt
     Reusable category products section with customizable heading,
-    subheading and product selection. Styled to match the Our Services
-    section and Feature Products card buttons.
+    subheading and product selection, shown as a swipeable carousel with
+    previous/next arrows. Styled to match the Our Services section and
+    Feature Products card buttons.
 {% enddoc %}
 
 {% assign ai_gen_id = block.id | replace: '_', '' | downcase %}
 {% assign add_label = 'Add to cart' %}
+{% assign prev_label = 'Previous products' %}
+{% assign next_label = 'Next products' %}
 
 {% style %}
   .ai-category-products-{{ ai_gen_id }} {
@@ -20,6 +22,8 @@
     --svc-text: #6b7280;
     --svc-max: 1440px;
     --svc-gutter: 32px;
+    --cp-visible: {{ block.settings.desktop_visible }};
+    --cp-gap: 8px;
 
     display: block;
     width: {{ block.settings.desktop_width_percent }}%;
@@ -77,38 +81,150 @@
     opacity: 0.95;
   }
 
-  /* Product grid */
+  /* Carousel */
   .ai-category-products-{{ ai_gen_id }}__body {
     padding: 16px;
   }
 
-  .ai-category-products-{{ ai_gen_id }}__grid {
-    display: grid;
-    grid-template-columns: repeat(6, minmax(0, 1fr));
-    gap: 8px;
-    margin: 0;
-    padding: 0;
+  .ai-category-products-{{ ai_gen_id }}__carousel {
+    position: relative;
+  }
+
+  /*
+    The track scrolls horizontally with scroll-snap. The padding and the
+    matching negative margins give card hover shadows and lifts room, so
+    they are not clipped by the scroll container.
+  */
+  .ai-category-products-{{ ai_gen_id }}__track {
+    display: flex;
+    align-items: stretch;
+    gap: var(--cp-gap);
+    margin: -6px -4px -18px;
+    padding: 6px 4px 18px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    overscroll-behavior-x: contain;
+    scroll-snap-type: x mandatory;
+    scroll-padding-inline: 4px;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  /* Hide the scrollbar once the arrows/script are active; keep it as a no-JS fallback */
+  .ai-category-products-{{ ai_gen_id }}__carousel[data-ready] .ai-category-products-{{ ai_gen_id }}__track {
+    scrollbar-width: none;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__carousel[data-ready] .ai-category-products-{{ ai_gen_id }}__track::-webkit-scrollbar {
+    display: none;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__track:focus-visible {
+    outline: 2px solid #1d4ed8;
+    outline-offset: 2px;
+    border-radius: 6px;
   }
 
   /* Product card */
   .ai-category-products-{{ ai_gen_id }}__card {
     position: relative;
     display: flex;
+    flex: 0 0 calc((100% - (var(--cp-visible) - 1) * var(--cp-gap)) / var(--cp-visible));
     flex-direction: column;
     min-width: 0;
-    height: 100%;
     padding: 6px;
     border-radius: 6px;
     background: var(--svc-card);
     color: var(--svc-title);
     text-decoration: none;
     box-shadow: 0 1px 2px rgba(16, 24, 40, 0.06);
+    scroll-snap-align: start;
     transition: transform 0.25s ease, box-shadow 0.25s ease;
   }
 
   .ai-category-products-{{ ai_gen_id }}__card:hover {
     transform: translateY(-3px);
     box-shadow: 0 12px 28px -12px rgba(16, 24, 40, 0.28);
+  }
+
+  /* Previous / next arrows */
+  .ai-category-products-{{ ai_gen_id }}__arrow {
+    --glass-maroon: 128, 0, 0;
+
+    position: absolute;
+    inset-block-start: calc(50% - 20px);
+    z-index: 2;
+    display: none;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    padding: 0;
+    color: #ffffff;
+    cursor: pointer;
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 0.92) 0%,
+      rgba(var(--glass-maroon), 0.78) 100%
+    );
+    -webkit-backdrop-filter: blur(10px) saturate(160%);
+    backdrop-filter: blur(10px) saturate(160%);
+    border: 1px solid rgb(255 255 255 / 0.35);
+    border-radius: 50%;
+    box-shadow:
+      0 4px 14px rgba(var(--glass-maroon), 0.35),
+      inset 0 1px 0 rgb(255 255 255 / 0.35);
+    transition: opacity 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow--prev {
+    inset-inline-start: -8px;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow--next {
+    inset-inline-end: -8px;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow svg {
+    display: block;
+    width: 18px;
+    height: 18px;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow--prev svg {
+    transform: scaleX(-1);
+  }
+
+  [dir="rtl"] .ai-category-products-{{ ai_gen_id }}__arrow svg {
+    transform: scaleX(-1);
+  }
+
+  [dir="rtl"] .ai-category-products-{{ ai_gen_id }}__arrow--prev svg {
+    transform: none;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__carousel[data-ready][data-scrollable] .ai-category-products-{{ ai_gen_id }}__arrow {
+    display: grid;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow:hover {
+    background: linear-gradient(
+      135deg,
+      rgba(var(--glass-maroon), 1) 0%,
+      rgba(var(--glass-maroon), 0.88) 100%
+    );
+    box-shadow:
+      0 6px 18px rgba(var(--glass-maroon), 0.5),
+      inset 0 1px 0 rgb(255 255 255 / 0.45);
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow:focus-visible {
+    outline: 3px solid #1d4ed8;
+    outline-offset: 2px;
+  }
+
+  .ai-category-products-{{ ai_gen_id }}__arrow[aria-disabled="true"] {
+    opacity: 0.35;
+    cursor: default;
+    box-shadow: none;
   }
 
   /* Product image */
@@ -332,7 +448,7 @@
 
   /* Empty state */
   .ai-category-products-{{ ai_gen_id }}__empty {
-    grid-column: 1 / -1;
+    flex: 1 1 100%;
     padding: 28px;
     border-radius: 6px;
     background: #ffffff;
@@ -350,9 +466,9 @@
 
   /* Tablets */
   @media screen and (max-width: 1099px) {
-    .ai-category-products-{{ ai_gen_id }}__grid {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 12px;
+    .ai-category-products-{{ ai_gen_id }} {
+      --cp-visible: 3;
+      --cp-gap: 12px;
     }
 
     .ai-category-products-{{ ai_gen_id }}__body {
@@ -371,6 +487,9 @@
   /* Mobile */
   @media screen and (max-width: 749px) {
     .ai-category-products-{{ ai_gen_id }} {
+      --cp-visible: 2;
+      --cp-gap: 8px;
+
       padding-block: 14px;
     }
 
@@ -394,9 +513,18 @@
       padding: 8px;
     }
 
-    .ai-category-products-{{ ai_gen_id }}__grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 8px;
+    .ai-category-products-{{ ai_gen_id }}__arrow {
+      width: 34px;
+      height: 34px;
+      inset-block-start: calc(50% - 17px);
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__arrow--prev {
+      inset-inline-start: -4px;
+    }
+
+    .ai-category-products-{{ ai_gen_id }}__arrow--next {
+      inset-inline-end: -4px;
     }
 
     .ai-category-products-{{ ai_gen_id }}__card {
@@ -424,12 +552,12 @@
 
   /* Very small phones */
   @media screen and (max-width: 359px) {
-    .ai-category-products-{{ ai_gen_id }}__inner {
-      width: calc(100% - 16px);
+    .ai-category-products-{{ ai_gen_id }} {
+      --cp-gap: 6px;
     }
 
-    .ai-category-products-{{ ai_gen_id }}__grid {
-      gap: 6px;
+    .ai-category-products-{{ ai_gen_id }}__inner {
+      width: calc(100% - 16px);
     }
 
     .ai-category-products-{{ ai_gen_id }}__title {
@@ -441,7 +569,7 @@
     }
   }
 
-  /* Touch devices */
+  /* Touch devices: swiping is the primary control, so drop the arrows and the hover lift */
   @media (hover: none) {
     .ai-category-products-{{ ai_gen_id }}__card:hover {
       transform: none;
@@ -453,17 +581,24 @@
     }
   }
 
+  @media (hover: none) and (pointer: coarse) {
+    .ai-category-products-{{ ai_gen_id }}__carousel[data-ready][data-scrollable] .ai-category-products-{{ ai_gen_id }}__arrow {
+      display: none;
+    }
+  }
+
   /* Reduced motion */
   @media (prefers-reduced-motion: reduce) {
     .ai-category-products-{{ ai_gen_id }}__card,
     .ai-category-products-{{ ai_gen_id }}__image-wrap img,
-    .ai-category-products-{{ ai_gen_id }}__btn {
+    .ai-category-products-{{ ai_gen_id }}__btn,
+    .ai-category-products-{{ ai_gen_id }}__arrow {
       transition: none !important;
     }
   }
 {% endstyle %}
 
-<div class="ai-category-products-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
+<category-products-{{ ai_gen_id }} class="ai-category-products-{{ ai_gen_id }}" {{ block.shopify_attributes }}>
   <div class="ai-category-products-{{ ai_gen_id }}__inner">
 
     {% if block.settings.heading != blank or block.settings.subheading != blank %}
@@ -485,116 +620,236 @@
     {% endif %}
 
     <div class="ai-category-products-{{ ai_gen_id }}__body">
-      <div class="ai-category-products-{{ ai_gen_id }}__grid">
+      <div
+        class="ai-category-products-{{ ai_gen_id }}__carousel"
+        data-carousel
+        role="region"
+        aria-roledescription="carousel"
+        aria-label="{{ block.settings.heading | default: 'Products' | escape }}"
+      >
 
         {% if block.settings.products != blank %}
-          {% for product in block.settings.products limit: 20 %}
-            {% assign variant = product.selected_or_first_available_variant %}
+          <button
+            class="ai-category-products-{{ ai_gen_id }}__arrow ai-category-products-{{ ai_gen_id }}__arrow--prev"
+            type="button"
+            data-prev
+            aria-label="{{ prev_label | escape }}"
+            aria-disabled="true"
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
 
-            <article class="ai-category-products-{{ ai_gen_id }}__card">
-
-              <a
-                class="ai-category-products-{{ ai_gen_id }}__image-link"
-                href="{{ product.url }}"
-                aria-label="{{ product.title | escape }}"
-              >
-                <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
-                  {% if product.featured_image %}
-                    <img
-                      src="{{ product.featured_image | image_url: width: 700 }}"
-                      alt="{{ product.featured_image.alt | default: product.title | escape }}"
-                      loading="lazy"
-                      width="{{ product.featured_image.width }}"
-                      height="{{ product.featured_image.height }}"
-                    >
-                  {% else %}
-                    <div class="ai-category-products-{{ ai_gen_id }}__placeholder">
-                      {{ 'product-apparel-1' | placeholder_svg_tag }}
-                    </div>
-                  {% endif %}
-                </div>
-              </a>
-
-              <div class="ai-category-products-{{ ai_gen_id }}__content">
-                <h3 class="ai-category-products-{{ ai_gen_id }}__title">
-                  <a href="{{ product.url }}">
-                    {{ product.title | escape }}
-                  </a>
-                </h3>
-
-                <span class="ai-category-products-{{ ai_gen_id }}__price">
-                  {% if product.price_varies %}
-                    From
-                  {% endif %}
-                  {{ product.price | money }}
-                </span>
-
-                <div class="ai-category-products-{{ ai_gen_id }}__action">
-                  {% if product.available == false %}
-
-                    <span
-                      class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--muted"
-                      aria-disabled="true"
-                    >
-                      Sold out
-                    </span>
-
-                  {% elsif product.variants.size > 1 %}
-
-                    <a
-                      class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--outline"
-                      href="{{ product.url }}"
-                    >
-                      Choose options
-                    </a>
-
-                  {% else %}
-
-                    <form
-                      class="ai-category-products-{{ ai_gen_id }}__form"
-                      method="post"
-                      action="{{ routes.cart_add_url }}"
-                      accept-charset="UTF-8"
-                    >
-                      <input
-                        type="hidden"
-                        name="id"
-                        value="{{ variant.id }}"
-                      >
-
-                      <input
-                        type="hidden"
-                        name="quantity"
-                        value="1"
-                      >
-
-                      <button
-                        class="ai-category-products-{{ ai_gen_id }}__btn"
-                        type="submit"
-                        aria-label="{{ add_label | escape }}: {{ product.title | escape }}"
-                      >
-                        {{ add_label | escape }}
-                      </button>
-                    </form>
-
-                  {% endif %}
-                </div>
-              </div>
-
-            </article>
-          {% endfor %}
-
-        {% else %}
-          <div class="ai-category-products-{{ ai_gen_id }}__empty">
-            Choose up to 6 products in this block’s settings to display them here.
-          </div>
+          <button
+            class="ai-category-products-{{ ai_gen_id }}__arrow ai-category-products-{{ ai_gen_id }}__arrow--next"
+            type="button"
+            data-next
+            aria-label="{{ next_label | escape }}"
+          >
+            <svg viewBox="0 0 20 20" fill="none" aria-hidden="true" focusable="false"><path d="M7.5 4l6 6-6 6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
         {% endif %}
 
+        <div
+          class="ai-category-products-{{ ai_gen_id }}__track"
+          data-track
+          tabindex="0"
+          aria-label="{{ block.settings.heading | default: 'Products' | escape }}"
+        >
+
+          {% if block.settings.products != blank %}
+            {% for product in block.settings.products limit: 20 %}
+              {% assign variant = product.selected_or_first_available_variant %}
+
+              <article
+                class="ai-category-products-{{ ai_gen_id }}__card"
+                role="group"
+                aria-roledescription="slide"
+                aria-label="{{ forloop.index }} / {{ forloop.length }}"
+              >
+
+                <a
+                  class="ai-category-products-{{ ai_gen_id }}__image-link"
+                  href="{{ product.url }}"
+                  aria-label="{{ product.title | escape }}"
+                >
+                  <div class="ai-category-products-{{ ai_gen_id }}__image-wrap">
+                    {% if product.featured_image %}
+                      <img
+                        src="{{ product.featured_image | image_url: width: 700 }}"
+                        alt="{{ product.featured_image.alt | default: product.title | escape }}"
+                        loading="lazy"
+                        draggable="false"
+                        width="{{ product.featured_image.width }}"
+                        height="{{ product.featured_image.height }}"
+                      >
+                    {% else %}
+                      <div class="ai-category-products-{{ ai_gen_id }}__placeholder">
+                        {{ 'product-apparel-1' | placeholder_svg_tag }}
+                      </div>
+                    {% endif %}
+                  </div>
+                </a>
+
+                <div class="ai-category-products-{{ ai_gen_id }}__content">
+                  <h3 class="ai-category-products-{{ ai_gen_id }}__title">
+                    <a href="{{ product.url }}">
+                      {{ product.title | escape }}
+                    </a>
+                  </h3>
+
+                  <span class="ai-category-products-{{ ai_gen_id }}__price">
+                    {% if product.price_varies %}
+                      From
+                    {% endif %}
+                    {{ product.price | money }}
+                  </span>
+
+                  <div class="ai-category-products-{{ ai_gen_id }}__action">
+                    {% if product.available == false %}
+
+                      <span
+                        class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--muted"
+                        aria-disabled="true"
+                      >
+                        Sold out
+                      </span>
+
+                    {% elsif product.variants.size > 1 %}
+
+                      <a
+                        class="ai-category-products-{{ ai_gen_id }}__btn ai-category-products-{{ ai_gen_id }}__btn--outline"
+                        href="{{ product.url }}"
+                      >
+                        Choose options
+                      </a>
+
+                    {% else %}
+
+                      <form
+                        class="ai-category-products-{{ ai_gen_id }}__form"
+                        method="post"
+                        action="{{ routes.cart_add_url }}"
+                        accept-charset="UTF-8"
+                      >
+                        <input
+                          type="hidden"
+                          name="id"
+                          value="{{ variant.id }}"
+                        >
+
+                        <input
+                          type="hidden"
+                          name="quantity"
+                          value="1"
+                        >
+
+                        <button
+                          class="ai-category-products-{{ ai_gen_id }}__btn"
+                          type="submit"
+                          aria-label="{{ add_label | escape }}: {{ product.title | escape }}"
+                        >
+                          {{ add_label | escape }}
+                        </button>
+                      </form>
+
+                    {% endif %}
+                  </div>
+                </div>
+
+              </article>
+            {% endfor %}
+
+          {% else %}
+            <div class="ai-category-products-{{ ai_gen_id }}__empty">
+              Choose up to 20 products in this block’s settings to display them here.
+            </div>
+          {% endif %}
+
+        </div>
       </div>
     </div>
 
   </div>
-</div>
+</category-products-{{ ai_gen_id }}>
+
+<script>
+(() => {
+  const tag = 'category-products-{{ ai_gen_id }}';
+  if (customElements.get(tag)) return;
+
+  class CategoryProducts extends HTMLElement {
+    connectedCallback() {
+      const carousel = this.querySelector('[data-carousel]');
+      const track = this.querySelector('[data-track]');
+      if (!carousel || !track) return;
+
+      this.carousel = carousel;
+      this.track = track;
+      this.prev = this.querySelector('[data-prev]');
+      this.next = this.querySelector('[data-next]');
+
+      if (!this.bound) {
+        this.bound = true;
+        let frame = 0;
+        this.onScroll = () => {
+          if (frame) return;
+          frame = requestAnimationFrame(() => {
+            frame = 0;
+            this.sync();
+          });
+        };
+        track.addEventListener('scroll', this.onScroll, { passive: true });
+        if (this.prev) this.prev.addEventListener('click', () => this.move(-1));
+        if (this.next) this.next.addEventListener('click', () => this.move(1));
+      }
+
+      if ('ResizeObserver' in window) {
+        this.observer = new ResizeObserver(() => this.sync());
+        this.observer.observe(track);
+      }
+      carousel.setAttribute('data-ready', '');
+      this.sync();
+    }
+
+    disconnectedCallback() {
+      if (this.observer) this.observer.disconnect();
+    }
+
+    isRtl() {
+      return getComputedStyle(this.track).direction === 'rtl';
+    }
+
+    /* Scroll by one visible "page" of whole cards. dir: -1 = previous, 1 = next. */
+    move(dir) {
+      const track = this.track;
+      const button = dir < 0 ? this.prev : this.next;
+      if (button && button.getAttribute('aria-disabled') === 'true') return;
+
+      const card = track.querySelector('article');
+      if (!card) return;
+      const style = getComputedStyle(track);
+      const gap = parseFloat(style.columnGap) || 0;
+      const inset = (parseFloat(style.paddingLeft) || 0) + (parseFloat(style.paddingRight) || 0);
+      const step = card.getBoundingClientRect().width + gap;
+      const pageCards = Math.max(1, Math.floor((track.clientWidth - inset + gap) / step + 0.01));
+      const distance = pageCards * step * dir * (this.isRtl() ? -1 : 1);
+      const reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      track.scrollBy({ left: distance, behavior: reduce ? 'auto' : 'smooth' });
+    }
+
+    sync() {
+      const track = this.track;
+      const max = track.scrollWidth - track.clientWidth;
+      const position = Math.abs(track.scrollLeft);
+      this.carousel.toggleAttribute('data-scrollable', max > 1);
+      if (this.prev) this.prev.setAttribute('aria-disabled', String(position <= 1));
+      if (this.next) this.next.setAttribute('aria-disabled', String(position >= max - 1));
+    }
+  }
+
+  customElements.define(tag, CategoryProducts);
+})();
+</script>
 
 {% schema %}
 {
@@ -617,6 +872,15 @@
       "id": "products",
       "label": "Products",
       "limit": 20
+    },
+    {
+      "type": "range",
+      "id": "desktop_visible",
+      "label": "Products visible at once (desktop)",
+      "min": 3,
+      "max": 8,
+      "step": 1,
+      "default": 6
     },
     {
       "type": "range",

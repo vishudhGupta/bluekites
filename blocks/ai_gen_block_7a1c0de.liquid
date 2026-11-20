@@ -550,8 +550,8 @@
               {% assign acc_label = block.settings.returns_label | default: 'Returns' %}
               {% assign acc_content = block.settings.returns_content %}
           {% endcase %}
-          {% if acc_content != blank %}
-            <div class="pi-accordion" data-accordion="{{ key }}"{% if key == 'details' %} hidden{% endif %}>
+          {% comment %} Hidden until the script confirms there is content (from the description, or from the theme setting). {% endcomment %}
+            <div class="pi-accordion" data-accordion="{{ key }}"{% if key == 'details' or acc_content == blank %} hidden{% endif %}>
               <h2 class="pi-acc-heading">
                 <button
                   type="button"
@@ -575,7 +575,6 @@
                 </div>
               </div>
             </div>
-          {% endif %}
         {% endfor %}
       </div>
     </div>
@@ -613,39 +612,54 @@
       if (this.onPageShow) window.removeEventListener('pageshow', this.onPageShow);
     }
 
-    /* Move the "Specification(s)" section out of the visible description into the Details accordion.
-       Works on the rendered DOM only; the saved product description is never modified. */
+    /* Move the "Specification(s)", "Shipping" and "Returns" sections out of the visible description
+       into their accordions. Each section runs from its heading to the next heading.
+       Works on the rendered DOM only; the saved product description is never modified.
+       A Shipping/Returns section in the description overrides the theme-setting fallback text. */
     setupDescription() {
-      const accordion = this.querySelector('[data-accordion="details"]');
-      if (!accordion) return;
       const section = this.querySelector('[data-description-section]');
       const body = this.querySelector('[data-description]');
-      const target = this.querySelector('[data-spec-content]');
-      if (!body || !target) {
-        accordion.remove();
-        return;
+      const headings = {
+        specification: 'details',
+        specifications: 'details',
+        shipping: 'shipping',
+        return: 'returns',
+        returns: 'returns'
+      };
+
+      const found = {};
+      if (body) {
+        let current = null;
+        Array.from(body.childNodes).forEach((node) => {
+          if (node.nodeType === 1 && /^H[1-6]$/.test(node.tagName)) {
+            const key = headings[normalize(node.textContent)];
+            if (key) {
+              current = key;
+              if (!found[key]) found[key] = [];
+              node.remove();
+              return;
+            }
+            current = null;
+          }
+          if (current) found[current].push(node);
+        });
       }
 
-      let extracting = false;
-      let found = false;
-      Array.from(body.childNodes).forEach((node) => {
-        if (node.nodeType === 1 && /^H[1-6]$/.test(node.tagName)) {
-          const title = normalize(node.textContent);
-          if (title === 'specification' || title === 'specifications') {
-            extracting = true;
-            found = true;
-            node.remove();
-            return;
-          }
-          extracting = false;
+      this.querySelectorAll('[data-accordion]').forEach((item) => {
+        const key = item.dataset.accordion;
+        const target = item.querySelector(key === 'details' ? '[data-spec-content]' : '[data-acc-content]');
+        if (!target) {
+          item.remove();
+          return;
         }
-        if (extracting) target.appendChild(node);
+        if (found[key]) {
+          target.replaceChildren(...found[key]);
+        }
+        if (hasContent(target)) item.hidden = false;
+        else item.remove();
       });
 
-      if (found && hasContent(target)) accordion.hidden = false;
-      else accordion.remove();
-
-      if (section && !hasContent(body)) section.remove();
+      if (section && body && !hasContent(body)) section.remove();
     }
 
     /* Wrap tables so they scroll horizontally on narrow screens, and make the scroller keyboard-reachable only when it overflows. */
@@ -875,11 +889,11 @@
     { "type": "text", "id": "details_label", "label": "Accordion label", "default": "Details" },
     { "type": "checkbox", "id": "open_details", "label": "Open Details by default", "default": false },
     { "type": "header", "content": "Shipping and returns accordions" },
-    { "type": "paragraph", "content": "Each accordion appears only when its content is filled in. The same text shows on every product." },
+    { "type": "paragraph", "content": "A 'Shipping' or 'Returns' heading in a product's description fills its accordion for that product. The text below is the fallback for products without one. An accordion with no content is hidden." },
     { "type": "text", "id": "shipping_label", "label": "Shipping accordion label", "default": "Shipping" },
-    { "type": "richtext", "id": "shipping_content", "label": "Shipping content" },
+    { "type": "richtext", "id": "shipping_content", "label": "Shipping fallback content" },
     { "type": "text", "id": "returns_label", "label": "Returns accordion label", "default": "Returns" },
-    { "type": "richtext", "id": "returns_content", "label": "Returns content" },
+    { "type": "richtext", "id": "returns_content", "label": "Returns fallback content" },
     { "type": "text", "id": "table_label", "label": "Scrollable table accessible label", "default": "Scrollable table" }
   ],
   "presets": [

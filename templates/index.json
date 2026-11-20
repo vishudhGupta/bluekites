@@ -510,8 +510,6 @@
           "type": "ai_gen_block_c09e86b",
           "settings": {
             "heading": "Amazing Deals of the Day",
-            "timer_label": "Ends in",
-            "end_time": "2026-10-12T17:51:31+05:30",
             "products": [
               "nulife-latex-examination-gloves",
               "bd-venflon-22g-blue-pack-of-50-units",
@@ -528,6 +526,10 @@
               "bluekites-countryside-natural-lemon-green-tea-powder-drink-25-sachets",
               "bluekites-multifold-tissue-dispenser-white-with-grey-nozzle-abs-material"
             ],
+            "timer_label": "Ends in",
+            "timer_mode": "daily",
+            "end_time": "",
+            "hide_block_when_ended": false,
             "autoplay": true,
             "autoplay_speed": 4,
             "button_label": "Add to cart",

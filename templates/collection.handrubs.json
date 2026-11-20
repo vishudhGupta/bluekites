@@ -36,6 +36,7 @@
           "type": "ai_gen_block_75fe75a",
           "settings": {
             "slide_1_image": "shopify://shop_images/handrub-disinfectants_2400x600_d2475c68-abc4-4f6f-bfa6-8c4ff3ed5cf2.jpg",
+            "slide_1_mobile_image": "shopify://shop_images/handrub-mobile-banner-1000x700.png",
             "use_collection_image": true,
             "slide_1_show_text": false,
             "slide_1_badge": "New arrivals",
@@ -428,11 +429,11 @@
             "image_ratio": "5 / 4",
             "card_gap": 6,
             "header_color": "#800000",
-            "header_text_color": "#FFFFFF",
-            "panel_background": "#EEF4FB",
-            "card_background": "#FFFFFF",
+            "header_text_color": "#ffffff",
+            "panel_background": "#eef4fb",
+            "card_background": "#ffffff",
             "title_color": "#111111",
-            "text_color": "#6B7280",
+            "text_color": "#6b7280",
             "button_color": "#800000"
           },
           "blocks": {}

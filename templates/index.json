@@ -961,6 +961,55 @@
         "padding-block-end": 0
       }
     },
+    "blocks_mXgmyC": {
+      "type": "_blocks",
+      "blocks": {
+        "ai_gen_block_8714476_JFhXpy": {
+          "type": "ai_gen_block_8714476",
+          "settings": {
+            "heading": "Home and Kitchen",
+            "subheading": "Fine foods and gourmet picks for your kitchen and table.",
+            "products": [
+              "bluekites-pump-dispenser",
+              "bluekites-sprayer-bottle-1-5-litre"
+            ],
+            "desktop_width_percent": 100
+          },
+          "blocks": {}
+        }
+      },
+      "block_order": [
+        "ai_gen_block_8714476_JFhXpy"
+      ],
+      "name": "Catogories",
+      "settings": {
+        "content_direction": "column",
+        "vertical_on_mobile": true,
+        "horizontal_alignment": "flex-start",
+        "vertical_alignment": "center",
+        "align_baseline": false,
+        "horizontal_alignment_flex_direction_column": "flex-start",
+        "vertical_alignment_flex_direction_column": "center",
+        "gap": 12,
+        "section_width": "page-width",
+        "section_height": "",
+        "section_height_custom": 50,
+        "color_scheme": "",
+        "background_media": "none",
+        "video_position": "cover",
+        "background_image_position": "cover",
+        "border": "none",
+        "border_width": 1,
+        "border_opacity": 100,
+        "border_radius": 0,
+        "toggle_overlay": false,
+        "overlay_color": "#00000026",
+        "overlay_style": "solid",
+        "gradient_direction": "to top",
+        "padding-block-start": 0,
+        "padding-block-end": 0
+      }
+    },
     "custom_liquid_jQ3gmw": {
       "type": "custom-liquid",
       "disabled": true,
@@ -1270,6 +1319,7 @@
     "blocks_GCznkH",
     "blocks_3kXXww",
     "blocks_dhyLKm",
+    "blocks_mXgmyC",
     "custom_liquid_jQ3gmw",
     "service_cards_9R7Aax",
     "whyus_XEjggw",

@@ -536,6 +536,7 @@
       "blocks": {
         "ai_gen_block_be76386_6rMFEc": {
           "type": "ai_gen_block_be76386",
+          "name": "Category wise products",
           "settings": {
             "subcategories": [
               "airway-management",
